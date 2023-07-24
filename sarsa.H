@@ -8,11 +8,12 @@ private:
     int deadReward;
     int stepReward;
     double discount;
-
+    double alpha;
     
     
 
 public: 
+    void update();
     
 };
 
