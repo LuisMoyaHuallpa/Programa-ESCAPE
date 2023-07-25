@@ -1,18 +1,24 @@
-#include "node.H"
+#include "node.h"
 #include <iostream>
 #include <ostream>
 
-node::node(int number, int coordX, int coordY, int evacuationCode, int rewardCode) {
-    setNumber(number);
-    std::cout << number <<std::endl;
+node::node() {
+    (*this).id = 0;
+    (*this).coordX = 0;
+    (*this).coordY = 0;
+    (*this).evacuationCode = 0;
+    (*this).rewardCode = 0;
+}
+node::node(int id, int coordX, int coordY, int evacuationCode, int rewardCode) {
+    setId(id);
     setCoorX(coordX);
     setCoorY(coordY);
     setEvacuationCode(evacuationCode);
     setRewardCode(rewardCode);
 }
 // setters
-void node::setNumber(int number) {
-    (*this).number = number;
+void node::setId(int id) {
+    (*this).id = id;
 }
 void node::setCoorX(int coordX){
     (*this).coordX = coordX;
@@ -28,8 +34,8 @@ void node::setRewardCode(int rewardCode){
 }
 
 // getter
-int node::getNumber() const{
-    return number;
+int node::getId() const{
+    return id;
 }
 int node::getCoordX() const{
     return coordX;
@@ -45,6 +51,6 @@ int node::getRewardCode() const{
 }
 
 void node::imprimir() {
-    std::cout << getNumber() << std::endl;
+    std::cout << getId() << std::endl;
 }
 

@@ -1,7 +1,11 @@
+#ifndef node_h
+#define node_h
+
 #include <string>
+
 class node {
 private:
-    int number;
+    int id;
     int coordX;
     int coordY;
     int evacuationCode;
@@ -10,17 +14,17 @@ private:
 
 public:
     node();
-    node(int number, int coordX, int coordY, int evacuationCode, int rewardCode);
+    node(int id, int coordX, int coordY, int evacuationCode, int rewardCode);
     
     //setters
-    void setNumber(int number);
+    void setId(int id);
     void setCoorX(int setcoordX);
     void setCoorY(int setcoordY);
     void setEvacuationCode(int evacuationCode);
     void setRewardCode(int rewardCode);
 
     // getters
-    int getNumber() const;
+    int getId() const;
     int getCoordX() const;
     int getCoordY() const;
     int getEvacuationCode() const;
@@ -30,3 +34,4 @@ public:
     
 
 };
+#endif
