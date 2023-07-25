@@ -1,5 +1,11 @@
 *
 !main.cpp
+!dbNode.cpp
+!dbNode.h
+!dbLink.cpp
+!dbLink.h
+!link.cpp
+!link.h
 !node.cpp
 !node.h
 !.gitignore
