@@ -1,4 +1,5 @@
 *
+!.gitignore
 !main.cpp
 !dbNode.cpp
 !dbNode.h
@@ -8,4 +9,7 @@
 !link.h
 !node.cpp
 !node.h
-!.gitignore
+!dbPedestrian.cpp
+!dbPedestrian.h
+!pedestrian.cpp
+!pedestrian.h

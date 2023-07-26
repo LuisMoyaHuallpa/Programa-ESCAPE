@@ -1,7 +1,6 @@
 #include "dbLink.h"
 #include "dbNode.h"
 
-#include <iostream>
 #include <sstream>
 #include <string>
 #include <fstream>
@@ -24,37 +23,34 @@ void dbLink::setListaNode(const dbNode& dbnode) {
 }
 void dbLink::leerDbLink(std::string filename){
 
-    std::fstream fileLink;
-    fileLink.open(filename, std::ios::in);
+    std::fstream file;
+    file.open(filename, std::ios::in);
 
-   if (fileLink.fail()) {
-        std::cout << "Error opening the file links.csv" << std::endl;
+   if (file.fail()) {
+       std::cout << "Error opening the file " << filename << std::endl;
         exit(1);
     }
 
-   int id, n1, n2, l, w;
     std::string line;
-
-    while (std::getline(fileLink, line)) {
-        
+    while (std::getline(file, line)) {
         std::istringstream iss(line);
-        std::string id_str, n1_str, n2_str, l_str, w_str;
+        std::string a1_str, a2_str, a3_str, a4_str, a5_str;
 
-        std::getline(iss, id_str, ',');
-        std::getline(iss, n1_str, ',');
-        std::getline(iss, n2_str, ',');
-        std::getline(iss, l_str, ',');
-        std::getline(iss, w_str, '\n');
+        std::getline(iss, a1_str, ',');
+        std::getline(iss, a2_str, ',');
+        std::getline(iss, a3_str, ',');
+        std::getline(iss, a4_str, ',');
+        std::getline(iss, a5_str, '\n');
 
-        id = std::stoi(id_str);
-        n1= std::stoi(n1_str);
-        n2 = std::stoi(n2_str);
-        l = std::stoi(l_str);
-        w = std::stoi(w_str);
-        links.push_back(link(id, n1, n2, l, w));
+        int a1 = std::stoi(a1_str);
+        int a2= std::stoi(a2_str);
+        int a3 = std::stoi(a3_str);
+        int a4 = std::stoi(a4_str);
+        int a5 = std::stoi(a5_str);
+        links.push_back(link(a1, a2, a3, a4, a5));
         }
     
-    fileLink.close(); 
+    file.close(); 
 
 
 }
