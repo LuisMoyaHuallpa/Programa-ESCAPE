@@ -14,6 +14,11 @@ private:
     
 
 public:
+    static int surviveReward;
+    static int deadReward;
+    static int stepReward;
+
+    
     pedestrian();
     pedestrian(int id, int edad, int hhType, int hhId, int idNearNode);
 

@@ -13,7 +13,11 @@ private:
     int length;
     int width;
 
+    int numberPartion;
+    
+
 public:
+    static int unitWidthPartion;
     link();
     link(int id, int idNode1, int idNode2, int length, int width);
 
@@ -30,6 +34,10 @@ public:
     node getNode2() const;
     int getLength() const;
     int getWidth() const;
+
+
+    
+    void calcularHistParam();
 
 };
     #endif

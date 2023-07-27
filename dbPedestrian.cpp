@@ -54,3 +54,7 @@ void dbPedestrian::mostrarDbPedestrian(){
         std::cout << std::endl;
     }
 }
+
+void dbPedestrian::calcularNumberPedestrian(){
+    numberPedestrian =pedestrians.size();
+}

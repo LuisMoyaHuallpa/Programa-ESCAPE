@@ -13,3 +13,7 @@
 !dbPedestrian.h
 !pedestrian.cpp
 !pedestrian.h
+!transLink.cpp
+!transLink.cpp
+!transLinks.h
+!transLinks.h

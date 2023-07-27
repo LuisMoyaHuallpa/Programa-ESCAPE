@@ -8,6 +8,8 @@ private:
     int id;
     int coordX;
     int coordY;
+    // puede cambiar a bolean, el evacuationCode porque te dice
+    // si el node es un punto de evacuacion
     int evacuationCode;
     int rewardCode;
     

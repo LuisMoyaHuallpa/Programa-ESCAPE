@@ -13,6 +13,7 @@ class dbPedestrian {
 private:
     std::string filename;
     std::vector<pedestrian> pedestrians;
+    int numberPedestrian;
 
 public:
     dbPedestrian();
@@ -20,6 +21,7 @@ public:
 
     void leerDbPedestrian(std::string filename);
     void mostrarDbPedestrian();
+    void calcularNumberPedestrian();
 };
 
 

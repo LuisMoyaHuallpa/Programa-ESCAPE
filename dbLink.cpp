@@ -7,17 +7,16 @@
 #include <iostream>
 
 using std::endl;
-dbNode dbLink::listaNode;
 
 dbLink::dbLink(){
     (*this).filename = "links.csv";
     leerDbLink(filename);
-
 }
 dbLink::dbLink(std::string filename){
     leerDbLink(filename);
 }
 
+dbNode dbLink::listaNode;
 void dbLink::setListaNode(const dbNode& dbnode) {
     listaNode = dbnode;
 }
@@ -64,4 +63,9 @@ void dbLink::mostrarLinks(){
         std::cout << links.at(i).getNode2().getId() << ' ';
         std::cout << endl;
     }
+}
+
+link dbLink::extraccionLink(int index) {
+    link linkExtraido = links.at(index);
+    return linkExtraido;
 }

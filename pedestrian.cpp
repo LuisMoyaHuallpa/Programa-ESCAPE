@@ -1,6 +1,10 @@
 #include "pedestrian.h"
 #include "dbLink.h"
 
+int surviveReward = 100000;
+int deadReward = -1000; 
+int stepReward = -1;
+
 pedestrian::pedestrian() : nearNode() {
     (*this).id = 0;
     (*this).edad = 0;

@@ -1,7 +1,7 @@
 #include "link.h"
 #include "dbLink.h"
-#include "node.h"
-// #include "dbNode.h"
+
+int unitLongitudPartion = 2;
 
 link::link() : node1(), node2(){
     (*this).id = 0;
@@ -49,3 +49,7 @@ int link::getWidth() const{
     return width;
 }
 
+// longitud de cada
+void link::calcularHistParam() {
+   numberPartion = width/unitLongitudPartion;
+}

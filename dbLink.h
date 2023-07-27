@@ -26,7 +26,7 @@ public:
     /* metodos */
     void leerDbLink(std::string filename);
     void mostrarLinks();
-
+    link extraccionLink(int index);
     // void buscarNode(int id);
 
 };
