@@ -14,17 +14,10 @@ private:
     
 
 public:
-<<<<<<< HEAD
-    static int surviveReward;
-    static int deadReward;
-    static int stepReward;
-=======
     static const int surviveReward;
     static const int deadReward;
     static const int stepReward;
->>>>>>> 4d6f88e (lectura de transLink)
-
-    
+   
     pedestrian();
     pedestrian(int id, int edad, int hhType, int hhId, int idNearNode);
 

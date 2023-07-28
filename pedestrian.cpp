@@ -1,15 +1,9 @@
 #include "pedestrian.h"
 #include "dbLink.h"
 
-<<<<<<< HEAD
-int surviveReward = 100000;
-int deadReward = -1000; 
-int stepReward = -1;
-=======
 const int pedestrian::surviveReward = 100000;
 const int pedestrian::deadReward = -1000; 
 const int pedestrian::stepReward = -1;
->>>>>>> 4d6f88e (lectura de transLink)
 
 pedestrian::pedestrian() : nearNode() {
     (*this).id = 0;
