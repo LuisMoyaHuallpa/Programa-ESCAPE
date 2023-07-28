@@ -1,12 +1,7 @@
 #include "transLink.h"
-#include "dbLink.h"
-#include "dbNode.h"
 #include "transLinks.h"
-#include <vector>
 
 transLink::transLink() {
-
-    
     
 }
 
@@ -32,6 +27,7 @@ void transLink::setIdsLinkConnection(std::vector<int> idsLinkConnection){
 node transLink::getMainNode() const {
     return mainNode;
 }
+
 int transLink::getNumberLinkConnection() const {
     return numberLinkConnection;
 }

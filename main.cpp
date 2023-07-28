@@ -5,11 +5,8 @@
 #include <fstream>
 #include <sstream>
 
-#include "dbNode.h"
-#include "dbLink.h"
-#include "dbPedestrian.h"
-#include "transLink.h"
 #include "transLinks.h"
+#include "dbPedestrian.h"
 
 // using std::endl;
 
@@ -23,8 +20,8 @@ int main() {
     transLinks::setListaLink(dbLink1);
     transLinks dbTransLink1;
     dbTransLink1.mostrarTransLinks();
-    // dbLink1.mostrarLinks();
-    // dbPedestrian dbPedestrian1;
-    // dbPedestrian1.mostrarDbPedestrian();
+    dbLink1.mostrarLinks();
+    dbPedestrian dbPedestrian1;
+    dbPedestrian1.mostrarDbPedestrian();
 
 };

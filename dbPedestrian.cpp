@@ -1,6 +1,4 @@
 #include "dbPedestrian.h"
-#include <iostream>
-#include <ostream>
 
 dbPedestrian::dbPedestrian() {
     std::cout << "hola";
@@ -14,7 +12,6 @@ void dbPedestrian::leerDbPedestrian(std::string filename){
     std::fstream file;
     file.open(filename, std::ios::in);
     
-    std::cout << "hola";
     if (file.fail()) {
         std::cout << "Error opening the file " <<filename << std::endl;
         exit(1);
@@ -22,6 +19,10 @@ void dbPedestrian::leerDbPedestrian(std::string filename){
     
     std::string line;
     while (std::getline(file, line)) {
+        if (line[0] == '#') {
+            continue;
+        }
+
         std::istringstream iss(line);
         std::string a1_str, a2_str, a3_str, a4_str, a5_str;
 
@@ -38,14 +39,11 @@ void dbPedestrian::leerDbPedestrian(std::string filename){
         int a5 = std::stoi(a5_str);
         pedestrians.push_back(pedestrian(a1, a2, a3, a4, a5));
         }
-    
     file.close(); 
 }
 
 void dbPedestrian::mostrarDbPedestrian(){
-
     for (int i=0; i <pedestrians.size(); i++) {
-
         std::cout << pedestrians.at(i).getId() << ' ';
         std::cout << pedestrians.at(i).getEdad() << ' ';
         std::cout << pedestrians.at(i).getNearNode().getId() << ' ';

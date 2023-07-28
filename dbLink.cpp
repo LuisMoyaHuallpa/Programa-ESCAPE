@@ -6,7 +6,11 @@
 #include <fstream>
 #include <iostream>
 
-using std::endl;
+
+dbNode dbLink::listaNode;
+void dbLink::setListaNode(const dbNode& dbnode) {
+    listaNode = dbnode;
+}
 
 dbLink::dbLink(){
     (*this).filename = "links.csv";
@@ -16,12 +20,7 @@ dbLink::dbLink(std::string filename){
     leerDbLink(filename);
 }
 
-dbNode dbLink::listaNode;
-void dbLink::setListaNode(const dbNode& dbnode) {
-    listaNode = dbnode;
-}
 void dbLink::leerDbLink(std::string filename){
-
     std::fstream file;
     file.open(filename, std::ios::in);
 
@@ -32,6 +31,10 @@ void dbLink::leerDbLink(std::string filename){
 
     std::string line;
     while (std::getline(file, line)) {
+        if (line[0] == '#') {
+            continue;
+        }
+        
         std::istringstream iss(line);
         std::string a1_str, a2_str, a3_str, a4_str, a5_str;
 
@@ -50,21 +53,16 @@ void dbLink::leerDbLink(std::string filename){
         }
     
     file.close(); 
-
-
 }
 
 void dbLink::mostrarLinks(){
-
     for (int i=0; i <links.size(); i++) {
-
         std::cout << links.at(i).getId() << ' ';
         std::cout << links.at(i).getNode1().getId() << ' ';
         std::cout << links.at(i).getNode2().getId() << ' ';
-        std::cout << endl;
+        std::cout << std::endl;
     }
 }
-
 link dbLink::extraccionLink(int index) {
     link linkExtraido = links.at(index);
     return linkExtraido;

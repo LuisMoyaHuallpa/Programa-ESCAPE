@@ -29,6 +29,9 @@ void dbNode::leerDbNode(std::string filename) {
     std::string line;
 
     while (std::getline(nodeFile, line)) {
+        if (line[0] == '#') {
+            continue;
+        }
         
         std::istringstream iss(line);
         std::string n_str, y_str, x_str, e_str, r_str;
