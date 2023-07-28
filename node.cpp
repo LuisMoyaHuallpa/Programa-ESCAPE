@@ -1,6 +1,4 @@
 #include "node.h"
-#include <iostream>
-#include <ostream>
 
 node::node() {
     (*this).id = 0;

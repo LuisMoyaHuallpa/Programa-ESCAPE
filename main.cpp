@@ -13,7 +13,6 @@
 
 
 int main() {
-
     dbNode dbNode1;
     dbLink::setListaNode(dbNode1);
     dbLink dbLink1;
@@ -23,5 +22,4 @@ int main() {
     dbLink1.mostrarLinks();
     dbPedestrian dbPedestrian1;
     dbPedestrian1.mostrarDbPedestrian();
-
 };

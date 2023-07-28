@@ -2,6 +2,10 @@
 #define node_h
 
 #include <string>
+#include <iostream>
+#include <ostream>
+
+
 
 class node {
 private:

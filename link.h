@@ -3,7 +3,6 @@
 
 #include "node.h"
 
-// class dbNode;
 class link{
     
 private:
@@ -18,6 +17,8 @@ private:
 
 public:
     static int unitWidthPartion;
+    int static getUnitWidthPartion();
+
     link();
     link(int id, int idNode1, int idNode2, int length, int width);
 
@@ -35,10 +36,7 @@ public:
     int getLength() const;
     int getWidth() const;
 
-
-    
     void calcularHistParam();
-
 };
     #endif
 
