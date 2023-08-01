@@ -1,4 +1,6 @@
-*
+/*
 !src/
+!tutorial/
 !.gitignore
 !makefile
+!bashrc
