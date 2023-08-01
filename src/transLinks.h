@@ -15,8 +15,8 @@ private:
     std::vector<transLink> dbTransLink;
     
 public:
-    static dbLink listaLink;
-    static void setListaLink(const dbLink & dblink);
+    static links listaLink;
+    static void setListaLink(const links & dblink);
 
     transLinks();
     transLinks(std::string filename);

@@ -11,6 +11,8 @@ private:
     int hhId;
     node nearNode;
 
+    bool evacuado;
+
     
 
 public:

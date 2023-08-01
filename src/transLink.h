@@ -4,7 +4,7 @@
 #include "node.h"
 #include "link.h"
 #include <vector>
-#include "dbLink.h"
+#include "links.h"
 
 class transLink {
 

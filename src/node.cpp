@@ -1,22 +1,25 @@
 #include "node.h"
+#include <iostream>
+#include <vector>
 
 node::node() {
-    (*this).id = 0;
+    (*this).idNode = 0;
     (*this).coordX = 0;
     (*this).coordY = 0;
     (*this).evacuationCode = 0;
     (*this).rewardCode = 0;
+
 }
 node::node(int id, int coordX, int coordY, int evacuationCode, int rewardCode) {
-    setId(id);
+    setIdNode(id);
     setCoorX(coordX);
     setCoorY(coordY);
     setEvacuationCode(evacuationCode);
     setRewardCode(rewardCode);
 }
 // setters
-void node::setId(int id) {
-    (*this).id = id;
+void node::setIdNode(int id) {
+    (*this).idNode = id;
 }
 void node::setCoorX(int coordX){
     (*this).coordX = coordX;
@@ -30,10 +33,13 @@ void node::setEvacuationCode(int evacuationCode){
 void node::setRewardCode(int rewardCode){
     (*this).rewardCode = rewardCode;
 }
+void node::setLinkConnection(std::vector<int> linkConnection){
+    (*this).linkConnection =linkConnection;
+}
 
 // getter
-int node::getId() const{
-    return id;
+int node::getIdNode() const{
+    return idNode;
 }
 int node::getCoordX() const{
     return coordX;
@@ -47,8 +53,21 @@ int node::getEvacuationCode() const{
 int node::getRewardCode() const{
     return rewardCode;
 }
-
-void node::imprimir() {
-    std::cout << getId() << std::endl;
+std::vector<int> node::getLinkConnection() {
+    return linkConnection;
 }
+
+void node::agregarLink(int idLink) {
+    linkConnection.push_back(idLink); 
+}
+void node::imprimirNode() {
+    std::cout << "node: ";
+    std::cout << getIdNode() << " ";
+    std::cout << " links: ";
+    for (int i = 0; i < linkConnection.size(); i++) {
+        std::cout << linkConnection.at(i) << " "; 
+    }
+    std::cout << std::endl;
+}
+
 

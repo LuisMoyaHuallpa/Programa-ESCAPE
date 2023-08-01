@@ -1,5 +1,5 @@
 #include "pedestrian.h"
-#include "dbLink.h"
+#include "links.h"
 
 const int pedestrian::surviveReward = 100000;
 const int pedestrian::deadReward = -1000; 
@@ -33,7 +33,7 @@ void pedestrian::setHHId(int hhId){
     (*this).hhId = hhId;
 }
 void pedestrian::setIdNearNode(int idNearNode){
-    (*this).nearNode = dbLink::listaNode.extracionNode(idNearNode);
+    (*this).nearNode = links::listaNode.extracionNode(idNearNode);
 }
 
 int pedestrian::getId() const {

@@ -12,7 +12,7 @@ transLink::transLink(int idCentralNode, int numberLinksConnection, std::vector<i
 }
 
 void transLink::setMainNode(int idMainNode){
-    (*this).mainNode = dbLink::listaNode.extracionNode(idMainNode);
+    (*this).mainNode = links::listaNode.extracionNode(idMainNode);
 }
 void transLink::setNumberLinkConnection(int numberLinkConnection) {
     (*this).numberLinkConnection = numberLinkConnection;

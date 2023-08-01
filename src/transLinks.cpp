@@ -1,11 +1,11 @@
 #include "transLinks.h"
-#include "dbLink.h"
+#include "links.h"
 #include "transLink.h"
 #include <iostream>
 #include "iomanip"
 
-dbLink transLinks::listaLink;
-void transLinks::setListaLink(const dbLink &dblink) {
+links transLinks::listaLink;
+void transLinks::setListaLink(const links &dblink) {
     listaLink = dblink;  
 }
 transLinks::transLinks() {
@@ -56,6 +56,8 @@ void transLinks::mostrarTransLinks() {
         std::cout << "link: ";
         for (int j = 0; j < dbTransLink.at(i).getLinkConnection().size(); j++) {
             std::cout << dbTransLink.at(i).getLinkConnection().at(j).getId() << ' ';
+            std::cout << dbTransLink.at(i).getLinkConnection().at(j).getNode1().getCoordX() << ' ';
+
         }
         std::cout << std::endl;
     }
