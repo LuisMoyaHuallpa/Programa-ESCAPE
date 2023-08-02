@@ -7,6 +7,7 @@
 
 #include "nodes.h"
 #include "links.h"
+#include "pedestrians.h"
 
 // using std::endl;
 
@@ -24,6 +25,6 @@ int main() {
     // transLinks dbTransLink1;
     // dbTransLink1.mostrarTransLinks();
     // dbLink1.mostrarLinks();
-    // dbPedestrian dbPedestrian1;
-    // dbPedestrian1.mostrarDbPedestrian();
+    pedestrians dbPedestrian1(&dbNode1);
+    dbPedestrian1.mostrarPedestrians();
 };

@@ -2,6 +2,7 @@
 #define velocity_h
 
 class velocity{
+
 private:
     double componentX;
     double componentY;
@@ -9,6 +10,8 @@ private:
     
     
 public:
+
+    static const int velocidad;
     velocity();
     velocity(double componetX, double componentY);
     void setComponentX(double componentX);
@@ -16,5 +19,7 @@ public:
 
     double getComponentX();
     double getComponentY();
+
+    void velocityLink();
 };
 #endif

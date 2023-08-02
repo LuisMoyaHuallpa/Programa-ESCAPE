@@ -5,7 +5,8 @@
 #include <iostream>
 #include <ostream>
 #include <vector>
-// class link; // Declaración previa de la clase links para que nodes lo reconozca
+#include "link.h"
+class link;
 
 class node {
 private:
@@ -19,8 +20,7 @@ private:
 
 public:
     std::vector<int> linkConnection;
-
-
+    std::vector<link> linkConnection1;
 
 
 public:

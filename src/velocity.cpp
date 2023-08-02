@@ -1,4 +1,6 @@
 #include "velocity.h"
+const int velocity::velocidad =1;
+
 
 velocity::velocity() {
   

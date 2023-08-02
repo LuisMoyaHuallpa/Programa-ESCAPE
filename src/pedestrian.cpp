@@ -4,27 +4,31 @@
 const int pedestrian::surviveReward = 100000;
 const int pedestrian::deadReward = -1000; 
 const int pedestrian::stepReward = -1;
+int pedestrian::contador = 1;
 
-pedestrian::pedestrian() : nearNode() {
-    (*this).id = 0;
+pedestrian::pedestrian() : nodeInicio () {
+    (*this).idPedestrian = 0;
     (*this).edad = 0;
     (*this).hhType = 0;
     (*this).hhId = 0;
 }
-pedestrian::pedestrian(int id, int edad, int hhType, int hhId, int idNearNode) {
-
-    setId(id);
+pedestrian::pedestrian(int edad, int gender, int hhType, int hhId, node* nodeInicio) {
+    setIdPedestrian(contador++);
     setEdad(edad);
+    setGender(gender);
     setHHType(hhType);
     setHHId(hhId);
-    setIdNearNode(idNearNode);
+    setNodeInicio(nodeInicio);
 }
 
-void pedestrian::setId(int id){
-    (*this).id = id;
+void pedestrian::setIdPedestrian(int id){
+    (*this).idPedestrian = id;
 }
 void pedestrian::setEdad(int edad){
     (*this).edad = edad;
+}
+void pedestrian::setGender(int gender) {
+    (*this).gender = gender;  
 }
 void pedestrian::setHHType(int hhType){
     (*this).hhType = hhType;
@@ -32,15 +36,18 @@ void pedestrian::setHHType(int hhType){
 void pedestrian::setHHId(int hhId){
     (*this).hhId = hhId;
 }
-void pedestrian::setIdNearNode(int idNearNode){
-    (*this).nearNode = links::listaNode.extracionNode(idNearNode);
+void pedestrian::setNodeInicio(node* nodeInicio){
+    (*this).nodeInicio = nodeInicio;
 }
 
-int pedestrian::getId() const {
-    return id;
+int pedestrian::getIdPedestrian() const {
+    return idPedestrian;
 }
 int pedestrian::getEdad() const{
     return edad;
+}
+int pedestrian::getGender() {
+    return gender;
 }
 int pedestrian::getHHType() const{
     return hhType;
@@ -48,7 +55,18 @@ int pedestrian::getHHType() const{
 int pedestrian::getHHId() const{
     return hhId;
 }
-node pedestrian::getNearNode() const{
-    return nearNode;
+node* pedestrian::getNodeInicio() const{
+    return nodeInicio;
 }
 
+void pedestrian::mostrarPedestrian(){
+    std::cout << getIdPedestrian() << ' ';
+    std::cout << getEdad() << ' ';
+    std::cout << getNodeInicio()->getIdNode() << ' ';
+    std::cout << getNodeInicio()->getCoordX() << ' ';
+    std::cout << getNodeInicio()->getCoordY() << ' ';
+    std::cout << std::endl;
+}
+void pedestrian::posibleCaminos() {
+    int idlink =getNodeInicio()->getLinkConnection().at(0);
+}

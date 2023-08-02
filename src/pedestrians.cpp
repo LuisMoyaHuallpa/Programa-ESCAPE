@@ -1,14 +1,20 @@
-#include "dbPedestrian.h"
+#include "pedestrians.h"
+#include "nodes.h"
 
-dbPedestrian::dbPedestrian() {
-    std::cout << "hola";
+pedestrians::pedestrians() {
     (*this).filename = "population.csv";
-    leerDbPedestrian(filename);
+    leerPedestrians(filename);
 }
-dbPedestrian::dbPedestrian(std::string filename) {
-    leerDbPedestrian(filename);  
+pedestrians::pedestrians(nodes* dbNode) {
+    (*this).filename = "population.csv";
+    (*this).dbNode=dbNode;
+    leerPedestrians(filename);
 }
-void dbPedestrian::leerDbPedestrian(std::string filename){
+pedestrians::pedestrians(std::string filename) {
+    leerPedestrians(filename);  
+}
+
+void pedestrians::leerPedestrians(std::string filename){
     std::fstream file;
     file.open(filename, std::ios::in);
     
@@ -37,22 +43,16 @@ void dbPedestrian::leerDbPedestrian(std::string filename){
         int a3 = std::stoi(a3_str);
         int a4 = std::stoi(a4_str);
         int a5 = std::stoi(a5_str);
-        pedestrians.push_back(pedestrian(a1, a2, a3, a4, a5));
+        node* nearNode = dbNode->extracionNode(a5);
+        dbPedestrians.push_back(pedestrian(a1, a2, a3, a4, nearNode));
         }
     file.close(); 
 }
-
-void dbPedestrian::mostrarDbPedestrian(){
-    for (int i=0; i <pedestrians.size(); i++) {
-        std::cout << pedestrians.at(i).getId() << ' ';
-        std::cout << pedestrians.at(i).getEdad() << ' ';
-        std::cout << pedestrians.at(i).getNearNode().getId() << ' ';
-        std::cout << pedestrians.at(i).getNearNode().getCoordX() << ' ';
-        std::cout << pedestrians.at(i).getNearNode().getCoordY() << ' ';
-        std::cout << std::endl;
+void pedestrians::mostrarPedestrians(){
+    for (int i=0; i <dbPedestrians.size(); i++) {
+        dbPedestrians.at(i).mostrarPedestrian();
     }
 }
-
-void dbPedestrian::calcularNumberPedestrian(){
-    numberPedestrian =pedestrians.size();
+void pedestrians::calcularNumberPedestrian(){
+    numberPedestrian =dbPedestrians.size();
 }

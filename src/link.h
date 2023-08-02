@@ -1,7 +1,8 @@
 #ifndef link_h
 #define link_h
 
-#include "node.h"
+// #include "node.h"
+class node;
 
 class link{
     

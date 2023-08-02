@@ -55,15 +55,6 @@ void links::leerLinks(std::string filename){
         dbLink.push_back(linkObj);
         node1->agregarLink(linkObj.getIdLink());
         node2->agregarLink(linkObj.getIdLink());
-        // dbLink.back().guardarLinkConnection();
-        // std::cout <<dbLink.back().getNode1().getLinkConnection().at(0)<<std::endl;
-        // dbNode.imprimirDbNode();
-        // dbNode->imprimirDbNode();
-        // std::cout << "links:";
-        // for (int i = 0; i < dbLink.back().getNode1().getLinkConnection().size(); i++) {
-        //     std::cout << dbLink.back().getNode1().getLinkConnection().at(i);
-        // }
-        // std::cout << std::endl;
     }
     file.close(); 
 }

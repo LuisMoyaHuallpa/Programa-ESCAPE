@@ -2,39 +2,49 @@
 #define pedestrian_h
 
 #include "node.h"
+#include "link.h"
 
 class pedestrian {
 private:
-    int id;
+    int idPedestrian;
+    int gender;
     int edad;
     int hhType;
     int hhId;
-    node nearNode;
+
+    int coordX;
+    int coordY;
+    node* nodeInicio;
+    link* linkActual;
 
     bool evacuado;
 
-    
-
 public:
+    static int contador;
     static const int surviveReward;
     static const int deadReward;
     static const int stepReward;
    
     pedestrian();
-    pedestrian(int id, int edad, int hhType, int hhId, int idNearNode);
+    pedestrian(int edad, int gender, int hhType, int hhId, node* nodeInicio);
 
     /* setters */
-    void setId(int id);
+    void setIdPedestrian(int idPedestrian);
     void setEdad(int edad);
+    void setGender(int gender);
     void setHHType(int hhType);
     void setHHId(int hhId);
-    void setIdNearNode(int idNearNode);
+    void setNodeInicio(node* nodeInicio);
 
-    int getId() const;
+    int getIdPedestrian() const;
     int getEdad() const;
+    int getGender();
     int getHHType() const;
     int getHHId() const;
-    node getNearNode() const;
+    node* getNodeInicio() const;
+
+    void mostrarPedestrian();
+    void posibleCaminos();
     
     
     
