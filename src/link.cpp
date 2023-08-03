@@ -1,6 +1,9 @@
 #include "link.h"
 #include "node.h"
+#include "vector2D.h"
 #include <iostream>
+#include <cmath>
+
 
 
 int link::unitWidthPartion = 2;
@@ -68,6 +71,19 @@ void link::mostrarLink(){
 void link::calcularHistParam() {
     numberPartion = width/getUnitWidthPartion();
 }
-// void link::guardarLinkConnection() {
-//     node1.setLinkConnection(getIdLink());
-// }
+vector2D link::calcularDirectionLink() {
+    vector2D direction;
+    double x = node2->getCoordX() - node1->getCoordX();
+    double y = node2->getCoordY() - node1->getCoordY();
+    direction.setX(x);
+    direction.setY(y);
+
+    // Calcula la magnitud del vector de dirección
+    double magnitud = std::sqrt(std::pow(direction.getX(), 2) + std::pow(direction.getY(), 2));
+
+    // Normaliza el vector de dirección (divide cada e por la magnitud)
+    direction.setX(direction.getX() / magnitud);
+    direction.setY(direction.getY() / magnitud);
+
+    return direction;
+}

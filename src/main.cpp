@@ -15,16 +15,11 @@
 
 int main() {
     nodes dbNode1;
-    // dbLink::setListaNode(dbNode1);
     links dbLink1(&dbNode1);
     // dbLink1.mostrarLinks();
     dbNode1.imprimirNodes();
-
-
-    // transLinks::setListaLink(dbLink1);
-    // transLinks dbTransLink1;
-    // dbTransLink1.mostrarTransLinks();
-    // dbLink1.mostrarLinks();
     pedestrians dbPedestrian1(&dbNode1);
     // dbPedestrian1.mostrarPedestrians();
+
+
 };

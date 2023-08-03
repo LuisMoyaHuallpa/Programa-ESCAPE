@@ -3,6 +3,8 @@
 
 #include "node.h"
 #include "link.h"
+#include "vector2D.h"
+
 
 class pedestrian {
 private:
@@ -14,8 +16,10 @@ private:
 
     int coordX;
     int coordY;
+    vector2D position;
     node* nodeInicio;
     link* linkActual;
+    vector2D velocidad;
 
     bool evacuado;
 
@@ -45,8 +49,6 @@ public:
 
     void mostrarPedestrian();
     void posibleCaminos();
-    
-    
     
 };
 

@@ -2,6 +2,7 @@
 #define link_h
 
 // #include "node.h"
+#include "vector2D.h"
 class node;
 
 class link{
@@ -40,6 +41,7 @@ public:
 
     void mostrarLink();
     void calcularHistParam();
+    vector2D calcularDirectionLink();
     // void guardarLinkConnection();
 };
 #endif
