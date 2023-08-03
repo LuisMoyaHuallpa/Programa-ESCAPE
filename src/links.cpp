@@ -53,8 +53,8 @@ void links::leerLinks(std::string filename){
         node* node2 = dbNode->extracionNode(a3);
         link linkObj = link(a1, node1, node2, a4, a5);
         dbLink.push_back(linkObj);
-        node1->agregarLink(linkObj.getIdLink());
-        node2->agregarLink(linkObj.getIdLink());
+        node1->agregarLink(linkObj);
+        node2->agregarLink(linkObj);
     }
     file.close(); 
 }

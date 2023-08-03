@@ -26,5 +26,5 @@ int main() {
     // dbTransLink1.mostrarTransLinks();
     // dbLink1.mostrarLinks();
     pedestrians dbPedestrian1(&dbNode1);
-    dbPedestrian1.mostrarPedestrians();
+    // dbPedestrian1.mostrarPedestrians();
 };

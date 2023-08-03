@@ -68,5 +68,5 @@ void pedestrian::mostrarPedestrian(){
     std::cout << std::endl;
 }
 void pedestrian::posibleCaminos() {
-    int idlink =getNodeInicio()->getLinkConnection().at(0);
+    // int idlink =getNodeInicio()->getLinkConnection().at(0);
 }

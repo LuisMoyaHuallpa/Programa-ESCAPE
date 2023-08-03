@@ -33,8 +33,8 @@ void node::setEvacuationCode(int evacuationCode){
 void node::setRewardCode(int rewardCode){
     (*this).rewardCode = rewardCode;
 }
-void node::setLinkConnection(std::vector<int> linkConnection){
-    (*this).linkConnection =linkConnection;
+void node::setLinkConnection(std::vector<link> linkConnection){
+    (*this).linkConnection = linkConnection;
 }
 
 // getter
@@ -53,19 +53,19 @@ int node::getEvacuationCode() const{
 int node::getRewardCode() const{
     return rewardCode;
 }
-std::vector<int> node::getLinkConnection() {
+std::vector<link> node::getLinkConnection() {
     return linkConnection;
 }
 
-void node::agregarLink(int idLink) {
-    linkConnection.push_back(idLink); 
+void node::agregarLink(link link) {
+    linkConnection.push_back(link); 
 }
 void node::imprimirNode() {
     std::cout << "node: ";
     std::cout << getIdNode() << " ";
     std::cout << " links: ";
     for (int i = 0; i < linkConnection.size(); i++) {
-        std::cout << linkConnection.at(i) << " "; 
+        std::cout << linkConnection.at(i).getIdLink() << " "; 
     }
     std::cout << std::endl;
 }

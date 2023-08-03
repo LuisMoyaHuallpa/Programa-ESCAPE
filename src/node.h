@@ -19,12 +19,10 @@ private:
     int rewardCode;
 
 public:
-    std::vector<int> linkConnection;
-    std::vector<link> linkConnection1;
+    std::vector<link> linkConnection;
 
 
 public:
-    // friend class link;
     node();
     node(int id, int coordX, int coordY, int evacuationCode, int rewardCode);
     
@@ -34,7 +32,7 @@ public:
     void setCoorY(int setcoordY);
     void setEvacuationCode(int evacuationCode);
     void setRewardCode(int rewardCode);
-    void setLinkConnection(std::vector<int> idLink);
+    void setLinkConnection(std::vector<link> linkConnection);
 
     // getters
     int getIdNode() const;
@@ -42,11 +40,9 @@ public:
     int getCoordY() const;
     int getEvacuationCode() const;
     int getRewardCode() const;
-    std::vector<int> getLinkConnection();
-    
+    std::vector<link> getLinkConnection();
 
-
-    void agregarLink(int idLink);
+    void agregarLink(link link);
     void imprimirNode();
 
 
