@@ -1,5 +1,7 @@
 #include "pedestrian.h"
 #include "links.h"
+#include "tiempo.h"
+#include "vector2D.h"
 
 const int pedestrian::surviveReward = 100000;
 const int pedestrian::deadReward = -1000; 
@@ -69,4 +71,7 @@ void pedestrian::mostrarPedestrian(){
 }
 void pedestrian::posibleCaminos() {
     // int idlink =getNodeInicio()->getLinkConnection().at(0);
+}
+void pedestrian::caminar() {
+    position += velocidad*tiempo::deltaTiempo;
 }

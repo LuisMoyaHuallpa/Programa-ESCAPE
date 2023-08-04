@@ -7,8 +7,9 @@
 
 #include "nodes.h"
 #include "links.h"
+#include "pedestrian.h"
 #include "pedestrians.h"
-
+#include "tiempo.h"
 // using std::endl;
 
 
@@ -17,9 +18,17 @@ int main() {
     nodes dbNode1;
     links dbLink1(&dbNode1);
     // dbLink1.mostrarLinks();
-    dbNode1.imprimirNodes();
+    // dbNode1.imprimirNodes();
     pedestrians dbPedestrian1(&dbNode1);
     // dbPedestrian1.mostrarPedestrians();
 
+    tiempo tiempoSimulado;
 
-};
+    while (tiempoSimulado.running())
+    {
+        tiempoSimulado++;
+        std::cout << "Time = " << tiempoSimulado.getValorTiempo() << std::endl;
+
+    }
+
+}

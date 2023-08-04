@@ -49,6 +49,7 @@ public:
 
     void mostrarPedestrian();
     void posibleCaminos();
+    void caminar();
     
 };
 

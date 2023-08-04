@@ -18,7 +18,6 @@ private:
     int evacuationCode;
     int rewardCode;
 
-public:
     std::vector<link> linkConnection;
 
 
