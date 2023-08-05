@@ -7,7 +7,6 @@
 
 #include "nodes.h"
 #include "links.h"
-#include "pedestrian.h"
 #include "pedestrians.h"
 #include "tiempo.h"
 // using std::endl;
@@ -28,6 +27,9 @@ int main() {
     {
         tiempoSimulado++;
         std::cout << "Time = " << tiempoSimulado.getValorTiempo() << std::endl;
+
+        dbPedestrian1.caminarPedestrians();
+        dbPedestrian1.mostrarPedestrians();
 
     }
 

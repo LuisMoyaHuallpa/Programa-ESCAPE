@@ -25,5 +25,7 @@ public:
     void leerPedestrians(std::string filename);
     void mostrarPedestrians();
     void calcularNumberPedestrian();
+    void caminarPedestrians();
+    
 };
 #endif

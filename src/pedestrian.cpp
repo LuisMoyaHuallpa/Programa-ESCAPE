@@ -1,7 +1,4 @@
 #include "pedestrian.h"
-#include "links.h"
-#include "tiempo.h"
-#include "vector2D.h"
 
 const int pedestrian::surviveReward = 100000;
 const int pedestrian::deadReward = -1000; 
@@ -60,13 +57,19 @@ int pedestrian::getHHId() const{
 node* pedestrian::getNodeInicio() const{
     return nodeInicio;
 }
+vector2D pedestrian::getPosition() {
+    return position;
+}
 
 void pedestrian::mostrarPedestrian(){
     std::cout << getIdPedestrian() << ' ';
-    std::cout << getEdad() << ' ';
     std::cout << getNodeInicio()->getIdNode() << ' ';
+    std::cout << "node incio: ";
     std::cout << getNodeInicio()->getCoordX() << ' ';
     std::cout << getNodeInicio()->getCoordY() << ' ';
+    std::cout << "position: ";
+    std::cout << getPosition().getX() << " ";
+    std::cout << getPosition().getY() << " ";
     std::cout << std::endl;
 }
 void pedestrian::posibleCaminos() {
