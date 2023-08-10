@@ -1,5 +1,6 @@
 #include "links.h"
 #include "link.h"
+#include <bits/types/cookie_io_functions_t.h>
 #include <iostream>
 
 // nodes links::listaNode;
@@ -16,8 +17,8 @@
 // }
 links::links(nodes* dbNode) : dbNode(dbNode){
     (*this).filename = "links.csv";
-    // (*this).dbNode = dbNode;
     leerLinks(filename);
+    creacionLinkConnections();
 }
 
 void links::leerLinks(std::string filename){
@@ -53,8 +54,6 @@ void links::leerLinks(std::string filename){
         node* node2 = dbNode->extracionNode(a3);
         link linkObj = link(a1, node1, node2, a4, a5);
         dbLink.push_back(linkObj);
-        node1->agregarLink(linkObj);
-        node2->agregarLink(linkObj);
     }
     file.close(); 
 }
@@ -67,4 +66,9 @@ void links::mostrarLinks(){
 link links::extraccionLink(int index) {
     link linkExtraido = dbLink.at(index);
     return linkExtraido;
+}
+void links::creacionLinkConnections() {
+    for (int i = 0; i < dbLink.size(); i++) {
+        dbLink.at(i).creacionLinkConnection();
+    }
 }

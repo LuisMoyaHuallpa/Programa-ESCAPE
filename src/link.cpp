@@ -87,3 +87,8 @@ vector2D link::calcularDirectionLink() {
 
     return direction;
 }
+
+void link::creacionLinkConnection() {
+    getNode1()->agregarLink(&*this);
+    getNode2()->agregarLink(&*this);
+}

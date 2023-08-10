@@ -1,4 +1,4 @@
-export SARSA_DIR=$PWD 
+export SARSA_DIR=$(cd $(dirname ${BASH_SOURCE:-$0}) && pwd -P)
 
 export SARSA_SRC=$SARSA_DIR/src
 export SARSA_TUTORIALS=$SARSA_DIR/tutorials

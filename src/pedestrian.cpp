@@ -1,4 +1,12 @@
 #include "pedestrian.h"
+#include "link.h"
+#include "node.h"
+#include "tiempo.h"
+#include "vector2D.h"
+#include "vector2DVelocidad.h"
+#include <iostream>
+#include <random>
+#include <iomanip>
 
 const int pedestrian::surviveReward = 100000;
 const int pedestrian::deadReward = -1000; 
@@ -18,6 +26,16 @@ pedestrian::pedestrian(int edad, int gender, int hhType, int hhId, node* nodeIni
     setHHType(hhType);
     setHHId(hhId);
     setNodeInicio(nodeInicio);
+    double x = nodeInicio->getCoordX();
+    double y = nodeInicio->getCoordY();
+    vector2D position(x, y);
+    setPosition(position);
+    eleccionRandomLinkActual();
+    calcularNodeFinal();
+    calcularOrientacion();
+    calcularVelocidadLink();
+    std::cout << "node: " << nodeInicio->getIdNode() << std::endl;
+    std::cout << "link: " << linkActual->getIdLink() << std::endl;
 }
 
 void pedestrian::setIdPedestrian(int id){
@@ -38,6 +56,21 @@ void pedestrian::setHHId(int hhId){
 void pedestrian::setNodeInicio(node* nodeInicio){
     (*this).nodeInicio = nodeInicio;
 }
+void pedestrian::setNodeFinal(node* nodeFinal) {
+    (*this).nodeFinal = nodeFinal;
+}
+void pedestrian::setPosition(vector2D position) {
+    (*this).position = position;
+}
+void pedestrian::setLinkActual(link *linkActual) {
+    (*this).linkActual = linkActual;
+}
+void pedestrian::setOrientacion(vector2D orientacion) {
+    (*this).orientacion = orientacion;
+}
+void pedestrian::setVelocidad(vector2DVelocidad velocidad) {
+    (*this).velocidad = velocidad;
+}
 
 int pedestrian::getIdPedestrian() const {
     return idPedestrian;
@@ -57,24 +90,103 @@ int pedestrian::getHHId() const{
 node* pedestrian::getNodeInicio() const{
     return nodeInicio;
 }
+node* pedestrian::getNodeFinal() {
+    return nodeFinal;  
+}
 vector2D pedestrian::getPosition() {
     return position;
+}
+link *pedestrian::getLinkActual() {
+    return linkActual;
+}
+vector2D pedestrian::getOrientacion() {
+    return orientacion;
+}
+vector2DVelocidad pedestrian::getVelocidad() {
+    return velocidad;
 }
 
 void pedestrian::mostrarPedestrian(){
     std::cout << getIdPedestrian() << ' ';
-    std::cout << getNodeInicio()->getIdNode() << ' ';
-    std::cout << "node incio: ";
-    std::cout << getNodeInicio()->getCoordX() << ' ';
-    std::cout << getNodeInicio()->getCoordY() << ' ';
-    std::cout << "position: ";
-    std::cout << getPosition().getX() << " ";
-    std::cout << getPosition().getY() << " ";
+    std::cout << std::setw(6) << getNodeInicio()->getIdNode() << ' ';
+    std::cout << "start: ";
+    std::cout << std::fixed << std::setprecision(1);
+    std::cout << std::setw(5) << getNodeInicio()->getCoordX() << ' ';
+    std::cout << std::setw(5) << getNodeInicio()->getCoordY() << ' ';
+    std::cout << "now: ";
+    std::cout << std::setw(5) << getPosition().getX() << " ";
+    std::cout << std::setw(5) << getPosition().getY() << " ";
+    std::cout << "end: ";
+    std::cout << std::setw(5) << getNodeFinal()->getCoordX() << ' ';
+    std::cout << std::setw(5) << getNodeFinal()->getCoordY() << ' ';
     std::cout << std::endl;
 }
-void pedestrian::posibleCaminos() {
-    // int idlink =getNodeInicio()->getLinkConnection().at(0);
-}
 void pedestrian::caminar() {
-    position += velocidad*tiempo::deltaTiempo;
+    position += velocidad * tiempo::deltaTiempo;
 }
+void pedestrian::eleccionRandomLinkActual() {
+    // Obtener una semilla aleatoria del hardware
+    std::random_device rd;
+
+    // Algoritmo Motor Mersenne Twister
+    std::mt19937 generador(rd());
+
+    int limite_max = nodeInicio->getLinkConnection().size() - 1 ;
+
+    // Crear una distribución uniforme usando el rango especificado
+    std::uniform_int_distribution<int> distribucion(0, limite_max);
+
+    int numero_aleatorio = distribucion(generador);
+
+    // link* linkSeleccionado = nodeInicio->getLinkConnection().at(numero_aleatorio);
+    link* linkSeleccionado = getNodeInicio()->getLinkConnection().at(numero_aleatorio);
+    setLinkActual(linkSeleccionado);
+}
+//Calculo de velocidad decomponiendo en la orientacion de link 
+void pedestrian::calcularVelocidadLink() {
+    (*this).velocidad.setOrientacion(&orientacion);
+}
+bool pedestrian::verificarEndLink() {
+    bool terminoLink = false;
+    // if (position.getX() == nodeFinal->getCoordX() and
+    // position.getY() == nodeFinal->getCoordY()){
+    //     terminoLink = true;
+    // }
+    if (position.getX()*orientacion.getX() >= nodeFinal->getCoordX()*orientacion.getX() and
+    position.getY()*orientacion.getY() >= nodeFinal->getCoordY()*orientacion.getY()){
+        terminoLink = true;
+    }
+
+    return terminoLink;
+}
+void pedestrian::calcularNodeFinal() {
+    // busqueda del node final
+    if(nodeInicio == linkActual->getNode1()){
+        setNodeFinal(linkActual->getNode2());
+    }
+    else {
+        setNodeFinal(linkActual->getNode1());
+    }
+}
+void pedestrian::updateLinkParameter() {
+    if (verificarEndLink()) {
+        setNodeInicio(nodeFinal);
+        eleccionRandomLinkActual();
+        calcularNodeFinal();
+        calcularOrientacion();
+        calcularVelocidadLink();
+    }
+}
+void pedestrian::calcularOrientacion() {
+    vector2D direction;
+    double x = nodeFinal->getCoordX() - nodeInicio->getCoordX();
+    double y = nodeFinal->getCoordY() - nodeInicio->getCoordY();
+
+    // Calcula la magnitud del vector de dirección
+    double magnitud = std::sqrt(std::pow(x, 2) + std::pow(y, 2));
+
+    // Normaliza el vector de dirección (divide cada e por la magnitud)
+    orientacion.setX(x / magnitud);
+    orientacion.setY(y / magnitud);
+}
+   

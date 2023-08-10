@@ -5,6 +5,7 @@
 #include "link.h"
 #include "links.h"
 #include "tiempo.h"
+#include "vector2D.h"
 #include "vector2DVelocidad.h"
 #include <iostream>
 
@@ -22,7 +23,9 @@ private:
     int coordY;
     vector2D position;
     node* nodeInicio;
+    node* nodeFinal;
     link* linkActual;
+    vector2D orientacion;
     vector2DVelocidad velocidad;
 
     bool evacuado;
@@ -43,6 +46,11 @@ public:
     void setHHType(int hhType);
     void setHHId(int hhId);
     void setNodeInicio(node* nodeInicio);
+    void setNodeFinal(node* nodeFinal);
+    void setPosition(vector2D position);
+    void setLinkActual(link* linkActual);
+    void setOrientacion(vector2D orientacion);
+    void setVelocidad(vector2DVelocidad velocidad);
 
     int getIdPedestrian() const;
     int getEdad() const;
@@ -50,13 +58,20 @@ public:
     int getHHType() const;
     int getHHId() const;
     node* getNodeInicio() const;
+    node* getNodeFinal();
     vector2D getPosition();
-
+    vector2D getOrientacion();
+    link* getLinkActual();
+    vector2DVelocidad getVelocidad();
 
     void mostrarPedestrian();
-    void posibleCaminos();
     void caminar();
-    
+    void eleccionRandomLinkActual();
+    void calcularVelocidadLink();
+    bool verificarEndLink();
+    void calcularNodeFinal();
+    void updateLinkParameter();
+    void calcularOrientacion();
 };
 
 #endif

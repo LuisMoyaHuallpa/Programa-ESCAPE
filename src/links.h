@@ -33,6 +33,7 @@ public:
     void leerLinks(std::string filename);
     void mostrarLinks();
     link extraccionLink(int index);
+    void creacionLinkConnections();
     // void buscarNode(int id);
 
 };

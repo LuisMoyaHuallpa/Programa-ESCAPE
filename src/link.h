@@ -42,6 +42,7 @@ public:
     void mostrarLink();
     void calcularHistParam();
     vector2D calcularDirectionLink();
+    void creacionLinkConnection();
     // void guardarLinkConnection();
 };
 #endif

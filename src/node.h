@@ -18,7 +18,7 @@ private:
     int evacuationCode;
     int rewardCode;
 
-    std::vector<link> linkConnection;
+    std::vector<link*> linkConnection;
 
 
 public:
@@ -31,7 +31,7 @@ public:
     void setCoorY(int setcoordY);
     void setEvacuationCode(int evacuationCode);
     void setRewardCode(int rewardCode);
-    void setLinkConnection(std::vector<link> linkConnection);
+    void setLinkConnection(std::vector<link*> linkConnection);
 
     // getters
     int getIdNode() const;
@@ -39,9 +39,9 @@ public:
     int getCoordY() const;
     int getEvacuationCode() const;
     int getRewardCode() const;
-    std::vector<link> getLinkConnection();
+    std::vector<link*> getLinkConnection();
 
-    void agregarLink(link link);
+    void agregarLink(link* link);
     void imprimirNode();
 
 

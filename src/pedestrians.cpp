@@ -49,7 +49,7 @@ void pedestrians::leerPedestrians(std::string filename){
     file.close(); 
 }
 void pedestrians::mostrarPedestrians(){
-    for (int i=0; i < 2; i++) {
+    for (int i=0; i < dbPedestrians.size(); i++) {
         dbPedestrians.at(i).mostrarPedestrian();
     }
 }
@@ -59,5 +59,7 @@ void pedestrians::calcularNumberPedestrian(){
 void pedestrians::caminarPedestrians() {
     for (int i = 0; i < dbPedestrians.size(); i++) {
         dbPedestrians.at(i).caminar();
+        dbPedestrians.at(i).updateLinkParameter();
+        // dbPedestrians.at(i).verificarEndLink();
     }
 }
