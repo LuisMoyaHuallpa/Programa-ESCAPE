@@ -4,6 +4,7 @@
 #include "tiempo.h"
 #include "vector2D.h"
 #include "vector2DVelocidad.h"
+#include <fstream>
 #include <iostream>
 #include <random>
 #include <iomanip>
@@ -71,6 +72,9 @@ void pedestrian::setOrientacion(vector2D orientacion) {
 void pedestrian::setVelocidad(vector2DVelocidad velocidad) {
     (*this).velocidad = velocidad;
 }
+void pedestrian::setRetorno(int retorno) {
+    (*this).retorno = retorno;
+}
 
 int pedestrian::getIdPedestrian() const {
     return idPedestrian;
@@ -105,6 +109,9 @@ vector2D pedestrian::getOrientacion() {
 vector2DVelocidad pedestrian::getVelocidad() {
     return velocidad;
 }
+int pedestrian::getRetorno() {
+    return retorno;  
+}
 
 void pedestrian::mostrarPedestrian(){
     std::cout << getIdPedestrian() << ' ';
@@ -120,6 +127,11 @@ void pedestrian::mostrarPedestrian(){
     std::cout << std::setw(5) << getNodeFinal()->getCoordX() << ' ';
     std::cout << std::setw(5) << getNodeFinal()->getCoordY() << ' ';
     std::cout << std::endl;
+}
+void pedestrian::imprimirPedestrian(std::fstream& file){
+    file << getPosition().getX() << " ";
+    file << getPosition().getY() << " ";
+    file << std::endl;
 }
 void pedestrian::caminar() {
     position += velocidad * tiempo::deltaTiempo;
@@ -189,4 +201,17 @@ void pedestrian::calcularOrientacion() {
     orientacion.setX(x / magnitud);
     orientacion.setY(y / magnitud);
 }
-   
+void pedestrian::calcularRetorno() {
+    if (nodeInicio->getEvacuationCode() == 0) {
+        retorno += stepReward;
+    }
+    else {
+        retorno += surviveReward;
+    }
+}
+bool pedestrian::verificarEvacuationNode(){
+    if (nodeInicio->getEvacuationCode() == 1) {
+        return true;
+    }
+    return false;
+}

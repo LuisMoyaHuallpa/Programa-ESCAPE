@@ -7,6 +7,7 @@
 #include "tiempo.h"
 #include "vector2D.h"
 #include "vector2DVelocidad.h"
+#include <fstream>
 #include <iostream>
 
 
@@ -28,6 +29,7 @@ private:
     vector2D orientacion;
     vector2DVelocidad velocidad;
 
+    int retorno;
     bool evacuado;
 
 public:
@@ -51,6 +53,7 @@ public:
     void setLinkActual(link* linkActual);
     void setOrientacion(vector2D orientacion);
     void setVelocidad(vector2DVelocidad velocidad);
+    void setRetorno(int retorno);
 
     int getIdPedestrian() const;
     int getEdad() const;
@@ -63,8 +66,10 @@ public:
     vector2D getOrientacion();
     link* getLinkActual();
     vector2DVelocidad getVelocidad();
+    int getRetorno();
 
     void mostrarPedestrian();
+    void imprimirPedestrian(std::fstream& file);
     void caminar();
     void eleccionRandomLinkActual();
     void calcularVelocidadLink();
@@ -72,6 +77,8 @@ public:
     void calcularNodeFinal();
     void updateLinkParameter();
     void calcularOrientacion();
+    void calcularRetorno();
+    bool verificarEvacuationNode();
 };
 
 #endif

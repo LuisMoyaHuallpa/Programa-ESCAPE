@@ -1,5 +1,8 @@
 #include "pedestrians.h"
 #include "nodes.h"
+#include <fstream>
+#include <ios>
+#include <string>
 
 pedestrians::pedestrians() {
     (*this).filename = "population.csv";
@@ -51,6 +54,15 @@ void pedestrians::leerPedestrians(std::string filename){
 void pedestrians::mostrarPedestrians(){
     for (int i=0; i < dbPedestrians.size(); i++) {
         dbPedestrians.at(i).mostrarPedestrian();
+    }
+}
+void pedestrians::imprimirPedestrians(std::string folderName){
+    std::fstream file;
+    file.open(folderName + "/xy",std::ios::out);
+    if (file.is_open()) {
+        for (int i=0; i < dbPedestrians.size(); i++) {
+            dbPedestrians.at(i).imprimirPedestrian(file);
+        }
     }
 }
 void pedestrians::calcularNumberPedestrian(){

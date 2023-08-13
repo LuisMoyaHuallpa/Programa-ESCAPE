@@ -1,5 +1,6 @@
 #include <fstream>
 #include <cstdlib>
+#include <string>
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -9,8 +10,16 @@
 #include "links.h"
 #include "pedestrians.h"
 #include "tiempo.h"
-// using std::endl;
+#include <sys/stat.h> 
 
+void createFolder(const std::string& folderName) {
+    // Crear la carpeta
+    if (mkdir(folderName.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) == 0) {
+        std::cout << "Carpeta creada exitosamente." << std::endl;
+    } else {
+        std::cerr << "Error al crear la carpeta." << std::endl;
+    }
+}
 
 
 int main() {
@@ -31,7 +40,12 @@ int main() {
 
         dbPedestrian1.caminarPedestrians();
         dbPedestrian1.mostrarPedestrians();
+        if (tiempoSimulado.getWriteNow()) {
+            std::string folderName = std::to_string(tiempoSimulado.getValorTiempo());
+            createFolder(folderName);
 
+            dbPedestrian1.imprimirPedestrians(folderName);
+            
+        }
     }
-
 }

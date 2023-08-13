@@ -24,6 +24,7 @@ public:
 
     void leerPedestrians(std::string filename);
     void mostrarPedestrians();
+    void imprimirPedestrians(std::string foldeName);
     void calcularNumberPedestrian();
     void caminarPedestrians();
     
