@@ -24,6 +24,8 @@ link::link(int id, node* node1, node* node2, int length, int width) {
     setNode2(node2);
     setLength(length);
     setWidth(width);
+    calcularNumberPartion();
+    calcularSubdivision();
     // (*this).node1 -> agregarLink(id);
     // (*this).node1 -> imprimirNode();
 }
@@ -75,7 +77,6 @@ void link::imprimirLink(std::fstream& file) {
     file << getNode2()->getCoordX() << " ";
     file << getNode2()->getCoordY() << " ";
     file << std::endl;
-    std::cout << "hola";
 }
 // longitud de cada
 void link::calcularHistParam() {
@@ -97,8 +98,18 @@ vector2D link::calcularDirectionLink() {
 
     return direction;
 }
-
 void link::creacionLinkConnection() {
     getNode1()->agregarLink(&*this);
     getNode2()->agregarLink(&*this);
+}
+void link::calcularNumberPartion() {
+    numberPartion = std::floor(static_cast<double>(length) / static_cast<double>(unitWidthPartion));
+}
+void link::calcularSubdivision() {
+    for (int i = 1; i <= numberPartion; ++i) {
+        double ratio = static_cast<double>(i) / static_cast<double>(numberPartion);
+        double x = node1->getCoordX() + ratio * (node2->getCoordX() - node1->getCoordX());
+        double y = node1->getCoordY() + ratio * (node2->getCoordY() - node1->getCoordY());
+        subdivision.push_back(vector2D(x, y));
+    }
 }

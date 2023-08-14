@@ -3,6 +3,7 @@
 
 // #include "node.h"
 #include "vector2D.h"
+#include "vector"
 #include <fstream>
 class node;
 
@@ -16,6 +17,7 @@ private:
     int width;
 
     int numberPartion;
+    std::vector<vector2D> subdivision;
 
 
     
@@ -45,6 +47,8 @@ public:
     void calcularHistParam();
     vector2D calcularDirectionLink();
     void creacionLinkConnection();
+    void calcularNumberPartion();
+    void calcularSubdivision();
     // void guardarLinkConnection();
 };
 #endif

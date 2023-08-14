@@ -17,7 +17,7 @@ void createFolder(const std::string& folderName) {
     if (mkdir(folderName.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) == 0) {
         std::cout << "Carpeta creada exitosamente." << std::endl;
     } else {
-        std::cerr << "Error al crear la carpeta." << std::endl;
+        // std::cerr << "Error al crear la carpeta." << std::endl;
     }
 }
 
@@ -39,7 +39,7 @@ int main() {
         std::cout << "Time = " << tiempoSimulado.getValorTiempo() << std::endl;
 
         dbPedestrian1.caminarPedestrians();
-        dbPedestrian1.mostrarPedestrians();
+        // dbPedestrian1.mostrarPedestrians();
         if (tiempoSimulado.getWriteNow()) {
             std::string folderName = std::to_string(tiempoSimulado.getValorTiempo());
             createFolder(folderName);

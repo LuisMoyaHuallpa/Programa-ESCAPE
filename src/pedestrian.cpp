@@ -35,8 +35,6 @@ pedestrian::pedestrian(int edad, int gender, int hhType, int hhId, node* nodeIni
     calcularNodeFinal();
     calcularOrientacion();
     calcularVelocidadLink();
-    std::cout << "node: " << nodeInicio->getIdNode() << std::endl;
-    std::cout << "link: " << linkActual->getIdLink() << std::endl;
 }
 
 void pedestrian::setIdPedestrian(int id){
