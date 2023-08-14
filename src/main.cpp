@@ -24,8 +24,8 @@ void createFolder(const std::string& folderName) {
 
 int main() {
     nodes dbNode1;
-    nodes dbNode2("nodes.csv");
     links dbLink1(&dbNode1);
+    dbLink1.imprimirLinks();
     // dbLink1.mostrarLinks();
     // dbNode1.imprimirNodes();
     pedestrians dbPedestrian1(&dbNode1);

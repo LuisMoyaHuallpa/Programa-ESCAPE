@@ -63,6 +63,15 @@ void links::mostrarLinks(){
         dbLink.at(i).mostrarLink();
     }
 }
+void links::imprimirLinks() {
+    std::fstream file;
+    std::string folderName = "meshLink";
+    file.open(folderName + "/poliLinks",std::ios::out);
+    for (int i=0; i < dbLink.size(); i++) {
+        dbLink.at(i).imprimirLink(file);
+
+    }
+}
 link links::extraccionLink(int index) {
     link linkExtraido = dbLink.at(index);
     return linkExtraido;

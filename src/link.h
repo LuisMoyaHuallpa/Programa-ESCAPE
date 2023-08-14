@@ -3,6 +3,7 @@
 
 // #include "node.h"
 #include "vector2D.h"
+#include <fstream>
 class node;
 
 class link{
@@ -40,6 +41,7 @@ public:
     int getWidth() const;
 
     void mostrarLink();
+    void imprimirLink(std::fstream& file);
     void calcularHistParam();
     vector2D calcularDirectionLink();
     void creacionLinkConnection();

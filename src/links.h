@@ -32,6 +32,7 @@ public:
     /* metodos */
     void leerLinks(std::string filename);
     void mostrarLinks();
+    void imprimirLinks();
     link extraccionLink(int index);
     void creacionLinkConnections();
     // void buscarNode(int id);

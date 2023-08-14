@@ -3,6 +3,8 @@
 #include "vector2D.h"
 #include <iostream>
 #include <cmath>
+#include <fstream>
+#include <string>
 
 
 
@@ -66,6 +68,14 @@ void link::mostrarLink(){
     std::cout << getNode1() -> getIdNode() << " ";
     std::cout << getNode2() -> getIdNode() << " ";
     std::cout << std::endl;
+}
+void link::imprimirLink(std::fstream& file) {
+    file << getNode1()->getCoordX() << " ";
+    file << getNode1()->getCoordY() << " ";
+    file << getNode2()->getCoordX() << " ";
+    file << getNode2()->getCoordY() << " ";
+    file << std::endl;
+    std::cout << "hola";
 }
 // longitud de cada
 void link::calcularHistParam() {
