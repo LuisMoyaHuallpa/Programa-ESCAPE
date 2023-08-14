@@ -1,10 +1,12 @@
 #include "link.h"
 #include "node.h"
+#include "subLink.h"
 #include "vector2D.h"
 #include <iostream>
 #include <cmath>
 #include <fstream>
 #include <string>
+#include <vector>
 
 
 
@@ -25,9 +27,7 @@ link::link(int id, node* node1, node* node2, int length, int width) {
     setLength(length);
     setWidth(width);
     calcularNumberPartion();
-    calcularSubdivision();
-    // (*this).node1 -> agregarLink(id);
-    // (*this).node1 -> imprimirNode();
+    subLinks.resize(numberPartion);
 }
 
 void link::setIdLink(int id) {
@@ -45,6 +45,12 @@ void link::setLength(int length){
 void link::setWidth(int width){
     (*this).width = width;
 }
+void link::setSubLinks(std::vector<subLink> subLinks) {
+    (*this).subLinks = subLinks;
+}
+// void link::setSubDivision(int numeroPartion) {
+//     (*this).subdivision = subdivision;
+// }
 
 // getters
 int link::getIdLink() const {
@@ -62,6 +68,12 @@ int link::getLength() const{
 int link::getWidth() const{
     return width;
 }
+std::vector<subLink>& link::getSubLinks() {
+    return subLinks;
+}
+// subLink link::getSubDivision() {
+//     return subdivision;
+// }
 
 void link::mostrarLink(){
     std::cout << "link: ";
@@ -105,11 +117,21 @@ void link::creacionLinkConnection() {
 void link::calcularNumberPartion() {
     numberPartion = std::floor(static_cast<double>(length) / static_cast<double>(unitWidthPartion));
 }
-void link::calcularSubdivision() {
-    for (int i = 1; i <= numberPartion; ++i) {
-        double ratio = static_cast<double>(i) / static_cast<double>(numberPartion);
-        double x = node1->getCoordX() + ratio * (node2->getCoordX() - node1->getCoordX());
-        double y = node1->getCoordY() + ratio * (node2->getCoordY() - node1->getCoordY());
-        subdivision.push_back(vector2D(x, y));
+// void link::calcularSubdivision() {
+//     std::vector<vector2D> puntos;
+//     for (int i = 1; i <= numberPartion; ++i) {
+//         double ratio = static_cast<double>(i) / static_cast<double>(numberPartion);
+//         double x = node1->getCoordX() + ratio * (node2->getCoordX() - node1->getCoordX());
+//         double y = node1->getCoordY() + ratio * (node2->getCoordY() - node1->getCoordY());
+//         puntos.push_back(vector2D(x, y));
+//         subdivision.setPuntoFinal(puntos);
+//         // std::cout << subdivision1.getPuntoFinal().back().getX() << " ";
+//     }
+//     // std::cout << std::endl;
+// }
+void link::mostrarSubLinks() {
+    for (int i = 0; i < subLinks.size(); i++) {
+        std::cout << subLinks.at(i).getCantidadPedestrian() << " ";
     }
+    std::cout << std::endl;
 }

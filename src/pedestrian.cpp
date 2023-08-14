@@ -1,9 +1,12 @@
 #include "pedestrian.h"
 #include "link.h"
 #include "node.h"
+#include "subLink.h"
 #include "tiempo.h"
 #include "vector2D.h"
 #include "vector2DVelocidad.h"
+#include <algorithm>
+#include <cmath>
 #include <fstream>
 #include <iostream>
 #include <random>
@@ -133,6 +136,7 @@ void pedestrian::imprimirPedestrian(std::fstream& file){
 }
 void pedestrian::caminar() {
     position += velocidad * tiempo::deltaTiempo;
+    contarPedestrainSubdivision();
 }
 void pedestrian::eleccionRandomLinkActual() {
     // Obtener una semilla aleatoria del hardware
@@ -212,4 +216,48 @@ bool pedestrian::verificarEvacuationNode(){
         return true;
     }
     return false;
+}
+void pedestrian::contarPedestrainSubdivision() {
+    int idContador;
+    if (linkActual->getNode1()->getCoordX() < linkActual->getNode2()->getCoordX()) {
+        int row = std::trunc((position.getX()-linkActual->getNode1()->getCoordX()) / static_cast<double>(linkActual->getUnitWidthPartion()));
+        int col = std::trunc((position.getY()-linkActual->getNode1()->getCoordY()) / static_cast<double>(linkActual->getUnitWidthPartion()));
+        if (row == col) {
+            std::cout << "start" <<std::endl;
+            idContador = row;
+            for (int i = 0; i < linkActual->getSubLinks().size(); i++) {
+                std::cout << linkActual->getSubLinks().at(i).getCantidadPedestrian()<< " ";
+            }
+            std::cout << std::endl;
+            linkActual->getSubLinks().at(idContador).sumarPedestrian();
+            for (int i = 0; i < linkActual->getSubLinks().size(); i++) {
+                std::cout << linkActual->getSubLinks().at(i).getCantidadPedestrian()<< " ";
+            }
+            std::cout << std::endl;
+            std::cout << "end" <<std::endl;
+        }
+        else {
+            idContador = std::max(row, col);
+            linkActual->getSubLinks().at(idContador).sumarPedestrian();
+        }
+    }
+    else {
+        int row = std::trunc((position.getX()-linkActual->getNode2()->getCoordX()) / static_cast<double>(linkActual->getUnitWidthPartion()));
+        int col = std::trunc((position.getY()-linkActual->getNode1()->getCoordY()) / static_cast<double>(linkActual->getUnitWidthPartion()));
+        if (row == col) {
+            idContador = row;
+            linkActual->getSubLinks().at(idContador).sumarPedestrian();
+        }
+        else {
+            idContador = std::max(row, col);
+            linkActual->getSubLinks().at(idContador).sumarPedestrian();
+            
+        }
+        // linkActual->mostrarSubLinks();
+    }
+    // double row = std::ceil(position.getX()-linkActual->getNode1()->getCoordX() / static_cast<double>(linkActual->getUnitWidthPartion()));
+    // std::cout << linkActual->getSubDivision().getPuntoFinal().at(0).getX() << " ";
+    // std::cout << row <<std::endl;
+    // double col = std::ceil(position.getY() / static_cast<double>(linkActual->getLength()));
+    // std::cout << linkActual->getSubDivision().getCantidadPedestrian().at(row-1);
 }

@@ -79,6 +79,7 @@ public:
     void calcularOrientacion();
     void calcularRetorno();
     bool verificarEvacuationNode();
+    void contarPedestrainSubdivision();
 };
 
 #endif

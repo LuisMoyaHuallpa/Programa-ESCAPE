@@ -2,9 +2,11 @@
 #define link_h
 
 // #include "node.h"
+#include "subLink.h"
 #include "vector2D.h"
 #include "vector"
 #include <fstream>
+#include <vector>
 class node;
 
 class link{
@@ -17,10 +19,9 @@ private:
     int width;
 
     int numberPartion;
-    std::vector<vector2D> subdivision;
+    std::vector<subLink> subLinks;
 
 
-    
 public:
     static int unitWidthPartion;
     int static getUnitWidthPartion();
@@ -34,6 +35,7 @@ public:
     void setNode2(node* node2);
     void setLength(int length);
     void setWidth(int width);
+    void setSubLinks(std::vector<subLink> subLinks);
 
    /* getters  */
     int getIdLink() const;
@@ -41,6 +43,7 @@ public:
     node* getNode2() const;
     int getLength() const;
     int getWidth() const;
+    std::vector<subLink>& getSubLinks();
 
     void mostrarLink();
     void imprimirLink(std::fstream& file);
@@ -48,7 +51,8 @@ public:
     vector2D calcularDirectionLink();
     void creacionLinkConnection();
     void calcularNumberPartion();
-    void calcularSubdivision();
+    void mostrarSubLinks();
+    // void calcularSubdivision();
     // void guardarLinkConnection();
 };
 #endif
