@@ -26,8 +26,12 @@ private:
     node* nodeInicio;
     node* nodeFinal;
     link* linkActual;
+    link* linkPasado;
     vector2D orientacion;
     vector2DVelocidad velocidad;
+    int tiempoInicial;
+    int tiempoFinal;
+    bool empezoCaminar;
 
     int retorno;
     bool evacuado;
@@ -51,8 +55,12 @@ public:
     void setNodeFinal(node* nodeFinal);
     void setPosition(vector2D position);
     void setLinkActual(link* linkActual);
+    void setLinkPasado(link* linkPasado);
     void setOrientacion(vector2D orientacion);
     void setVelocidad(vector2DVelocidad velocidad);
+    void setTiempoInicial(int tiempoInicial);
+    void setTiempoFinal(int tiempoFinal);
+    void setEmpezoCaminar(bool empezoCaminar);
     void setRetorno(int retorno);
 
     int getIdPedestrian() const;
@@ -65,7 +73,11 @@ public:
     vector2D getPosition();
     vector2D getOrientacion();
     link* getLinkActual();
+    link* getLinkPasado();
     vector2DVelocidad getVelocidad();
+    int getTiempoInicial();
+    int getTiempoFinal();
+    bool getEmpezoCaminar();
     int getRetorno();
 
     void mostrarPedestrian();
@@ -80,6 +92,7 @@ public:
     void calcularRetorno();
     bool verificarEvacuationNode();
     void contarPedestrainSubdivision();
+    bool verificarDirectionLink();
 };
 
 #endif

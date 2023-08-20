@@ -60,7 +60,8 @@ void links::leerLinks(std::string filename){
 
 void links::mostrarLinks(){
     for (int i=0; i <dbLink.size(); i++) {
-        dbLink.at(i).mostrarLink();
+        // dbLink.at(i).mostrarLink();
+        dbLink.at(i).mostrarSubLinks();
     }
 }
 void links::imprimirLinks() {

@@ -9,6 +9,7 @@
 #include <cmath>
 #include <fstream>
 #include <iostream>
+#include <math.h>
 #include <random>
 #include <iomanip>
 
@@ -30,11 +31,13 @@ pedestrian::pedestrian(int edad, int gender, int hhType, int hhId, node* nodeIni
     setHHType(hhType);
     setHHId(hhId);
     setNodeInicio(nodeInicio);
+    setEmpezoCaminar(false);
     double x = nodeInicio->getCoordX();
     double y = nodeInicio->getCoordY();
     vector2D position(x, y);
     setPosition(position);
     eleccionRandomLinkActual();
+    setLinkPasado(linkActual);
     calcularNodeFinal();
     calcularOrientacion();
     calcularVelocidadLink();
@@ -67,11 +70,23 @@ void pedestrian::setPosition(vector2D position) {
 void pedestrian::setLinkActual(link *linkActual) {
     (*this).linkActual = linkActual;
 }
+void pedestrian::setLinkPasado(link *linkPasado) {
+    (*this).linkPasado = linkPasado;
+}
 void pedestrian::setOrientacion(vector2D orientacion) {
     (*this).orientacion = orientacion;
 }
 void pedestrian::setVelocidad(vector2DVelocidad velocidad) {
     (*this).velocidad = velocidad;
+}
+void pedestrian::setTiempoInicial(int tiempoInicial) {
+    (*this).tiempoInicial = tiempoInicial;
+}
+void pedestrian::setTiempoFinal(int tiempoFinal) {
+    (*this).tiempoFinal = tiempoFinal;
+}
+void pedestrian::setEmpezoCaminar(bool empezoCaminar) {
+    (*this).empezoCaminar = empezoCaminar;
 }
 void pedestrian::setRetorno(int retorno) {
     (*this).retorno = retorno;
@@ -104,11 +119,23 @@ vector2D pedestrian::getPosition() {
 link *pedestrian::getLinkActual() {
     return linkActual;
 }
+link *pedestrian::getLinkPasado() {
+    return linkPasado;
+}
 vector2D pedestrian::getOrientacion() {
     return orientacion;
 }
 vector2DVelocidad pedestrian::getVelocidad() {
     return velocidad;
+}
+int pedestrian::getTiempoInicial() {
+    return tiempoInicial;
+}
+int pedestrian::getTiempoFinal() {
+    return tiempoFinal;  
+}
+bool pedestrian::getEmpezoCaminar() {
+    return empezoCaminar;
 }
 int pedestrian::getRetorno() {
     return retorno;  
@@ -136,22 +163,16 @@ void pedestrian::imprimirPedestrian(std::fstream& file){
 }
 void pedestrian::caminar() {
     position += velocidad * tiempo::deltaTiempo;
-    contarPedestrainSubdivision();
 }
 void pedestrian::eleccionRandomLinkActual() {
     // Obtener una semilla aleatoria del hardware
     std::random_device rd;
-
     // Algoritmo Motor Mersenne Twister
     std::mt19937 generador(rd());
-
     int limite_max = nodeInicio->getLinkConnection().size() - 1 ;
-
     // Crear una distribución uniforme usando el rango especificado
     std::uniform_int_distribution<int> distribucion(0, limite_max);
-
     int numero_aleatorio = distribucion(generador);
-
     // link* linkSeleccionado = nodeInicio->getLinkConnection().at(numero_aleatorio);
     link* linkSeleccionado = getNodeInicio()->getLinkConnection().at(numero_aleatorio);
     setLinkActual(linkSeleccionado);
@@ -160,17 +181,13 @@ void pedestrian::eleccionRandomLinkActual() {
 void pedestrian::calcularVelocidadLink() {
     (*this).velocidad.setOrientacion(&orientacion);
 }
+// verifica si el nodo ya sali o esta punto final
 bool pedestrian::verificarEndLink() {
     bool terminoLink = false;
-    // if (position.getX() == nodeFinal->getCoordX() and
-    // position.getY() == nodeFinal->getCoordY()){
-    //     terminoLink = true;
-    // }
     if (position.getX()*orientacion.getX() >= nodeFinal->getCoordX()*orientacion.getX() and
     position.getY()*orientacion.getY() >= nodeFinal->getCoordY()*orientacion.getY()){
         terminoLink = true;
     }
-
     return terminoLink;
 }
 void pedestrian::calcularNodeFinal() {
@@ -219,45 +236,45 @@ bool pedestrian::verificarEvacuationNode(){
 }
 void pedestrian::contarPedestrainSubdivision() {
     int idContador;
-    if (linkActual->getNode1()->getCoordX() < linkActual->getNode2()->getCoordX()) {
-        int row = std::trunc((position.getX()-linkActual->getNode1()->getCoordX()) / static_cast<double>(linkActual->getUnitWidthPartion()));
-        int col = std::trunc((position.getY()-linkActual->getNode1()->getCoordY()) / static_cast<double>(linkActual->getUnitWidthPartion()));
-        if (row == col) {
-            std::cout << "start" <<std::endl;
-            idContador = row;
-            for (int i = 0; i < linkActual->getSubLinks().size(); i++) {
-                std::cout << linkActual->getSubLinks().at(i).getCantidadPedestrian()<< " ";
-            }
-            std::cout << std::endl;
-            linkActual->getSubLinks().at(idContador).sumarPedestrian();
-            for (int i = 0; i < linkActual->getSubLinks().size(); i++) {
-                std::cout << linkActual->getSubLinks().at(i).getCantidadPedestrian()<< " ";
-            }
-            std::cout << std::endl;
-            std::cout << "end" <<std::endl;
-        }
-        else {
-            idContador = std::max(row, col);
-            linkActual->getSubLinks().at(idContador).sumarPedestrian();
-        }
+    double row = (position.getX() - nodeInicio->getCoordX()) / static_cast<double>(linkActual->getUnitWidthPartion());
+    double col = (position.getY() - nodeInicio->getCoordY()) / static_cast<double>(linkActual->getUnitWidthPartion());
+    int idx_hipo = std::trunc(std::sqrt(std::pow(row,2) + pow(col, 2)));
+    if (idx_hipo > linkActual->getSubLinks().size()) {
+        idx_hipo = idx_hipo - 1;
     }
-    else {
-        int row = std::trunc((position.getX()-linkActual->getNode2()->getCoordX()) / static_cast<double>(linkActual->getUnitWidthPartion()));
-        int col = std::trunc((position.getY()-linkActual->getNode1()->getCoordY()) / static_cast<double>(linkActual->getUnitWidthPartion()));
-        if (row == col) {
-            idContador = row;
+    idContador = idx_hipo;
+  
+    if (!(verificarEndLink())) {
+        if (!linkActual->getSubLinks().at(idContador).getContado()) {
             linkActual->getSubLinks().at(idContador).sumarPedestrian();
+            linkActual->getSubLinks().at(idContador).marcarContado();
+            if (!(idContador == 0)) {
+                linkActual->getSubLinks().at(idContador-1).restarPedestrian();
+                // linkActual->getSubLinks().at(idContador-1).setContado(false);
+            }
         }
-        else {
-            idContador = std::max(row, col);
-            linkActual->getSubLinks().at(idContador).sumarPedestrian();
-            
+        if (idContador == 0) {
+            try {
+                linkPasado->getSubLinks().at(linkPasado->getSubLinks().size()-1).restarPedestrian();
+            } catch (...) {
+
+            }
         }
         // linkActual->mostrarSubLinks();
     }
-    // double row = std::ceil(position.getX()-linkActual->getNode1()->getCoordX() / static_cast<double>(linkActual->getUnitWidthPartion()));
-    // std::cout << linkActual->getSubDivision().getPuntoFinal().at(0).getX() << " ";
-    // std::cout << row <<std::endl;
-    // double col = std::ceil(position.getY() / static_cast<double>(linkActual->getLength()));
-    // std::cout << linkActual->getSubDivision().getCantidadPedestrian().at(row-1);
+    else {
+        linkPasado = linkActual;
+
+        // if (!linkActual->getSubLinks().at(idContador-1).getContado()) {
+        //     linkActual->getSubLinks().at(idContador-1).sumarPedestrian();
+        //     linkActual->getSubLinks().at(idContador-1).marcarContado();
+        // }
+        // linkActual->getSubLinks().at(idContador-1).restarPedestrian();
+    }
+
+    linkActual->mostrarSubLinks();
+}
+// verifica si link concide con node1 y nodeinicia
+bool pedestrian::verificarDirectionLink() {
+    return nodeInicio == linkActual->getNode1();
 }

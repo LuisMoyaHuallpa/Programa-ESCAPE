@@ -36,9 +36,11 @@ int main() {
     while (tiempoSimulado.running())
     {
         tiempoSimulado++;
+        int tiempo = tiempoSimulado.getValorTiempo();
         std::cout << "Time = " << tiempoSimulado.getValorTiempo() << std::endl;
 
-        dbPedestrian1.caminarPedestrians();
+        dbPedestrian1.caminarPedestrians(tiempoSimulado.getValorTiempo());
+
         // dbPedestrian1.mostrarPedestrians();
         if (tiempoSimulado.getWriteNow()) {
             std::string folderName = std::to_string(tiempoSimulado.getValorTiempo());
@@ -46,6 +48,7 @@ int main() {
 
             dbPedestrian1.imprimirPedestrians(folderName);
             
+            // dbLink1.mostrarLinks();
         }
     }
 }

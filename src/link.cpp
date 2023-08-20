@@ -68,6 +68,9 @@ int link::getLength() const{
 int link::getWidth() const{
     return width;
 }
+int link::getNumberPartion() {
+    return numberPartion;  
+}
 std::vector<subLink>& link::getSubLinks() {
     return subLinks;
 }
@@ -117,21 +120,10 @@ void link::creacionLinkConnection() {
 void link::calcularNumberPartion() {
     numberPartion = std::floor(static_cast<double>(length) / static_cast<double>(unitWidthPartion));
 }
-// void link::calcularSubdivision() {
-//     std::vector<vector2D> puntos;
-//     for (int i = 1; i <= numberPartion; ++i) {
-//         double ratio = static_cast<double>(i) / static_cast<double>(numberPartion);
-//         double x = node1->getCoordX() + ratio * (node2->getCoordX() - node1->getCoordX());
-//         double y = node1->getCoordY() + ratio * (node2->getCoordY() - node1->getCoordY());
-//         puntos.push_back(vector2D(x, y));
-//         subdivision.setPuntoFinal(puntos);
-//         // std::cout << subdivision1.getPuntoFinal().back().getX() << " ";
-//     }
-//     // std::cout << std::endl;
-// }
 void link::mostrarSubLinks() {
+    std::cout << getIdLink() << "  ";
     for (int i = 0; i < subLinks.size(); i++) {
-        std::cout << subLinks.at(i).getCantidadPedestrian() << " ";
+        subLinks.at(i).mostrarSubLink();
     }
     std::cout << std::endl;
 }

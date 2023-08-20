@@ -26,7 +26,8 @@ public:
     void mostrarPedestrians();
     void imprimirPedestrians(std::string foldeName);
     void calcularNumberPedestrian();
-    void caminarPedestrians();
+    void caminarPedestrians(int valorTiempo);
+    void calcularDistribucionRayleigh();
     
 };
 #endif

@@ -1,8 +1,15 @@
 #include "pedestrians.h"
 #include "nodes.h"
+#include "tiempo.h"
+#include <boost/random/seed_seq.hpp>
+#include <cmath>
 #include <fstream>
 #include <ios>
+#include <iostream>
+#include <ostream>
 #include <string>
+#include <boost/random.hpp>
+#include <boost/math/distributions/rayleigh.hpp>
 
 pedestrians::pedestrians() {
     (*this).filename = "population.csv";
@@ -10,8 +17,10 @@ pedestrians::pedestrians() {
 }
 pedestrians::pedestrians(nodes* dbNode) {
     (*this).filename = "population.csv";
-    (*this).dbNode=dbNode;
+    (*this).dbNode = dbNode;
     leerPedestrians(filename);
+    calcularNumberPedestrian();
+    calcularDistribucionRayleigh();
 }
 pedestrians::pedestrians(std::string filename) {
     leerPedestrians(filename);  
@@ -68,10 +77,29 @@ void pedestrians::imprimirPedestrians(std::string folderName){
 void pedestrians::calcularNumberPedestrian(){
     numberPedestrian =dbPedestrians.size();
 }
-void pedestrians::caminarPedestrians() {
+void pedestrians::caminarPedestrians(int valorTiempo) {
+
     for (int i = 0; i < dbPedestrians.size(); i++) {
-        dbPedestrians.at(i).caminar();
-        dbPedestrians.at(i).updateLinkParameter();
-        // dbPedestrians.at(i).verificarEndLink();
+        std::cout << valorTiempo << "  ";
+        std::cout << dbPedestrians.at(i).getTiempoInicial() << " ";
+        if (valorTiempo >= dbPedestrians.at(i).getTiempoInicial()) {
+            dbPedestrians.at(i).caminar();
+            dbPedestrians.at(i).contarPedestrainSubdivision();
+            dbPedestrians.at(i).updateLinkParameter();
+            // dbPedestrians.at(i).verificarEndLink();
+        }
     }
 }
+void pedestrians::calcularDistribucionRayleigh() {
+    boost::random::mt19937 gen;
+    // Set the parameters for the Rayleigh distribution
+    double meanRayleigh = 7 * 60;
+    double scaleRayleigh = meanRayleigh * std::pow((2/M_PI), 05);
+    boost::math::rayleigh_distribution<double> rayleighDistribution(scaleRayleigh);
+    for (int i = 0; i < numberPedestrian; ++i) {
+        int number = std::round(boost::math::quantile(rayleighDistribution, boost::random::uniform_01<double>()(gen)));
+        dbPedestrians.at(i).setTiempoInicial(number);
+        std::cout << dbPedestrians.at(i).getTiempoInicial() << " ";
+    }
+}
+

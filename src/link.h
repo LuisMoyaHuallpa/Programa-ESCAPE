@@ -43,6 +43,7 @@ public:
     node* getNode2() const;
     int getLength() const;
     int getWidth() const;
+    int getNumberPartion();
     std::vector<subLink>& getSubLinks();
 
     void mostrarLink();
