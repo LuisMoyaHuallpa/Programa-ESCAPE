@@ -78,13 +78,14 @@ void pedestrians::calcularNumberPedestrian(){
     numberPedestrian =dbPedestrians.size();
 }
 void pedestrians::caminarPedestrians(int valorTiempo) {
-
     for (int i = 0; i < dbPedestrians.size(); i++) {
-        std::cout << valorTiempo << "  ";
-        std::cout << dbPedestrians.at(i).getTiempoInicial() << " ";
-        if (valorTiempo >= dbPedestrians.at(i).getTiempoInicial()) {
+        if (valorTiempo == dbPedestrians.at(i).getTiempoInicial()) {
+            dbPedestrians.at(i).setEmpezoCaminar(true);
+        }
+        if (valorTiempo > dbPedestrians.at(i).getTiempoInicial()) {
             dbPedestrians.at(i).caminar();
             dbPedestrians.at(i).contarPedestrainSubdivision();
+            dbPedestrians.at(i).encontrarPrimerTiempo();
             dbPedestrians.at(i).updateLinkParameter();
             // dbPedestrians.at(i).verificarEndLink();
         }
@@ -99,7 +100,7 @@ void pedestrians::calcularDistribucionRayleigh() {
     for (int i = 0; i < numberPedestrian; ++i) {
         int number = std::round(boost::math::quantile(rayleighDistribution, boost::random::uniform_01<double>()(gen)));
         dbPedestrians.at(i).setTiempoInicial(number);
-        std::cout << dbPedestrians.at(i).getTiempoInicial() << " ";
+        // std::cout << dbPedestrians.at(i).getTiempoInicial() << " ";
     }
 }
 

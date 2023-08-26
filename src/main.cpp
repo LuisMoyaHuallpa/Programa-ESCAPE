@@ -48,7 +48,7 @@ int main() {
 
             dbPedestrian1.imprimirPedestrians(folderName);
             
-            // dbLink1.mostrarLinks();
+            dbLink1.mostrarLinks();
         }
     }
 }

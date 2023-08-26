@@ -27,7 +27,7 @@ link::link(int id, node* node1, node* node2, int length, int width) {
     setLength(length);
     setWidth(width);
     calcularNumberPartion();
-    subLinks.resize(numberPartion);
+    subLinks.resize(numberPartion, subLink(this));
 }
 
 void link::setIdLink(int id) {
@@ -48,9 +48,6 @@ void link::setWidth(int width){
 void link::setSubLinks(std::vector<subLink> subLinks) {
     (*this).subLinks = subLinks;
 }
-// void link::setSubDivision(int numeroPartion) {
-//     (*this).subdivision = subdivision;
-// }
 
 // getters
 int link::getIdLink() const {
@@ -119,6 +116,7 @@ void link::creacionLinkConnection() {
 }
 void link::calcularNumberPartion() {
     numberPartion = std::floor(static_cast<double>(length) / static_cast<double>(unitWidthPartion));
+
 }
 void link::mostrarSubLinks() {
     std::cout << getIdLink() << "  ";

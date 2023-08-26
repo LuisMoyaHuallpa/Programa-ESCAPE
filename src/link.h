@@ -17,10 +17,8 @@ private:
     node* node2;
     int length;
     int width;
-
     int numberPartion;
     std::vector<subLink> subLinks;
-
 
 public:
     static int unitWidthPartion;

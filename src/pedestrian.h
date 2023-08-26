@@ -28,11 +28,13 @@ private:
     link* linkActual;
     link* linkPasado;
     vector2D orientacion;
+    vector2D orientacionLinkPasado;
     vector2DVelocidad velocidad;
     int tiempoInicial;
     int tiempoFinal;
     bool empezoCaminar;
-
+    bool primerTiempo;
+    bool saltoLink;
     int retorno;
     bool evacuado;
 
@@ -57,10 +59,13 @@ public:
     void setLinkActual(link* linkActual);
     void setLinkPasado(link* linkPasado);
     void setOrientacion(vector2D orientacion);
+    void setOrientacionLinkPasado(vector2D orientacionLinkPasado);
     void setVelocidad(vector2DVelocidad velocidad);
     void setTiempoInicial(int tiempoInicial);
     void setTiempoFinal(int tiempoFinal);
     void setEmpezoCaminar(bool empezoCaminar);
+    void setPrimerTiempo(bool primerTiempo);
+    void setSaltoLink(bool saltoLink);
     void setRetorno(int retorno);
 
     int getIdPedestrian() const;
@@ -72,12 +77,15 @@ public:
     node* getNodeFinal();
     vector2D getPosition();
     vector2D getOrientacion();
+    vector2D getOrientacionLinkPasado();
     link* getLinkActual();
     link* getLinkPasado();
     vector2DVelocidad getVelocidad();
     int getTiempoInicial();
     int getTiempoFinal();
     bool getEmpezoCaminar();
+    bool getPrimerTiempo();
+    bool getSaltoLink();
     int getRetorno();
 
     void mostrarPedestrian();
@@ -86,6 +94,7 @@ public:
     void eleccionRandomLinkActual();
     void calcularVelocidadLink();
     bool verificarEndLink();
+    bool verificarEndLink1();
     void calcularNodeFinal();
     void updateLinkParameter();
     void calcularOrientacion();
@@ -93,6 +102,8 @@ public:
     bool verificarEvacuationNode();
     void contarPedestrainSubdivision();
     bool verificarDirectionLink();
+    void encontrarPrimerTiempo();
+    bool verificarSaltoLink();
 };
 
 #endif

@@ -32,6 +32,8 @@ pedestrian::pedestrian(int edad, int gender, int hhType, int hhId, node* nodeIni
     setHHId(hhId);
     setNodeInicio(nodeInicio);
     setEmpezoCaminar(false);
+    setPrimerTiempo(true);
+    setSaltoLink(false);
     double x = nodeInicio->getCoordX();
     double y = nodeInicio->getCoordY();
     vector2D position(x, y);
@@ -76,6 +78,9 @@ void pedestrian::setLinkPasado(link *linkPasado) {
 void pedestrian::setOrientacion(vector2D orientacion) {
     (*this).orientacion = orientacion;
 }
+void pedestrian::setOrientacionLinkPasado(vector2D orientacionLinkPasado) {
+    (*this).orientacionLinkPasado = orientacionLinkPasado;
+}
 void pedestrian::setVelocidad(vector2DVelocidad velocidad) {
     (*this).velocidad = velocidad;
 }
@@ -87,6 +92,12 @@ void pedestrian::setTiempoFinal(int tiempoFinal) {
 }
 void pedestrian::setEmpezoCaminar(bool empezoCaminar) {
     (*this).empezoCaminar = empezoCaminar;
+}
+void pedestrian::setPrimerTiempo(bool primerTiempo) {
+    (*this).primerTiempo = primerTiempo;
+}
+void pedestrian::setSaltoLink(bool saltoLink) {
+    (*this).saltoLink = saltoLink;
 }
 void pedestrian::setRetorno(int retorno) {
     (*this).retorno = retorno;
@@ -125,6 +136,9 @@ link *pedestrian::getLinkPasado() {
 vector2D pedestrian::getOrientacion() {
     return orientacion;
 }
+vector2D pedestrian::getOrientacionLinkPasado() {
+    return orientacionLinkPasado;
+}
 vector2DVelocidad pedestrian::getVelocidad() {
     return velocidad;
 }
@@ -136,6 +150,12 @@ int pedestrian::getTiempoFinal() {
 }
 bool pedestrian::getEmpezoCaminar() {
     return empezoCaminar;
+}
+bool pedestrian::getPrimerTiempo() {
+    return primerTiempo;  
+}
+bool pedestrian::getSaltoLink() {
+    return saltoLink;  
 }
 int pedestrian::getRetorno() {
     return retorno;  
@@ -236,45 +256,82 @@ bool pedestrian::verificarEvacuationNode(){
 }
 void pedestrian::contarPedestrainSubdivision() {
     int idContador;
-    double row = (position.getX() - nodeInicio->getCoordX()) / static_cast<double>(linkActual->getUnitWidthPartion());
-    double col = (position.getY() - nodeInicio->getCoordY()) / static_cast<double>(linkActual->getUnitWidthPartion());
+    double row = (position.getX() - linkActual->getNode1()->getCoordX()) / static_cast<double>(linkActual->getUnitWidthPartion());
+    double col = (position.getY() - linkActual->getNode1()->getCoordY()) / static_cast<double>(linkActual->getUnitWidthPartion());
     int idx_hipo = std::trunc(std::sqrt(std::pow(row,2) + pow(col, 2)));
-    if (idx_hipo > linkActual->getSubLinks().size()) {
+    if (idx_hipo > linkActual->getSubLinks().size()-1) {
         idx_hipo = idx_hipo - 1;
     }
     idContador = idx_hipo;
-  
-    if (!(verificarEndLink())) {
+    
+    if (verificarSaltoLink()) {
+        if (!linkActual->getSubLinks().at(idContador).getContado()) {
+            if (getOrientacionLinkPasado().getX() >= 0 and getOrientacionLinkPasado().getY() >= 0  and !getPrimerTiempo() and (idContador == 0 or idContador == linkActual->getSubLinks().size()-1)) {
+                linkPasado->getSubLinks().back().restarPedestrian();
+                linkPasado->getSubLinks().back().quitarContado();
+            }
+            else if (getOrientacionLinkPasado().getX() <= 0 and getOrientacionLinkPasado().getY() <= 0 and !getPrimerTiempo() and (idContador == 0 or idContador == linkActual->getSubLinks().size()-1) ) {
+                linkPasado->getSubLinks().at(0).restarPedestrian();
+                linkPasado->getSubLinks().at(0).quitarContado();
+        }
+        }
+    }
+
+    if (!verificarEndLink1()) {
         if (!linkActual->getSubLinks().at(idContador).getContado()) {
             linkActual->getSubLinks().at(idContador).sumarPedestrian();
             linkActual->getSubLinks().at(idContador).marcarContado();
-            if (!(idContador == 0)) {
+            
+            if (getOrientacion().getX() >= 0 and getOrientacion().getY() >= 0 and !(idContador == 0)) {
                 linkActual->getSubLinks().at(idContador-1).restarPedestrian();
-                // linkActual->getSubLinks().at(idContador-1).setContado(false);
+                linkActual->getSubLinks().at(idContador-1).quitarContado();
+                setSaltoLink(false);
             }
-        }
-        if (idContador == 0) {
-            try {
-                linkPasado->getSubLinks().at(linkPasado->getSubLinks().size()-1).restarPedestrian();
-            } catch (...) {
-
+            else if (getOrientacion().getX() <= 0 and getOrientacion().getY() <= 0 and !(idContador == linkActual->getSubLinks().size()-1)) {
+                linkActual->getSubLinks().at(idContador+1).restarPedestrian();
+                linkActual->getSubLinks().at(idContador+1).quitarContado();
+                setSaltoLink(false);
             }
+            
         }
-        // linkActual->mostrarSubLinks();
-    }
+    }    
     else {
         linkPasado = linkActual;
-
-        // if (!linkActual->getSubLinks().at(idContador-1).getContado()) {
-        //     linkActual->getSubLinks().at(idContador-1).sumarPedestrian();
-        //     linkActual->getSubLinks().at(idContador-1).marcarContado();
-        // }
-        // linkActual->getSubLinks().at(idContador-1).restarPedestrian();
+        orientacionLinkPasado = orientacion;
+        setSaltoLink(true);
     }
-
     linkActual->mostrarSubLinks();
 }
 // verifica si link concide con node1 y nodeinicia
 bool pedestrian::verificarDirectionLink() {
     return nodeInicio == linkActual->getNode1();
+}
+void pedestrian::encontrarPrimerTiempo() {
+    if (primerTiempo) {
+        primerTiempo = false;
+    }   
+}
+bool pedestrian::verificarEndLink1() {
+    // std::cout << getPosition().getX() << " ";
+    // std::cout << getPosition().getY() << std::endl;
+    // std::cout << getOrientacion().getX() << " ";
+    // std::cout << getOrientacion().getY() << std::endl;
+  if (position.getX() >= nodeFinal->getCoordX() and position.getY() >= nodeFinal->getCoordY()
+  and getOrientacion().getX() >= 0 and getOrientacion().getY() >= 0) {
+      std::cout << "arriba";
+      return true; 
+    }
+
+  else if (position.getX() <= nodeFinal->getCoordX() and position.getY() <= nodeFinal->getCoordY()
+  and getOrientacion().getX() <= 0 and getOrientacion().getY() <= 0) {
+      std::cout << "abajo";
+      return true; 
+    }
+  return false;
+}
+bool pedestrian::verificarSaltoLink() {
+    if (getSaltoLink() == true) {
+        return true;
+    }
+    return false;
 }
