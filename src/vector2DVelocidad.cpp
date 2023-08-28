@@ -6,7 +6,7 @@
 #include <iostream>
 
 
-double vector2DVelocidad::velocidadConstante = 1.388;
+double vector2DVelocidad::velocidadConstante = 1.0;
 
 vector2DVelocidad::vector2DVelocidad() : vector2D() {
     magnitud = velocidadConstante;
@@ -46,10 +46,6 @@ void vector2DVelocidad::ajusteVelocidad() {
     magnitud = std::max(vel_min, std::min(magnitud, vel_max));
 }
 void vector2DVelocidad::calcularVectorVelocidad() {
-    std::cout << "cal: ";
-    std::cout << orientacion.getX() << " ";
-    std::cout << orientacion.getY() << " ";
-    std::cout << std::endl;
     vector2D a = orientacion * magnitud;
     double x = a.getX();
     double y = a.getY();

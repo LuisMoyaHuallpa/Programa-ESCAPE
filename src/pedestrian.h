@@ -103,6 +103,7 @@ public:
     bool verificarDirectionLink();
     void encontrarPrimerTiempo();
     bool verificarSaltoLink();
+    void correctionPosition();
 };
 
 #endif

@@ -184,28 +184,12 @@ void pedestrian::imprimirPedestrian(std::fstream& file){
     file << std::endl;
 }
 void pedestrian::caminar() {
-    std::cout << "1; ";
-    std::cout << orientacion.getX() << " ";
-    std::cout << orientacion.getY() << " ";
-    std::cout << std::endl;
-
     // velocidad.calcularVectorVelocidad();
-
-    cout << std::endl;
-    std::cout << "2; ";
-    std::cout << orientacion.getX() << " ";
-    std::cout << orientacion.getY() << " ";
-    std::cout << std::endl;
-
     position += velocidad * tiempo::deltaTiempo;
-
-    std::cout << "3; ";
-    std::cout << orientacion.getX() << " ";
-    std::cout << orientacion.getY() << " ";
-    std::cout << std::endl;
-
-
-
+    std::cout << "vel: " << velocidad.getMagnitud() << std::endl;
+    if (verificarEndLink1()) {
+        correctionPosition();
+    }
 }
 void pedestrian::eleccionRandomLinkActual() {
     // Obtener una semilla aleatoria del hardware
@@ -239,7 +223,7 @@ void pedestrian::calcularNodeFinal() {
     }
 }
 void pedestrian::updateLinkParameter() {
-    if (verificarEndLink()) {
+    if (verificarEndLink1()) {
         setNodeInicio(nodeFinal);
         eleccionRandomLinkActual();
         calcularNodeFinal();
@@ -318,7 +302,8 @@ void pedestrian::contarPedestrainSubdivision() {
         orientacionLinkPasado = orientacion;
         setSaltoLink(true);
     }
-    // linkActual->mostrarSubLinks();
+    linkActual->mostrarSubLinks();
+    // mostrarPedestrian();
 }
 // verifica si link concide con node1 y nodeinicia
 bool pedestrian::verificarDirectionLink() {
@@ -330,26 +315,25 @@ void pedestrian::encontrarPrimerTiempo() {
     }   
 }
 bool pedestrian::verificarEndLink1() {
-    // std::cout << getPosition().getX() << " ";
-    // std::cout << getPosition().getY() << std::endl;
-    // std::cout << getOrientacion().getX() << " ";
-    // std::cout << getOrientacion().getY() << std::endl;
-  if (position.getX() >= nodeFinal->getCoordX() and position.getY() >= nodeFinal->getCoordY()
-  and getOrientacion().getX() >= 0 and getOrientacion().getY() >= 0) {
-      std::cout << "arriba";
-      return true; 
+    if (position.getX() >= nodeFinal->getCoordX() and position.getY() >= nodeFinal->getCoordY()
+    and getOrientacion().getX() >= 0 and getOrientacion().getY() >= 0) {
+        std::cout << "arriba";
+        return true; 
     }
-
-  else if (position.getX() <= nodeFinal->getCoordX() and position.getY() <= nodeFinal->getCoordY()
-  and getOrientacion().getX() <= 0 and getOrientacion().getY() <= 0) {
-      std::cout << "abajo";
-      return true; 
+    else if (position.getX() <= nodeFinal->getCoordX() and position.getY() <= nodeFinal->getCoordY()
+    and getOrientacion().getX() <= 0 and getOrientacion().getY() <= 0) {
+        std::cout << "abajo";
+        return true; 
     }
-  return false;
+    return false;
 }
 bool pedestrian::verificarSaltoLink() {
     if (getSaltoLink() == true) {
         return true;
     }
     return false;
+}
+void pedestrian::correctionPosition() {
+    position.setX(nodeFinal->getCoordX());
+    position.setY(nodeFinal->getCoordY());
 }

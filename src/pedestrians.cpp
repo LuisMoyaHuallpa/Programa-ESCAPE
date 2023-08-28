@@ -84,9 +84,9 @@ void pedestrians::caminarPedestrians(int valorTiempo) {
         if (valorTiempo == dbPedestrians.at(i).getTiempoInicial()) {
             dbPedestrians.at(i).setEmpezoCaminar(true);
         }
-        if (valorTiempo > dbPedestrians.at(i).getTiempoInicial()) {
-            dbPedestrians.at(i).caminar();
+        if (valorTiempo >= dbPedestrians.at(i).getTiempoInicial()) {
             dbPedestrians.at(i).contarPedestrainSubdivision();
+            dbPedestrians.at(i).caminar();
             dbPedestrians.at(i).encontrarPrimerTiempo();
             dbPedestrians.at(i).updateLinkParameter();
             // dbPedestrians.at(i).verificarEndLink();

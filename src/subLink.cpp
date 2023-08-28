@@ -55,7 +55,13 @@ void subLink::calcularCantidadPedestrian() {
 }
 void subLink::calcularDensidad() {
     calcularCantidadPedestrian();
-    densidad = static_cast<double>(cantidadPedestrian) / (parentLink->getLength()*parentLink->getWidth());
+    if (cantidadPedestrian != 0) {
+        densidad = static_cast<double>(cantidadPedestrian) / (parentLink->getLength()*parentLink->getWidth());
+    }
+    else {
+        densidad = 0;
+    }
+    
 }
 bool subLink::verificarPedestrianId(int idPedestrian) {
     for (int i = 0; i < pedestriansIdsInSubLink.size(); i++) {
