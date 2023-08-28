@@ -13,6 +13,8 @@
 #include <random>
 #include <iomanip>
 
+using std::cout;
+
 const int pedestrian::surviveReward = 100000;
 const int pedestrian::deadReward = -1000; 
 const int pedestrian::stepReward = -1;
@@ -24,7 +26,7 @@ pedestrian::pedestrian() : nodeInicio () {
     (*this).hhType = 0;
     (*this).hhId = 0;
 }
-pedestrian::pedestrian(int edad, int gender, int hhType, int hhId, node* nodeInicio) {
+pedestrian::pedestrian(int edad, int gender, int hhType, int hhId, node* nodeInicio)  {
     setIdPedestrian(contador++);
     setEdad(edad);
     setGender(gender);
@@ -42,7 +44,7 @@ pedestrian::pedestrian(int edad, int gender, int hhType, int hhId, node* nodeIni
     setLinkPasado(linkActual);
     calcularNodeFinal();
     calcularOrientacion();
-    calcularVelocidadLink();
+    velocidad.setOrientacion(orientacion);
 }
 
 void pedestrian::setIdPedestrian(int id){
@@ -182,7 +184,28 @@ void pedestrian::imprimirPedestrian(std::fstream& file){
     file << std::endl;
 }
 void pedestrian::caminar() {
+    std::cout << "1; ";
+    std::cout << orientacion.getX() << " ";
+    std::cout << orientacion.getY() << " ";
+    std::cout << std::endl;
+
+    // velocidad.calcularVectorVelocidad();
+
+    cout << std::endl;
+    std::cout << "2; ";
+    std::cout << orientacion.getX() << " ";
+    std::cout << orientacion.getY() << " ";
+    std::cout << std::endl;
+
     position += velocidad * tiempo::deltaTiempo;
+
+    std::cout << "3; ";
+    std::cout << orientacion.getX() << " ";
+    std::cout << orientacion.getY() << " ";
+    std::cout << std::endl;
+
+
+
 }
 void pedestrian::eleccionRandomLinkActual() {
     // Obtener una semilla aleatoria del hardware
@@ -196,10 +219,6 @@ void pedestrian::eleccionRandomLinkActual() {
     // link* linkSeleccionado = nodeInicio->getLinkConnection().at(numero_aleatorio);
     link* linkSeleccionado = getNodeInicio()->getLinkConnection().at(numero_aleatorio);
     setLinkActual(linkSeleccionado);
-}
-//Calculo de velocidad decomponiendo en la orientacion de link 
-void pedestrian::calcularVelocidadLink() {
-    (*this).velocidad.setOrientacion(&orientacion);
 }
 // verifica si el nodo ya sali o esta punto final
 bool pedestrian::verificarEndLink() {
@@ -225,7 +244,7 @@ void pedestrian::updateLinkParameter() {
         eleccionRandomLinkActual();
         calcularNodeFinal();
         calcularOrientacion();
-        calcularVelocidadLink();
+        velocidad.setOrientacion(orientacion);
     }
 }
 void pedestrian::calcularOrientacion() {
@@ -239,6 +258,7 @@ void pedestrian::calcularOrientacion() {
     // Normaliza el vector de dirección (divide cada e por la magnitud)
     orientacion.setX(x / magnitud);
     orientacion.setY(y / magnitud);
+    // velocidad.setOrientacion(&orientacion);
 }
 void pedestrian::calcularRetorno() {
     if (nodeInicio->getEvacuationCode() == 0) {
@@ -265,34 +285,36 @@ void pedestrian::contarPedestrainSubdivision() {
     idContador = idx_hipo;
     
     if (verificarSaltoLink()) {
-        if (!linkActual->getSubLinks().at(idContador).getContado()) {
-            if (getOrientacionLinkPasado().getX() >= 0 and getOrientacionLinkPasado().getY() >= 0  and !getPrimerTiempo() and (idContador == 0 or idContador == linkActual->getSubLinks().size()-1)) {
-                linkPasado->getSubLinks().back().restarPedestrian();
-                linkPasado->getSubLinks().back().quitarContado();
+        if (linkActual == linkPasado) {
+            if (getOrientacion().getX() >= 0 and getOrientacion().getY() >= 0 and !(idContador == 0)) {
+                linkActual->getSubLinks().back().quitarPedestrianId(getIdPedestrian());
             }
-            else if (getOrientacionLinkPasado().getX() <= 0 and getOrientacionLinkPasado().getY() <= 0 and !getPrimerTiempo() and (idContador == 0 or idContador == linkActual->getSubLinks().size()-1) ) {
-                linkPasado->getSubLinks().at(0).restarPedestrian();
-                linkPasado->getSubLinks().at(0).quitarContado();
+            else if (getOrientacion().getX() <= 0 and getOrientacion().getY() <= 0 and !(idContador == linkActual->getSubLinks().size()-1)) {
+                linkActual->getSubLinks().begin()->quitarPedestrianId(getIdPedestrian());
+            }
         }
+        if (getOrientacionLinkPasado().getX() >= 0 and getOrientacionLinkPasado().getY() >= 0  and !getPrimerTiempo() and (idContador == 0 or idContador == linkActual->getSubLinks().size()-1)) {
+            linkPasado->getSubLinks().back().quitarPedestrianId(getIdPedestrian());
+        }
+        else if (getOrientacionLinkPasado().getX() <= 0 and getOrientacionLinkPasado().getY() <= 0 and !getPrimerTiempo() and (idContador == 0 or idContador == linkActual->getSubLinks().size()-1) ) {
+            linkPasado->getSubLinks().at(0).quitarPedestrianId(getIdPedestrian());
         }
     }
 
     if (!verificarEndLink1()) {
-        if (!linkActual->getSubLinks().at(idContador).getContado()) {
-            linkActual->getSubLinks().at(idContador).sumarPedestrian();
-            linkActual->getSubLinks().at(idContador).marcarContado();
+        if (!linkActual->getSubLinks().at(idContador).verificarPedestrianId(getIdPedestrian())) {
+            linkActual->getSubLinks().at(idContador).agregarPedestrianId(getIdPedestrian());
+            linkActual->getSubLinks().at(idContador).calcularDensidad();
+            velocidad.actualizarVelocidad(linkActual->getSubLinks().at(idContador).getDensidad());
             
             if (getOrientacion().getX() >= 0 and getOrientacion().getY() >= 0 and !(idContador == 0)) {
-                linkActual->getSubLinks().at(idContador-1).restarPedestrian();
-                linkActual->getSubLinks().at(idContador-1).quitarContado();
+                linkActual->getSubLinks().at(idContador-1).quitarPedestrianId(getIdPedestrian());
                 setSaltoLink(false);
             }
             else if (getOrientacion().getX() <= 0 and getOrientacion().getY() <= 0 and !(idContador == linkActual->getSubLinks().size()-1)) {
-                linkActual->getSubLinks().at(idContador+1).restarPedestrian();
-                linkActual->getSubLinks().at(idContador+1).quitarContado();
+                linkActual->getSubLinks().at(idContador+1).quitarPedestrianId(getIdPedestrian());
                 setSaltoLink(false);
             }
-            
         }
     }    
     else {
@@ -300,7 +322,7 @@ void pedestrian::contarPedestrainSubdivision() {
         orientacionLinkPasado = orientacion;
         setSaltoLink(true);
     }
-    linkActual->mostrarSubLinks();
+    // linkActual->mostrarSubLinks();
 }
 // verifica si link concide con node1 y nodeinicia
 bool pedestrian::verificarDirectionLink() {

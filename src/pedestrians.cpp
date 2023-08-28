@@ -83,6 +83,8 @@ void pedestrians::caminarPedestrians(int valorTiempo) {
             dbPedestrians.at(i).setEmpezoCaminar(true);
         }
         if (valorTiempo > dbPedestrians.at(i).getTiempoInicial()) {
+            std::cout << "vel ";
+            std::cout << dbPedestrians.at(i).getVelocidad().getMagnitud() << std::endl;
             dbPedestrians.at(i).caminar();
             dbPedestrians.at(i).contarPedestrainSubdivision();
             dbPedestrians.at(i).encontrarPrimerTiempo();

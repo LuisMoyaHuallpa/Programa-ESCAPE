@@ -92,7 +92,6 @@ public:
     void imprimirPedestrian(std::fstream& file);
     void caminar();
     void eleccionRandomLinkActual();
-    void calcularVelocidadLink();
     bool verificarEndLink();
     bool verificarEndLink1();
     void calcularNodeFinal();

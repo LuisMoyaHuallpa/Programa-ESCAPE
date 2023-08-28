@@ -29,7 +29,7 @@ int main() {
     // dbLink1.mostrarLinks();
     // dbNode1.imprimirNodes();
     pedestrians dbPedestrian1(&dbNode1);
-    // dbPedestrian1.mostrarPedestrians();
+    dbPedestrian1.mostrarPedestrians();
 
     tiempo tiempoSimulado;
 
@@ -48,7 +48,7 @@ int main() {
 
             dbPedestrian1.imprimirPedestrians(folderName);
             
-            dbLink1.mostrarLinks();
+            // dbLink1.mostrarLinks();
         }
     }
 }
