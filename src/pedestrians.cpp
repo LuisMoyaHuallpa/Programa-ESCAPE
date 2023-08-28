@@ -66,12 +66,14 @@ void pedestrians::mostrarPedestrians(){
     }
 }
 void pedestrians::imprimirPedestrians(std::string folderName){
-    std::fstream file;
+    std::fstream file,file2;
     file.open(folderName + "/xy",std::ios::out);
+    file2.open(folderName + "/U",std::ios::out);
     if (file.is_open()) {
         for (int i=0; i < dbPedestrians.size(); i++) {
             if (dbPedestrians.at(i).getEmpezoCaminar()) {
-                dbPedestrians.at(i).imprimirPedestrian(file);
+                dbPedestrians.at(i).imprimirPedestrianPosition(file);
+                dbPedestrians.at(i).imprimirPedestrianVelocity(file2);
             }
         }
     }

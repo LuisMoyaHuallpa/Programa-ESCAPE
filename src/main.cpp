@@ -30,7 +30,6 @@ int main() {
     // dbNode1.imprimirNodes();
     pedestrians dbPedestrian1(&dbNode1);
     // dbPedestrian1.mostrarPedestrians();
-
     tiempo tiempoSimulado;
 
     while (tiempoSimulado.running())
@@ -38,16 +37,13 @@ int main() {
         tiempoSimulado++;
         int tiempo = tiempoSimulado.getValorTiempo();
         std::cout << "Time = " << tiempoSimulado.getValorTiempo() << std::endl;
-
         dbPedestrian1.caminarPedestrians(tiempoSimulado.getValorTiempo());
 
         // dbPedestrian1.mostrarPedestrians();
         if (tiempoSimulado.getWriteNow()) {
             std::string folderName = std::to_string(tiempoSimulado.getValorTiempo());
             createFolder(folderName);
-
             dbPedestrian1.imprimirPedestrians(folderName);
-            
             // dbLink1.mostrarLinks();
         }
     }

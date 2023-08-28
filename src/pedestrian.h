@@ -89,7 +89,8 @@ public:
     int getRetorno();
 
     void mostrarPedestrian();
-    void imprimirPedestrian(std::fstream& file);
+    void imprimirPedestrianPosition(std::fstream& file);
+    void imprimirPedestrianVelocity(std::fstream& file);
     void caminar();
     void eleccionRandomLinkActual();
     bool verificarEndLink();

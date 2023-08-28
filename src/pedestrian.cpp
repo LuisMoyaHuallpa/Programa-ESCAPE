@@ -178,9 +178,13 @@ void pedestrian::mostrarPedestrian(){
     std::cout << std::setw(5) << getNodeFinal()->getCoordY() << ' ';
     std::cout << std::endl;
 }
-void pedestrian::imprimirPedestrian(std::fstream& file){
+void pedestrian::imprimirPedestrianPosition(std::fstream& file){
     file << getPosition().getX() << " ";
     file << getPosition().getY() << " ";
+    file << std::endl;
+}
+void pedestrian::imprimirPedestrianVelocity(std::fstream& file){
+    file << getVelocidad().getMagnitud() << " ";
     file << std::endl;
 }
 void pedestrian::caminar() {
