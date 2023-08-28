@@ -248,17 +248,13 @@ void pedestrian::updateLinkParameter() {
     }
 }
 void pedestrian::calcularOrientacion() {
-    vector2D direction;
     double x = nodeFinal->getCoordX() - nodeInicio->getCoordX();
     double y = nodeFinal->getCoordY() - nodeInicio->getCoordY();
-
     // Calcula la magnitud del vector de dirección
     double magnitud = std::sqrt(std::pow(x, 2) + std::pow(y, 2));
-
     // Normaliza el vector de dirección (divide cada e por la magnitud)
     orientacion.setX(x / magnitud);
     orientacion.setY(y / magnitud);
-    // velocidad.setOrientacion(&orientacion);
 }
 void pedestrian::calcularRetorno() {
     if (nodeInicio->getEvacuationCode() == 0) {

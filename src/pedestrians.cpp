@@ -70,7 +70,9 @@ void pedestrians::imprimirPedestrians(std::string folderName){
     file.open(folderName + "/xy",std::ios::out);
     if (file.is_open()) {
         for (int i=0; i < dbPedestrians.size(); i++) {
-            dbPedestrians.at(i).imprimirPedestrian(file);
+            if (dbPedestrians.at(i).getEmpezoCaminar()) {
+                dbPedestrians.at(i).imprimirPedestrian(file);
+            }
         }
     }
 }
@@ -83,8 +85,6 @@ void pedestrians::caminarPedestrians(int valorTiempo) {
             dbPedestrians.at(i).setEmpezoCaminar(true);
         }
         if (valorTiempo > dbPedestrians.at(i).getTiempoInicial()) {
-            std::cout << "vel ";
-            std::cout << dbPedestrians.at(i).getVelocidad().getMagnitud() << std::endl;
             dbPedestrians.at(i).caminar();
             dbPedestrians.at(i).contarPedestrainSubdivision();
             dbPedestrians.at(i).encontrarPrimerTiempo();
