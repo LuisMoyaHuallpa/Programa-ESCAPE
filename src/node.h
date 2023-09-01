@@ -6,8 +6,8 @@
 #include <ostream>
 #include <vector>
 #include "link.h"
-class link;
 
+class link;
 class node {
 private:
     int idNode;

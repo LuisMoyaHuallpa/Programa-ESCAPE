@@ -9,7 +9,6 @@ private:
     bool writeNow;
     int endTime;
 
-
 public:
 
     static int deltaTiempo;

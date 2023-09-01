@@ -1,19 +1,4 @@
 #include "pedestrian.h"
-#include "link.h"
-#include "node.h"
-#include "subLink.h"
-#include "tiempo.h"
-#include "vector2D.h"
-#include "vector2DVelocidad.h"
-#include <algorithm>
-#include <cmath>
-#include <fstream>
-#include <iostream>
-#include <math.h>
-#include <random>
-#include <iomanip>
-
-using std::cout;
 
 const int pedestrian::surviveReward = 100000;
 const int pedestrian::deadReward = -1000; 
@@ -288,7 +273,7 @@ void pedestrian::contarPedestrainSubdivision() {
     if (!verificarEndLink1()) {
         if (!linkActual->getSubLinks().at(idContador).verificarPedestrianId(getIdPedestrian())) {
             linkActual->getSubLinks().at(idContador).agregarPedestrianId(getIdPedestrian());
-            linkActual->getSubLinks().at(idContador).calcularDensidad();
+            linkActual->getSubLinks().at(idContador).calcularDensidad(linkActual->getLength(), linkActual->getWidth());
             velocidad.actualizarVelocidad(linkActual->getSubLinks().at(idContador).getDensidad());
             
             if (getOrientacion().getX() >= 0 and getOrientacion().getY() >= 0 and !(idContador == 0)) {

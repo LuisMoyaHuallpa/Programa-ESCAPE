@@ -1,20 +1,16 @@
 #include "subLink.h"
-#include "link.h"
-#include "vector2D.h"
-#include <iostream>
-#include <vector>
 
 subLink::subLink() {
     (*this).cantidadPedestrian = 0;
     (*this).densidad = 0;
-    calcularDensidad();
-}
-subLink::subLink(link* parenLink) {
-    (*this).parentLink = parenLink; 
-    (*this).cantidadPedestrian = 0;
-    (*this).densidad = 0;
     // calcularDensidad();
 }
+// subLink::subLink(link* parenLink) {
+//     (*this).parentLink = parenLink; 
+//     (*this).cantidadPedestrian = 0;
+//     (*this).densidad = 0;
+//     // calcularDensidad();
+// }
 
 
 void subLink::setIdSubLink(int idSubLink) {
@@ -53,10 +49,10 @@ std::vector<int> subLink::getPedestrianIdsInSubLink() {
 void subLink::calcularCantidadPedestrian() {
     cantidadPedestrian = pedestriansIdsInSubLink.size();
 }
-void subLink::calcularDensidad() {
+void subLink::calcularDensidad(int length, int width) {
     calcularCantidadPedestrian();
     if (cantidadPedestrian != 0) {
-        densidad = static_cast<double>(cantidadPedestrian) / (parentLink->getLength()*parentLink->getWidth());
+        densidad = static_cast<double>(cantidadPedestrian) / (length * width);
     }
     else {
         densidad = 0;
@@ -85,5 +81,6 @@ void subLink::quitarPedestrianId(int idPedestrian) {
 }
 void subLink::mostrarSubLink() {
     calcularCantidadPedestrian();
-    std::cout << cantidadPedestrian << " ";
+    // std::cout << cantidadPedestrian << " ";
+    std::cout << densidad << " ";
 }

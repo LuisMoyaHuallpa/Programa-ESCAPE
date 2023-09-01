@@ -3,12 +3,12 @@
 
 #include "vector2D.h"
 #include <vector>
+#include <iostream>
 
-class link;
-class subLink {
+// class link;
+class subLink  {
 
 private:
-    link* parentLink;
     int idSubLink;
     vector2D puntoFinal;
     int cantidadPedestrian;
@@ -17,7 +17,7 @@ private:
     
 public:
     subLink();
-    subLink(link* parenLink);
+    // subLink(link* parenLink);
     
     void setIdSubLink(int idSubLink);
     void setPuntoFinal(vector2D puntoFinal);
@@ -32,7 +32,7 @@ public:
     std::vector<int> getPedestrianIdsInSubLink();
 
     void calcularCantidadPedestrian();
-    void calcularDensidad();
+    void calcularDensidad(int length, int width);
     bool verificarPedestrianId(int idPedestrian);
     void agregarPedestrianId(int idPedestrian);
     void quitarPedestrianId(int idPedestrian);

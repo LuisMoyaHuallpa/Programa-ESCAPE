@@ -1,15 +1,4 @@
 #include "pedestrians.h"
-#include "nodes.h"
-#include "tiempo.h"
-#include <boost/random/seed_seq.hpp>
-#include <cmath>
-#include <fstream>
-#include <ios>
-#include <iostream>
-#include <ostream>
-#include <string>
-#include <boost/random.hpp>
-#include <boost/math/distributions/rayleigh.hpp>
 
 pedestrians::pedestrians() {
     (*this).filename = "population.csv";
@@ -108,4 +97,5 @@ void pedestrians::calcularDistribucionRayleigh() {
         // std::cout << dbPedestrians.at(i).getTiempoInicial() << " ";
     }
 }
+
 

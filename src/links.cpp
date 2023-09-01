@@ -1,7 +1,4 @@
 #include "links.h"
-#include "link.h"
-#include <bits/types/cookie_io_functions_t.h>
-#include <iostream>
 
 // nodes links::listaNode;
 // void links::setListaNode(const nodes& dbnode) {

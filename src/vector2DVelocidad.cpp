@@ -1,10 +1,4 @@
-
 #include "vector2DVelocidad.h"
-#include "link.h"
-#include "pedestrian.h"
-#include "vector2D.h"
-#include <iostream>
-
 
 double vector2DVelocidad::velocidadConstante = 1.0;
 

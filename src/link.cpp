@@ -1,14 +1,5 @@
 #include "link.h"
 #include "node.h"
-#include "subLink.h"
-#include "vector2D.h"
-#include <iostream>
-#include <cmath>
-#include <fstream>
-#include <string>
-#include <vector>
-
-
 
 int link::unitWidthPartion = 2;
 int link::getUnitWidthPartion() {
@@ -27,7 +18,7 @@ link::link(int id, node* node1, node* node2, int length, int width) {
     setLength(length);
     setWidth(width);
     calcularNumberPartion();
-    subLinks.resize(numberPartion, subLink(this));
+    subLinks.resize(numberPartion);
 }
 
 void link::setIdLink(int id) {

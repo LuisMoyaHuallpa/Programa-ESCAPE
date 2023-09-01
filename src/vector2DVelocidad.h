@@ -2,7 +2,8 @@
 #define vector2DVelocidad_h
 
 #include "vector2D.h"
-#include "link.h"
+#include <iostream>
+
 class vector2DVelocidad : public vector2D {
 
 private:

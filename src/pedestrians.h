@@ -8,6 +8,15 @@
 #include <fstream>
 #include <iostream>
 #include "nodes.h"
+#include "tiempo.h"
+#include <boost/random/seed_seq.hpp>
+#include <cmath>
+#include <ios>
+#include <ostream>
+#include <boost/random.hpp>
+#include <boost/math/distributions/rayleigh.hpp>
+
+
 
 class pedestrians {
 

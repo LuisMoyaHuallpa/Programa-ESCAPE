@@ -2,13 +2,20 @@
 #define pedestrian_h
 
 #include "node.h"
-#include "link.h"
 #include "links.h"
 #include "tiempo.h"
 #include "vector2D.h"
 #include "vector2DVelocidad.h"
 #include <fstream>
 #include <iostream>
+#include "subLink.h"
+#include <algorithm>
+#include <cmath>
+#include <math.h>
+#include <random>
+#include <iomanip>
+
+
 
 
 

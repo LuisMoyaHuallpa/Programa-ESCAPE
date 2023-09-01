@@ -7,8 +7,11 @@
 #include "vector"
 #include <fstream>
 #include <vector>
-class node;
+#include <cmath>
+#include <iostream>
+// #include "node.h"
 
+class node;
 class link{
     
 private:
