@@ -57,7 +57,6 @@ void subLink::calcularDensidad(int length, int width) {
     else {
         densidad = 0;
     }
-    
 }
 bool subLink::verificarPedestrianId(int idPedestrian) {
     for (int i = 0; i < pedestriansIdsInSubLink.size(); i++) {
@@ -81,6 +80,6 @@ void subLink::quitarPedestrianId(int idPedestrian) {
 }
 void subLink::mostrarSubLink() {
     calcularCantidadPedestrian();
-    // std::cout << cantidadPedestrian << " ";
-    std::cout << densidad << " ";
+    std::cout << cantidadPedestrian << " ";
+    // std::cout << densidad << " ";
 }

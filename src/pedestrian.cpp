@@ -175,7 +175,6 @@ void pedestrian::imprimirPedestrianVelocity(std::fstream& file){
 void pedestrian::caminar() {
     // velocidad.calcularVectorVelocidad();
     position += velocidad * tiempo::deltaTiempo;
-    std::cout << "vel: " << velocidad.getMagnitud() << std::endl;
     if (verificarEndLink1()) {
         correctionPosition();
     }
