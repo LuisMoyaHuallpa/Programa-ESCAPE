@@ -38,7 +38,7 @@ int main() {
         std::cout << "Time = " << tiempoSimulado.getValorTiempo() << std::endl;
         dbPedestrian1.caminarPedestrians(tiempoSimulado.getValorTiempo());
 
-        // dbPedestrian1.mostrarPedestrians();
+        dbPedestrian1.mostrarPedestrians();
         if (tiempoSimulado.getWriteNow()) {
             std::string folderName = std::to_string(tiempoSimulado.getValorTiempo());
             createFolder(folderName);

@@ -16,9 +16,6 @@
 #include <iomanip>
 
 
-
-
-
 class pedestrian {
 private:
     int idPedestrian;

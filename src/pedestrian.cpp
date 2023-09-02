@@ -1,4 +1,6 @@
 #include "pedestrian.h"
+#include <cmath>
+#include <iostream>
 
 const int pedestrian::surviveReward = 100000;
 const int pedestrian::deadReward = -1000; 
@@ -175,9 +177,12 @@ void pedestrian::imprimirPedestrianVelocity(std::fstream& file){
 void pedestrian::caminar() {
     // velocidad.calcularVectorVelocidad();
     position += velocidad * tiempo::deltaTiempo;
-    if (verificarEndLink1()) {
-        correctionPosition();
-    }
+    std::cout << velocidad.getX() << " ";
+    std::cout << velocidad.getY() << std::endl;
+    
+    // if (verificarEndLink1()) {
+    //     correctionPosition();
+    // }
 }
 void pedestrian::eleccionRandomLinkActual() {
     // Obtener una semilla aleatoria del hardware
@@ -195,8 +200,10 @@ void pedestrian::eleccionRandomLinkActual() {
 // verifica si el nodo ya sali o esta punto final
 bool pedestrian::verificarEndLink() {
     bool terminoLink = false;
-    if (position.getX()*orientacion.getX() >= nodeFinal->getCoordX()*orientacion.getX() and
-    position.getY()*orientacion.getY() >= nodeFinal->getCoordY()*orientacion.getY()){
+    // std::cout << getOrientacion().getX() << " ";
+    // std::cout << getOrientacion().getY() << std::endl;
+    if (position.getX()*std::copysign(1, orientacion.getX()) >= nodeFinal->getCoordX()*std::copysign(1, orientacion.getX()) and
+    position.getY()*std::copysign(1, orientacion.getY()) >= nodeFinal->getCoordY()*std::copysign(1, orientacion.getY())){
         terminoLink = true;
     }
     return terminoLink;
@@ -211,12 +218,18 @@ void pedestrian::calcularNodeFinal() {
     }
 }
 void pedestrian::updateLinkParameter() {
-    if (verificarEndLink1()) {
+    if (verificarEndLink()) {
         setNodeInicio(nodeFinal);
+        position.setX(getNodeInicio()->getCoordX());
+        position.setY(getNodeInicio()->getCoordY());
         eleccionRandomLinkActual();
         calcularNodeFinal();
         calcularOrientacion();
+        std::cout << orientacion.getX() << " ";
+        std::cout << orientacion.getY() << std::endl;
         velocidad.setOrientacion(orientacion);
+        velocidad.calcularVectorVelocidad();
+        // falta mejor para que ajuste tambien esta velcoidad
     }
 }
 void pedestrian::calcularOrientacion() {
@@ -227,6 +240,8 @@ void pedestrian::calcularOrientacion() {
     // Normaliza el vector de dirección (divide cada e por la magnitud)
     orientacion.setX(x / magnitud);
     orientacion.setY(y / magnitud);
+    std::cout << orientacion.getX() << " ";
+    std::cout << orientacion.getY() << std::endl;
 }
 void pedestrian::calcularRetorno() {
     if (nodeInicio->getEvacuationCode() == 0) {
@@ -244,13 +259,13 @@ bool pedestrian::verificarEvacuationNode(){
 }
 void pedestrian::contarPedestrainSubdivision() {
     int idContador;
-    double row = (position.getX() - linkActual->getNode1()->getCoordX()) / static_cast<double>(linkActual->getUnitWidthPartion());
-    double col = (position.getY() - linkActual->getNode1()->getCoordY()) / static_cast<double>(linkActual->getUnitWidthPartion());
-    int idx_hipo = std::trunc(std::sqrt(std::pow(row,2) + pow(col, 2)));
-    if (idx_hipo > linkActual->getSubLinks().size()-1) {
-        idx_hipo = idx_hipo - 1;
+    double index_x = (position.getX() - linkActual->getNode1()->getCoordX()) / static_cast<double>(linkActual->getUnitWidthPartion());
+    double index_y = (position.getY() - linkActual->getNode1()->getCoordY()) / static_cast<double>(linkActual->getUnitWidthPartion());
+    int index_hipo = std::trunc(std::sqrt(std::pow(index_x,2) + pow(index_y, 2)));
+    if (index_hipo > linkActual->getSubLinks().size()-1) {
+        index_hipo = linkActual->getSubLinks().size()-1;
     }
-    idContador = idx_hipo;
+    idContador = index_hipo;
     
     if (verificarSaltoLink()) {
         if (linkActual == linkPasado) {
