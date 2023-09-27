@@ -2,6 +2,7 @@
 #define nodes_h
 
 #include "node.h"
+#include "nodeEvacution.h"
 #include <string>
 #include <vector>
 #include <iostream>
@@ -27,6 +28,7 @@ public:
     void usarlink();
     node* extracionNode(int index);
     void imprimirNodes();
+    void imprimirCantPedestrianEvacuted(std::string folderName);
     
 };
 #endif

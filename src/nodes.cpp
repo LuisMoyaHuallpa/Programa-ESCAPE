@@ -71,3 +71,16 @@ void nodes::imprimirNodes() {
         }
     }
 }
+
+void nodes::imprimirCantPedestrianEvacuted(std::string folderName) {
+    std::fstream file3;
+    file3.open(folderName + "/cantPedestrianEvacuated",std::ios::out);
+    for (int i = 0; i < dbnodes.size(); i++) {
+        const node* baseNode = dbnodes.at(i);
+        const nodeEvacuation* evacuationNode = dynamic_cast<const nodeEvacuation*>(baseNode);
+        if (evacuationNode) {
+            file3 << evacuationNode->getPersonasEvacudas();
+        }
+    }
+
+}

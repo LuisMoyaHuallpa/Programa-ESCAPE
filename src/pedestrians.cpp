@@ -81,7 +81,7 @@ void pedestrians::caminarPedestrians(int valorTiempo) {
                 dbPedestrians.at(i).caminar();
                 dbPedestrians.at(i).encontrarPrimerTiempo();
                 dbPedestrians.at(i).updateLinkParameter();
-                // dbPedestrians.at(i).verificarEndLink();
+                dbPedestrians.at(i).calcularRetorno();
             }
         }
     }

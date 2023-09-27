@@ -25,6 +25,7 @@ pedestrian::pedestrian(int edad, int gender, int hhType, int hhId, node* nodeIni
     setPrimerTiempo(true);
     setSaltoLink(false);
     setEvacuado(false);
+    setRetorno(0);
     double x = nodeInicio->getCoordX();
     double y = nodeInicio->getCoordY();
     vector2D position(x, y);
@@ -171,6 +172,7 @@ void pedestrian::mostrarPedestrian(){
     std::cout << "end: ";
     std::cout << std::setw(5) << getNodeFinal()->getCoordX() << ' ';
     std::cout << std::setw(5) << getNodeFinal()->getCoordY() << ' ';
+    std::cout << std::setw(5) << getRetorno() << ' ';
     std::cout << std::endl;
 }
 void pedestrian::imprimirPedestrianPosition(std::fstream& file){
@@ -183,11 +185,7 @@ void pedestrian::imprimirPedestrianVelocity(std::fstream& file){
     file << std::endl;
 }
 void pedestrian::caminar() {
-    // velocidad.calcularVectorVelocidad();
     position += velocidad * tiempo::deltaTiempo;
-    // if (verificarEndLink1()) {
-    //     correctionPosition();
-    // }
 }
 void pedestrian::eleccionRandomLinkActual() {
     // Obtener una semilla aleatoria del hardware
@@ -245,19 +243,19 @@ void pedestrian::calcularOrientacion() {
     orientacion.setX(x / magnitud);
     orientacion.setY(y / magnitud);
 }
-// void pedestrian::calcularRetorno() {
-//     if (nodeInicio->getEvacuationCode() == 0) {
-//         retorno += stepReward;
-//     }
-//     else {
-//         retorno += surviveReward;
-//     }
-// }
+void pedestrian::calcularRetorno() {
+    if (evacuado == true) {
+        retorno += surviveReward;
+    }
+    else {
+        retorno += stepReward;
+    }
+}
 void pedestrian::verificarPedestrianEvacuation(){
     const nodeEvacuation* evacuationNode = dynamic_cast<const nodeEvacuation*>(nodeInicio);
     if (evacuationNode) {
-        std::cout << "nodeEvacuation: " << evacuationNode->getIdNode() << ", X: " << evacuationNode->getCoordX() << ", Y: " << evacuationNode->getCoordY() << std::endl;
         evacuado = "True";
+        evacuationNode->sumarPersonaEvacuda();
     }
 }
 void pedestrian::contarPedestrainSubdivision() {
