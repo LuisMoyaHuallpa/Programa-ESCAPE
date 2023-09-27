@@ -13,17 +13,15 @@ private:
     int idNode;
     int coordX;
     int coordY;
-    // puede cambiar a bolean, el evacuationCode porque te dice
-    // si el node es un punto de evacuacion
-    int evacuationCode;
-    int rewardCode;
-
     std::vector<link*> linkConnection;
 
 
 public:
     node();
-    node(int id, int coordX, int coordY, int evacuationCode, int rewardCode);
+    node(int id, int coordX, int coordY);
+
+    virtual ~node() {} // Destructor virtual
+
     
     //setters
     void setIdNode(int id);

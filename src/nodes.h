@@ -15,7 +15,7 @@ class nodes{
 
 private:
     std::string filename;
-    std::vector<node> dbnodes;
+    std::vector<node*> dbnodes;
 public:
     // constructor
     nodes();

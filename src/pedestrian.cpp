@@ -1,4 +1,5 @@
 #include "pedestrian.h"
+#include "nodeEvacution.h"
 #include <cmath>
 #include <iostream>
 
@@ -23,6 +24,7 @@ pedestrian::pedestrian(int edad, int gender, int hhType, int hhId, node* nodeIni
     setEmpezoCaminar(false);
     setPrimerTiempo(true);
     setSaltoLink(false);
+    setEvacuado(false);
     double x = nodeInicio->getCoordX();
     double y = nodeInicio->getCoordY();
     vector2D position(x, y);
@@ -91,6 +93,9 @@ void pedestrian::setSaltoLink(bool saltoLink) {
 void pedestrian::setRetorno(int retorno) {
     (*this).retorno = retorno;
 }
+void pedestrian::setEvacuado(bool evacuado) {
+    (*this).evacuado = evacuado;
+}
 
 int pedestrian::getIdPedestrian() const {
     return idPedestrian;
@@ -149,6 +154,9 @@ bool pedestrian::getSaltoLink() {
 int pedestrian::getRetorno() {
     return retorno;  
 }
+bool pedestrian::getEvacuado() {
+    return evacuado;
+}
 
 void pedestrian::mostrarPedestrian(){
     std::cout << getIdPedestrian() << ' ';
@@ -177,9 +185,6 @@ void pedestrian::imprimirPedestrianVelocity(std::fstream& file){
 void pedestrian::caminar() {
     // velocidad.calcularVectorVelocidad();
     position += velocidad * tiempo::deltaTiempo;
-    std::cout << velocidad.getX() << " ";
-    std::cout << velocidad.getY() << std::endl;
-    
     // if (verificarEndLink1()) {
     //     correctionPosition();
     // }
@@ -220,16 +225,15 @@ void pedestrian::calcularNodeFinal() {
 void pedestrian::updateLinkParameter() {
     if (verificarEndLink()) {
         setNodeInicio(nodeFinal);
+        verificarPedestrianEvacuation();
         position.setX(getNodeInicio()->getCoordX());
         position.setY(getNodeInicio()->getCoordY());
         eleccionRandomLinkActual();
         calcularNodeFinal();
         calcularOrientacion();
-        std::cout << orientacion.getX() << " ";
-        std::cout << orientacion.getY() << std::endl;
         velocidad.setOrientacion(orientacion);
         velocidad.calcularVectorVelocidad();
-        // falta mejor para que ajuste tambien esta velcoidad
+        // falta mejor para que ajuste tambien esta velcoida
     }
 }
 void pedestrian::calcularOrientacion() {
@@ -240,22 +244,21 @@ void pedestrian::calcularOrientacion() {
     // Normaliza el vector de dirección (divide cada e por la magnitud)
     orientacion.setX(x / magnitud);
     orientacion.setY(y / magnitud);
-    std::cout << orientacion.getX() << " ";
-    std::cout << orientacion.getY() << std::endl;
 }
-void pedestrian::calcularRetorno() {
-    if (nodeInicio->getEvacuationCode() == 0) {
-        retorno += stepReward;
+// void pedestrian::calcularRetorno() {
+//     if (nodeInicio->getEvacuationCode() == 0) {
+//         retorno += stepReward;
+//     }
+//     else {
+//         retorno += surviveReward;
+//     }
+// }
+void pedestrian::verificarPedestrianEvacuation(){
+    const nodeEvacuation* evacuationNode = dynamic_cast<const nodeEvacuation*>(nodeInicio);
+    if (evacuationNode) {
+        std::cout << "nodeEvacuation: " << evacuationNode->getIdNode() << ", X: " << evacuationNode->getCoordX() << ", Y: " << evacuationNode->getCoordY() << std::endl;
+        evacuado = "True";
     }
-    else {
-        retorno += surviveReward;
-    }
-}
-bool pedestrian::verificarEvacuationNode(){
-    if (nodeInicio->getEvacuationCode() == 1) {
-        return true;
-    }
-    return false;
 }
 void pedestrian::contarPedestrainSubdivision() {
     int idContador;
@@ -305,7 +308,7 @@ void pedestrian::contarPedestrainSubdivision() {
         orientacionLinkPasado = orientacion;
         setSaltoLink(true);
     }
-    linkActual->mostrarSubLinks();
+    // linkActual->mostrarSubLinks();
     // mostrarPedestrian();
 }
 // verifica si link concide con node1 y nodeinicia
@@ -320,12 +323,12 @@ void pedestrian::encontrarPrimerTiempo() {
 bool pedestrian::verificarEndLink1() {
     if (position.getX() >= nodeFinal->getCoordX() and position.getY() >= nodeFinal->getCoordY()
     and getOrientacion().getX() >= 0 and getOrientacion().getY() >= 0) {
-        std::cout << "arriba";
+        // std::cout << "arriba";
         return true; 
     }
     else if (position.getX() <= nodeFinal->getCoordX() and position.getY() <= nodeFinal->getCoordY()
     and getOrientacion().getX() <= 0 and getOrientacion().getY() <= 0) {
-        std::cout << "abajo";
+        // std::cout << "abajo";
         return true; 
     }
     return false;

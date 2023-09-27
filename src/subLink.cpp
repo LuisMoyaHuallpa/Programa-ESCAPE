@@ -52,7 +52,7 @@ void subLink::calcularCantidadPedestrian() {
 void subLink::calcularDensidad(int length, int width) {
     calcularCantidadPedestrian();
     if (cantidadPedestrian != 0) {
-        densidad = static_cast<double>(cantidadPedestrian) / (length * width);
+        densidad = static_cast<double>(cantidadPedestrian) / (2.0 * width);
     }
     else {
         densidad = 0;

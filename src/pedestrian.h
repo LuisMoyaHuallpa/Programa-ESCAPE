@@ -41,6 +41,7 @@ private:
     bool saltoLink;
     int retorno;
     bool evacuado;
+    int rewardPedestrian;
 
 public:
     static int contador;
@@ -71,6 +72,7 @@ public:
     void setPrimerTiempo(bool primerTiempo);
     void setSaltoLink(bool saltoLink);
     void setRetorno(int retorno);
+    void setEvacuado(bool evacuado);
 
     int getIdPedestrian() const;
     int getEdad() const;
@@ -91,6 +93,7 @@ public:
     bool getPrimerTiempo();
     bool getSaltoLink();
     int getRetorno();
+    bool getEvacuado();
 
     void mostrarPedestrian();
     void imprimirPedestrianPosition(std::fstream& file);
@@ -103,7 +106,7 @@ public:
     void updateLinkParameter();
     void calcularOrientacion();
     void calcularRetorno();
-    bool verificarEvacuationNode();
+    void verificarPedestrianEvacuation();
     void contarPedestrainSubdivision();
     bool verificarDirectionLink();
     void encontrarPrimerTiempo();

@@ -74,14 +74,15 @@ void pedestrians::caminarPedestrians(int valorTiempo) {
     for (int i = 0; i < dbPedestrians.size(); i++) {
         if (valorTiempo == dbPedestrians.at(i).getTiempoInicial()) {
             dbPedestrians.at(i).setEmpezoCaminar(true);
-            std::cout << dbPedestrians.at(i).getTiempoInicial() << " ";
         }
-        if (valorTiempo > dbPedestrians.at(i).getTiempoInicial()) {
-            dbPedestrians.at(i).contarPedestrainSubdivision();
-            dbPedestrians.at(i).caminar();
-            dbPedestrians.at(i).encontrarPrimerTiempo();
-            dbPedestrians.at(i).updateLinkParameter();
-            // dbPedestrians.at(i).verificarEndLink();
+        if (!dbPedestrians.at(i).getEvacuado()) {
+            if (valorTiempo > dbPedestrians.at(i).getTiempoInicial()) {
+                dbPedestrians.at(i).contarPedestrainSubdivision();
+                dbPedestrians.at(i).caminar();
+                dbPedestrians.at(i).encontrarPrimerTiempo();
+                dbPedestrians.at(i).updateLinkParameter();
+                // dbPedestrians.at(i).verificarEndLink();
+            }
         }
     }
 }

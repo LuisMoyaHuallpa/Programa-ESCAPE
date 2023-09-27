@@ -1,4 +1,6 @@
 #include "nodes.h"
+#include "link.h"
+#include "nodeEvacution.h"
 
 nodes::nodes() {
     (*this).filename = "nodes.csv";
@@ -13,12 +15,17 @@ void nodes::leerNodes(std::string filename) {
     std::fstream file;
     file.open(filename, std::ios::in);
 
-   if (file.fail()) {
+    if (file.fail()) {
         std::cout << "Error opening the file nodes.csv" << std::endl;
         exit(1);
     }
 
-    int n, x, y, e, r;
+    //- Variables de una fila del archivo node.csv, que seria un node
+    int n, //<-id 
+        x, //<-posicion x 
+        y, //<-posicion y
+        e, //<-node de evacucion, si es 1
+        r;
     std::string line;
 
     while (std::getline(file, line)) {
@@ -40,17 +47,27 @@ void nodes::leerNodes(std::string filename) {
         y = std::stoi(y_str);
         e = std::stoi(e_str);
         r = std::stoi(r_str);
-        dbnodes.push_back(node(n, x, y, e, r));
+        if (e == 0) {
+            dbnodes.push_back(new node(n, x, y));
         }
+        else {
+            dbnodes.push_back(new nodeEvacuation(n, x, y));
+        }
+    }
     file.close(); 
 }
 
 node* nodes::extracionNode(int index) {
-    node* nodeExtraido = &dbnodes.at(index);
+    node* nodeExtraido = dbnodes.at(index);
     return nodeExtraido;
 }
 void nodes::imprimirNodes() {
     for (int i = 0; i < dbnodes.size(); i++) {
-        dbnodes.at(i).imprimirNode();
+        dbnodes.at(i)->imprimirNode();
+        const node* baseNode = dbnodes.at(i);
+        const nodeEvacuation* evacuationNode = dynamic_cast<const nodeEvacuation*>(baseNode);
+        if (evacuationNode) {
+            std::cout << "nodeEvacuation: " << evacuationNode->getIdNode() << ", X: " << evacuationNode->getCoordX() << ", Y: " << evacuationNode->getCoordY() << std::endl;
+        }
     }
 }
