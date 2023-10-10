@@ -1,7 +1,7 @@
 #include "link.h"
 #include "node.h"
 
-int link::unitWidthPartion = 2;
+int link::unitWidthPartion = 10;
 int link::getUnitWidthPartion() {
     return unitWidthPartion;  
 }
@@ -115,4 +115,15 @@ void link::mostrarSubLinks() {
         subLinks.at(i).mostrarSubLink();
     }
     std::cout << std::endl;
+}
+void link::calcularDensityLevel() {
+    if(subLinks.at(0).getDensidad() <= 0.5){
+        densityLevel = 0;
+    }  
+    else if (subLinks.at(0).getDensidad() <= 3.0) {
+        densityLevel = 1;
+    }
+    else {
+        densityLevel = 2;
+    }
 }

@@ -228,6 +228,9 @@ void pedestrian::updateLinkParameter() {
         position.setY(getNodeInicio()->getCoordY());
         eleccionRandomLinkActual();
         calcularNodeFinal();
+        // nodeFinal->getQ().actualizarQ(getRetorno());
+        // nodeFinal->getQ().actualizarQ(nodeInicio->getQ(), getRetorno());
+        // algoritmo sarsa
         calcularOrientacion();
         velocidad.setOrientacion(orientacion);
         velocidad.calcularVectorVelocidad();

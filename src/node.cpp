@@ -1,4 +1,5 @@
 #include "node.h"
+#include "qTable.h"
 
 node::node() {
     (*this).idNode = 0;
@@ -10,6 +11,7 @@ node::node(int id, int coordX, int coordY) {
     setIdNode(id);
     setCoorX(coordX);
     setCoorY(coordY);
+    
 }
 // setters
 void node::setIdNode(int id) {
@@ -38,6 +40,7 @@ int node::getCoordY() const{
 std::vector<link*> node::getLinkConnection() {
     return linkConnection;
 }
+qTable node::getQ() { return q; }
 
 void node::agregarLink(link* link) {
     linkConnection.push_back(link);

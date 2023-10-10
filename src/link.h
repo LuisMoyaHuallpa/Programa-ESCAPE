@@ -22,6 +22,8 @@ private:
     int width;
     int numberPartion;
     std::vector<subLink> subLinks;
+    int densityLevel;
+    
 
 public:
     static int unitWidthPartion;
@@ -37,6 +39,7 @@ public:
     void setLength(int length);
     void setWidth(int width);
     void setSubLinks(std::vector<subLink> subLinks);
+    void setDensityLevel(int densityLevel);
 
    /* getters  */
     int getIdLink() const;
@@ -46,6 +49,7 @@ public:
     int getWidth() const;
     int getNumberPartion();
     std::vector<subLink>& getSubLinks();
+    int getDensityLevel();
 
     void mostrarLink();
     void imprimirLink(std::fstream& file);
@@ -54,6 +58,7 @@ public:
     void creacionLinkConnection();
     void calcularNumberPartion();
     void mostrarSubLinks();
+    void calcularDensityLevel();
     // void calcularSubdivision();
     // void guardarLinkConnection();
 };

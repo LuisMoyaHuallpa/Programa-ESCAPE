@@ -6,6 +6,7 @@
 #include <ostream>
 #include <vector>
 #include "link.h"
+#include "qTable.h"
 
 class link;
 class node {
@@ -14,7 +15,7 @@ private:
     int coordX;
     int coordY;
     std::vector<link*> linkConnection;
-
+    qTable q;
 
 public:
     node();
@@ -38,12 +39,11 @@ public:
     int getEvacuationCode() const;
     int getRewardCode() const;
     std::vector<link*> getLinkConnection();
+    qTable getQ();
+
 
     void agregarLink(link* link);
     void imprimirNode();
-
-
-    
 
 };
 #endif
