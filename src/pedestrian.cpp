@@ -1,5 +1,6 @@
 #include "pedestrian.h"
 #include "nodeEvacution.h"
+#include "sarsa.h"
 #include <cmath>
 #include <iostream>
 
@@ -227,8 +228,11 @@ void pedestrian::updateLinkParameter() {
         position.setX(getNodeInicio()->getCoordX());
         position.setY(getNodeInicio()->getCoordY());
         eleccionRandomLinkActual();
+        
         calcularNodeFinal();
-        // nodeFinal->getQ().actualizarQ(getRetorno());
+        linkPasado->calcularDensityLevel();
+        calcularQ();
+        // nodeInicio->getQTable().actualizarQ(this);
         // nodeFinal->getQ().actualizarQ(nodeInicio->getQ(), getRetorno());
         // algoritmo sarsa
         calcularOrientacion();
@@ -343,4 +347,6 @@ bool pedestrian::verificarSaltoLink() {
 void pedestrian::correctionPosition() {
     position.setX(nodeFinal->getCoordX());
     position.setY(nodeFinal->getCoordY());
+}
+void pedestrian::calcularQ() {
 }

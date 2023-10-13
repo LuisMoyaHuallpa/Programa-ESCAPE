@@ -21,6 +21,7 @@ void createFolder(const std::string& folderName) {
 }
 
 
+
 int main() {
     nodes dbNode1;
     links dbLink1(&dbNode1);

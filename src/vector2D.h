@@ -19,7 +19,9 @@ public:
     double getX();
     double getY();
 
+    // operacion suma de vectores
     vector2D operator+(vector2D vector2);
+    // operacion multipliacion de vectores
     vector2D operator*(double scalar);
     vector2D operator+=(vector2D vector2);
 

@@ -112,6 +112,7 @@ public:
     void encontrarPrimerTiempo();
     bool verificarSaltoLink();
     void correctionPosition();
+    void calcularQ();
 };
 
 #endif
