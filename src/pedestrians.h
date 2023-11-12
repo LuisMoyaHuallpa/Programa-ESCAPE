@@ -15,6 +15,7 @@
 #include <ostream>
 #include <boost/random.hpp>
 #include <boost/math/distributions/rayleigh.hpp>
+#include "sarsa.h"
 
 
 
@@ -36,6 +37,7 @@ public:
     void imprimirPedestrians(std::string foldeName);
     void calcularNumberPedestrian();
     void caminarPedestrians(int valorTiempo);
+    void caminarPedestrians(int valorTiempo, sarsa* sarsaAlgorithm);
     void calcularDistribucionRayleigh();
     
 };

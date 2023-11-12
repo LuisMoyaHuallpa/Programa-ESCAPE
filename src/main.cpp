@@ -27,9 +27,8 @@ int main() {
     links dbLink1(&dbNode1);
     // dbLink1.imprimirLinks();
     // dbLink1.mostrarLinks();
-    // dbNode1.imprimirNodes();
     pedestrians dbPedestrian1(&dbNode1);
-    dbPedestrian1.mostrarPedestrians();
+    // dbPedestrian1.mostrarPedestrians();
     tiempo tiempoSimulado;
 
     while (tiempoSimulado.running())
@@ -38,8 +37,9 @@ int main() {
         int tiempo = tiempoSimulado.getValorTiempo();
         std::cout << "Time = " << tiempoSimulado.getValorTiempo() << std::endl;
         dbPedestrian1.caminarPedestrians(tiempoSimulado.getValorTiempo());
-
-        dbPedestrian1.mostrarPedestrians();
+        // dbPedestrian1.caminarPedestrians(tiempoSimulado.getValorTiempo(), &sarsaAlgorithm);
+        // dbNode1.imprimirNodes();
+        // dbPedestrian1.mostrarPedestrians();
         if (tiempoSimulado.getWriteNow()) {
             std::string folderName = std::to_string(tiempoSimulado.getValorTiempo());
             createFolder(folderName);

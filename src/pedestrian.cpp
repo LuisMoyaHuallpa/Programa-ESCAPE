@@ -1,8 +1,13 @@
 #include "pedestrian.h"
 #include "nodeEvacution.h"
+#include "q.h"
 #include "sarsa.h"
+#include "state.h"
 #include <cmath>
+#include <cstddef>
 #include <iostream>
+#include <mutex>
+#include <vector>
 
 const int pedestrian::surviveReward = 100000;
 const int pedestrian::deadReward = -1000; 
@@ -13,15 +18,16 @@ pedestrian::pedestrian() : nodeInicio () {
     (*this).idPedestrian = 0;
     (*this).edad = 0;
     (*this).hhType = 0;
-    (*this).hhId = 0;
+   (*this).hhId = 0;
 }
-pedestrian::pedestrian(int edad, int gender, int hhType, int hhId, node* nodeInicio)  {
+pedestrian::pedestrian(int edad, int gender, int hhType, int hhId, node* nodeInicio) : sarsaAlgorithm() {
     setIdPedestrian(contador++);
     setEdad(edad);
     setGender(gender);
     setHHType(hhType);
     setHHId(hhId);
     setNodeInicio(nodeInicio);
+    // setNodeAnterior(nodeInicio);
     setEmpezoCaminar(false);
     setPrimerTiempo(true);
     setSaltoLink(false);
@@ -36,6 +42,9 @@ pedestrian::pedestrian(int edad, int gender, int hhType, int hhId, node* nodeIni
     calcularNodeFinal();
     calcularOrientacion();
     velocidad.setOrientacion(orientacion);
+    qStateAction = new q;
+    // qStateAction->setA(linkActual->getIdLink());
+    // qStateAction->setS(calcularLevelDensityLinks());
 }
 
 void pedestrian::setIdPedestrian(int id){
@@ -59,6 +68,9 @@ void pedestrian::setNodeInicio(node* nodeInicio){
 void pedestrian::setNodeFinal(node* nodeFinal) {
     (*this).nodeFinal = nodeFinal;
 }
+// void pedestrian::setNodeAnterior(node* nodeAnterior) {
+//     (*this).nodeAnterior = nodeAnterior;
+// }
 void pedestrian::setPosition(vector2D position) {
     (*this).position = position;
 }
@@ -67,6 +79,9 @@ void pedestrian::setLinkActual(link *linkActual) {
 }
 void pedestrian::setLinkPasado(link *linkPasado) {
     (*this).linkPasado = linkPasado;
+}
+void pedestrian::setqStateAction(q* qStateAction) {
+    (*this).qStateAction = qStateAction;
 }
 void pedestrian::setOrientacion(vector2D orientacion) {
     (*this).orientacion = orientacion;
@@ -120,14 +135,20 @@ node* pedestrian::getNodeInicio() const{
 node* pedestrian::getNodeFinal() {
     return nodeFinal;  
 }
+// node* pedestrian::getNodeAnterior() {
+//     return nodeAnterior;  
+// }
 vector2D pedestrian::getPosition() {
     return position;
 }
-link *pedestrian::getLinkActual() {
+link* pedestrian::getLinkActual() {
     return linkActual;
 }
-link *pedestrian::getLinkPasado() {
+link* pedestrian::getLinkPasado() {
     return linkPasado;
+}
+q* pedestrian::getqStateAction() {
+    return qStateAction;
 }
 vector2D pedestrian::getOrientacion() {
     return orientacion;
@@ -223,18 +244,28 @@ void pedestrian::calcularNodeFinal() {
 }
 void pedestrian::updateLinkParameter() {
     if (verificarEndLink()) {
+        calcularQ();
         setNodeInicio(nodeFinal);
         verificarPedestrianEvacuation();
         position.setX(getNodeInicio()->getCoordX());
         position.setY(getNodeInicio()->getCoordY());
         eleccionRandomLinkActual();
-        
         calcularNodeFinal();
-        linkPasado->calcularDensityLevel();
-        calcularQ();
-        // nodeInicio->getQTable().actualizarQ(this);
-        // nodeFinal->getQ().actualizarQ(nodeInicio->getQ(), getRetorno());
-        // algoritmo sarsa
+        calcularOrientacion();
+        velocidad.setOrientacion(orientacion);
+        velocidad.calcularVectorVelocidad();
+        // falta mejor para que ajuste tambien esta velcoida
+    }
+}
+void pedestrian::updateLinkParameter(sarsa* sarsaAlgorithm) {
+    if (verificarEndLink()) {
+        setNodeInicio(nodeFinal);
+        verificarPedestrianEvacuation();
+        position.setX(getNodeInicio()->getCoordX());
+        position.setY(getNodeInicio()->getCoordY());
+        eleccionRandomLinkActual();
+        calcularNodeFinal();
+        // calcularQ(sarsaAlgorithm);
         calcularOrientacion();
         velocidad.setOrientacion(orientacion);
         velocidad.calcularVectorVelocidad();
@@ -349,4 +380,71 @@ void pedestrian::correctionPosition() {
     position.setY(nodeFinal->getCoordY());
 }
 void pedestrian::calcularQ() {
+    // R
+    sarsaAlgorithm.setR(getRetorno());
+    // QPrevious
+    bool verificarQ = false;
+    int idInicio = 0;
+    nodeInicio->buscarQ(*qStateAction, &verificarQ, idInicio);
+    if (verificarQ) {
+        sarsaAlgorithm.setQPrevious(nodeInicio->getQTable().at(idInicio).getQ());
+    }
+    // QCurrent
+    qStateAction->setA(linkActual->getIdLink());
+    qStateAction->setS(calcularLevelDensityLinks());
+    verificarQ = false;
+    int idFinal = 0;
+    nodeFinal->buscarQ(*qStateAction, &verificarQ, idFinal);
+    if (verificarQ) {
+        nodeFinal->getQTable().at(idFinal).mostrarQ();
+        sarsaAlgorithm.setQCurrent(nodeFinal->getQTable().at(idFinal).getQ());
+    }
+    else {
+        nodeFinal->addqQTable(*qStateAction);
+        sarsaAlgorithm.setQCurrent(qStateAction->getQ());
+    }
+    nodeInicio->getQTable().at(idInicio).setQ(sarsaAlgorithm.sarsaActualizarQ());
 }
+
+// std::vector<q>::iterator pedestrian::agregarObtenerqLista(node* nodeDeBusqueda,q qBuscando) {
+//     std::vector<q>::iterator it;
+//     // busqueda de Q en qTable
+//     nodeDeBusqueda->buscarQ(qBuscando, &it);
+//     // si lo encuentra
+//     if (it != nodeInicio->getQTable().end()) {
+//         return it;
+//     }
+//     else {
+//         nodeInicio->addqQTable(qBuscando);
+//         return std::prev(nodeDeBusqueda->getQTable().end());
+//     }
+// }
+
+std::vector<int> pedestrian::calcularLevelDensityLinks() {
+    std::vector<int> densityLinks;
+    for (int i = 0; i < nodeInicio->getLinkConnection().size(); i++) {
+        nodeInicio->getLinkConnection().at(i)->calcularDensityLevel();
+        // std::cout << nodeInicio->getLinkConnection().at(i)->getDensityLevel();
+        densityLinks.push_back(nodeInicio->getLinkConnection().at(i)->getDensityLevel());
+    }
+    return densityLinks;
+}
+void pedestrian::inicializarq() {
+    qStateAction->setA(linkActual->getIdLink());
+    qStateAction->setS(calcularLevelDensityLinks());
+    q* qEncontrado = nullptr;
+    bool verificarQ = false;
+    int idq = 0;
+    nodeInicio->buscarQ(*qStateAction, &verificarQ, idq);
+    if (verificarQ) {
+    }
+    else {
+        nodeInicio->addqQTable(*qStateAction);
+    }
+}
+void pedestrian::crearStateAction() {
+//     qAnterior.setA(linkActual->getIdLink());
+//     qAnterior.setS(calcularLevelDensityLinks());
+//     nodeInicio->addqQTable(qAnterior);
+}
+

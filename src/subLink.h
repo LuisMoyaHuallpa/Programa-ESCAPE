@@ -17,7 +17,6 @@ private:
     
 public:
     subLink();
-    // subLink(link* parenLink);
     
     void setIdSubLink(int idSubLink);
     void setPuntoFinal(vector2D puntoFinal);

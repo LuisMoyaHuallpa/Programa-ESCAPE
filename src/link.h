@@ -24,7 +24,6 @@ private:
     std::vector<subLink> subLinks;
     int densityLevel;
     
-
 public:
     static int unitWidthPartion;
     int static getUnitWidthPartion();

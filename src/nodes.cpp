@@ -63,7 +63,8 @@ node* nodes::extracionNode(int index) {
 }
 void nodes::imprimirNodes() {
     for (int i = 0; i < dbnodes.size(); i++) {
-        dbnodes.at(i)->imprimirNode();
+        dbnodes.at(i)->mostrarNode();
+        dbnodes.at(i)->mostrarQTable();
         const node* baseNode = dbnodes.at(i);
         const nodeEvacuation* evacuationNode = dynamic_cast<const nodeEvacuation*>(baseNode);
         if (evacuationNode) {

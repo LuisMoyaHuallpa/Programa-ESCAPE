@@ -62,9 +62,9 @@ int link::getNumberPartion() {
 std::vector<subLink>& link::getSubLinks() {
     return subLinks;
 }
-// subLink link::getSubDivision() {
-//     return subdivision;
-// }
+int link::getDensityLevel() {
+    return densityLevel;
+}
 
 void link::mostrarLink(){
     std::cout << "link: ";
@@ -117,10 +117,16 @@ void link::mostrarSubLinks() {
     std::cout << std::endl;
 }
 void link::calcularDensityLevel() {
-    if(subLinks.at(0).getDensidad() <= 0.5){
+    double densidadMayorSubLink = 0.0;
+    for (int i = 0; i < subLinks.size(); i++) {
+        if (subLinks.at(i).getDensidad() > densidadMayorSubLink) {
+            densidadMayorSubLink = subLinks.at(i).getDensidad();
+        }
+    }
+    if(densidadMayorSubLink <= 0.5){
         densityLevel = 0;
     }  
-    else if (subLinks.at(0).getDensidad() <= 3.0) {
+    else if (densidadMayorSubLink <= 3.0) {
         densityLevel = 1;
     }
     else {

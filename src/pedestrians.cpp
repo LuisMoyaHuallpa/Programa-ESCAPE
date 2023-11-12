@@ -74,6 +74,8 @@ void pedestrians::caminarPedestrians(int valorTiempo) {
     for (int i = 0; i < dbPedestrians.size(); i++) {
         if (valorTiempo == dbPedestrians.at(i).getTiempoInicial()) {
             dbPedestrians.at(i).setEmpezoCaminar(true);
+            dbPedestrians.at(i).inicializarq();
+            // dbPedestrians.at(i).getNodeInicio()->mostrarQTable();
         }
         if (!dbPedestrians.at(i).getEvacuado()) {
             if (valorTiempo > dbPedestrians.at(i).getTiempoInicial()) {
@@ -81,6 +83,23 @@ void pedestrians::caminarPedestrians(int valorTiempo) {
                 dbPedestrians.at(i).caminar();
                 dbPedestrians.at(i).encontrarPrimerTiempo();
                 dbPedestrians.at(i).updateLinkParameter();
+                dbPedestrians.at(i).calcularRetorno();
+            }
+        }
+    }
+}
+void pedestrians::caminarPedestrians(int valorTiempo, sarsa* sarsaAlgorithm) {
+    for (int i = 0; i < dbPedestrians.size(); i++) {
+        if (valorTiempo == dbPedestrians.at(i).getTiempoInicial()) {
+            dbPedestrians.at(i).setEmpezoCaminar(true);
+            // dbPedestrians.at(i).crearStateAction();
+        }
+        if (!dbPedestrians.at(i).getEvacuado()) {
+            if (valorTiempo > dbPedestrians.at(i).getTiempoInicial()) {
+                dbPedestrians.at(i).contarPedestrainSubdivision();
+                dbPedestrians.at(i).caminar();
+                dbPedestrians.at(i).encontrarPrimerTiempo();
+                dbPedestrians.at(i).updateLinkParameter(sarsaAlgorithm);
                 dbPedestrians.at(i).calcularRetorno();
             }
         }
@@ -98,5 +117,3 @@ void pedestrians::calcularDistribucionRayleigh() {
         // std::cout << dbPedestrians.at(i).getTiempoInicial() << " ";
     }
 }
-
-

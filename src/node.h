@@ -16,9 +16,8 @@ private:
     int coordX;
     int coordY;
     std::vector<link*> linkConnection;
-    // qTable q;
-    q qTable;
-    // states stateTable;
+public:
+    std::vector<q> qTable;
 
 public:
     node();
@@ -41,12 +40,13 @@ public:
     int getEvacuationCode() const;
     int getRewardCode() const;
     std::vector<link*> getLinkConnection();
-    q getQTable();
-    // states getStateTable();
-
-
+    std::vector<q> getQTable();
+    
     void agregarLink(link* link);
-    void imprimirNode();
+    void buscarQ(q qBuscando, bool* verificarQ, int idq);
+    void addqQTable(q qElemento);
+    void mostrarNode();
+    void mostrarQTable();
 
 };
 #endif

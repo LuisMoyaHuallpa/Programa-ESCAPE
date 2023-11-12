@@ -6,7 +6,7 @@ tiempo::tiempo() {
     (*this).valorTiempo = 0;
     (*this).deltaT = 1;
     (*this).writeNow = true;
-    (*this).endTime = 400;
+    (*this).endTime = 300;
 }
 
 void tiempo::setValorTiempo(int valorTiempo) {

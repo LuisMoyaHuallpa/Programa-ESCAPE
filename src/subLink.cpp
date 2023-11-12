@@ -1,17 +1,11 @@
 #include "subLink.h"
+#include "link.h"
 
 subLink::subLink() {
     (*this).cantidadPedestrian = 0;
     (*this).densidad = 0;
     // calcularDensidad();
 }
-// subLink::subLink(link* parenLink) {
-//     (*this).parentLink = parenLink; 
-//     (*this).cantidadPedestrian = 0;
-//     (*this).densidad = 0;
-//     // calcularDensidad();
-// }
-
 
 void subLink::setIdSubLink(int idSubLink) {
     (*this).idSubLink = idSubLink;
@@ -52,7 +46,7 @@ void subLink::calcularCantidadPedestrian() {
 void subLink::calcularDensidad(int length, int width) {
     calcularCantidadPedestrian();
     if (cantidadPedestrian != 0) {
-        densidad = static_cast<double>(cantidadPedestrian) / (2.0 * width);
+        densidad = static_cast<double>(cantidadPedestrian) / (link::unitWidthPartion * width);
     }
     else {
         densidad = 0;
@@ -81,5 +75,4 @@ void subLink::quitarPedestrianId(int idPedestrian) {
 void subLink::mostrarSubLink() {
     calcularCantidadPedestrian();
     std::cout << cantidadPedestrian << " ";
-    // std::cout << densidad << " ";
 }

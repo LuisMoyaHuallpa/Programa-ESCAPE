@@ -14,7 +14,8 @@
 #include <math.h>
 #include <random>
 #include <iomanip>
-
+#include <vector>
+#include "sarsa.h"
 
 class pedestrian {
 private:
@@ -29,8 +30,10 @@ private:
     vector2D position;
     node* nodeInicio;
     node* nodeFinal;
+    // node* nodeAnterior;
     link* linkActual;
     link* linkPasado;
+    q* qStateAction;
     vector2D orientacion;
     vector2D orientacionLinkPasado;
     vector2DVelocidad velocidad;
@@ -41,7 +44,7 @@ private:
     bool saltoLink;
     int retorno;
     bool evacuado;
-    int rewardPedestrian;
+    sarsa sarsaAlgorithm;
 
 public:
     static int contador;
@@ -60,9 +63,11 @@ public:
     void setHHId(int hhId);
     void setNodeInicio(node* nodeInicio);
     void setNodeFinal(node* nodeFinal);
+    // void setNodeAnterior(node* nodeAnterior);
     void setPosition(vector2D position);
     void setLinkActual(link* linkActual);
     void setLinkPasado(link* linkPasado);
+    void setqStateAction(q* qStateAction);
     void setOrientacion(vector2D orientacion);
     void setOrientacionLinkPasado(vector2D orientacionLinkPasado);
     void setVelocidad(vector2DVelocidad velocidad);
@@ -81,11 +86,13 @@ public:
     int getHHId() const;
     node* getNodeInicio() const;
     node* getNodeFinal();
+    // node* getNodeAnterior();
     vector2D getPosition();
     vector2D getOrientacion();
     vector2D getOrientacionLinkPasado();
     link* getLinkActual();
     link* getLinkPasado();
+    q* getqStateAction();
     vector2DVelocidad getVelocidad();
     int getTiempoInicial();
     int getTiempoFinal();
@@ -104,6 +111,7 @@ public:
     bool verificarEndLink1();
     void calcularNodeFinal();
     void updateLinkParameter();
+    void updateLinkParameter(sarsa* sarsaAlgorithm);
     void calcularOrientacion();
     void calcularRetorno();
     void verificarPedestrianEvacuation();
@@ -113,6 +121,11 @@ public:
     bool verificarSaltoLink();
     void correctionPosition();
     void calcularQ();
+    std::vector<q>::iterator agregarObtenerqLista(node* nodeDeBusqueda,q qBuscando);
+    void buscarQ(bool verificarQExistente, q* qElemento);
+    std::vector<int> calcularLevelDensityLinks();
+    void inicializarq();
+    void crearStateAction();
 };
 
 #endif
