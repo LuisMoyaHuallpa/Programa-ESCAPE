@@ -1,4 +1,5 @@
 #include "node.h"
+#include <fstream>
 #include <vector>
 #include "iostream"
 #include "q.h"
@@ -49,7 +50,6 @@ std::vector<q> node::getQTable() {
 void node::agregarLink(link* link) {
     linkConnection.push_back(link);
 }
-
 void node::buscarQ(q qBuscando, bool* verificarQ, int idq) {
     // Variable para seguir el estado de la búsqueda
     bool qverificado = false;
@@ -64,7 +64,12 @@ void node::buscarQ(q qBuscando, bool* verificarQ, int idq) {
     *verificarQ = qverificado;
 
 }
-
+void node::addqQTable(q qElemento) {
+    qTable.push_back(qElemento); 
+}
+void node::ordenarQTable() {
+    std::sort(qTable.begin(), qTable.end(), q::compararId);
+}
 // void node::buscarQ(q qBuscando, bool* verificarQ) {
 //     std::cout << "buscando.." << std::endl;
 //     verificarQ = false;
@@ -89,7 +94,6 @@ void node::mostrarNode() {
     std::cout << std::endl;
 }
 void node::mostrarQTable() {
-    std::cout << std::endl;
     std::cout <<"Node:" << getIdNode();
     std::cout << std::endl;
     std::cout << "# q:" << qTable.size() << std::endl;
@@ -99,6 +103,12 @@ void node::mostrarQTable() {
         std::cout << std::endl;
     }
 }
-void node::addqQTable(q qElemento) {
-    qTable.push_back(qElemento); 
+void node::imprimirQTable(std::fstream& file) {
+    file << getIdNode() << " ";
+    for (int i = 0; i < qTable.size(); i++) {
+        file << i << " ";
+        qTable.at(i).imprimirQ(file);
+        file << std::endl;
+    }
 }
+

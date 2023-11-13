@@ -1,6 +1,7 @@
 #ifndef node_h
 #define node_h
 
+#include <fstream>
 #include <string>
 #include <iostream>
 #include <ostream>
@@ -16,7 +17,6 @@ private:
     int coordX;
     int coordY;
     std::vector<link*> linkConnection;
-public:
     std::vector<q> qTable;
 
 public:
@@ -40,13 +40,14 @@ public:
     int getEvacuationCode() const;
     int getRewardCode() const;
     std::vector<link*> getLinkConnection();
-    std::vector<q> getQTable();
+    std::vector<q>getQTable();
     
     void agregarLink(link* link);
     void buscarQ(q qBuscando, bool* verificarQ, int idq);
     void addqQTable(q qElemento);
+    void ordenarQTable();
     void mostrarNode();
     void mostrarQTable();
-
+    void imprimirQTable(std::fstream& file);
 };
 #endif

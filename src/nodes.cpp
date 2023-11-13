@@ -61,7 +61,7 @@ node* nodes::extracionNode(int index) {
     node* nodeExtraido = dbnodes.at(index);
     return nodeExtraido;
 }
-void nodes::imprimirNodes() {
+void nodes::mostrarNodes() {
     for (int i = 0; i < dbnodes.size(); i++) {
         dbnodes.at(i)->mostrarNode();
         dbnodes.at(i)->mostrarQTable();
@@ -70,6 +70,15 @@ void nodes::imprimirNodes() {
         if (evacuationNode) {
             std::cout << "nodeEvacuation: " << evacuationNode->getIdNode() << ", X: " << evacuationNode->getCoordX() << ", Y: " << evacuationNode->getCoordY() << std::endl;
         }
+    }
+}
+void nodes::imprimirNodes() {
+    std::string fileStatesMatriz = "stateMatrices/sim_0.csv";
+    std::fstream file;
+    file.open(fileStatesMatriz, std::ios::out);
+    for (int i = 0; i < dbnodes.size(); i++) {
+        dbnodes.at(i)->ordenarQTable();
+        dbnodes.at(i)->imprimirQTable(file);
     }
 }
 

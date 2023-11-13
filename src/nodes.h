@@ -27,6 +27,7 @@ public:
     void leerNodes(std::string filename);
     void usarlink();
     node* extracionNode(int index);
+    void mostrarNodes();
     void imprimirNodes();
     void imprimirCantPedestrianEvacuted(std::string folderName);
     

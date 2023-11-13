@@ -21,7 +21,6 @@ void createFolder(const std::string& folderName) {
 }
 
 
-
 int main() {
     nodes dbNode1;
     links dbLink1(&dbNode1);
@@ -38,7 +37,6 @@ int main() {
         std::cout << "Time = " << tiempoSimulado.getValorTiempo() << std::endl;
         dbPedestrian1.caminarPedestrians(tiempoSimulado.getValorTiempo());
         // dbPedestrian1.caminarPedestrians(tiempoSimulado.getValorTiempo(), &sarsaAlgorithm);
-        // dbNode1.imprimirNodes();
         // dbPedestrian1.mostrarPedestrians();
         if (tiempoSimulado.getWriteNow()) {
             std::string folderName = std::to_string(tiempoSimulado.getValorTiempo());
@@ -47,4 +45,6 @@ int main() {
             dbNode1.imprimirCantPedestrianEvacuted(folderName);
         }
     }
+    // dbNode1.mostrarNodes();
+    dbNode1.imprimirNodes();
 }

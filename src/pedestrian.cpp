@@ -359,12 +359,10 @@ void pedestrian::encontrarPrimerTiempo() {
 bool pedestrian::verificarEndLink1() {
     if (position.getX() >= nodeFinal->getCoordX() and position.getY() >= nodeFinal->getCoordY()
     and getOrientacion().getX() >= 0 and getOrientacion().getY() >= 0) {
-        // std::cout << "arriba";
         return true; 
     }
     else if (position.getX() <= nodeFinal->getCoordX() and position.getY() <= nodeFinal->getCoordY()
     and getOrientacion().getX() <= 0 and getOrientacion().getY() <= 0) {
-        // std::cout << "abajo";
         return true; 
     }
     return false;
@@ -403,23 +401,14 @@ void pedestrian::calcularQ() {
         nodeFinal->addqQTable(*qStateAction);
         sarsaAlgorithm.setQCurrent(qStateAction->getQ());
     }
-    nodeInicio->getQTable().at(idInicio).setQ(sarsaAlgorithm.sarsaActualizarQ());
+    std::cout << "antes: ";
+    std::cout <<nodeInicio->getQTable().at(idInicio).getQ() << std::endl;
+    double durante1 = sarsaAlgorithm.sarsaActualizarQ();
+    std::cout << "durante1: " << durante1 << std::endl;
+    nodeInicio->getQTable().at(idInicio).setQ(durante1);
+    std::cout << "despues: ";
+    std::cout <<nodeInicio->getQTable().at(idInicio).getQ() << std::endl;
 }
-
-// std::vector<q>::iterator pedestrian::agregarObtenerqLista(node* nodeDeBusqueda,q qBuscando) {
-//     std::vector<q>::iterator it;
-//     // busqueda de Q en qTable
-//     nodeDeBusqueda->buscarQ(qBuscando, &it);
-//     // si lo encuentra
-//     if (it != nodeInicio->getQTable().end()) {
-//         return it;
-//     }
-//     else {
-//         nodeInicio->addqQTable(qBuscando);
-//         return std::prev(nodeDeBusqueda->getQTable().end());
-//     }
-// }
-
 std::vector<int> pedestrian::calcularLevelDensityLinks() {
     std::vector<int> densityLinks;
     for (int i = 0; i < nodeInicio->getLinkConnection().size(); i++) {
