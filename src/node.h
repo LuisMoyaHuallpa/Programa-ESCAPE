@@ -40,7 +40,7 @@ public:
     int getEvacuationCode() const;
     int getRewardCode() const;
     std::vector<link*> getLinkConnection();
-    std::vector<q>getQTable();
+    std::vector<q>* getQTable();
     
     void agregarLink(link* link);
     void buscarQ(q qBuscando, bool* verificarQ, int idq);

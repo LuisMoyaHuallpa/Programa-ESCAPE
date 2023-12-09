@@ -9,6 +9,7 @@
 #include "nodes.h"
 #include "links.h"
 #include "pedestrians.h"
+#include "stateMatrixs.h"
 
 
 void createFolder(const std::string& folderName) {
@@ -26,6 +27,8 @@ int main() {
     links dbLink1(&dbNode1);
     // dbLink1.imprimirLinks();
     // dbLink1.mostrarLinks();
+    stateMatrixs dbStateMatrixs1;
+
     pedestrians dbPedestrian1(&dbNode1);
     // dbPedestrian1.mostrarPedestrians();
     tiempo tiempoSimulado;
@@ -45,6 +48,6 @@ int main() {
             dbNode1.imprimirCantPedestrianEvacuted(folderName);
         }
     }
-    // dbNode1.mostrarNodes();
+    dbNode1.mostrarNodes();
     dbNode1.imprimirNodes();
 }

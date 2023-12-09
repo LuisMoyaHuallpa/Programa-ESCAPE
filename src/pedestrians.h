@@ -37,7 +37,7 @@ public:
     void imprimirPedestrians(std::string foldeName);
     void calcularNumberPedestrian();
     void caminarPedestrians(int valorTiempo);
-    void caminarPedestrians(int valorTiempo, sarsa* sarsaAlgorithm);
+    // void caminarPedestrians(int valorTiempo, sarsa* sarsaAlgorithm);
     void calcularDistribucionRayleigh();
     
 };

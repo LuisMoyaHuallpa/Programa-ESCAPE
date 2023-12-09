@@ -66,21 +66,6 @@ int link::getDensityLevel() {
     return densityLevel;
 }
 
-void link::mostrarLink(){
-    std::cout << "link: ";
-    std::cout << getIdLink() << " ";
-    std::cout << "nodes: ";
-    std::cout << getNode1() -> getIdNode() << " ";
-    std::cout << getNode2() -> getIdNode() << " ";
-    std::cout << std::endl;
-}
-void link::imprimirLink(std::fstream& file) {
-    file << getNode1()->getCoordX() << " ";
-    file << getNode1()->getCoordY() << " ";
-    file << getNode2()->getCoordX() << " ";
-    file << getNode2()->getCoordY() << " ";
-    file << std::endl;
-}
 // longitud de cada
 void link::calcularHistParam() {
     numberPartion = width/getUnitWidthPartion();
@@ -91,14 +76,11 @@ vector2D link::calcularDirectionLink() {
     double y = node2->getCoordY() - node1->getCoordY();
     direction.setX(x);
     direction.setY(y);
-
     // Calcula la magnitud del vector de dirección
     double magnitud = std::sqrt(std::pow(direction.getX(), 2) + std::pow(direction.getY(), 2));
-
     // Normaliza el vector de dirección (divide cada e por la magnitud)
     direction.setX(direction.getX() / magnitud);
     direction.setY(direction.getY() / magnitud);
-
     return direction;
 }
 void link::creacionLinkConnection() {
@@ -107,14 +89,6 @@ void link::creacionLinkConnection() {
 }
 void link::calcularNumberPartion() {
     numberPartion = std::floor(static_cast<double>(length) / static_cast<double>(unitWidthPartion));
-
-}
-void link::mostrarSubLinks() {
-    std::cout << getIdLink() << "  ";
-    for (int i = 0; i < subLinks.size(); i++) {
-        subLinks.at(i).mostrarSubLink();
-    }
-    std::cout << std::endl;
 }
 void link::calcularDensityLevel() {
     double densidadMayorSubLink = 0.0;
@@ -132,4 +106,26 @@ void link::calcularDensityLevel() {
     else {
         densityLevel = 2;
     }
+}
+void link::mostrarLink(){
+    std::cout << "link: ";
+    std::cout << getIdLink() << " ";
+    std::cout << "nodes: ";
+    std::cout << getNode1() -> getIdNode() << " ";
+    std::cout << getNode2() -> getIdNode() << " ";
+    std::cout << std::endl;
+}
+void link::imprimirLink(std::fstream& file) {
+    file << getNode1()->getCoordX() << " ";
+    file << getNode1()->getCoordY() << " ";
+    file << getNode2()->getCoordX() << " ";
+    file << getNode2()->getCoordY() << " ";
+    file << std::endl;
+}
+void link::mostrarSubLinks() {
+    std::cout << getIdLink() << "  ";
+    for (int i = 0; i < subLinks.size(); i++) {
+        subLinks.at(i).mostrarSubLink();
+    }
+    std::cout << std::endl;
 }

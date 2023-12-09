@@ -107,11 +107,17 @@ public:
     void imprimirPedestrianVelocity(std::fstream& file);
     void caminar();
     void eleccionRandomLinkActual();
+    int iEleccionRandomLinkActual();
+    void updateLinkActual(int iLinkConnection);
+    void updateStateAction(int iLinkConnection);
+    void updateParametrosPeaton();
+    void eleccionProbalistica();
     bool verificarEndLink();
     bool verificarEndLink1();
     void calcularNodeFinal();
     void updateLinkParameter();
-    void updateLinkParameter(sarsa* sarsaAlgorithm);
+    // void updateLinkParameter(sarsa* sarsaAlgorithm);
+    void updateCalle();
     void calcularOrientacion();
     void calcularRetorno();
     void verificarPedestrianEvacuation();
@@ -120,12 +126,13 @@ public:
     void encontrarPrimerTiempo();
     bool verificarSaltoLink();
     void correctionPosition();
-    void calcularQ();
+    void algoritmoSarsa();
     std::vector<q>::iterator agregarObtenerqLista(node* nodeDeBusqueda,q qBuscando);
     void buscarQ(bool verificarQExistente, q* qElemento);
     std::vector<int> calcularLevelDensityLinks();
     void inicializarq();
-    void crearStateAction();
+    void crearqState(node* nodeActual);
+    
 };
 
 #endif

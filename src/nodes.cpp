@@ -20,15 +20,19 @@ void nodes::leerNodes(std::string filename) {
         exit(1);
     }
 
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // n          |-->| id
+    // x          |-->| POSICION X
+    // y          |-->| POSICION Y
+    // e          |-->| NODE DE EVACUACION, SI ES 1
+    // r          |-->| 
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //- Variables de una fila del archivo node.csv, que seria un node
-    int n, //<-id 
-        x, //<-posicion x 
-        y, //<-posicion y
-        e, //<-node de evacucion, si es 1
-        r;
+    int n, x, y, e, r;
     std::string line;
 
     while (std::getline(file, line)) {
+        // Si el archivo tiene comentarios con #, no leerlos.
         if (line[0] == '#') {
             continue;
         }

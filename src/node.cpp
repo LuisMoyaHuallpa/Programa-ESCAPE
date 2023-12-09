@@ -43,8 +43,8 @@ int node::getCoordY() const{
 std::vector<link*> node::getLinkConnection() {
     return linkConnection;
 }
-std::vector<q> node::getQTable() {
-    return qTable;
+std::vector<q>* node::getQTable() {
+    return &qTable;
 }
 
 void node::agregarLink(link* link) {
@@ -53,8 +53,8 @@ void node::agregarLink(link* link) {
 void node::buscarQ(q qBuscando, bool* verificarQ, int idq) {
     // Variable para seguir el estado de la búsqueda
     bool qverificado = false;
-    for (int i = 0; i < getQTable().size(); i++) {
-        if (getQTable().at(i) == qBuscando) {
+    for (int i = 0; i < (*getQTable()).size(); i++) {
+        if ((*getQTable()).at(i) == qBuscando) {
             qverificado = true;
             // qEncontrado = &getQTable().at(i);
             break;
@@ -104,11 +104,36 @@ void node::mostrarQTable() {
     }
 }
 void node::imprimirQTable(std::fstream& file) {
-    file << getIdNode() << " ";
+    // Impresion de sim.csv
+    std::vector<double> qLinkConnection;
+    std::vector<state> stateExperimentdos;
+    qLinkConnection.resize(10,0);
     for (int i = 0; i < qTable.size(); i++) {
-        file << i << " ";
-        qTable.at(i).imprimirQ(file);
+        // Impresion de idNode.
+        file << getIdNode() << " ";
+        // Creando los state sin replicar
+        for (int j = 0; j < stateExperimentdos.size(); j++) {
+            if (!(getQTable()->at(i).getS() == stateExperimentdos.at(j))) {
+                stateExperimentdos.push_back(getQTable()->at(i).getS());
+            }
+        }
+        
+
+        if (i==0) {
+            qTable.at(i).imprimirState(file);
+        }
+        else if (i>0 and !(qTable.at(i-1).getS() == qTable.at(i).getS())) {
+            qTable.at(i).imprimirState(file);
+        }
+        // for (int i = 0; i < linkConnection.size(); i++) {
+        // std::cout << qLinkConnection[i] << " ";
+        // qLinkConnection[qTable.at(i).getA().getILinkConnection()] = qTable.at(i).getQ();
+        // }
+        for (int i = 0; i < qLinkConnection.size(); i++) {
+            file << qLinkConnection[i] << " ";
+        }
         file << std::endl;
     }
 }
+
 

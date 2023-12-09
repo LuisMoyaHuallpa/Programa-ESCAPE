@@ -50,14 +50,15 @@ public:
     std::vector<subLink>& getSubLinks();
     int getDensityLevel();
 
-    void mostrarLink();
-    void imprimirLink(std::fstream& file);
     void calcularHistParam();
     vector2D calcularDirectionLink();
     void creacionLinkConnection();
     void calcularNumberPartion();
-    void mostrarSubLinks();
     void calcularDensityLevel();
+    void mostrarLink();
+    void imprimirLink(std::fstream& file);
+    void mostrarSubLinks();
+
     // void calcularSubdivision();
     // void guardarLinkConnection();
 };
