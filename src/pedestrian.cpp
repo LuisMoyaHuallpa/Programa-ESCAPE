@@ -1,6 +1,6 @@
 #include "pedestrian.h"
 #include "nodeEvacution.h"
-#include "q.h"
+#include "stateActionQ.h"
 #include "sarsa.h"
 #include "state.h"
 #include <cmath>
@@ -42,7 +42,7 @@ pedestrian::pedestrian(int edad, int gender, int hhType, int hhId, node* nodeIni
     calcularNodeFinal();
     calcularOrientacion();
     velocidad.setOrientacion(orientacion);
-    qStateAction = new q;
+    qStateAction = new stateActionQ;
     // qStateAction->setA(linkActual->getIdLink());
     // qStateAction->setS(calcularLevelDensityLinks());
 }
@@ -80,7 +80,7 @@ void pedestrian::setLinkActual(link *linkActual) {
 void pedestrian::setLinkPasado(link *linkPasado) {
     (*this).linkPasado = linkPasado;
 }
-void pedestrian::setqStateAction(q* qStateAction) {
+void pedestrian::setqStateAction(stateActionQ* qStateAction) {
     (*this).qStateAction = qStateAction;
 }
 void pedestrian::setOrientacion(vector2D orientacion) {
@@ -147,7 +147,7 @@ link* pedestrian::getLinkActual() {
 link* pedestrian::getLinkPasado() {
     return linkPasado;
 }
-q* pedestrian::getqStateAction() {
+stateActionQ* pedestrian::getqStateAction() {
     return qStateAction;
 }
 vector2D pedestrian::getOrientacion() {
@@ -498,7 +498,7 @@ void pedestrian::inicializarq() {
     // Inicializar action en el primer instante. 
     qStateAction->setA(linkActual->getIdLink());
     crearqState(nodeInicio);
-    q* qEncontrado = nullptr;
+    stateActionQ* qEncontrado = nullptr;
     bool verificarQ = false;
     int idq = 0;
     nodeInicio->buscarQ(*qStateAction, &verificarQ, idq);

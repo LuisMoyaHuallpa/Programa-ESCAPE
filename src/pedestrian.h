@@ -33,7 +33,7 @@ private:
     // node* nodeAnterior;
     link* linkActual;
     link* linkPasado;
-    q* qStateAction;
+    stateActionQ* qStateAction;
     vector2D orientacion;
     vector2D orientacionLinkPasado;
     vector2DVelocidad velocidad;
@@ -67,7 +67,7 @@ public:
     void setPosition(vector2D position);
     void setLinkActual(link* linkActual);
     void setLinkPasado(link* linkPasado);
-    void setqStateAction(q* qStateAction);
+    void setqStateAction(stateActionQ* qStateAction);
     void setOrientacion(vector2D orientacion);
     void setOrientacionLinkPasado(vector2D orientacionLinkPasado);
     void setVelocidad(vector2DVelocidad velocidad);
@@ -92,7 +92,7 @@ public:
     vector2D getOrientacionLinkPasado();
     link* getLinkActual();
     link* getLinkPasado();
-    q* getqStateAction();
+    stateActionQ* getqStateAction();
     vector2DVelocidad getVelocidad();
     int getTiempoInicial();
     int getTiempoFinal();
@@ -127,8 +127,8 @@ public:
     bool verificarSaltoLink();
     void correctionPosition();
     void algoritmoSarsa();
-    std::vector<q>::iterator agregarObtenerqLista(node* nodeDeBusqueda,q qBuscando);
-    void buscarQ(bool verificarQExistente, q* qElemento);
+    std::vector<stateActionQ>::iterator agregarObtenerqLista(node* nodeDeBusqueda,stateActionQ qBuscando);
+    void buscarQ(bool verificarQExistente, stateActionQ* qElemento);
     std::vector<int> calcularLevelDensityLinks();
     void inicializarq();
     void crearqState(node* nodeActual);

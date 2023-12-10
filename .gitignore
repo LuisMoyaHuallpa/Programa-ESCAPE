@@ -1,8 +1,6 @@
 /*
 !/src/
-/src/
-!/src/*.cpp
-!/src/*.h
+/src/#*
 !tutorial/
 !.gitignore
 !makefile

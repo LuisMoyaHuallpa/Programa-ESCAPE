@@ -2,7 +2,7 @@
 #include <fstream>
 #include <vector>
 #include "iostream"
-#include "q.h"
+// #include "q.h"
 #include "stateMatrix.h"
 #include <algorithm>
 
@@ -44,14 +44,14 @@ int node::getCoordY() const{
 std::vector<link*> node::getLinkConnection() {
     return linkConnection;
 }
-std::vector<q>* node::getQTable() {
+std::vector<stateActionQ>* node::getQTable() {
     return &qTable;
 }
 
 void node::agregarLink(link* link) {
     linkConnection.push_back(link);
 }
-void node::buscarQ(q qBuscando, bool* verificarQ, int idq) {
+void node::buscarQ(stateActionQ qBuscando, bool* verificarQ, int idq) {
     // Variable para seguir el estado de la búsqueda
     bool qverificado = false;
     for (int i = 0; i < (*getQTable()).size(); i++) {
@@ -65,13 +65,13 @@ void node::buscarQ(q qBuscando, bool* verificarQ, int idq) {
     *verificarQ = qverificado;
 
 }
-void node::addqQTable(q qElemento) {
+void node::addqQTable(stateActionQ qElemento) {
     qTable.push_back(qElemento); 
 }
 void node::ordenarQTable() {
-    std::sort(qTable.begin(), qTable.end(), q::compararId);
+    std::sort(qTable.begin(), qTable.end(), stateActionQ::compararId);
 }
-// void node::buscarQ(q qBuscando, bool* verificarQ) {
+// void node::buscarQ(stateActionQ qBuscando, bool* verificarQ) {
 //     std::cout << "buscando.." << std::endl;
 //     verificarQ = false;
 //     for (int i = 0; i < getQTable().size(); i++) {

@@ -10,7 +10,7 @@ Punto de interseccion de calles.
 #include <ostream>
 #include <vector>
 #include "link.h"
-#include "q.h"
+#include "stateActionQ.h"
 // #include "states.h"
 
 class link;
@@ -20,7 +20,7 @@ private:
     int coordX;
     int coordY;
     std::vector<link*> linkConnection;
-    std::vector<q> qTable;
+    std::vector<stateActionQ> qTable;
 
 public:
     node();
@@ -43,11 +43,11 @@ public:
     int getEvacuationCode() const;
     int getRewardCode() const;
     std::vector<link*> getLinkConnection();
-    std::vector<q>* getQTable();
-    
+    std::vector<stateActionQ>* getQTable();
+   
     void agregarLink(link* link);
-    void buscarQ(q qBuscando, bool* verificarQ, int idq);
-    void addqQTable(q qElemento);
+    void buscarQ(stateActionQ qBuscando, bool* verificarQ, int idq);
+    void addqQTable(stateActionQ qElemento);
     void ordenarQTable();
     void crearStateMatrix();
     void mostrarNode();
