@@ -1,5 +1,8 @@
 #ifndef node_h
 #define node_h
+/*---------------------------------------------------------------------------*\
+Punto de interseccion de calles.
+\*---------------------------------------------------------------------------*/
 
 #include <fstream>
 #include <string>
@@ -46,6 +49,7 @@ public:
     void buscarQ(q qBuscando, bool* verificarQ, int idq);
     void addqQTable(q qElemento);
     void ordenarQTable();
+    void crearStateMatrix();
     void mostrarNode();
     void mostrarQTable();
     void imprimirQTable(std::fstream& file);

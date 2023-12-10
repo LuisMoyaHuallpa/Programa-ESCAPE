@@ -61,6 +61,7 @@ void nodes::leerNodes(std::string filename) {
     file.close(); 
 }
 
+// Cambiar a getNode
 node* nodes::extracionNode(int index) {
     node* nodeExtraido = dbnodes.at(index);
     return nodeExtraido;
@@ -76,10 +77,7 @@ void nodes::mostrarNodes() {
         }
     }
 }
-void nodes::imprimirNodes() {
-    std::string fileStatesMatriz = "stateMatrices/sim_0.csv";
-    std::fstream file;
-    file.open(fileStatesMatriz, std::ios::out);
+void nodes::imprimirNodes(std::fstream& file) {
     for (int i = 0; i < dbnodes.size(); i++) {
         dbnodes.at(i)->ordenarQTable();
         dbnodes.at(i)->imprimirQTable(file);

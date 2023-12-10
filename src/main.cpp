@@ -27,7 +27,8 @@ int main() {
     links dbLink1(&dbNode1);
     // dbLink1.imprimirLinks();
     // dbLink1.mostrarLinks();
-    stateMatrixs dbStateMatrixs1;
+    // Podria cambiarse a puntero para borralo manualmente
+    stateMatrixs dbStateMatrixs1(&dbNode1);
 
     pedestrians dbPedestrian1(&dbNode1);
     // dbPedestrian1.mostrarPedestrians();
@@ -49,5 +50,6 @@ int main() {
         }
     }
     dbNode1.mostrarNodes();
-    dbNode1.imprimirNodes();
+    // dbNode1.imprimirNodes();
+    dbStateMatrixs1.imprimirDbStateMatrixs();
 }

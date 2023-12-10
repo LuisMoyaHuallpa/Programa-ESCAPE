@@ -3,6 +3,7 @@
 #include <vector>
 #include "iostream"
 #include "q.h"
+#include "stateMatrix.h"
 #include <algorithm>
 
 node::node() {
@@ -84,6 +85,12 @@ void node::ordenarQTable() {
 //     } 
 //     *verificarQ = false;
 // }
+void node::crearStateMatrix() {
+    stateMatrix stateMatrixElement;
+    for (int i = 0; i < qTable.size(); i++) {
+        qTable[i].getQ();
+    }
+}
 void node::mostrarNode() {
     std::cout << "node: ";
     std::cout << getIdNode() << " ";
