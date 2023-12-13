@@ -249,6 +249,7 @@ void pedestrian::updateStateAction(int iLinkConnection) {
     // Crear la action con idLink y iLinkConnection
     action a(linkActual->getIdLink(), iLinkConnection);
     qStateAction->setA(a);
+    std::cout << qStateAction->getA().getILinkConnection() << std::endl;
 }
 // Eleccion del caminar mas recomendable 
 void pedestrian::eleccionProbalistica() {
@@ -323,8 +324,11 @@ void pedestrian::updateParametrosPeaton() {
     position.setX(getNodeInicio()->getCoordX());
     position.setY(getNodeInicio()->getCoordY());
     int iLinkConnection = iEleccionRandomLinkActual();
+    std::cout << "iLink: ";
+    std::cout << iLinkConnection << std::endl;
     updateLinkActual(iLinkConnection);
     updateStateAction(iLinkConnection);
+    std::cout << qStateAction->getA().getILinkConnection();
     // eleccionRandomLinkActual();
     calcularNodeFinal();
     calcularOrientacion();

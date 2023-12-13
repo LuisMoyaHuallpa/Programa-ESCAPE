@@ -18,6 +18,9 @@ private:
     std::vector<int> otrosVector;
 
 public:
+    static const int tamanoVector;
+    int static getTamanoVector();
+
     stateMatrix();
     stateMatrix(int idNode, state stateValue, std::vector<double> QVector, std::vector<int> otrosValue);
 
@@ -34,7 +37,9 @@ public:
     std::vector<double> getQVector();
     std::vector<int> getotrosVector();
 
+    void agregarQ(int i, double Q);
     void enviarDataNode(node* nodeAGuardar);
+    void mostrarStateMatrix();
     void imprimirStateMatrix(std::fstream& file);
 
 };

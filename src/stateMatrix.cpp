@@ -3,8 +3,15 @@
 #include <fstream>
 #include <vector>
 
-stateMatrix::stateMatrix() {
-  
+const int stateMatrix::tamanoVector = 10;
+int stateMatrix::getTamanoVector() {
+    return tamanoVector;
+}
+
+stateMatrix::stateMatrix() : stateValue() {
+    (*this).idNode = 0;
+    QVector.resize(tamanoVector,0);
+    // otrosVector.resize(tamanoVector,0);
 }
 stateMatrix::stateMatrix(int idNode, state stateValue, std::vector<double> QVector, std::vector<int> otrosVector) {
     setIdNode(idNode);
@@ -39,12 +46,32 @@ std::vector<int> stateMatrix::getotrosVector() {
     return otrosVector;
 }
 
+void stateMatrix::agregarQ(int i, double Q) {
+    QVector[i] = Q;
+    std::cout << Q << std::endl;
+    std::cout << QVector[i] << std::endl;
+    std::cout << i << std::endl;
+    for (int i = 0; i < QVector.size(); i++) {
+        std::cout << getQVector().at(i) << ",";
+    }
+
+}
 void stateMatrix::enviarDataNode(node* nodeAGuardar) {
     // Envia los datos leidos del csv al QTable de cada nodo.
     for (int i = 0; i < stateValue.getDensityLinks().size(); i++) {
         stateActionQ qAGuardar(stateValue, nodeAGuardar->getLinkConnection().at(i)->getIdLink(),QVector[i]);
         nodeAGuardar->addqQTable(qAGuardar);
     }
+}
+void stateMatrix::mostrarStateMatrix() {
+    std::cout << getIdNode() << ",";
+    getStateValue().mostrarState();
+    for (int i = 0; i < QVector.size(); i++) {
+        std::cout << QVector[i] << ",";
+    }
+    std::cout << std::endl;
+
+
 }
 void stateMatrix::imprimirStateMatrix(std::fstream& file){
    // Imprimir una fila del elemento stateMatrix.
@@ -59,7 +86,7 @@ void stateMatrix::imprimirStateMatrix(std::fstream& file){
     // Imprimir todos los elementos de state y se completa con 0 para llegar a
     // Falta verificar
     for (int i = 0; i < QVector.size(); i++) {
-        file << QVector[i] << ",";
+        file << getQVector().at(i) << ",";
     }
-    std::cout << std::endl;
+    file << std::endl;
 }

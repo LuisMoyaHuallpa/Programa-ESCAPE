@@ -11,6 +11,7 @@ Punto de interseccion de calles.
 #include <vector>
 #include "link.h"
 #include "stateActionQ.h"
+// #include "stateMatrix.h"
 // #include "states.h"
 
 class link;
@@ -21,6 +22,7 @@ private:
     int coordY;
     std::vector<link*> linkConnection;
     std::vector<stateActionQ> qTable;
+    // std::vector<stateMatrix> tableState;
 
 public:
     node();
@@ -50,6 +52,7 @@ public:
     void addqQTable(stateActionQ qElemento);
     void ordenarQTable();
     void crearStateMatrix();
+    bool verificarCambioState(state stateAnterior, state stateActual);
     void mostrarNode();
     void mostrarQTable();
     void imprimirQTable(std::fstream& file);

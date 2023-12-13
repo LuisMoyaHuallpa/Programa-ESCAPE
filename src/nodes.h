@@ -22,6 +22,7 @@ public:
     nodes();
     nodes(std::string filename);
 
+    std::vector<node*> getDbNode();
 
     // metodos
     void leerNodes(std::string filename);

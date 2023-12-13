@@ -19,8 +19,10 @@ public:
 
     // void enviarDataNode(stateMatrix stateMatrixElement);
     std::string encontrarUltimoFile();
-    std::string crearFileExport();
+    std::string crearFilenameSalida();
+    void agregarStateMatrix(stateMatrix stateMatrixElement);
     void leerDbStateMatrixs(std::string filename);
+    void mostrarDbStateMatrixs();
     void imprimirDbStateMatrixs();
     
     

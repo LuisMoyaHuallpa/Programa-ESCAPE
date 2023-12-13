@@ -1,4 +1,5 @@
 #include "stateMatrixs.h"
+#include "stateMatrix.h"
 
 const std::string stateMatrixs::stateMatrixFile = "stateMatrices";
 
@@ -20,7 +21,7 @@ std::string stateMatrixs::encontrarUltimoFile() {
     ultimoFile = "stateMatrices/sim_000000006.csv";
     return ultimoFile;
 }
-std::string stateMatrixs::crearFileExport() {
+std::string stateMatrixs::crearFilenameSalida() {
     // Crear el nombre del archivo de exportacion.
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // iFileInicio     |-->| ID DEL ARCHIVO DE inicio, 1
@@ -37,6 +38,9 @@ std::string stateMatrixs::crearFileExport() {
     filenameStream << std::setw(9) << std::setfill('0') << iFileInicio ;
     // Nombre final de exportacion 
     return stateMatrixFile + "/" +preName + filenameStream.str() + typeFile;
+}
+void stateMatrixs::agregarStateMatrix(stateMatrix stateMatrixElement) {
+    dbStateMatrixs.push_back(stateMatrixElement);
 }
 void stateMatrixs::leerDbStateMatrixs(std::string filename) {
     std::fstream file;
@@ -89,7 +93,7 @@ void stateMatrixs::leerDbStateMatrixs(std::string filename) {
         // Guarda los elementos de state
         state stateLeido;
         for (int i = 0; i < cantidadColumnasCsv; ++i) {
-            if (i < dbNode->extracionNode(id)->getLinkConnection().size()) {
+            if (i < dbNode->getDbNode().at(id)->getLinkConnection().size()) {
                 std::getline(iss, s_str, ',');
                 s = std::stoi(s_str);
                 stateLeido.agregarElementoState(s);
@@ -103,7 +107,7 @@ void stateMatrixs::leerDbStateMatrixs(std::string filename) {
         // !-----------------------------------------------------------------------
         // Elementos de Q
         std::vector<double> Qvector;
-        for (int i = 0; i < cantidadColumnasCsv; ++i) {
+        for (int i = 0; i < stateMatrix::getTamanoVector(); ++i) {
             if (i < dbNode->extracionNode(id)->getLinkConnection().size()) {
                 std::getline(iss, Q_str, ',');
                 Q = std::stod(Q_str);
@@ -140,17 +144,32 @@ void stateMatrixs::leerDbStateMatrixs(std::string filename) {
         o10 = std::stoi(o10_str);
         // !-----------------------------------------------------------------------
         // Grabar datos de la fila del stateMatrix en en Qtable del nodo numero id.
-        stateMatrixLeido.enviarDataNode(dbNode->extracionNode(id));
+        stateMatrixLeido.enviarDataNode(dbNode->getDbNode().at(id));
     }
     file.close(); 
 }
+void stateMatrixs::mostrarDbStateMatrixs(){
+    // Mostrar todos los stateMatrix dentro de dbStateMatrixs.
+    std::cout << "hola";
+    for (int i = 0; i < dbStateMatrixs.size(); i++) {
+        dbStateMatrixs[i].mostrarStateMatrix();
+    }
+    std::cout << "hol1";
+    dbNode->mostrarNodes();
+}
 void stateMatrixs::imprimirDbStateMatrixs(){
     // Crear el nombre del archivo de exportacion.
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // file    |-->| ARCHIVO DE SALIDA, EL NOMBRE SE CREA CON crearFilenameSalida()
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     std::fstream file;
-    std::string filename = crearFileExport();
-    file.open(filename, std::ios::out);
-    // Imprime en el file de exportación todas filas dbStateMatrixs.
-    for (int i = 0; i < dbStateMatrixs.size(); i++) {
-        dbStateMatrixs[i].imprimirStateMatrix(file);
+    file.open(crearFilenameSalida(), std::ios::out);
+    // Imprime en todas las filas dbStateMatrixs.
+    // for (int i = 0; i < dbStateMatrixs.size(); i++) {
+    //     dbStateMatrixs[i].imprimirStateMatrix(file);
+    // }
+    for (int i = 0; i < dbNode->getDbNode().size(); i++) {
+        dbNode->getDbNode().at(i)->imprimirQTable(file);
     }
+
 }

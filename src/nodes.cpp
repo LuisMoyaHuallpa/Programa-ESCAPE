@@ -1,6 +1,7 @@
 #include "nodes.h"
 #include "link.h"
 #include "nodeEvacution.h"
+#include <vector>
 
 nodes::nodes() {
     (*this).filename = "nodes.csv";
@@ -29,16 +30,18 @@ void nodes::leerNodes(std::string filename) {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //- Variables de una fila del archivo node.csv, que seria un node
     int n, x, y, e, r;
+    std::string n_str, y_str, x_str, e_str, r_str;
     std::string line;
 
+    node interseccion;
     while (std::getline(file, line)) {
         // Si el archivo tiene comentarios con #, no leerlos.
         if (line[0] == '#') {
             continue;
         }
-        
+        // !-----------------------------------------------------------------------
+        // Guardar cada line en la variable line  
         std::istringstream iss(line);
-        std::string n_str, y_str, x_str, e_str, r_str;
 
         std::getline(iss, n_str, ',');
         std::getline(iss, x_str, ',');
@@ -52,6 +55,12 @@ void nodes::leerNodes(std::string filename) {
         e = std::stoi(e_str);
         r = std::stoi(r_str);
         if (e == 0) {
+            // interseccion.setIdNode(n);
+            // interseccion.setCoorX(x);
+            // interseccion.setCoorY(y);
+            // interseccion.setEvacuationCode(e);
+            // interseccion.setCoorX(r);
+            // dbnodes.push_back(&interseccion);
             dbnodes.push_back(new node(n, x, y));
         }
         else {
@@ -59,6 +68,10 @@ void nodes::leerNodes(std::string filename) {
         }
     }
     file.close(); 
+}
+
+std::vector<node*> nodes::getDbNode() {
+    return dbnodes;
 }
 
 // Cambiar a getNode

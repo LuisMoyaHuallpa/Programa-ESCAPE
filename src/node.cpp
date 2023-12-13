@@ -3,6 +3,7 @@
 #include <vector>
 #include "iostream"
 // #include "q.h"
+#include "state.h"
 #include "stateMatrix.h"
 #include <algorithm>
 
@@ -91,6 +92,17 @@ void node::crearStateMatrix() {
         qTable[i].getQ();
     }
 }
+bool node::verificarCambioState(state stateAnterior, state stateActual) {
+    // Verificar si existe cambio de state entre diferentes stateActionQ.
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // stateActual       |-->| STATE DEL stateActionQ ACTUAL DE LA QTABLE
+    // stateAnterior     |-->| STATE DEL stateActionQ ANTERIOR DE LA QTABLE 
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    if (stateAnterior == stateActual) {
+        return true;
+    }
+    return false;  
+}
 void node::mostrarNode() {
     std::cout << "node: ";
     std::cout << getIdNode() << " ";
@@ -112,34 +124,45 @@ void node::mostrarQTable() {
 }
 void node::imprimirQTable(std::fstream& file) {
     // Impresion de sim.csv
-    std::vector<double> qLinkConnection;
-    std::vector<state> stateExperimentdos;
-    qLinkConnection.resize(10,0);
+    stateMatrix stateMatrixElement;
+    state stateAnterior;
     for (int i = 0; i < qTable.size(); i++) {
-        // Impresion de idNode.
-        file << getIdNode() << " ";
-        // Creando los state sin replicar
-        for (int j = 0; j < stateExperimentdos.size(); j++) {
-            if (!(getQTable()->at(i).getS() == stateExperimentdos.at(j))) {
-                stateExperimentdos.push_back(getQTable()->at(i).getS());
+        getQTable()->at(i).mostrarQ();
+        std::cout << std::endl;
+        // !-----------------------------------------------------------------------
+        // Primer stateActionQ
+        if (i == 0) {
+            // Set idNode en stateMatrixElement. Es el id del nodo de la interseccion.
+            stateMatrixElement.setIdNode(getQTable()->at(i).getA().getIdLink());
+            // Set stateValue en stateMatrixElement. Es el state de la interseccion. 
+            stateMatrixElement.setStateValue(getQTable()->at(i).getS());
+            // Set valor de Q en el vectorQ en la locacion i.
+            stateMatrixElement.agregarQ(getQTable()->at(i).getA().getILinkConnection(), getQTable()->at(i).getQ());
+        }
+        // !-----------------------------------------------------------------------
+        // Siguiente stateActionQ
+        else {
+            // !-----------------------------------------------------------------------
+            // Si no hay cambio de state realiza lo siguiente
+            if (!(verificarCambioState(stateAnterior, qTable[i].getS()))) {
+                // Set valor de Q en el vectorQ en la locacion i.
+                stateMatrixElement.agregarQ(qTable[i].getA().getILinkConnection(), qTable[i].getQ());
+            }
+            else {
+                // !-----------------------------------------------------------------------
+                // Imprime el stateMatrixElement final
+                stateMatrixElement.imprimirStateMatrix(file);
+                // !-----------------------------------------------------------------------
+                // Continua con un nuevo stateMatrixElement
+                // Set idNode en stateMatrixElement. Es el id del nodo de la interseccion.
+                stateMatrixElement.setIdNode(qTable[i].getA().getIdLink());
+                // Set stateValue en stateMatrixElement. Es el state de la interseccion. 
+                stateMatrixElement.setStateValue(qTable[i].getS());
             }
         }
-        
-
-        if (i==0) {
-            qTable.at(i).imprimirState(file);
-        }
-        else if (i>0 and !(qTable.at(i-1).getS() == qTable.at(i).getS())) {
-            qTable.at(i).imprimirState(file);
-        }
-        // for (int i = 0; i < linkConnection.size(); i++) {
-        // std::cout << qLinkConnection[i] << " ";
-        // qLinkConnection[qTable.at(i).getA().getILinkConnection()] = qTable.at(i).getQ();
-        // }
-        for (int i = 0; i < qLinkConnection.size(); i++) {
-            file << qLinkConnection[i] << " ";
-        }
-        file << std::endl;
+        // Guarda el state del stateActionQ anterior.
+        stateAnterior = qTable[i].getS();
+        // Guardar stateMatrixElement y el vector dbStateMatrix
     }
 }
 

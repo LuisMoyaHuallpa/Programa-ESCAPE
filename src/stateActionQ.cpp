@@ -49,8 +49,9 @@ bool stateActionQ::operator==(stateActionQ qObject) {
 }
 void stateActionQ::mostrarQ() {
     a.mostrarAction();
+    std::cout << a.getILinkConnection()<< " ";
     s.mostrarState();
-    // std::cout << Q;
+    std::cout << Q;
 }
 void stateActionQ::imprimirQ(std::fstream& file) {
     file << getQ();

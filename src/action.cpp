@@ -3,7 +3,7 @@
 
 action::action() {
     setIdLink(0);
-    setILinkConnection(0);
+    setILinkConnection(2);
 }
 action::action(int idLink) {
     setIdLink(idLink); 
