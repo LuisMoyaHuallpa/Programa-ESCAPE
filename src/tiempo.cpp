@@ -37,3 +37,7 @@ tiempo& tiempo::operator++(int) {
 bool tiempo::running() {
     return valorTiempo < (endTime - 0.5*deltaT);
 }
+void tiempo::mostrarTiempo() {
+    // Mostrar en terminal tiempo actual.
+    std::cout << "Time = " << getValorTiempo() << std::endl;
+}

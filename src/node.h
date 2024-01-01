@@ -3,58 +3,72 @@
 /*---------------------------------------------------------------------------*\
 Punto de interseccion de calles.
 \*---------------------------------------------------------------------------*/
-
+//
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// header generales
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include <fstream>
 #include <string>
 #include <iostream>
 #include <ostream>
 #include <vector>
-#include "link.h"
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// header propios
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "stateActionQ.h"
+#include "stateMatrix.h"
 // #include "stateMatrix.h"
 // #include "states.h"
 
-class link;
 class node {
 private:
     int idNode;
     int coordX;
     int coordY;
-    std::vector<link*> linkConnection;
-    std::vector<stateActionQ> qTable;
-    // std::vector<stateMatrix> tableState;
+    std::vector<int> idLinkConnection;
+    std::vector<stateMatrix> stateMatrixTable;
+
 
 public:
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // constructor
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     node();
     node(int id, int coordX, int coordY);
 
-    virtual ~node() {} // Destructor virtual
-
-    //setters
-    void setIdNode(int id);
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // setters
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    void setIdNode(int idNode);
     void setCoorX(int coordX);
     void setCoorY(int coordY);
-    void setEvacuationCode(int evacuationCode);
-    void setRewardCode(int rewardCode);
-    void setLinkConnection(std::vector<link*> linkConnection);
+    void setIdLinkConnection(std::vector<int> idLinkConnection);
+    void setStateMatrixTable(std::vector<stateMatrix> stateMatrixTable);
+    // void setRewardCode(int rewardCode);
 
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getters
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     int getIdNode() const;
     int getCoordX() const;
     int getCoordY() const;
-    int getEvacuationCode() const;
-    int getRewardCode() const;
-    std::vector<link*> getLinkConnection();
-    std::vector<stateActionQ>* getQTable();
-   
-    void agregarLink(link* link);
-    void buscarQ(stateActionQ qBuscando, bool* verificarQ, int idq);
-    void addqQTable(stateActionQ qElemento);
-    void ordenarQTable();
-    void crearStateMatrix();
+    std::vector<int> getIdLinkConnection();
+    std::vector<stateMatrix>& getStateMatrixTable();
+    // int getRewardCode() const;
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // metodos
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // void agregarLink(link* link);
+    // void buscarQ(stateActionQ qBuscando, bool* verificarQ, int idq);
+    // void addqQTable(stateActionQ qElemento);
+    void addIdLinkConnection(int idLink);
+    // void ordenarQTable();
+    // void crearStateMatrix();
     bool verificarCambioState(state stateAnterior, state stateActual);
     void mostrarNode();
     void mostrarQTable();
-    void imprimirQTable(std::fstream& file);
+    // void imprimirQTable(std::fstream& file);
+
 };
 #endif

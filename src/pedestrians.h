@@ -1,44 +1,52 @@
 #ifndef pedestrians_h
 #define pedestrians_h
 
-#include "pedestrian.h"
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// header generales
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include <string>
 #include <sstream>
 #include <vector>
 #include <fstream>
 #include <iostream>
-#include "nodes.h"
-#include "tiempo.h"
 #include <boost/random/seed_seq.hpp>
 #include <cmath>
 #include <ios>
 #include <ostream>
 #include <boost/random.hpp>
 #include <boost/math/distributions/rayleigh.hpp>
-#include "sarsa.h"
-
-
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// header propios
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#include "pedestrian.h"
 
 class pedestrians {
 
 private:
-    std::string filename;
-    std::vector<pedestrian> dbPedestrians;
-    int numberPedestrian;
-    nodes* dbNode;
+    std::string fileName;
 
 public:
-    pedestrians();
-    pedestrians(nodes* dbNode);
-    pedestrians(std::string filename);
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // static
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    static std::vector<pedestrian> dbPedestrianTotal;
 
-    void leerPedestrians(std::string filename);
-    void mostrarPedestrians();
-    void imprimirPedestrians(std::string foldeName);
-    void calcularNumberPedestrian();
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // constructor
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    pedestrians();
+    pedestrians(std::string fileName);
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // metodos
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // void calcularNumberPedestrian();
     void caminarPedestrians(int valorTiempo);
     // void caminarPedestrians(int valorTiempo, sarsa* sarsaAlgorithm);
-    void calcularDistribucionRayleigh();
-    
+    // boost::math::rayleigh_distribution<double> calcularDistribucionRayleigh();
+    void tiempoInicioDistribution();
+    void leerPedestrians(std::string fileName);
+    void mostrarPedestrians();
+    // void imprimirPedestrians(std::string folderName);
 };
 #endif

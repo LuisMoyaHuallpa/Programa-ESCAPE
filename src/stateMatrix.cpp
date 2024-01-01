@@ -56,13 +56,13 @@ void stateMatrix::agregarQ(int i, double Q) {
     }
 
 }
-void stateMatrix::enviarDataNode(node* nodeAGuardar) {
+// void stateMatrix::enviarDataNode(node* nodeAGuardar) {
     // Envia los datos leidos del csv al QTable de cada nodo.
-    for (int i = 0; i < stateValue.getDensityLinks().size(); i++) {
-        stateActionQ qAGuardar(stateValue, nodeAGuardar->getLinkConnection().at(i)->getIdLink(),QVector[i]);
-        nodeAGuardar->addqQTable(qAGuardar);
-    }
-}
+    // for (int i = 0; i < stateValue.getDensityLinks().size(); i++) {
+    //     stateActionQ qAGuardar(stateValue, nodeAGuardar->getLinkConnection().at(i)->getIdLink(),QVector[i]);
+    //     nodeAGuardar->addqQTable(qAGuardar);
+    // }
+// }
 void stateMatrix::mostrarStateMatrix() {
     std::cout << getIdNode() << ",";
     getStateValue().mostrarState();

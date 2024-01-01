@@ -1,39 +1,52 @@
 #ifndef links_h
 #define links_h
-
-#include "link.h"
-#include "nodes.h"
+/*---------------------------------------------------------------------------*\
+Punto de interseccion de calles.
+\*---------------------------------------------------------------------------*/
+//
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// header generales
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include <string>
 #include <vector>
 #include <sstream>
 #include <string>
 #include <fstream>
 #include <iostream>
-
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// header propios
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#include "link.h"
+#include "nodes.h"
 
 class links {
 
 private:
-    std::string filename;
+    std::string fileName;
     std::vector<link> dbLink;
-    nodes *dbNode;
+    // nodes* dbNode;
     
 public:
-    // static nodes listaNode;
-    // static void setListaNode(const nodes& dbnode);
+    static std::vector<link> dbLinkTotal;
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // constructor
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    links();
+    // links(nodes* dbNode);
 
-    /* constructor */
-    // links();
-    // links(std::string filename);
-    links(nodes* dbNode);
-    
-    
-    
-    /* metodos */
-    void leerLinks(std::string filename);
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // getters
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    std::string getFileName();
+    std::vector<link> getDbLink();
+    // nodes* getDbNode();
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // metodos
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    void leerLinks(std::string fileName);
     void mostrarLinks();
     void imprimirLinks();
-    link extraccionLink(int index);
     void creacionLinkConnections();
     // void buscarNode(int id);
 

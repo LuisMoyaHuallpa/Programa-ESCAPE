@@ -1,64 +1,111 @@
 #include "links.h"
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// static
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+std::vector<link> links::dbLinkTotal;
+// #include "pedestrian.h"
+
 // nodes links::listaNode;
 // void links::setListaNode(const nodes& dbnode) {
 //     listaNode = dbnode;
 // }
 
-// links::links(){
-//     (*this).filename = "links.csv";
-//     leerLinks(filename);
-// }
 // links::links(std::string filename) : dbNode(){
 //     leerLinks(filename);
 // }
-links::links(nodes* dbNode) : dbNode(dbNode){
-    (*this).filename = "links.csv";
-    leerLinks(filename);
-    creacionLinkConnections();
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// constructor
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+links::links(){
+    (*this).fileName = "links.csv";
+    leerLinks(fileName);
 }
 
-void links::leerLinks(std::string filename){
-    std::fstream file;
-    file.open(filename, std::ios::in);
+// links::links(nodes* dbNode) {
+//     (*this).dbNode = dbNode;
+//     (*this).fileName = "links.csv";
+//     leerLinks(fileName);
+//     creacionLinkConnections();
+// }
 
-   if (file.fail()) {
-       std::cout << "Error opening the file " << filename << std::endl;
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// getters
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+std::string links::getFileName() {
+    return fileName;  
+}
+std::vector<link> links::getDbLink() {
+    return dbLink;
+}
+// nodes* links::getDbNode() {
+//     return dbNode;  
+// }
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// metodos
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void links::leerLinks(std::string fileName){
+    // Lectura de archivo de links
+    std::fstream file;
+    file.open(fileName, std::ios::in);
+    
+    if (file.fail()) {
+        std::cout << "Error opening the file " << fileName << std::endl;
         exit(1);
     }
-
+    // Variables de una fila del archivo nodos, que seria un solo node
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // idLink                |-->| IDLINK
+    // idNode1               |-->| POSICION X
+    // idNode2               |-->| POSICION Y
+    // lengthLink            |-->| NODE DE EVACUACION, SI ES 1
+    // withLink              |-->| 
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    std::string a1_str, a2_str, a3_str, a4_str, a5_str;
+    std::string idLink_str, idNode1_str, idNode2_str, lengthLink_str, widthLink_str;
     std::string line;
+    link linkObj1;
+    // Lectura de archivo de nodos
     while (std::getline(file, line)) {
+        // Si el archivo tiene comentarios con #, no leerlos.
         if (line[0] == '#') {
             continue;
         }
-        
         std::istringstream iss(line);
-        std::string a1_str, a2_str, a3_str, a4_str, a5_str;
 
-        std::getline(iss, a1_str, ',');
-        std::getline(iss, a2_str, ',');
-        std::getline(iss, a3_str, ',');
-        std::getline(iss, a4_str, ',');
-        std::getline(iss, a5_str, '\n');
+        std::getline(iss, idLink_str, ',');
+        std::getline(iss, idNode1_str, ',');
+        std::getline(iss, idNode2_str, ',');
+        std::getline(iss, lengthLink_str, ',');
+        std::getline(iss, widthLink_str, '\n');
 
-        int a1 = std::stoi(a1_str);
-        int a2= std::stoi(a2_str);
-        int a3 = std::stoi(a3_str);
-        int a4 = std::stoi(a4_str);
-        int a5 = std::stoi(a5_str);
-        node* node1 = dbNode->extracionNode(a2);
-        node* node2 = dbNode->extracionNode(a3);
-        link linkObj = link(a1, node1, node2, a4, a5);
-        dbLink.push_back(linkObj);
+        int idLink= std::stoi(idLink_str);
+        int idNode1= std::stoi(idNode1_str);
+        int idNode2 = std::stoi(idNode2_str);
+        int lengthLink = std::stoi(lengthLink_str);
+        int widthLink = std::stoi(widthLink_str);
+        linkObj1.setIdLink(idLink);
+        linkObj1 = link(idLink, idNode1, idNode2, lengthLink, widthLink);
+        // dbLink.push_back(linkObj1);
+        links::dbLinkTotal.push_back(linkObj1);
+        nodes::dbNodeTotal.at(idNode1).addIdLinkConnection(idLink);
+        nodes::dbNodeTotal.at(idNode2).addIdLinkConnection(idLink);
+        // dbNode->getDbNode().at(idNode1).addIdLinkConnection(idLink);
+        // dbNode->getDbNode().at(idNode2).addIdLinkConnection(idLink);
+
+        // pedestrian::dbNode->getDbNode().at(idNode1).addIdLinkConnection(idLink);
+
+        // pedestrian::dbNode.getDbNode().at(idNode2).addIdLinkConnection(idLink);
+        // linkObj1.mostrarLink();
     }
     file.close(); 
 }
 
 void links::mostrarLinks(){
-    for (int i=0; i <dbLink.size(); i++) {
+    for (int i=0; i <dbLinkTotal.size(); i++) {
         // dbLink.at(i).mostrarLink();
-        dbLink.at(i).mostrarSubLinks();
+        dbLinkTotal.at(i).mostrarSubLinks();
     }
 }
 void links::imprimirLinks() {
@@ -66,14 +113,11 @@ void links::imprimirLinks() {
     std::string folderName = "meshLink";
     file.open(folderName + "/poliLinks",std::ios::out);
     for (int i=0; i < dbLink.size(); i++) {
-        dbLink.at(i).imprimirLink(file);
+        // dbLink.at(i).imprimirLink(file);
 
     }
 }
-link links::extraccionLink(int index) {
-    link linkExtraido = dbLink.at(index);
-    return linkExtraido;
-}
+
 void links::creacionLinkConnections() {
     for (int i = 0; i < dbLink.size(); i++) {
         dbLink.at(i).creacionLinkConnection();

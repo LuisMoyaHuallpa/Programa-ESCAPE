@@ -8,8 +8,8 @@
 #include <sys/stat.h> 
 #include "nodes.h"
 #include "links.h"
-#include "pedestrians.h"
 #include "stateMatrixs.h"
+#include "pedestrians.h"
 
 
 void createFolder(const std::string& folderName) {
@@ -21,36 +21,33 @@ void createFolder(const std::string& folderName) {
     }
 }
 
-
 int main() {
+    // Creacion de data de interseccion.
     nodes dbNode1;
-    links dbLink1(&dbNode1);
-    // dbLink1.imprimirLinks();
-    // dbLink1.mostrarLinks();
-    // Podria cambiarse a puntero para borralo manualmente
-    // stateMatrixs dbStateMatrixs1(&dbNode1);
-    // dbStateMatrixs1.mostrarDbStateMatrixs();
-
-    pedestrians dbPedestrian1(&dbNode1);
+    // Creacion de data de calles.
+    links dbLink1;
+    // Lectura de simulaciones pasadas.
+    stateMatrixs dbStateMatrixs1;
+    // Lectura de data de peatones.
+    pedestrians dbPedestrian1;
     // dbPedestrian1.mostrarPedestrians();
+    // creacionde del tiempo de simulacion.
     tiempo tiempoSimulado;
 
-    while (tiempoSimulado.running())
-    {
+    while (tiempoSimulado.running()) {
         tiempoSimulado++;
-        int tiempo = tiempoSimulado.getValorTiempo();
-        std::cout << "Time = " << tiempoSimulado.getValorTiempo() << std::endl;
+        tiempoSimulado.mostrarTiempo();
         dbPedestrian1.caminarPedestrians(tiempoSimulado.getValorTiempo());
-        // dbPedestrian1.caminarPedestrians(tiempoSimulado.getValorTiempo(), &sarsaAlgorithm);
-        // dbPedestrian1.mostrarPedestrians();
-        if (tiempoSimulado.getWriteNow()) {
-            std::string folderName = std::to_string(tiempoSimulado.getValorTiempo());
-            createFolder(folderName);
-            dbPedestrian1.imprimirPedestrians(folderName);
-            dbNode1.imprimirCantPedestrianEvacuted(folderName);
-        }
+        // dbPedestrian1.caminarPedestrians(tiempoSimulado.getValorTiempo());
+        dbPedestrian1.mostrarPedestrians();
+    //     if (tiempoSimulado.getWriteNow()) {
+    //         std::string folderName = std::to_string(tiempoSimulado.getValorTiempo());
+    //         createFolder(folderName);
+    //         dbPedestrian1.imprimirPedestrians(folderName);
+    //         dbNode1.imprimirCantPedestrianEvacuted(folderName);
+    //     }
     }
-    dbNode1.mostrarNodes();
+    // dbNode1.mostrarNodes();
      // dbNode1.imprimirNodes();
     // dbStateMatrixs1.imprimirDbStateMatrixs();
 }

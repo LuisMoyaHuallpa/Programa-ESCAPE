@@ -1,6 +1,7 @@
 #ifndef tiempo_h
 #define tiempo_h
 
+#include <iostream>
 class tiempo {
 
 private:
@@ -24,6 +25,7 @@ public:
 
     tiempo& operator++(int);
     bool running();
+    void mostrarTiempo();
     
 };
 

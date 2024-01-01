@@ -1,34 +1,41 @@
 #include "link.h"
-#include "node.h"
 
 int link::unitWidthPartion = 10;
 int link::getUnitWidthPartion() {
     return unitWidthPartion;  
 }
 
-link::link() : node1(), node2(){
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// constructor
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+link::link() {
     (*this).idLink = 0;
+    (*this).idNode1 = 0;
+    (*this).idNode2 = 0;
     (*this).length = 0;
     (*this).width = 0;
 }
-link::link(int id, node* node1, node* node2, int length, int width) {
-    setIdLink(id);
-    setNode1(node1);
-    setNode2(node2);
+link::link(int idLink, int idNode1, int idNode2, int length, int width) {
+    setIdLink(idLink);
+    setIdNode1(idNode1);
+    setIdNode2(idNode2);
     setLength(length);
     setWidth(width);
     calcularNumberPartion();
     subLinks.resize(numberPartion);
 }
 
-void link::setIdLink(int id) {
-    (*this).idLink = id;  
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// setters
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void link::setIdLink(int idLink) {
+    (*this).idLink = idLink;  
 }
-void link::setNode1(node* node1){
-    (*this).node1 = node1;
+void link::setIdNode1(int idNode1) {
+    (*this).idNode1 = idNode1;
 }
-void link::setNode2(node* node2){
-    (*this).node2 = node2;
+void link::setIdNode2(int idNode2) {
+    (*this).idNode2 = idNode2;  
 }
 void link::setLength(int length){
     (*this).length = length;
@@ -40,15 +47,17 @@ void link::setSubLinks(std::vector<subLink> subLinks) {
     (*this).subLinks = subLinks;
 }
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getters
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 int link::getIdLink() const {
     return idLink;  
 }
-node* link::getNode1() const{
-    return node1;
+int link::getIdNode1() const{
+    return idNode1;
 }
-node* link::getNode2() const{
-    return node2;
+int link::getIdNode2() const{
+    return idNode2;
 }
 int link::getLength() const{
     return length;
@@ -70,22 +79,22 @@ int link::getDensityLevel() {
 void link::calcularHistParam() {
     numberPartion = width/getUnitWidthPartion();
 }
-vector2D link::calcularDirectionLink() {
-    vector2D direction;
-    double x = node2->getCoordX() - node1->getCoordX();
-    double y = node2->getCoordY() - node1->getCoordY();
-    direction.setX(x);
-    direction.setY(y);
-    // Calcula la magnitud del vector de dirección
-    double magnitud = std::sqrt(std::pow(direction.getX(), 2) + std::pow(direction.getY(), 2));
-    // Normaliza el vector de dirección (divide cada e por la magnitud)
-    direction.setX(direction.getX() / magnitud);
-    direction.setY(direction.getY() / magnitud);
-    return direction;
-}
+// vector2D link::calcularDirectionLink() {
+//     vector2D direction;
+//     double x = node2->getCoordX() - node1->getCoordX();
+//     double y = node2->getCoordY() - node1->getCoordY();
+//     direction.setX(x);
+//     direction.setY(y);
+//     // Calcula la magnitud del vector de dirección
+//     double magnitud = std::sqrt(std::pow(direction.getX(), 2) + std::pow(direction.getY(), 2));
+//     // Normaliza el vector de dirección (divide cada e por la magnitud)
+//     direction.setX(direction.getX() / magnitud);
+//     direction.setY(direction.getY() / magnitud);
+//     return direction;
+// }
 void link::creacionLinkConnection() {
-    getNode1()->agregarLink(&*this);
-    getNode2()->agregarLink(&*this);
+    // getNode1()->agregarLink(&*this);
+    // getNode2()->agregarLink(&*this);
 }
 void link::calcularNumberPartion() {
     numberPartion = std::floor(static_cast<double>(length) / static_cast<double>(unitWidthPartion));
@@ -111,17 +120,17 @@ void link::mostrarLink(){
     std::cout << "link: ";
     std::cout << getIdLink() << " ";
     std::cout << "nodes: ";
-    std::cout << getNode1() -> getIdNode() << " ";
-    std::cout << getNode2() -> getIdNode() << " ";
+    std::cout << getIdNode1() << " ";
+    std::cout << getIdNode2() << " ";
     std::cout << std::endl;
 }
-void link::imprimirLink(std::fstream& file) {
-    file << getNode1()->getCoordX() << " ";
-    file << getNode1()->getCoordY() << " ";
-    file << getNode2()->getCoordX() << " ";
-    file << getNode2()->getCoordY() << " ";
-    file << std::endl;
-}
+// void link::imprimirLink(std::fstream& file) {
+//     file << getNode1()->getCoordX() << " ";
+//     file << getNode1()->getCoordY() << " ";
+//     file << getNode2()->getCoordX() << " ";
+//     file << getNode2()->getCoordY() << " ";
+//     file << std::endl;
+// }
 void link::mostrarSubLinks() {
     std::cout << getIdLink() << "  ";
     for (int i = 0; i < subLinks.size(); i++) {

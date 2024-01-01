@@ -10,20 +10,31 @@
 class stateMatrixs {
 private:
     std::vector<stateMatrix> dbStateMatrixs;
-    nodes* dbNode;
+    // nodes* dbNode;
 
 public:
-    static const std::string stateMatrixFile;
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // static
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    const static std::string simulationFile;
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // constructor
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     stateMatrixs();
-    stateMatrixs(nodes* dbNode);
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // getters
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // metodos
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // void enviarDataNode(stateMatrix stateMatrixElement);
     std::string encontrarUltimoFile();
     std::string crearFilenameSalida();
     void agregarStateMatrix(stateMatrix stateMatrixElement);
     void leerDbStateMatrixs(std::string filename);
     void mostrarDbStateMatrixs();
-    void imprimirDbStateMatrixs();
+    // void imprimirDbStateMatrixs();
     
     
 };

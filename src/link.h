@@ -1,23 +1,28 @@
 #ifndef link_h
 #define link_h
-
-// #include "node.h"
-#include "subLink.h"
-#include "vector2D.h"
-#include "vector"
+/*---------------------------------------------------------------------------*\
+Una calle.
+\*---------------------------------------------------------------------------*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// header generales
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include <fstream>
 #include <vector>
 #include <cmath>
 #include <iostream>
-// #include "node.h"
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// header propios
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#include "subLink.h"
+#include "vector2D.h"
+#include "vector"
 
-class node;
 class link{
     
 private:
     int idLink;
-    node* node1;
-    node* node2;
+    int idNode1;
+    int idNode2;
     int length;
     int width;
     int numberPartion;
@@ -25,31 +30,43 @@ private:
     int densityLevel;
     
 public:
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // static
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     static int unitWidthPartion;
     int static getUnitWidthPartion();
-
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // constructor
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     link();
-    link(int id, node* node1, node* node2, int length, int width);
+    link(int idLink, int idNode1, int idNode2, int length, int width);
 
-    /* setters */
-    void setIdLink(int id);
-    void setNode1(node* node1);
-    void setNode2(node* node2);
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // setters
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    void setIdLink(int idLink);
+    void setIdNode1(int idNode1);
+    void setIdNode2(int idNode2);
     void setLength(int length);
     void setWidth(int width);
     void setSubLinks(std::vector<subLink> subLinks);
     void setDensityLevel(int densityLevel);
 
-   /* getters  */
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // getters
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     int getIdLink() const;
-    node* getNode1() const;
-    node* getNode2() const;
+    int getIdNode1() const;
+    int getIdNode2() const;
     int getLength() const;
     int getWidth() const;
     int getNumberPartion();
     std::vector<subLink>& getSubLinks();
     int getDensityLevel();
 
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // metodos
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void calcularHistParam();
     vector2D calcularDirectionLink();
     void creacionLinkConnection();

@@ -1,38 +1,42 @@
 #ifndef pedestrian_h
 #define pedestrian_h
 
-#include "node.h"
-#include "links.h"
-#include "tiempo.h"
-#include "vector2D.h"
-#include "vector2DVelocidad.h"
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// header generales
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include <fstream>
 #include <iostream>
-#include "subLink.h"
 #include <algorithm>
 #include <cmath>
 #include <math.h>
 #include <random>
 #include <iomanip>
 #include <vector>
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// header propios
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "sarsa.h"
+#include "subLink.h"
+#include "vector2D.h"
+#include "vector2DVelocidad.h"
+#include "nodes.h"
+#include "link.h"
+#include "tiempo.h"
 
 class pedestrian {
+
 private:
     int idPedestrian;
-    int gender;
     int edad;
+    int gender;
     int hhType;
     int hhId;
-
-    int coordX;
-    int coordY;
     vector2D position;
     node* nodeInicio;
     node* nodeFinal;
-    // node* nodeAnterior;
-    link* linkActual;
-    link* linkPasado;
+    node* nodeAnterior;
+    // link linkActual;
+    // link* linkPasado;
     stateActionQ* qStateAction;
     vector2D orientacion;
     vector2D orientacionLinkPasado;
@@ -47,15 +51,23 @@ private:
     sarsa sarsaAlgorithm;
 
 public:
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // static
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     static int contador;
-    static const int surviveReward;
-    static const int deadReward;
-    static const int stepReward;
-   
+    const static int surviveReward;
+    const static int deadReward;
+    const static int stepReward;
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // constructor
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     pedestrian();
     pedestrian(int edad, int gender, int hhType, int hhId, node* nodeInicio);
 
-    /* setters */
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // setters
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void setIdPedestrian(int idPedestrian);
     void setEdad(int edad);
     void setGender(int gender);
@@ -65,8 +77,8 @@ public:
     void setNodeFinal(node* nodeFinal);
     // void setNodeAnterior(node* nodeAnterior);
     void setPosition(vector2D position);
-    void setLinkActual(link* linkActual);
-    void setLinkPasado(link* linkPasado);
+    // void setLinkActual(link* linkActual);
+    // void setLinkPasado(link* linkPasado);
     void setqStateAction(stateActionQ* qStateAction);
     void setOrientacion(vector2D orientacion);
     void setOrientacionLinkPasado(vector2D orientacionLinkPasado);
@@ -79,6 +91,9 @@ public:
     void setRetorno(int retorno);
     void setEvacuado(bool evacuado);
 
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // getters
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     int getIdPedestrian() const;
     int getEdad() const;
     int getGender();
@@ -90,8 +105,8 @@ public:
     vector2D getPosition();
     vector2D getOrientacion();
     vector2D getOrientacionLinkPasado();
-    link* getLinkActual();
-    link* getLinkPasado();
+    // link* getLinkActual();
+    // link* getLinkPasado();
     stateActionQ* getqStateAction();
     vector2DVelocidad getVelocidad();
     int getTiempoInicial();
@@ -102,37 +117,39 @@ public:
     int getRetorno();
     bool getEvacuado();
 
-    void mostrarPedestrian();
-    void imprimirPedestrianPosition(std::fstream& file);
-    void imprimirPedestrianVelocity(std::fstream& file);
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // metodos
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // void imprimirPedestrianPosition(std::fstream& file);
+    // void imprimirPedestrianVelocity(std::fstream& file);
     void caminar();
-    void eleccionRandomLinkActual();
-    int iEleccionRandomLinkActual();
-    void updateLinkActual(int iLinkConnection);
-    void updateStateAction(int iLinkConnection);
-    void updateParametrosPeaton();
-    void eleccionProbalistica();
+    // void eleccionRandomLinkActual();
+    // int iEleccionRandomLinkActual();
+    // void updateLinkActual(int iLinkConnection);
+    // void updateStateAction(int iLinkConnection);
+    // void updateParametrosPeaton();
+    // void eleccionProbalistica();
     bool verificarEndLink();
-    bool verificarEndLink1();
-    void calcularNodeFinal();
+    // bool verificarEndLink1();
+    // void calcularNodeFinal();
     void updateLinkParameter();
-    // void updateLinkParameter(sarsa* sarsaAlgorithm);
-    void updateCalle();
-    void calcularOrientacion();
-    void calcularRetorno();
-    void verificarPedestrianEvacuation();
-    void contarPedestrainSubdivision();
-    bool verificarDirectionLink();
-    void encontrarPrimerTiempo();
-    bool verificarSaltoLink();
-    void correctionPosition();
-    void algoritmoSarsa();
-    std::vector<stateActionQ>::iterator agregarObtenerqLista(node* nodeDeBusqueda,stateActionQ qBuscando);
-    void buscarQ(bool verificarQExistente, stateActionQ* qElemento);
-    std::vector<int> calcularLevelDensityLinks();
-    void inicializarq();
-    void crearqState(node* nodeActual);
+    // // void updateLinkParameter(sarsa* sarsaAlgorithm);
+    // void updateCalle();
+    // void calcularOrientacion();
+    // void calcularRetorno();
+    // void verificarPedestrianEvacuation();
+    // void contarPedestrainSubdivision();
+    // bool verificarDirectionLink();
+    // void encontrarPrimerTiempo();
+    // bool verificarSaltoLink();
+    // void correctionPosition();
+    // void algoritmoSarsa();
+    // std::vector<stateActionQ>::iterator agregarObtenerqLista(node* nodeDeBusqueda,stateActionQ qBuscando);
+    // void buscarQ(bool verificarQExistente, stateActionQ* qElemento);
+    // std::vector<int> calcularLevelDensityLinks();
+    // void inicializarq();
+    // void crearqState(node* nodeActual);
+    void mostrarPedestrian();
     
 };
-
 #endif

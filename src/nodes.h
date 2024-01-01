@@ -1,36 +1,49 @@
 #ifndef nodes_h
 #define nodes_h
-
-#include "node.h"
-#include "nodeEvacution.h"
+/*---------------------------------------------------------------------------*\
+Punto de interseccion de calles.
+\*---------------------------------------------------------------------------*/
+//
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// header generales
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include <string>
 #include <vector>
 #include <iostream>
 #include <sstream>
 #include <fstream>
 #include <string>
-
-
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// header propios
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#include "node.h"
+#include "nodeEvacution.h"
 
 class nodes{
-
 private:
-    std::string filename;
-    std::vector<node*> dbnodes;
+    std::string fileName;
+    
 public:
+    static std::vector<node> dbNodeTotal;
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // constructor
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     nodes();
-    nodes(std::string filename);
+    nodes(std::string fileName);
 
-    std::vector<node*> getDbNode();
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // getters
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    std::string getFileName();
 
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
-    void leerNodes(std::string filename);
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    void leerNodes(std::string fileName);
     void usarlink();
-    node* extracionNode(int index);
     void mostrarNodes();
-    void imprimirNodes(std::fstream& file);
-    void imprimirCantPedestrianEvacuted(std::string folderName);
+    // void imprimirNodes(std::fstream& file);
+    // void imprimirCantPedestrianEvacuted(std::string folderName);
     
 };
 #endif
