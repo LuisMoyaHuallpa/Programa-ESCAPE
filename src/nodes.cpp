@@ -92,6 +92,12 @@ void nodes::mostrarNodes() {
         // }
     }
 }
+void nodes::mostrardbNodeTotal() {
+    for (int i = 0; i < nodes::dbNodeTotal.size(); i++) {
+        nodes::dbNodeTotal.at(i).mostrarNode();
+        nodes::dbNodeTotal.at(i).mostrarQTable();
+    }
+}
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // imprimir
 // void nodes::imprimirNodes(std::fstream& file) {

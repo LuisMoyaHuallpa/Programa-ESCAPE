@@ -35,9 +35,9 @@ links::links(){
 std::string links::getFileName() {
     return fileName;  
 }
-std::vector<link> links::getDbLink() {
-    return dbLink;
-}
+// std::vector<link> links::getDbLink() {
+//     return dbLink;
+// }
 // nodes* links::getDbNode() {
 //     return dbNode;  
 // }
@@ -91,12 +91,6 @@ void links::leerLinks(std::string fileName){
         links::dbLinkTotal.push_back(linkObj1);
         nodes::dbNodeTotal.at(idNode1).addIdLinkConnection(idLink);
         nodes::dbNodeTotal.at(idNode2).addIdLinkConnection(idLink);
-        // dbNode->getDbNode().at(idNode1).addIdLinkConnection(idLink);
-        // dbNode->getDbNode().at(idNode2).addIdLinkConnection(idLink);
-
-        // pedestrian::dbNode->getDbNode().at(idNode1).addIdLinkConnection(idLink);
-
-        // pedestrian::dbNode.getDbNode().at(idNode2).addIdLinkConnection(idLink);
         // linkObj1.mostrarLink();
     }
     file.close(); 
@@ -104,22 +98,22 @@ void links::leerLinks(std::string fileName){
 
 void links::mostrarLinks(){
     for (int i=0; i <dbLinkTotal.size(); i++) {
-        // dbLink.at(i).mostrarLink();
-        dbLinkTotal.at(i).mostrarSubLinks();
+        dbLinkTotal.at(i).mostrarLink();
+        // dbLinkTotal.at(i).mostrarSubLinks();
     }
 }
-void links::imprimirLinks() {
-    std::fstream file;
-    std::string folderName = "meshLink";
-    file.open(folderName + "/poliLinks",std::ios::out);
-    for (int i=0; i < dbLink.size(); i++) {
-        // dbLink.at(i).imprimirLink(file);
+// void links::imprimirLinks() {
+//     std::fstream file;
+//     std::string folderName = "meshLink";
+//     file.open(folderName + "/poliLinks",std::ios::out);
+//     for (int i=0; i < dbLink.size(); i++) {
+//         // dbLink.at(i).imprimirLink(file);
 
-    }
-}
+//     }
+// }
 
-void links::creacionLinkConnections() {
-    for (int i = 0; i < dbLink.size(); i++) {
-        dbLink.at(i).creacionLinkConnection();
-    }
-}
+// void links::creacionLinkConnections() {
+//     for (int i = 0; i < dbLink.size(); i++) {
+//         dbLink.at(i).creacionLinkConnection();
+//     }
+// }

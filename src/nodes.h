@@ -4,7 +4,7 @@
 Punto de interseccion de calles.
 \*---------------------------------------------------------------------------*/
 //
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // header generales
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include <string>
@@ -42,6 +42,7 @@ public:
     void leerNodes(std::string fileName);
     void usarlink();
     void mostrarNodes();
+    static void mostrardbNodeTotal();
     // void imprimirNodes(std::fstream& file);
     // void imprimirCantPedestrianEvacuted(std::string folderName);
     

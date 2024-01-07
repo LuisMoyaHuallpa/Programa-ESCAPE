@@ -9,7 +9,8 @@
 #include "nodes.h"
 #include "links.h"
 #include "stateMatrixs.h"
-#include "pedestrians.h"
+#include "pedestrian.h"
+
 
 
 void createFolder(const std::string& folderName) {
@@ -26,20 +27,31 @@ int main() {
     nodes dbNode1;
     // Creacion de data de calles.
     links dbLink1;
-    // Lectura de simulaciones pasadas.
+   // Lectura de simulaciones pasadas.
     stateMatrixs dbStateMatrixs1;
-    // Lectura de data de peatones.
-    pedestrians dbPedestrian1;
-    // dbPedestrian1.mostrarPedestrians();
+    // dbNode1.mostrarNodes();
+    pedestrian::dbNodeTotal = nodes::dbNodeTotal;
+    pedestrian::dbLinkTotal = links::dbLinkTotal;
+
+    pedestrian::leerPedestrians("population.csv");
+    // pedestrian::mostrarDbPedestrianTotal();
+
     // creacionde del tiempo de simulacion.
     tiempo tiempoSimulado;
 
     while (tiempoSimulado.running()) {
         tiempoSimulado++;
         tiempoSimulado.mostrarTiempo();
-        dbPedestrian1.caminarPedestrians(tiempoSimulado.getValorTiempo());
         // dbPedestrian1.caminarPedestrians(tiempoSimulado.getValorTiempo());
-        dbPedestrian1.mostrarPedestrians();
+
+        pedestrian::modelamientoPedestrians(tiempoSimulado.getValorTiempo());
+
+        // pedestrian::mostrarDbPedestrianTotal();
+
+
+
+        // dbPedestrian1.caminarPedestrians(tiempoSimulado.getValorTiempo());
+        // dbPedestrian1.mostrarPedestrians();
     //     if (tiempoSimulado.getWriteNow()) {
     //         std::string folderName = std::to_string(tiempoSimulado.getValorTiempo());
     //         createFolder(folderName);

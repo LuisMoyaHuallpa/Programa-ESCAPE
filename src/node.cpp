@@ -20,10 +20,10 @@ node::node(int idNode, int coordX, int coordY) {
 void node::setIdNode(int idNode) {
     (*this).idNode = idNode;
 }
-void node::setCoorX(int coordX){
+void node::setCoorX(double coordX){
     (*this).coordX = coordX;
 }
-void node::setCoorY(int coordY){
+void node::setCoorY(double coordY){
     (*this).coordY = coordY;
 }
 void node::setIdLinkConnection(std::vector<int> idLinkConnection) {
@@ -39,10 +39,10 @@ void node::setStateMatrixTable(std::vector<stateMatrix> stateMatrixTable) {
 int node::getIdNode() const{
     return idNode;
 }
-int node::getCoordX() const{
+double node::getCoordX() const{
     return coordX;
 }
-int node::getCoordY() const {
+double node::getCoordY() const {
     return coordY;
 }
 std::vector<int> node::getIdLinkConnection() {

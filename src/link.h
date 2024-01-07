@@ -20,6 +20,13 @@ Una calle.
 class link{
     
 private:
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // idLink      |-->| ID DE LA CALLE
+    // idNode1     |-->| COORDENADA X DE LA CALLE 
+    // idNode2     |-->| COORDENADA Y DE LA CALLE
+    // length      |-->| 
+    // width       |-->| 
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     int idLink;
     int idNode1;
     int idNode2;

@@ -15,19 +15,22 @@ Punto de interseccion de calles.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // header propios
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#include "stateActionQ.h"
 #include "stateMatrix.h"
-// #include "stateMatrix.h"
-// #include "states.h"
 
 class node {
 private:
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // idNode            |-->| ID DE LA INTERSECCION
+    // coordX            |-->| COORDENADA X DEL NODO 
+    // coordY            |-->| COORDENADA Y DEL NODO
+    // idLinkConnection  |-->| 
+    // stateMatrixTable  |-->| 
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     int idNode;
-    int coordX;
-    int coordY;
+    double coordX;
+    double coordY;
     std::vector<int> idLinkConnection;
     std::vector<stateMatrix> stateMatrixTable;
-
 
 public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -40,8 +43,8 @@ public:
     // setters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void setIdNode(int idNode);
-    void setCoorX(int coordX);
-    void setCoorY(int coordY);
+    void setCoorX(double coordX);
+    void setCoorY(double coordY);
     void setIdLinkConnection(std::vector<int> idLinkConnection);
     void setStateMatrixTable(std::vector<stateMatrix> stateMatrixTable);
     // void setRewardCode(int rewardCode);
@@ -50,8 +53,8 @@ public:
     // getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     int getIdNode() const;
-    int getCoordX() const;
-    int getCoordY() const;
+    double getCoordX() const;
+    double getCoordY() const;
     std::vector<int> getIdLinkConnection();
     std::vector<stateMatrix>& getStateMatrixTable();
     // int getRewardCode() const;

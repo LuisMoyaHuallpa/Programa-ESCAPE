@@ -1,7 +1,4 @@
 #include "stateMatrix.h"
-#include "action.h"
-#include <fstream>
-#include <vector>
 
 const int stateMatrix::tamanoVector = 10;
 int stateMatrix::getTamanoVector() {

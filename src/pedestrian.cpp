@@ -1,50 +1,46 @@
 #include "pedestrian.h"
-#include "nodeEvacution.h"
-#include "pedestrians.h"
-#include "stateActionQ.h"
-#include "sarsa.h"
-#include "state.h"
-#include <cmath>
-#include <cstddef>
-#include <iostream>
-#include <mutex>
-#include <vector>
+#include "vector2D.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// static
+// static member
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 int pedestrian::contador = 1;
 const int pedestrian::surviveReward = 100000;
 const int pedestrian::deadReward = -1000; 
 const int pedestrian::stepReward = -1;
-
+std::vector<node> pedestrian::dbNodeTotal;
+std::vector<link> pedestrian::dbLinkTotal;
+std::vector<pedestrian> pedestrian::dbPedestrianTotal;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pedestrian::pedestrian()  {
+pedestrian::pedestrian() : nodeFinal() {
     (*this).idPedestrian = 0;
     (*this).edad = 0;
     (*this).hhType = 0;
    (*this).hhId = 0;
 }
-pedestrian::pedestrian(int edad, int gender, int hhType, int hhId, node* nodeInicio) : sarsaAlgorithm() {
+pedestrian::pedestrian(int edad, int gender, int hhType, int hhId,
+                       node *nodeInicio)
+    : nodeFinal(nullptr) {
     setIdPedestrian(contador++);
     setEdad(edad);
     setGender(gender);
     setHHType(hhType);
     setHHId(hhId);
     setNodeInicio(nodeInicio);
+    setTiempoInicial(3);
     // setNodeAnterior(nodeInicio);
-    setEmpezoCaminar(false);
-    setPrimerTiempo(true);
-    setSaltoLink(false);
+    // setEmpezoCaminar(false);
+    // setPrimerTiempo(true);
+    // setSaltoLink(false);
     setEvacuado(false);
-    setRetorno(0);
-    double x = nodeInicio->getCoordX();
-    double y = nodeInicio->getCoordY();
-    vector2D position(x, y);
-    setPosition(position);
+    // setRetorno(0);
+    // double x = nodeInicio->getCoordX();
+    // double y = nodeInicio->getCoordY();
+    // vector2D position(x, y);
+    // setPosition(position);
     // eleccionRandomLinkActual();
     // setLinkPasado(linkActual);
     // calcularNodeFinal();
@@ -85,42 +81,42 @@ void pedestrian::setNodeFinal(node* nodeFinal) {
 void pedestrian::setPosition(vector2D position) {
     (*this).position = position;
 }
-// void pedestrian::setLinkActual(link* linkActual) {
-//     (*this).linkActual = linkActual;
+void pedestrian::setLinkActual(link* linkActual) {
+    (*this).linkActual = linkActual;
+}
+void pedestrian::setLinkPasado(link *linkPasado) {
+    (*this).linkPasado = linkPasado;
+}
+// void pedestrian::setqStateAction(stateActionQ* qStateAction) {
+//     (*this).qStateAction = qStateAction;
 // }
-// void pedestrian::setLinkPasado(link *linkPasado) {
-//     (*this).linkPasado = linkPasado;
+// void pedestrian::setOrientacion(vector2D orientacion) {
+//     (*this).orientacion = orientacion;
 // }
-void pedestrian::setqStateAction(stateActionQ* qStateAction) {
-    (*this).qStateAction = qStateAction;
-}
-void pedestrian::setOrientacion(vector2D orientacion) {
-    (*this).orientacion = orientacion;
-}
-void pedestrian::setOrientacionLinkPasado(vector2D orientacionLinkPasado) {
-    (*this).orientacionLinkPasado = orientacionLinkPasado;
-}
+// void pedestrian::setOrientacionLinkPasado(vector2D orientacionLinkPasado) {
+//     (*this).orientacionLinkPasado = orientacionLinkPasado;
+// }
 void pedestrian::setVelocidad(vector2DVelocidad velocidad) {
     (*this).velocidad = velocidad;
 }
 void pedestrian::setTiempoInicial(int tiempoInicial) {
     (*this).tiempoInicial = tiempoInicial;
 }
-void pedestrian::setTiempoFinal(int tiempoFinal) {
-    (*this).tiempoFinal = tiempoFinal;
-}
-void pedestrian::setEmpezoCaminar(bool empezoCaminar) {
-    (*this).empezoCaminar = empezoCaminar;
-}
-void pedestrian::setPrimerTiempo(bool primerTiempo) {
-    (*this).primerTiempo = primerTiempo;
-}
-void pedestrian::setSaltoLink(bool saltoLink) {
-    (*this).saltoLink = saltoLink;
-}
-void pedestrian::setRetorno(int retorno) {
-    (*this).retorno = retorno;
-}
+// void pedestrian::setTiempoFinal(int tiempoFinal) {
+//     (*this).tiempoFinal = tiempoFinal;
+// }
+// void pedestrian::setEmpezoCaminar(bool empezoCaminar) {
+//     (*this).empezoCaminar = empezoCaminar;
+// }
+// void pedestrian::setPrimerTiempo(bool primerTiempo) {
+//     (*this).primerTiempo = primerTiempo;
+// }
+// void pedestrian::setSaltoLink(bool saltoLink) {
+//     (*this).saltoLink = saltoLink;
+// }
+// void pedestrian::setRetorno(int retorno) {
+//     (*this).retorno = retorno;
+// }
 void pedestrian::setEvacuado(bool evacuado) {
     (*this).evacuado = evacuado;
 }
@@ -149,50 +145,53 @@ node* pedestrian::getNodeInicio() const{
 node* pedestrian::getNodeFinal() {
     return nodeFinal;  
 }
-// node* pedestrian::getNodeAnterior() {
-//     return nodeAnterior;  
-// }
+// // node* pedestrian::getNodeAnterior() {
+// //     return nodeAnterior;  
+// // }
 vector2D pedestrian::getPosition() {
     return position;
 }
-// link* pedestrian::getLinkActual() {
-//     return linkActual;
+link* pedestrian::getLinkActual() {
+    return linkActual;
+}
+link* pedestrian::getLinkPasado() {
+    return linkPasado;
+}
+// stateActionQ* pedestrian::getqStateAction() {
+//     return qStateAction;
 // }
-// link* pedestrian::getLinkPasado() {
-//     return linkPasado;
+// vector2D pedestrian::getOrientacion() {
+//     return orientacion;
 // }
-stateActionQ* pedestrian::getqStateAction() {
-    return qStateAction;
-}
-vector2D pedestrian::getOrientacion() {
-    return orientacion;
-}
-vector2D pedestrian::getOrientacionLinkPasado() {
-    return orientacionLinkPasado;
-}
+// vector2D pedestrian::getOrientacionLinkPasado() {
+//     return orientacionLinkPasado;
+// }
 vector2DVelocidad pedestrian::getVelocidad() {
     return velocidad;
 }
 int pedestrian::getTiempoInicial() {
     return tiempoInicial;
 }
-int pedestrian::getTiempoFinal() {
-    return tiempoFinal;  
-}
-bool pedestrian::getEmpezoCaminar() {
-    return empezoCaminar;
-}
-bool pedestrian::getPrimerTiempo() {
-    return primerTiempo;  
-}
-bool pedestrian::getSaltoLink() {
-    return saltoLink;  
-}
-int pedestrian::getRetorno() {
-    return retorno;  
-}
+// int pedestrian::getTiempoFinal() {
+//     return tiempoFinal;  
+// }
+// bool pedestrian::getEmpezoCaminar() {
+//     return empezoCaminar;
+// }
+// bool pedestrian::getPrimerTiempo() {
+//     return primerTiempo;  
+// }
+// bool pedestrian::getSaltoLink() {
+//     return saltoLink;  
+// }
+// int pedestrian::getRetorno() {
+//     return retorno;  
+// }
 bool pedestrian::getEvacuado() {
     return evacuado;
+}
+std::vector<node> pedestrian::getDbNodeTotal() {
+    return dbNodeTotal;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -200,25 +199,19 @@ bool pedestrian::getEvacuado() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void pedestrian::caminar() {
     position += velocidad * tiempo::deltaTiempo;
-    std::cout << tiempo::deltaTiempo << std::endl;
-    std::cout << velocidad.getX() << std::endl;
-    std::cout << position.getX() << std::endl;
-    std::cout << position.getY() << std::endl;
 }
-// void pedestrian::eleccionRandomLinkActual() {
-//     // // Obtener una semilla aleatoria del hardware
-//     // std::random_device rd;
-//     // // Algoritmo Motor Mersenne Twister
-//     // std::mt19937 generador(rd());
-//     // int limite_max = nodeInicio->getIdLinkConnection().size() - 1 ;
-//     // // Crear una distribución uniforme usando el rango especificado
-//     // std::uniform_int_distribution<int> distribucion(0, limite_max);
-//     // int numero_aleatorio = distribucion(generador);
-//     // // link* dbLink.getDbLink().at(getNodeInicio()->getIdLinkConnection().at(numero_aleatorio));
-//     // dbLink.getDbLink().at(1).getIdLink();
-//     // link* linkSeleccionado = getNodeInicio()->getIdLinkConnection().at(numero_aleatorio);
-//     // setLinkActual(linkSeleccionado);
-// }
+void pedestrian::eleccionRandomLinkActual() {
+    // La persona esta en una interseccion y tiene multiples opciones para elegir una calle.
+    // segun aletoriedad se decide cual sera la calle a tomar y se guardará en linkActual.
+    std::random_device rd;
+    // Algoritmo Motor Mersenne Twister
+    std::mt19937 generador(rd());
+    int limite_max = nodeInicio->getIdLinkConnection().size() - 1 ;
+    // Crear una distribución uniforme usando el rango especificado
+    std::uniform_int_distribution<int> distribucion(0, limite_max);
+    int numero_aleatorio = distribucion(generador);
+    setLinkActual(&dbLinkTotal.at(getNodeInicio()->getIdLinkConnection().at(numero_aleatorio)));
+}
 // int pedestrian::iEleccionRandomLinkActual() {
 //     // Eleccion de la calle de los posibles de la variables LinkConnection
 //     // cuando se esta en una intersección.
@@ -263,29 +256,39 @@ void pedestrian::caminar() {
 //     // setLinkActual(linkSeleccionado);
 // }
 // // verifica si el nodo ya sali o esta punto final
-bool pedestrian::verificarEndLink() {
-    // Da verdadero si la persona se encuentra ubicada en el termino de calle.
-    bool terminoLink = false;
-    if (position.getX()*std::copysign(1, orientacion.getX()) >= nodeFinal->getCoordX()*std::copysign(1, orientacion.getX()) and
-    position.getY()*std::copysign(1, orientacion.getY()) >= nodeFinal->getCoordY()*std::copysign(1, orientacion.getY())){
-        terminoLink = true;
-    }
-    return terminoLink;
-}
-// void pedestrian::calcularNodeFinal() {
-//     // // busqueda del node final
-//     // if(nodeInicio == linkActual->getNode1()){
-//     //     setNodeFinal(linkActual->getNode2());
-//     // }
-//     // else {
-//     //     setNodeFinal(linkActual->getNode1());
-//     // }
+// bool pedestrian::verificarEndLink() {
+//     // Da verdadero si la persona se encuentra ubicada en el termino de calle.
+//     bool terminoLink = false;
+//     if (position.getX()*std::copysign(1, orientacion.getX()) >= nodeFinal->getCoordX()*std::copysign(1, orientacion.getX()) and
+//     position.getY()*std::copysign(1, orientacion.getY()) >= nodeFinal->getCoordY()*std::copysign(1, orientacion.getY())){
+//         terminoLink = true;
+//     }
+//     return terminoLink;
 // }
-void pedestrian::updateLinkParameter() {
-    if (verificarEndLink()) {
-        // algoritmoSarsa();
+void pedestrian::calcularNodeFinal() {
+    // busqueda del node final segun la calle que se encuentre
+    // cada calle tiene un nodo de inicio y final depeendiendo
+    // si esta de ida o vuelta delvolvera el nodo final
+    // esto seria ida
+    if(nodeInicio->getIdNode() == linkActual->getIdNode1()){
+        std::cout << "hola";
+        setNodeFinal(&dbNodeTotal.at(linkActual->getIdNode2()));
+        std::cout << nodeFinal->getIdNode() << std::endl;
+        std::cout << nodeFinal->getCoordX() << std::endl;
+    }
+    // esto seria vuelta
+    else {
+        std::cout << "julio";
+        setNodeFinal(&dbNodeTotal.at(linkActual->getIdNode1()));
+        std::cout << nodeFinal->getIdNode() << std::endl;
+        std::cout << nodeFinal->getCoordX() << std::endl;
     }
 }
+// void pedestrian::updateLinkParameter() {
+//     if (verificarEndLink()) {
+//         // algoritmoSarsa();
+//     }
+// }
 // // void pedestrian::updateLinkParameter(sarsa* sarsaAlgorithm) {
 // //     if (verificarEndLink()) {
 // //         setNodeInicio(nodeFinal);
@@ -333,15 +336,15 @@ void pedestrian::updateLinkParameter() {
 //     velocidad.calcularVectorVelocidad();
 //     // falta mejor para que ajuste tambien esta velcoida
 // }
-// void pedestrian::calcularOrientacion() {
-//     double x = nodeFinal->getCoordX() - nodeInicio->getCoordX();
-//     double y = nodeFinal->getCoordY() - nodeInicio->getCoordY();
-//     // Calcula la magnitud del vector de dirección
-//     double magnitud = std::sqrt(std::pow(x, 2) + std::pow(y, 2));
-//     // Normaliza el vector de dirección (divide cada e por la magnitud)
-//     orientacion.setX(x / magnitud);
-//     orientacion.setY(y / magnitud);
-// }
+void pedestrian::calcularOrientacion() {
+    double x = nodeFinal->getCoordX() - nodeInicio->getCoordX();
+    double y = nodeFinal->getCoordY() - nodeInicio->getCoordY();
+    // Calcula la magnitud del vector de dirección
+    double magnitud = std::sqrt(std::pow(x, 2) + std::pow(y, 2));
+    // Normaliza el vector de dirección (divide cada e por la magnitud)
+    orientacion.setX(x / magnitud);
+    orientacion.setY(y / magnitud);
+}
 // void pedestrian::calcularRetorno() {
 //     if (evacuado == true) {
 //         retorno += surviveReward;
@@ -434,10 +437,13 @@ void pedestrian::updateLinkParameter() {
 //     }
 //     return false;
 // }
-// void pedestrian::correctionPosition() {
-//     position.setX(nodeFinal->getCoordX());
-//     position.setY(nodeFinal->getCoordY());
-// }
+void pedestrian::correctionPosition() {
+    // correge la posicion de la persona para que calze exactamente en las intersecciones.
+    // debido a la velocidad y tiempo no recorre estamente la distancia al nodo,
+    // puede ser un poco mas o menos pero bastante pequeño.
+    position.setX(nodeFinal->getCoordX());
+    position.setY(nodeFinal->getCoordY());
+}
 // void pedestrian::algoritmoSarsa() {
 //     // R
 //     sarsaAlgorithm.setR(getRetorno());
@@ -515,8 +521,10 @@ void pedestrian::updateLinkParameter() {
 // // //     nodeInicio->addqQTable(qAnterior);
 // // }
 
-void pedestrian::mostrarPedestrian(){
-    // pedestrians::dbNode.getDbNode().at(1).mostrarNode();
+void pedestrian::mostrarMovimientoPedestrian(){
+    /* muestra la interseccion de partida y final de una calle, cuando
+      una persona pasa por una calle. Asimismo muestra la posicion actual
+      la persona.*/
     std::cout << getIdPedestrian() << ' ';
     std::cout << std::setw(6) << getNodeInicio()->getIdNode() << ' ';
     std::cout << "start: ";
@@ -526,12 +534,14 @@ void pedestrian::mostrarPedestrian(){
     std::cout << "now: ";
     std::cout << std::setw(5) << getPosition().getX() << " ";
     std::cout << std::setw(5) << getPosition().getY() << " ";
-    // std::cout << "end: ";
-    // std::cout << std::setw(5) << getNodeFinal()->getCoordX() << ' ';
-    // std::cout << std::setw(5) << getNodeFinal()->getCoordY() << ' ';
+    std::cout << "end: ";
+    std::cout << std::setw(5) << getNodeFinal()->getCoordX() << ' ';
+    std::cout << std::setw(5) << getNodeFinal()->getCoordY() << ' ';
     // std::cout << std::setw(5) << getRetorno() << ' ';
     std::cout << std::endl;
 }
+
+
 // void pedestrian::imprimirPedestrianPosition(std::fstream& file){
 //     file << getPosition().getX() << " ";
 //     file << getPosition().getY() << " ";
@@ -541,3 +551,108 @@ void pedestrian::mostrarPedestrian(){
 //     file << getVelocidad().getMagnitud() << " ";
 //     file << std::endl;
 // }
+void pedestrian::leerPedestrians(std::string fileName){
+    std::fstream file;
+    file.open(fileName, std::ios::in);
+    
+    if (file.fail()) {
+        std::cout << "Error opening the file " <<fileName << std::endl;
+        exit(1);
+    }
+    // Variables de una fila del archivo nodos, que seria un solo node
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // edad                 |-->| EDAD DE LA PERSONA
+    // gender               |-->| GENERO DE LA PERSONA
+    // hhType               |-->| 
+    // hhId                 |-->| 
+    // idNodeInicio         |-->| ID DEL NODO DE INICIO 
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    std::string line;
+    std::string a1_str, a2_str, a3_str, a4_str, a5_str;
+    std::string edad_str, gender_str, hhType_str, hhId_str, idNodeInicio_str;
+    while (std::getline(file, line)) {
+        // Si el archivo tiene comentarios con #, no leerlos.
+        if (line[0] == '#') {
+            continue;
+        }
+        // Guardar cada line en la variable line. 
+        std::istringstream iss(line);
+        // Guardar cada valor en las variables.
+        std::getline(iss, edad_str, ',');
+        std::getline(iss, gender_str, ',');
+        std::getline(iss, hhType_str, ',');
+        std::getline(iss, hhId_str, ',');
+        std::getline(iss, idNodeInicio_str, '\n');
+        // Cambiar de str a int
+        int edad = std::stoi(edad_str);
+        int gender = std::stoi(gender_str);
+        int hhType = std::stoi(hhType_str);
+        int hhId = std::stoi(hhId_str);
+        int idNodeInicio = std::stoi(idNodeInicio_str);
+        // Creacion de cada persona en la data base.
+        pedestrian::dbPedestrianTotal.push_back(pedestrian(edad, gender, hhType, hhId, &(pedestrian::dbNodeTotal.at(idNodeInicio))));
+    }
+    file.close(); 
+}
+
+// double generateRayleigh(double sigma) {
+//     // Generar dos números aleatorios uniformes en el rango (0,1)
+//     double u1 = static_cast<double>(rand()) / RAND_MAX;
+//     double u2 = static_cast<double>(rand()) / RAND_MAX;
+
+//     // Calcular el valor de la distribución inversa de Rayleigh
+//     double x = sigma * sqrt(-2.0 * log(u1));
+
+//     // Devolver el valor ajustado con el segundo número aleatorio
+//     return x * cos(2.0 * M_PI * u2);
+// }
+
+// void pedestrian::tiempoInicioDistribution() {
+//     // calcula el tiempo de inicio, calculado con la distribucion rayleigh
+//     boost::random::mt19937 gen;
+//     // Set the parameters for the Rayleigh distribution
+//     double meanRayleigh = 7 * 60;
+//     double scaleRayleigh = meanRayleigh * std::pow((2/M_PI), 05);
+//     boost::math::rayleigh_distribution<double> rayleighDistribution(scaleRayleigh);
+//     for (int i = 0; i < dbPedestrianTotal.size(); ++i) {
+//         int number = std::round(boost::math::quantile(rayleighDistribution, boost::random::uniform_01<double>()(gen)));
+//         dbPedestrianTotal.at(i).setTiempoInicial(number);
+//         std::cout << dbPedestrianTotal.at(i).getTiempoInicial() << std::endl;
+//     }
+// }
+
+void pedestrian::modelamientoPedestrians(int valorTiempo) {
+    //  
+    for (int i = 0; i < dbPedestrianTotal.size(); i++) {
+        if (valorTiempo == dbPedestrianTotal.at(i).getTiempoInicial()) {
+            // set la posicion de incio del pedestrian
+            dbPedestrianTotal.at(i).setPosition({dbPedestrianTotal.at(i).nodeInicio->getCoordX(), dbPedestrianTotal.at(i).nodeInicio->getCoordY()});
+            // eleccionde de la calle
+            dbPedestrianTotal.at(i).eleccionRandomLinkActual();
+            dbPedestrianTotal.at(i).calcularNodeFinal();
+            // set nodo final de la persona.
+            // dbPedestrianTotal.at(i).calcularNodeFinal();
+
+            // dbPedestrianTotal.at(i).setEmpezoCami
+            // dbPedestrianTotal.at(i).inicializarq();
+            // dbPedestrian.at(i).getqStateAction()->mostrarQ();
+            // dbPedestrianTotal.at(i).getNodeInicio()->mostrarQTable();
+        }
+        if (!dbPedestrianTotal.at(i).getEvacuado()) {
+            if (valorTiempo > dbPedestrianTotal.at(i).getTiempoInicial()) {
+                dbPedestrianTotal.at(i).mostrarMovimientoPedestrian();                  
+                // dbPedestrianTotal.at(i).contarPedestrainSubdivision();
+                dbPedestrianTotal.at(i).caminar();
+                // dbPedestrianTotal.at(i).encontrarPrimerTiempo();
+                // dbPedestrianTotal.at(i).updateLinkParameter();
+                // dbPedestrianTotal.at(i).calcularRetorno();
+            }
+        }
+    }
+}
+
+void pedestrian::mostrarDbPedestrianTotal() {
+    for (int i = 0; i < dbPedestrianTotal.size(); i++) {
+        dbPedestrianTotal.at(i).mostrarMovimientoPedestrian();
+    }
+}
