@@ -1,7 +1,14 @@
 #include "vector2DVelocidad.h"
+#include <iostream>
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// static member
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 double vector2DVelocidad::velocidadConstante = 1.0;
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// constructor
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 vector2DVelocidad::vector2DVelocidad() : vector2D() {
     magnitud = velocidadConstante;
 }
@@ -16,21 +23,31 @@ vector2DVelocidad::vector2DVelocidad() : vector2D() {
 //     setY(y);
 // }
 
-void vector2DVelocidad::setOrientacion(vector2D orientacion) {
-    (*this).orientacion = orientacion;
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// setters
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void vector2DVelocidad::setDireccion(vector2D direccion) {
+    (*this).direccion = direccion;
+    calcularVectorVelocidad();
 }
 
 void vector2DVelocidad::setMagnitud(int magnitud){
     (*this).magnitud = magnitud;
 }
 
-vector2D vector2DVelocidad::getOrientacion() {
-    return orientacion; 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// getters
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+vector2D vector2DVelocidad::getDireccion() {
+    return direccion; 
 }
 double vector2DVelocidad::getMagnitud(){
     return magnitud;
 }
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// metodos
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void vector2DVelocidad::calcularMagnitudVelocidad(double densidad) {
     magnitud = 1.388 - 0.396 * densidad; 
 }
@@ -40,7 +57,9 @@ void vector2DVelocidad::ajusteVelocidad() {
     magnitud = std::max(vel_min, std::min(magnitud, vel_max));
 }
 void vector2DVelocidad::calcularVectorVelocidad() {
-    vector2D a = orientacion * magnitud;
+    vector2D a = direccion * magnitud;
+    std::cout << "dire";
+    direccion.mostrarVector();
     double x = a.getX();
     double y = a.getY();
     setX(x);
@@ -50,4 +69,8 @@ void vector2DVelocidad::actualizarVelocidad(double densidad) {
     calcularMagnitudVelocidad(densidad); 
     ajusteVelocidad();
     calcularVectorVelocidad();
+}
+void vector2DVelocidad::mostrarVelocidad() {
+    std::cout << "u: " << getX() << " ";
+    std::cout << "v: " << getY() << std::endl;
 }

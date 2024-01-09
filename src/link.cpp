@@ -1,4 +1,5 @@
 #include "link.h"
+#include "nodes.h"
 
 int link::unitWidthPartion = 10;
 int link::getUnitWidthPartion() {
@@ -8,17 +9,22 @@ int link::getUnitWidthPartion() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-link::link() {
+link::link() : orientacionLink() {
     (*this).idLink = 0;
     (*this).idNode1 = 0;
     (*this).idNode2 = 0;
     (*this).length = 0;
     (*this).width = 0;
 }
-link::link(int idLink, int idNode1, int idNode2, int length, int width) {
+link::link(int idLink, int idNode1, int idNode2, int length, int width)  {
     setIdLink(idLink);
     setIdNode1(idNode1);
     setIdNode2(idNode2);
+    // calcula la orientacion de la calle segun el node 1 y 2.
+    calcularOrientacionLink();
+    std::cout << getIdLink() << " ";
+    std::cout << orientacionLink.getX() << " ";
+    std::cout << orientacionLink.getY() << std::endl;
     setLength(length);
     setWidth(width);
     calcularNumberPartion();
@@ -43,6 +49,9 @@ void link::setLength(int length){
 void link::setWidth(int width){
     (*this).width = width;
 }
+void link::setOrientacionLink(vector2D orientacionLink) {
+    (*this).orientacionLink = orientacionLink;
+}
 void link::setSubLinks(std::vector<subLink> subLinks) {
     (*this).subLinks = subLinks;
 }
@@ -64,6 +73,9 @@ int link::getLength() const{
 }
 int link::getWidth() const{
     return width;
+}
+vector2D link::getOrientacionLink() const {
+    return orientacionLink;
 }
 int link::getNumberPartion() {
     return numberPartion;  
@@ -95,6 +107,17 @@ void link::calcularHistParam() {
 void link::creacionLinkConnection() {
     // getNode1()->agregarLink(&*this);
     // getNode2()->agregarLink(&*this);
+}
+void link::calcularOrientacionLink() {
+    /* deberia esta calcular orientacion pero necesita acceder a dbLink
+        por ello se calculara la direccione en pedestrian*/
+    double x = nodes::dbNodeTotal.at(getIdNode2()).getCoordX() - nodes::dbNodeTotal.at(getIdNode1()).getCoordX();
+    double y = nodes::dbNodeTotal.at(getIdNode2()).getCoordY() - nodes::dbNodeTotal.at(getIdNode1()).getCoordY();
+    // Calcula la magnitud del vector de dirección
+    double magnitud = std::sqrt(std::pow(x, 2) + std::pow(y, 2));
+    // Normaliza el vector de dirección (divide cada e por la magnitud)
+    orientacionLink.setX(x / magnitud);
+    orientacionLink.setY(y / magnitud);
 }
 void link::calcularNumberPartion() {
     numberPartion = std::floor(static_cast<double>(length) / static_cast<double>(unitWidthPartion));

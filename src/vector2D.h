@@ -1,6 +1,8 @@
 #ifndef vector2D_h
 #define vector2D_h
 
+#include "iostream"
+
 class vector2D{
 
 private:
@@ -27,7 +29,9 @@ public:
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     vector2D operator+(vector2D vector2);
+    vector2D operator*(vector2D vector2);
     vector2D operator*(double scalar);
     vector2D operator+=(vector2D vector2);
+    void mostrarVector();
 };
 #endif

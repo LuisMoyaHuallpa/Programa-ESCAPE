@@ -33,13 +33,19 @@ double vector2D::getY(){
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 vector2D vector2D::operator+(vector2D vector2) {
-    // operacion suma de vectores
+    /* operacion suma de vectores*/
     double x = this->getX() + vector2.getX();
     double y = this->getY() + vector2.getY();
     return vector2D(x, y);
 }
+vector2D vector2D::operator*(vector2D vector2) {
+    /* operacion multiplicacion de vectores*/
+    double x = this->getX() * vector2.getX();
+    double y = this->getY() * vector2.getY();
+    return vector2D(x, y);
+}
 vector2D vector2D::operator*(double scalar) {
-    // operacion multipliacion de vectores
+    // operacion multipliacion de vector y scalar
     double x = this->getX() * scalar;
     double y = this->getY() * scalar;
     return vector2D(x,y);
@@ -48,4 +54,9 @@ vector2D vector2D::operator+=(vector2D vector2) {
     X += vector2.getX();
     Y += vector2.getY();
     return *this;
+}
+void vector2D::mostrarVector() {
+    std::cout << "(" << getX() << ",";
+    std::cout << getY() << ")" << std::endl;
+    
 }
