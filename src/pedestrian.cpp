@@ -1,4 +1,6 @@
 #include "pedestrian.h"
+#include "nodeEvacution.h"
+#include "tiempo.h"
 #include "vector2D.h"
 #include "vector2DVelocidad.h"
 
@@ -577,17 +579,19 @@ void pedestrian::mostrarMovimientoPedestrian(){
     // std::cout << std::setw(5) << getRetorno() << ' ';
     std::cout << std::endl;
 }
+void pedestrian::imprimirPedestrianPosition(std::fstream& file){
+    file << getPosition().getX() << " ";
+    file << getPosition().getY() << " ";
+    file << std::endl;
+}
+void pedestrian::imprimirPedestrianVelocity(std::fstream& file){
+    file << getVelocidad().getMagnitud() << " ";
+    file << std::endl;
+}
 
-
-// void pedestrian::imprimirPedestrianPosition(std::fstream& file){
-//     file << getPosition().getX() << " ";
-//     file << getPosition().getY() << " ";
-//     file << std::endl;
-// }
-// void pedestrian::imprimirPedestrianVelocity(std::fstream& file){
-//     file << getVelocidad().getMagnitud() << " ";
-//     file << std::endl;
-// }
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// static metods
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void pedestrian::leerPedestrians(std::string fileName){
     std::fstream file;
     file.open(fileName, std::ios::in);
@@ -681,6 +685,7 @@ void pedestrian::modelamientoPedestrians(int valorTiempo) {
                 dbPedestrianTotal.at(i).mostrarMovimientoPedestrian();                  
                 // dbPedestrianTotal.at(i).contarPedestrainSubdivision();
                 dbPedestrianTotal.at(i).caminar();
+                // verifica el termino de la calle y actualiza a una nueva.
                 dbPedestrianTotal.at(i).cambioCalle();
                 // dbPedestrianTotal.at(i).encontrarPrimerTiempo();
                 // dbPedestrianTotal.at(i).updateLinkParameter();
@@ -693,5 +698,21 @@ void pedestrian::modelamientoPedestrians(int valorTiempo) {
 void pedestrian::mostrarDbPedestrianTotal() {
     for (int i = 0; i < dbPedestrianTotal.size(); i++) {
         dbPedestrianTotal.at(i).mostrarMovimientoPedestrian();
+    }
+}
+void pedestrian::imprimirPedestrians(std::string folderName){
+    /* imprimir datos de posicion y velocidad.*/
+    std::fstream file1, file2, file3;
+    file1.open(folderName + "/xy", std::ios::out);
+    file2.open(folderName + "/U", std::ios::out);
+    file3.open(folderName + "/cantPedestrianEvacuated", std::ios::out);
+    if (file1.is_open()) {
+        for (int i=0; i < dbPedestrianTotal.size(); i++) {
+            // if (dbPedestrianTotal.at(i).getEmpezoCaminar()) {
+                dbPedestrianTotal.at(i).imprimirPedestrianPosition(file1);
+                dbPedestrianTotal.at(i).imprimirPedestrianVelocity(file2);
+                nodeEvacuation::imprimirNodeEvacuation(file3);
+            // }
+        }
     }
 }

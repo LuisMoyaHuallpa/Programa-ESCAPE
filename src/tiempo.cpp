@@ -2,6 +2,9 @@
 
 int tiempo::deltaTiempo = 1;
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// constructor
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 tiempo::tiempo() {
     (*this).valorTiempo = 0;
     (*this).deltaT = 1;
@@ -9,6 +12,9 @@ tiempo::tiempo() {
     (*this).endTime = 300;
 }
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// setters
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void tiempo::setValorTiempo(int valorTiempo) {
     (*this).valorTiempo = valorTiempo;
 }
@@ -19,6 +25,9 @@ void tiempo::setWriteNow(bool writeNow) {
     (*this).writeNow = writeNow;
 }
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// getters
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 int tiempo::getValorTiempo() {
     return valorTiempo;
 }
@@ -29,7 +38,9 @@ bool tiempo::getWriteNow() {
     return writeNow;  
 }
 
-
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// metodos
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 tiempo& tiempo::operator++(int) {
     setValorTiempo(valorTiempo + deltaT); 
     return *this;
@@ -40,4 +51,14 @@ bool tiempo::running() {
 void tiempo::mostrarTiempo() {
     // Mostrar en terminal tiempo actual.
     std::cout << "Time = " << getValorTiempo() << std::endl;
+}
+void tiempo::crearCarpetaTiempo() {
+    if (getWriteNow()) {
+        std::string folderName = std::to_string(getValorTiempo());
+        if (mkdir(folderName.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) == 0) {
+            std::cout << "Carpeta creada exitosamente." << std::endl;
+        } else {
+            // std::cerr << "Error al crear la carpeta." << std::endl;
+        }
+    }
 }

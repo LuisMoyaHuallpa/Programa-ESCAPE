@@ -13,6 +13,7 @@ Punto de interseccion de calles.
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <sys/stat.h> 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // header propios
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -41,7 +42,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void leerLinks(std::string fileName);
     void mostrarLinks();
-    // void imprimirLinks();
+    void imprimirMeshLinks();
     // void creacionLinkConnections();
     // void buscarNode(int id);
 

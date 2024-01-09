@@ -144,8 +144,6 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // void imprimirPedestrianPosition(std::fstream& file);
-    // void imprimirPedestrianVelocity(std::fstream& file);
     void caminar();
     void cambioCalle();
     void eleccionRandomLinkActual();
@@ -178,12 +176,16 @@ public:
     // void inicializarq();
     // void crearqState(node* nodeActual);
     void mostrarMovimientoPedestrian();
+    void imprimirPedestrianPosition(std::fstream& file);
+    void imprimirPedestrianVelocity(std::fstream& file);
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static metods
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     static void leerPedestrians(std::string fileName);
     static void tiempoInicioDistribution();
     static void modelamientoPedestrians(int valorTiempo);
     static void mostrarDbPedestrianTotal();
+    static void imprimirPedestrians(std::string folderName);
     
 };
 #endif

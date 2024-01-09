@@ -1,11 +1,9 @@
 #include <cstdlib>
 #include <string>
-#include <vector>
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include "tiempo.h"
-#include <sys/stat.h> 
 #include "nodes.h"
 #include "links.h"
 #include "stateMatrixs.h"
@@ -13,21 +11,14 @@
 
 
 
-void createFolder(const std::string& folderName) {
-    // Crear la carpeta
-    if (mkdir(folderName.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) == 0) {
-        std::cout << "Carpeta creada exitosamente." << std::endl;
-    } else {
-        // std::cerr << "Error al crear la carpeta." << std::endl;
-    }
-}
-
 int main() {
     // Creacion de data de interseccion.
     nodes dbNode1;
     // Creacion de data de calles.
     links dbLink1;
-   // Lectura de simulaciones pasadas.
+    // imprimi malla de calles.
+    dbLink1.imprimirMeshLinks();
+    // Lectura de simulaciones pasadas.
     stateMatrixs dbStateMatrixs1;
     // dbNode1.mostrarNodes();
     pedestrian::dbNodeTotal = nodes::dbNodeTotal;
@@ -42,22 +33,19 @@ int main() {
     while (tiempoSimulado.running()) {
         tiempoSimulado++;
         tiempoSimulado.mostrarTiempo();
-        // dbPedestrian1.caminarPedestrians(tiempoSimulado.getValorTiempo());
-
+        // modelamiento de pedestrian.
         pedestrian::modelamientoPedestrians(tiempoSimulado.getValorTiempo());
+        // crea carpetas del tiempoSimulado.
+        tiempoSimulado.crearCarpetaTiempo();
+        // imprimir datos para postprocesamiento.
+        pedestrian::imprimirPedestrians(std::to_string(tiempoSimulado.getValorTiempo()));
 
-        // pedestrian::mostrarDbPedestrianTotal();
-
-
-
-        // dbPedestrian1.caminarPedestrians(tiempoSimulado.getValorTiempo());
-        // dbPedestrian1.mostrarPedestrians();
-    //     if (tiempoSimulado.getWriteNow()) {
-    //         std::string folderName = std::to_string(tiempoSimulado.getValorTiempo());
-    //         createFolder(folderName);
-    //         dbPedestrian1.imprimirPedestrians(folderName);
-    //         dbNode1.imprimirCantPedestrianEvacuted(folderName);
-    //     }
+        // if (tiempoSimulado.getWriteNow()) {
+        //     std::string folderName = std::to_string(tiempoSimulado.getValorTiempo());
+        //     createFolder(folderName);
+        //     dbPedestrian1.imprimirPedestrians(folderName);
+        //     dbNode1.imprimirCantPedestrianEvacuted(folderName);
+        // }
     }
     // dbNode1.mostrarNodes();
      // dbNode1.imprimirNodes();

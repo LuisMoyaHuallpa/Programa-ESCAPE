@@ -147,13 +147,13 @@ void link::mostrarLink(){
     std::cout << getIdNode2() << " ";
     std::cout << std::endl;
 }
-// void link::imprimirLink(std::fstream& file) {
-//     file << getNode1()->getCoordX() << " ";
-//     file << getNode1()->getCoordY() << " ";
-//     file << getNode2()->getCoordX() << " ";
-//     file << getNode2()->getCoordY() << " ";
-//     file << std::endl;
-// }
+void link::imprimirLink(std::fstream& file) {
+    file << nodes::dbNodeTotal.at(getIdNode1()).getCoordX() << " ";
+    file << nodes::dbNodeTotal.at(getIdNode1()).getCoordY() << " ";
+    file << nodes::dbNodeTotal.at(getIdNode2()).getCoordX() << " ";
+    file << nodes::dbNodeTotal.at(getIdNode2()).getCoordY() << " ";
+    file << std::endl;
+}
 void link::mostrarSubLinks() {
     std::cout << getIdLink() << "  ";
     for (int i = 0; i < subLinks.size(); i++) {

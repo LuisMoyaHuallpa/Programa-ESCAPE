@@ -102,15 +102,20 @@ void links::mostrarLinks(){
         // dbLinkTotal.at(i).mostrarSubLinks();
     }
 }
-// void links::imprimirLinks() {
-//     std::fstream file;
-//     std::string folderName = "meshLink";
-//     file.open(folderName + "/poliLinks",std::ios::out);
-//     for (int i=0; i < dbLink.size(); i++) {
-//         // dbLink.at(i).imprimirLink(file);
-
-//     }
-// }
+void links::imprimirMeshLinks() {
+    /* imprimi datos para la malla de calles, donde guardo informacion de calles y intersecciones.*/
+    std::fstream file;
+    // nombre de la carpeta
+    const char* folderName = "mesh";
+    // Crear la carpeta mesh
+    mkdir(folderName, S_IRWXU | S_IRWXG | S_IRWXO);
+    // abre el archivo en el objeto file
+    file.open(std::string(folderName) + "/poliLinks",std::ios::out);
+    // recorre todas la base de datos de calle.
+    for (int i=0; i < links::dbLinkTotal.size(); i++) {
+        dbLinkTotal.at(i).imprimirLink(file);
+    }
+}
 
 // void links::creacionLinkConnections() {
 //     for (int i = 0; i < dbLink.size(); i++) {
