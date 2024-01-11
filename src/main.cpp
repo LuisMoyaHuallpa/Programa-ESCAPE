@@ -19,13 +19,14 @@ int main() {
     // imprimi malla de calles.
     dbLink1.imprimirMeshLinks();
     // Lectura de simulaciones pasadas.
-    stateMatrixs dbStateMatrixs1;
+    // stateMatrixs dbStateMatrixs1;
     // dbNode1.mostrarNodes();
     pedestrian::dbNodeTotal = nodes::dbNodeTotal;
     pedestrian::dbLinkTotal = links::dbLinkTotal;
 
     pedestrian::leerPedestrians("population.csv");
     // pedestrian::mostrarDbPedestrianTotal();
+    pedestrian::tiempoInicioDistribution();
 
     // creacionde del tiempo de simulacion.
     tiempo tiempoSimulado;
@@ -47,8 +48,9 @@ int main() {
         //     dbNode1.imprimirCantPedestrianEvacuted(folderName);
         // }
     }
-    // dbNode1.mostrarNodes();
+    // pedestrian::mostrarDbPedestrianTotal();
      // dbNode1.imprimirNodes();
+    // dbNode1.mostrarNodes();
     // dbStateMatrixs1.imprimirDbStateMatrixs();
 }
 

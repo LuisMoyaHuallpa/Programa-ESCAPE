@@ -35,21 +35,15 @@ links::links(){
 std::string links::getFileName() {
     return fileName;  
 }
-// std::vector<link> links::getDbLink() {
-//     return dbLink;
-// }
-// nodes* links::getDbNode() {
-//     return dbNode;  
-// }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void links::leerLinks(std::string fileName){
-    // Lectura de archivo de links
+    /* Lectura de archivo de links */
     std::fstream file;
     file.open(fileName, std::ios::in);
-    
+    // en caso no exista el archivo link.csv 
     if (file.fail()) {
         std::cout << "Error opening the file " << fileName << std::endl;
         exit(1);
@@ -103,7 +97,8 @@ void links::mostrarLinks(){
     }
 }
 void links::imprimirMeshLinks() {
-    /* imprimi datos para la malla de calles, donde guardo informacion de calles y intersecciones.*/
+    /* imprimi datos para la malla de calles, donde guardo informacion
+        de calles y intersecciones.*/
     std::fstream file;
     // nombre de la carpeta
     const char* folderName = "mesh";

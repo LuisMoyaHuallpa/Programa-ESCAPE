@@ -58,8 +58,6 @@ void vector2DVelocidad::ajusteVelocidad() {
 }
 void vector2DVelocidad::calcularVectorVelocidad() {
     vector2D a = direccion * magnitud;
-    std::cout << "dire";
-    direccion.mostrarVector();
     double x = a.getX();
     double y = a.getY();
     setX(x);

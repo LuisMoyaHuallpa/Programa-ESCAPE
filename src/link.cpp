@@ -22,13 +22,10 @@ link::link(int idLink, int idNode1, int idNode2, int length, int width)  {
     setIdNode2(idNode2);
     // calcula la orientacion de la calle segun el node 1 y 2.
     calcularOrientacionLink();
-    std::cout << getIdLink() << " ";
-    std::cout << orientacionLink.getX() << " ";
-    std::cout << orientacionLink.getY() << std::endl;
     setLength(length);
     setWidth(width);
-    calcularNumberPartion();
-    subLinks.resize(numberPartion);
+    // calcula el numero de particiones y particiona la calle en subLink.
+    subLinks.resize(calcularNumberPartion());
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -87,10 +84,13 @@ int link::getDensityLevel() {
     return densityLevel;
 }
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// metodos
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // longitud de cada
-void link::calcularHistParam() {
-    numberPartion = width/getUnitWidthPartion();
-}
+// void link::calcularHistParam() {
+//     numberPartion = width/getUnitWidthPartion();
+// }
 // vector2D link::calcularDirectionLink() {
 //     vector2D direction;
 //     double x = node2->getCoordX() - node1->getCoordX();
@@ -104,10 +104,6 @@ void link::calcularHistParam() {
 //     direction.setY(direction.getY() / magnitud);
 //     return direction;
 // }
-void link::creacionLinkConnection() {
-    // getNode1()->agregarLink(&*this);
-    // getNode2()->agregarLink(&*this);
-}
 void link::calcularOrientacionLink() {
     /* deberia esta calcular orientacion pero necesita acceder a dbLink
         por ello se calculara la direccione en pedestrian*/
@@ -119,8 +115,9 @@ void link::calcularOrientacionLink() {
     orientacionLink.setX(x / magnitud);
     orientacionLink.setY(y / magnitud);
 }
-void link::calcularNumberPartion() {
-    numberPartion = std::floor(static_cast<double>(length) / static_cast<double>(unitWidthPartion));
+int link::calcularNumberPartion() {
+    /* calcula el numero de particiones para la calle */
+    return std::floor(static_cast<double>(length) / static_cast<double>(unitWidthPartion));
 }
 void link::calcularDensityLevel() {
     double densidadMayorSubLink = 0.0;

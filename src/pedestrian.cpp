@@ -3,6 +3,7 @@
 #include "tiempo.h"
 #include "vector2D.h"
 #include "vector2DVelocidad.h"
+#include <cmath>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -33,7 +34,7 @@ pedestrian::pedestrian(int edad, int gender, int hhType, int hhId,
     setHHType(hhType);
     setHHId(hhId);
     setNodeInicio(nodeInicio);
-    setTiempoInicial(3);
+    setTiempoInicial(0);
     // setNodeAnterior(nodeInicio);
     // setEmpezoCaminar(false);
     // setPrimerTiempo(true);
@@ -213,8 +214,8 @@ void pedestrian::caminar() {
     std::cout << velocidad.getX() << std::endl;
 }
 void pedestrian::eleccionRandomLinkActual() {
-    // La persona esta en una interseccion y tiene multiples opciones para elegir una calle.
-    // segun aletoriedad se decide cual sera la calle a tomar y se guardará en linkActual.
+    /* La persona esta en una interseccion y tiene multiples opciones para elegir una calle.
+        segun aletoriedad se decide cual sera la calle a tomar y se guardará en linkActual.*/
     std::random_device rd;
     // Algoritmo Motor Mersenne Twister
     std::mt19937 generador(rd());
@@ -474,15 +475,15 @@ vector2D pedestrian::calcularSignoDireccion() {
 //     }
 //     return false;
 // }
-void pedestrian::correctionPosition(node* nodoBase) {
-  /* correge la posicion de la persona para que calze exactamente en las
-      intersecciones, que tiene como variable nodoBase.
-      debido a la velocidad y tiempo no recorre estamente la distancia al nodo,
-      puede ser un poco mas o menos pero bastante pequeño.*/
-    setPosition({nodoBase->getCoordX(), nodoBase->getCoordY()});
-    // position.setX(nodeFinal->getCoordX());
-    // position.setY(nodeFinal->getCoordY());
-}
+// void pedestrian::correctionPosition(node* nodoBase) {
+//   /* correge la posicion de la persona para que calze exactamente en las
+//       intersecciones, que tiene como variable nodoBase.
+//       debido a la velocidad y tiempo no recorre estamente la distancia al nodo,
+//       puede ser un poco mas o menos pero bastante pequeño.*/
+//     setPosition({nodoBase->getCoordX(), nodoBase->getCoordY()});
+//     // position.setX(nodeFinal->getCoordX());
+//     // position.setY(nodeFinal->getCoordY());
+// }
 // void pedestrian::algoritmoSarsa() {
 //     // R
 //     sarsaAlgorithm.setR(getRetorno());
@@ -636,31 +637,70 @@ void pedestrian::leerPedestrians(std::string fileName){
     file.close(); 
 }
 
-// double generateRayleigh(double sigma) {
-//     // Generar dos números aleatorios uniformes en el rango (0,1)
-//     double u1 = static_cast<double>(rand()) / RAND_MAX;
-//     double u2 = static_cast<double>(rand()) / RAND_MAX;
-
-//     // Calcular el valor de la distribución inversa de Rayleigh
-//     double x = sigma * sqrt(-2.0 * log(u1));
-
-//     // Devolver el valor ajustado con el segundo número aleatorio
-//     return x * cos(2.0 * M_PI * u2);
-// }
-
-// void pedestrian::tiempoInicioDistribution() {
-//     // calcula el tiempo de inicio, calculado con la distribucion rayleigh
-//     boost::random::mt19937 gen;
-//     // Set the parameters for the Rayleigh distribution
+// double generateRayleigh(int x) {
+//     /* calcular el valor de la distribución de Rayleigh */
 //     double meanRayleigh = 7 * 60;
-//     double scaleRayleigh = meanRayleigh * std::pow((2/M_PI), 05);
-//     boost::math::rayleigh_distribution<double> rayleighDistribution(scaleRayleigh);
-//     for (int i = 0; i < dbPedestrianTotal.size(); ++i) {
-//         int number = std::round(boost::math::quantile(rayleighDistribution, boost::random::uniform_01<double>()(gen)));
-//         dbPedestrianTotal.at(i).setTiempoInicial(number);
-//         std::cout << dbPedestrianTotal.at(i).getTiempoInicial() << std::endl;
-//     }
+//     // sigma es scaleRayleigh
+//     double sigma = meanRayleigh * std::pow((2/M_PI), 05);
+//     double f = sigma * std::exp(-1 * std::pow(x,2) / (2 * std::pow(sigma,2)));
+//     std::uniform_real_distribution<> distribution(0, 10);
+//     std::random_device rd;
+
+//     std::mt19937 gen(rd());
+//     double single_random_number = distribution();
+
+//     std::cout << "julio";
+//     std::cout << gen;
+//     distribution.min();
+
+//     return distribution.min();
 // }
+
+// double generate_rayleigh_random(double sigma, std::mt19937& gen) {
+//     // Generar dos números aleatorios uniformes en el rango (0, 1)
+//     double u1 = std::generate_canonical<double, std::numeric_limits<double>::digits>(gen);
+//     double u2 = std::generate_canonical<double, std::numeric_limits<double>::digits>(gen);
+
+//     // Calcular el número aleatorio según la distribución Rayleigh
+//     double random_number = sigma * sqrt(-2.0 * log(u1)) * cos(2.0 * M_PI * u2);
+//     for (int i = 0; i < 10; ++i) {
+//         double random_number = generate_rayleigh_random(sigma, gen);
+//         std::cout << "Número aleatorio Rayleigh: " << random_number << std::endl;
+//     }
+
+//     return random_number;
+// }
+
+double generate_uniform_random(std::mt19937& gen) {
+    // Generar un número aleatorio uniforme en el rango (0, 1)
+    return std::generate_canonical<double, std::numeric_limits<double>::digits>(gen);
+}
+
+double generate_rayleigh_random(double sigma, std::mt19937& gen) {
+    // Generar un número aleatorio uniforme
+    double u = generate_uniform_random(gen);
+
+    // Calcular el número aleatorio según la distribución Rayleigh
+    double random_number = sigma * sqrt(-2.0 * log(1.0 - u));
+
+    return random_number;
+}
+
+void pedestrian::tiempoInicioDistribution() {
+    // calcula el tiempo de inicio, calculado con la distribucion rayleigh
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+    // Set the parameters for the Rayleigh distribution
+    double meanRayleigh = 7 * 60;
+    double scaleRayleigh = meanRayleigh * std::pow((2/M_PI), 05);
+
+    for (int i = 0; i < dbPedestrianTotal.size(); ++i) {
+        double random_number = generate_rayleigh_random(scaleRayleigh, gen);
+        dbPedestrianTotal.at(i).setTiempoInicial(random_number);
+        std::cout << dbPedestrianTotal.at(i).getTiempoInicial() << std::endl;
+    }
+}
 
 void pedestrian::modelamientoPedestrians(int valorTiempo) {
     //  

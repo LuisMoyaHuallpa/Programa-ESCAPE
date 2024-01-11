@@ -1,12 +1,24 @@
 #include "subLink.h"
 #include "link.h"
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// constructor
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 subLink::subLink() {
     (*this).cantidadPedestrian = 0;
     (*this).densidad = 0;
     // calcularDensidad();
 }
+// subLink::subLink(link* parenLink) {
+//     (*this).parentLink = parenLink; 
+//     (*this).cantidadPedestrian = 0;
+//     (*this).densidad = 0;
+//     // calcularDensidad();
+// }
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// setters
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void subLink::setIdSubLink(int idSubLink) {
     (*this).idSubLink = idSubLink;
 }
@@ -24,6 +36,9 @@ void subLink::setPedestriansIdsInSubLink(
     (*this).pedestriansIdsInSubLink = pedestrianIdsInSubLink;
 }
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// getters
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 int subLink::getIdSubLink() {
     return idSubLink;  
 }
@@ -40,13 +55,16 @@ std::vector<int> subLink::getPedestrianIdsInSubLink() {
     return pedestriansIdsInSubLink;
 }
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// metodos
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void subLink::calcularCantidadPedestrian() {
     cantidadPedestrian = pedestriansIdsInSubLink.size();
 }
 void subLink::calcularDensidad(int length, int width) {
     calcularCantidadPedestrian();
     if (cantidadPedestrian != 0) {
-        densidad = static_cast<double>(cantidadPedestrian) / (link::unitWidthPartion * width);
+        densidad = static_cast<double>(cantidadPedestrian) / (link::getUnitWidthPartion() * width);
     }
     else {
         densidad = 0;
@@ -75,4 +93,5 @@ void subLink::quitarPedestrianId(int idPedestrian) {
 void subLink::mostrarSubLink() {
     calcularCantidadPedestrian();
     std::cout << cantidadPedestrian << " ";
+    // std::cout << densidad << " ";
 }

@@ -168,7 +168,7 @@ public:
     // bool verificarDirectionLink();
     // void encontrarPrimerTiempo();
     // bool verificarSaltoLink();
-    void correctionPosition(node* nodoBase);
+    // void correctionPosition(node* nodoBase);
     // void algoritmoSarsa();
     // std::vector<stateActionQ>::iterator agregarObtenerqLista(node* nodeDeBusqueda,stateActionQ qBuscando);
     // voidbuscarQ(bool verificarQExistente, stateActionQ* qElemento);

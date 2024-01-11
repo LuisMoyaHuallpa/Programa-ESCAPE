@@ -78,11 +78,11 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    void calcularHistParam();
+    // void calcularHistParam();
     vector2D calcularDirectionLink();
     void creacionLinkConnection();
     void calcularOrientacionLink();
-    void calcularNumberPartion();
+    int calcularNumberPartion();
     void calcularDensityLevel();
     void mostrarLink();
     void imprimirLink(std::fstream& file);
