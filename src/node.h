@@ -63,7 +63,7 @@ public:
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // void agregarLink(link* link);
-    // void buscarQ(stateActionQ qBuscando, bool* verificarQ, int idq);
+    void buscarStateMatrix(stateMatrix stateMatrixBuscando, bool& verificarStateMatrix, int idq);
     // void addqQTable(stateActionQ qElemento);
     void addIdLinkConnection(int idLink);
     // void ordenarQTable();

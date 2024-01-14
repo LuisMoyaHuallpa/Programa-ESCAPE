@@ -1,5 +1,6 @@
 #include "pedestrian.h"
 #include "nodeEvacution.h"
+#include "stateMatrix.h"
 #include "tiempo.h"
 #include "vector2D.h"
 #include "vector2DVelocidad.h"
@@ -25,9 +26,8 @@ pedestrian::pedestrian() : nodeFinal() {
     (*this).hhType = 0;
     (*this).hhId = 0;
 }
-pedestrian::pedestrian(int edad, int gender, int hhType, int hhId,
-                       node *nodeInicio)
-    : nodeFinal(nullptr), direccionPedestrian(), velocidad()  {
+pedestrian::pedestrian(int edad, int gender, int hhType, int hhId, node *nodeInicio)
+    : nodeFinal(nullptr), direccionPedestrian(), velocidad(), stateMatrixPedestrian()  {
     setIdPedestrian(contador++);
     setEdad(edad);
     setGender(gender);
@@ -104,6 +104,9 @@ void pedestrian::setVelocidad(vector2DVelocidad velocidad) {
 void pedestrian::setTiempoInicial(int tiempoInicial) {
     (*this).tiempoInicial = tiempoInicial;
 }
+void pedestrian::setStateMatrixPedestrian(stateMatrix stateMatrixPedestrian) {
+    (*this).stateMatrixPedestrian = stateMatrixPedestrian;
+}
 // void pedestrian::setOrientacionLinkPasado(vector2D orientacionLinkPasado) {
 //     (*this).orientacionLinkPasado = orientacionLinkPasado;
 // }
@@ -172,6 +175,9 @@ vector2DVelocidad& pedestrian::getVelocidad() {
 int pedestrian::getTiempoInicial() {
     return tiempoInicial;
 }
+stateMatrix& pedestrian::getStateMatrixPedestrian() {
+    return stateMatrixPedestrian;
+}
 // stateActionQ* pedestrian::getqStateAction() {
 //     return qStateAction;
 // }
@@ -210,8 +216,6 @@ std::vector<node> pedestrian::getDbNodeTotal() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void pedestrian::caminar() {
     position += velocidad * tiempo::deltaTiempo;
-    std::cout << velocidad.getMagnitud() << std::endl;
-    std::cout << velocidad.getX() << std::endl;
 }
 void pedestrian::eleccionRandomLinkActual() {
     /* La persona esta en una interseccion y tiene multiples opciones para elegir una calle.
@@ -224,6 +228,9 @@ void pedestrian::eleccionRandomLinkActual() {
     std::uniform_int_distribution<int> distribucion(0, limite_max);
     int numero_aleatorio = distribucion(generador);
     setLinkActual(&dbLinkTotal.at(getNodeInicio()->getIdLinkConnection().at(numero_aleatorio)));
+    // enviando informacion de action al stateMatrix
+    getStateMatrixPedestrian().getActionValue().setILinkConnection(numero_aleatorio);
+    getStateMatrixPedestrian().getActionValue().setIdLink(linkActual->getIdLink());
     // sabiendo la calle defino el nodo final.
     calcularNodeFinal();
 }
@@ -315,8 +322,14 @@ void pedestrian::cambioCalle() {
         // correctionPosition(nodeInicio);
         // correcion de la posicion cuando se llega cerca al nodo.
         setPosition({getNodeInicio()->getCoordX(), getNodeInicio()->getCoordY()});
+        // calculo del stateMatrix para obtener datos de state.
+        calcularLevelDensityAtNode();
         // eleccionde de la calle
         eleccionRandomLinkActual();
+        // guarda infomacion de stateMatrix de la persona en una tabla en nodo.
+        stateMatrixtoTableAtNode();
+
+        // getStateMatrixPedestrian().mostrarStateMatrix();
         // calcularQ(sarsaAlgorithm);
         // direccion de la persona en la calle.
         calcularDireccionPedestrian();
@@ -370,13 +383,6 @@ void pedestrian::cambioCalle() {
 // }
 void pedestrian::calcularDireccionPedestrian() {
     setDireccionPedestrian(linkActual->getOrientacionLink() * calcularSignoDireccion());
-    std::cout << "orientacion link";
-    linkActual->getOrientacionLink().mostrarVector();
-    std::cout << "signo";
-    calcularSignoDireccion().mostrarVector();
-    std::cout << "direccion";
-    direccionPedestrian.mostrarVector();
-
 }
 vector2D pedestrian::calcularSignoDireccion() {
     double x = calcularSignoNumero(nodeFinal->getCoordX() - nodeInicio->getCoordX());
@@ -517,16 +523,23 @@ vector2D pedestrian::calcularSignoDireccion() {
 //     nodeInicio->getQTable()->at(idQPrevious).setQ(sarsaAlgorithm.sarsaActualizarQ());
 //     nodeInicio->mostrarQTable();
 // }
-// // std::vector<int> pedestrian::calcularLevelDensityLinks() {
-// //     std::vector<int> densityLinks;
-// //     std::cout << nodeInicio->getLinkConnection().size()<< std::endl;
-// //     for (int i = 0; i < nodeInicio->getLinkConnection().size(); i++) {
-// //         nodeInicio->getLinkConnection().at(i)->calcularDensityLevel();
-// //         // std::cout << nodeInicio->getLinkConnection().at(i)->getDensityLevel();
-// //         densityLinks.push_back(nodeInicio->getLinkConnection().at(i)->getDensityLevel());
-// //     }
-// //     return densityLinks;
-// // }
+void pedestrian::calcularLevelDensityAtNode() {
+    /* cuando una persona llega a una interseccion debe saber los estados de las
+        diferentes calle, esta informacion se enviará a objeto stateMatrix */
+    // std::cout << nodeInicio->getLinkConnection().size()<< std::endl;
+    // 
+    // std::cout << "idConnection: ";
+    // std::cout << nodeInicio->getIdLinkConnection().size() << std::endl;
+    stateMatrixPedestrian.getStateValue().getDensityLinks().resize(nodeInicio->getIdLinkConnection().size());
+    // std::cout << stateMatrixPedestrian.getStateValue().getDensityLinks().size() << std::endl;
+    for (int i = 0; i < nodeInicio->getIdLinkConnection().size(); i++) {
+        // nodeInicio->getIdLinkConnection().at(i)->calcularDensityLevel();
+        pedestrian::dbLinkTotal.at(nodeInicio->getIdLinkConnection().at(i)).calcularDensityLevel();
+        // std::cout << nodeInicio->getLinkConnection().at(i)->getDensityLevel();
+        // densityLinks.push_back(nodeInicio->getLinkConnection().at(i)->getDensityLevel());
+        stateMatrixPedestrian.getStateValue().getDensityLinks().at(i) = pedestrian::dbLinkTotal.at(i).getDensityLevel();
+    }
+}
 // void pedestrian::crearqState(node* nodeActual) {
 //     // // Es un setter del state de la variable qStateAction. 
 //     // std::vector<int> densityLinks;
@@ -541,20 +554,20 @@ vector2D pedestrian::calcularSignoDireccion() {
 //     // }
 //     // qStateAction->setS(densityLinks);
 // }
-// void pedestrian::inicializarq() {
-//     // Inicializar action en el primer instante. 
-//     qStateAction->setA(linkActual->getIdLink());
-//     crearqState(nodeInicio);
-//     stateActionQ* qEncontrado = nullptr;
-//     bool verificarQ = false;
-//     int idq = 0;
-//     nodeInicio->buscarQ(*qStateAction, &verificarQ, idq);
-//     if (verificarQ) {
-//     }
-//     else {
-//         nodeInicio->addqQTable(*qStateAction);
-//     }
-// }
+void pedestrian::stateMatrixtoTableAtNode() {
+    // Inicializar action en el primer instante. 
+    stateMatrix stateMatrixEncontrado;
+    bool verificarStateMatrix = false;
+    int idq = 0;
+    nodeInicio->buscarStateMatrix(stateMatrixPedestrian, verificarStateMatrix, idq);
+    if (verificarStateMatrix) {
+    }
+    else {
+        nodeInicio->getStateMatrixTable().push_back(stateMatrixPedestrian);
+        nodeInicio->mostrarNode();
+        nodeInicio->mostrarQTable();
+    }
+}
 // // void pedestrian::crearStateAction() {
 // // //     qAnterior.setA(linkActual->getIdLink());
 // // //     qAnterior.setS(calcularLevelDensityLinks());
@@ -687,7 +700,7 @@ double generate_rayleigh_random(double sigma, std::mt19937& gen) {
 }
 
 void pedestrian::tiempoInicioDistribution() {
-    // calcula el tiempo de inicio, calculado con la distribucion rayleigh
+    /* calcula el tiempo de inicio, mediante con la distribucion rayleigh*/
     std::random_device rd;
     std::mt19937 gen(rd());
 
@@ -708,8 +721,17 @@ void pedestrian::modelamientoPedestrians(int valorTiempo) {
         if (valorTiempo == dbPedestrianTotal.at(i).getTiempoInicial()) {
             // set la posicion de inicio del pedestrian
             dbPedestrianTotal.at(i).setPosition({dbPedestrianTotal.at(i).nodeInicio->getCoordX(), dbPedestrianTotal.at(i).nodeInicio->getCoordY()});
+            // calculo del stateMatrix para obtener datos de state.
+            dbPedestrianTotal.at(i).calcularLevelDensityAtNode();
             // eleccionde de la calle
             dbPedestrianTotal.at(i).eleccionRandomLinkActual();
+            // guarda infomacion de stateMatrix de la persona en una tabla en nodo.
+            dbPedestrianTotal.at(i).stateMatrixtoTableAtNode();
+
+            dbPedestrianTotal.at(i).getStateMatrixPedestrian().mostrarStateMatrix();
+
+            //
+            // dbPedestrianTotal.at(i).calcularAction();
             // direccion de la persona en la calle.
             dbPedestrianTotal.at(i).calcularDireccionPedestrian();
             // envio informacion de direccion al vector de velocidad.
@@ -722,7 +744,7 @@ void pedestrian::modelamientoPedestrians(int valorTiempo) {
         }
         if (!dbPedestrianTotal.at(i).getEvacuado()) {
             if (valorTiempo > dbPedestrianTotal.at(i).getTiempoInicial()) {
-                dbPedestrianTotal.at(i).mostrarMovimientoPedestrian();                  
+                // dbPedestrianTotal.at(i).mostrarMovimientoPedestrian();                  
                 // dbPedestrianTotal.at(i).contarPedestrainSubdivision();
                 dbPedestrianTotal.at(i).caminar();
                 // verifica el termino de la calle y actualiza a una nueva.

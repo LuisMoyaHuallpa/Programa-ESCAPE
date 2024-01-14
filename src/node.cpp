@@ -1,4 +1,5 @@
 #include "node.h"
+#include "stateMatrix.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
@@ -58,19 +59,17 @@ std::vector<stateMatrix>& node::getStateMatrixTable() {
 // void node::agregarLink(link* link) {
 //     // linkConnection.push_back(link);
 // }
-// void node::buscarQ(stateActionQ qBuscando, bool* verificarQ, int idq) {
-//     // Variable para seguir el estado de la búsqueda
-//     bool qverificado = false;
-//     for (int i = 0; i < (*getQTable()).size(); i++) {
-//         if ((*getQTable()).at(i) == qBuscando) {
-//             qverificado = true;
-//             // qEncontrado = &getQTable().at(i);
-//             break;
-//         }
-//     } 
-//     // Establecer verificarQ basado en qEncontrado
-//     *verificarQ = qverificado;
-// }
+void node::buscarStateMatrix(stateMatrix stateMatrixBuscando, bool& verificarStateMatrix, int idq) {
+    /* recorre la tabla de stateMatrix en busqueda del elemento stateMatrixBuscando  */
+    for (int i = 0; i < stateMatrixTable.size(); i++) {
+        if (stateMatrixTable.at(i) == stateMatrixBuscando) {
+            verificarStateMatrix = true;
+            return;
+        }
+    } 
+    // Establecer verificarQ basado en qEncontrado
+    verificarStateMatrix = false;
+}
 // void node::addqQTable(stateActionQ qElemento) {
 //     qTable.push_back(qElemento); 
 // }

@@ -1,22 +1,31 @@
 #include "state.h"
-#include <iostream>
-#include <vector>
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// constructor
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 state::state() {
-    
 }
 state::state(std::vector<int> densityLinks) {
     setDensityLinks(densityLinks); 
 }
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// setters
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void state::setDensityLinks(std::vector<int> densityLinks) {
     (*this).densityLinks = densityLinks;
 }
 
-std::vector<int> state::getDensityLinks() {
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// getter
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+std::vector<int>& state::getDensityLinks() {
     return densityLinks;
 }
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// metodos
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 bool state::operator==(state stateObject) {
     if (densityLinks.size() != stateObject.densityLinks.size()) {
         return false;
@@ -35,7 +44,7 @@ void state::agregarElementoState(int stateElemento) {
 }
 void state::mostrarState() {
     for (int i = 0; i < densityLinks.size(); i++) {
-        std::cout << getDensityLinks().at(i) << ' ';
+        std::cout << getDensityLinks().at(i) << ',';
     }
 }
 void state::imprimirState(std::fstream& file) {

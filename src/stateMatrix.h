@@ -14,7 +14,6 @@ Una fila de archivo de entrada o salida.
 #include "state.h"
 #include "action.h"
 
-
 // #include "node.h"
 
 class stateMatrix {
@@ -23,8 +22,13 @@ private:
     state stateValue;
     std::vector<double> QVector;
     std::vector<int> otrosVector;
+    action actionValue;
+
 
 public:
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // static member
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     static const int tamanoVector;
     int static getTamanoVector();
 
@@ -44,17 +48,23 @@ public:
     void setStateValue(state stateValue);
     void setQVector(std::vector<double> actionVector);
     void setOtrosVector(std::vector<int> otrosVector);
+    void setActionValue(action actionValue);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getter
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     int getIdNode();
-    state getStateValue();
+    state& getStateValue();
     std::vector<double> getQVector();
     std::vector<int> getotrosVector();
+    action& getActionValue();
 
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // metodos
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    bool operator==(stateMatrix stateMatrix2);
     void agregarQ(int i, double Q);
-    // void enviarDataNode(node* nodeAGuardar);
     void mostrarStateMatrix();
     void imprimirStateMatrix(std::fstream& file);
 

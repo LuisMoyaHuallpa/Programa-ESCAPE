@@ -58,6 +58,8 @@ private:
     vector2D direccionPedestrian;
     vector2DVelocidad velocidad;
     int tiempoInicial;
+    stateMatrix stateMatrixPedestrian;
+    
     // stateActionQ* qStateAction;
     // vector2D orientacionLinkPasado;
     // int tiempoFinal;
@@ -104,6 +106,7 @@ public:
     void setVelocidad(vector2DVelocidad velocidad);
     void setTiempoInicial(int tiempoInicial);
     // void setqStateAction(stateActionQ* qStateAction);
+    void setStateMatrixPedestrian(stateMatrix stateMatrixPedestrian);
     // void setOrientacionLinkPasado(vector2D orientacionLinkPasado);
     // void setTiempoFinal(int tiempoFinal);
     // void setEmpezoCaminar(bool empezoCaminar);
@@ -130,6 +133,7 @@ public:
     vector2D getDireccionPedestrian();
     vector2DVelocidad& getVelocidad();
     int getTiempoInicial();
+    stateMatrix& getStateMatrixPedestrian();
     // stateActionQ* getqStateAction();
     // int getTiempoFinal();
     // bool getEmpezoCaminar();
@@ -172,8 +176,8 @@ public:
     // void algoritmoSarsa();
     // std::vector<stateActionQ>::iterator agregarObtenerqLista(node* nodeDeBusqueda,stateActionQ qBuscando);
     // voidbuscarQ(bool verificarQExistente, stateActionQ* qElemento);
-    // std::vector<int> calcularLevelDensityLinks();
-    // void inicializarq();
+    void calcularLevelDensityAtNode();
+    void stateMatrixtoTableAtNode();
     // void crearqState(node* nodeActual);
     void mostrarMovimientoPedestrian();
     void imprimirPedestrianPosition(std::fstream& file);

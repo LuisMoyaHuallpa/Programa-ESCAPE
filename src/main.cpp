@@ -26,6 +26,7 @@ int main() {
 
     pedestrian::leerPedestrians("population.csv");
     // pedestrian::mostrarDbPedestrianTotal();
+    // tiempo de inicio segun la distribucion rayleigh
     pedestrian::tiempoInicioDistribution();
 
     // creacionde del tiempo de simulacion.
@@ -50,7 +51,6 @@ int main() {
     }
     // pedestrian::mostrarDbPedestrianTotal();
      // dbNode1.imprimirNodes();
-    // dbNode1.mostrarNodes();
     // dbStateMatrixs1.imprimirDbStateMatrixs();
 }
 

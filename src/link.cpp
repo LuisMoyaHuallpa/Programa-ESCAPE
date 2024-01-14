@@ -15,6 +15,7 @@ link::link() : orientacionLink() {
     (*this).idNode2 = 0;
     (*this).length = 0;
     (*this).width = 0;
+    (*this).densityLevel = 0;
 }
 link::link(int idLink, int idNode1, int idNode2, int length, int width)  {
     setIdLink(idLink);
@@ -24,6 +25,7 @@ link::link(int idLink, int idNode1, int idNode2, int length, int width)  {
     calcularOrientacionLink();
     setLength(length);
     setWidth(width);
+    setDensityLevel(0);
     // calcula el numero de particiones y particiona la calle en subLink.
     subLinks.resize(calcularNumberPartion());
 }
@@ -51,6 +53,9 @@ void link::setOrientacionLink(vector2D orientacionLink) {
 }
 void link::setSubLinks(std::vector<subLink> subLinks) {
     (*this).subLinks = subLinks;
+}
+void link::setDensityLevel(int densityLevel) {
+    (*this).densityLevel = densityLevel;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -135,6 +140,7 @@ void link::calcularDensityLevel() {
     else {
         densityLevel = 2;
     }
+    std::cout << "den: " << densityLevel << std::endl;
 }
 void link::mostrarLink(){
     std::cout << "link: ";
