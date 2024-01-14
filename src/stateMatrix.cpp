@@ -68,9 +68,8 @@ bool stateMatrix::operator==(stateMatrix stateMatrix2) {
     /* compara si dos stateMatrix son iguales */
     // primero compara si el tamaño de los states son iguales
     if (getStateValue().getDensityLinks().size() == stateMatrix2.getStateValue().getDensityLinks().size()) {
-        std::cout << "paso1" << std::endl;
+        // compara la action y el state
         if (getActionValue() == stateMatrix2.getActionValue() and getStateValue() == stateMatrix2.getStateValue()) {
-            std::cout << "paso2" << std::endl;
             return true;
         }
     }
@@ -95,7 +94,6 @@ void stateMatrix::agregarQ(int i, double Q) {
 // }
 void stateMatrix::mostrarStateMatrix() {
     /* muestra en la terminal cada linea del stateMatrix. */
-    std::cout << getIdNode() << ",";
     // state value
     getStateValue().mostrarState();
     /* imprime 0 en donde no hay state debido a que siempre imprime 10 elementos state. */

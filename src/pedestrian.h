@@ -23,6 +23,7 @@
 #include "node.h"
 #include "link.h"
 #include "tiempo.h"
+#include "nodeEvacution.h"
 
 class pedestrian {
 private:

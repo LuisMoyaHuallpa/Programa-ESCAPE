@@ -1,10 +1,4 @@
 #include "pedestrian.h"
-#include "nodeEvacution.h"
-#include "stateMatrix.h"
-#include "tiempo.h"
-#include "vector2D.h"
-#include "vector2DVelocidad.h"
-#include <cmath>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member

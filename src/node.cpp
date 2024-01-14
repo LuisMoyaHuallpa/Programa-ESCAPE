@@ -1,5 +1,4 @@
 #include "node.h"
-#include "stateMatrix.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
@@ -59,11 +58,15 @@ std::vector<stateMatrix>& node::getStateMatrixTable() {
 // void node::agregarLink(link* link) {
 //     // linkConnection.push_back(link);
 // }
-void node::buscarStateMatrix(stateMatrix stateMatrixBuscando, bool& verificarStateMatrix, int idq) {
+void node::buscarStateMatrix(stateMatrix stateMatrixBuscando, bool& verificarStateMatrix, int& iStateMatrixTable) {
     /* recorre la tabla de stateMatrix en busqueda del elemento stateMatrixBuscando  */
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // stateMatrixBuscando   |-->| ELEMENTO stateMatrix a buscar 
+    // verificarStateMatrix  |-->| SI ENCUENTRA EL ELEMENTO, ES VERDADERO 
     for (int i = 0; i < stateMatrixTable.size(); i++) {
         if (stateMatrixTable.at(i) == stateMatrixBuscando) {
             verificarStateMatrix = true;
+            iStateMatrixTable = i;
             return;
         }
     } 
