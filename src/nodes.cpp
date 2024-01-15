@@ -1,9 +1,11 @@
 #include "nodes.h"
+#include "nodeEvacution.h"
+#include <memory>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-std::vector<node> nodes::dbNodeTotal;
+std::vector<std::shared_ptr<node>> nodes::dbNodeTotal;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
@@ -68,23 +70,51 @@ void nodes::leerNodes(std::string fileName) {
         r = std::stoi(r_str);
         // Creacion de cada persona en la data base.
         if (e == 0) {
-            node nodoNuevo = node(n, x, y);
-            nodes::dbNodeTotal.push_back(nodoNuevo);
+            std::unique_ptr<node> nodoNuevo = std::make_unique<node>(n, x, y);
+            // node nodoNuevo1 = node(n, x, y);
+            nodes::dbNodeTotal.push_back(std::move(nodoNuevo));
         }
         else {
-            nodeEvacuation nodoEvacuationNuevo= nodeEvacuation(n, x, y);
-            nodes::dbNodeTotal.push_back(nodoEvacuationNuevo);
+            std::unique_ptr<nodeEvacuation> nodoEvacuationNuevo = std::make_unique<nodeEvacuation>(n, x, y);
+            // nodeEvacuation nodoEvacuationNuevo= nodeEvacuation(n, x, y);
+            nodes::dbNodeTotal.push_back(std::move(nodoEvacuationNuevo));
         }
     }
     file.close(); 
+    // for (const auto& node1 : nodes::dbNodeTotal) {
+    //     std::cout << "Tipo del objeto: " << node1.getNodeType() << std::endl;
+
+    //     // Verificar si es de tipo NodeEvacuation
+    //     if (node.getNodeType() == "NodeEvacuation") {
+    //         std::cout << "Es un NodeEvacuation." << std::endl;
+    //     }
+    // }
+    for (auto& node : nodes::dbNodeTotal) {
+        std::cout << node->getIdNode() << " ";
+        std::cout << node->getNodeType() << std::endl;
+        // Intentar convertir el puntero de tipo Node a NodeEvacuation
+        // const nodeEvacuation* evacuationNode = dynamic_cast<const nodeEvacuation*>(&node);
+        // if (typeid(node) == typeid(nodeEvacuation)) {
+        //     std::cout << "matias" << std::endl;
+        // }
+        // if (const nodeEvacuation* evacuationNode = dynamic_cast<const nodeEvacuation*>(&node)) {
+        //     // La conversión fue exitosa. El objeto es de tipo NodeEvacuation.
+        //     std::cout << "matias" << std::endl;
+        // }
+        // if (evacuationNode != nullptr) {
+        //     // La conversión fue exitosa. El objeto es de tipo NodeEvacuation.
+        //     // std::cout << "ID: " << evacuationNode->id << ", X: " << evacuationNode->x << ", Y: " << evacuationNode->y << std::endl;
+        //     std::cout << "matias" << std::endl;
+        // }
+    }
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // mostrar
 void nodes::mostrarNodes() {
     // Muestra en el terminal todos los nodos y sus datos.
     for (int i = 0; i < nodes::dbNodeTotal.size(); i++) {
-        nodes::dbNodeTotal.at(i).mostrarNode();
-        nodes::dbNodeTotal.at(i).mostrarQTable();
+        nodes::dbNodeTotal.at(i)->mostrarNode();
+        nodes::dbNodeTotal.at(i)->mostrarQTable();
         // const node* baseNode = dbNode.at(i);
         // const nodeEvacuation* evacuationNode = dynamic_cast<const nodeEvacuation*>(baseNode);
         // if (evacuationNode) {
@@ -94,8 +124,8 @@ void nodes::mostrarNodes() {
 }
 void nodes::mostrardbNodeTotal() {
     for (int i = 0; i < nodes::dbNodeTotal.size(); i++) {
-        nodes::dbNodeTotal.at(i).mostrarNode();
-        nodes::dbNodeTotal.at(i).mostrarQTable();
+        nodes::dbNodeTotal.at(i)->mostrarNode();
+        nodes::dbNodeTotal.at(i)->mostrarQTable();
     }
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

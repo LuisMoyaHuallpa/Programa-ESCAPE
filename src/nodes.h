@@ -8,6 +8,7 @@ Punto de interseccion de calles.
 // header generales
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include <string>
+#include <memory>
 #include <vector>
 #include <iostream>
 #include <sstream>
@@ -24,7 +25,7 @@ private:
     std::string fileName;
     
 public:
-    static std::vector<node> dbNodeTotal;
+    static std::vector<std::shared_ptr<node>> dbNodeTotal;
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -83,8 +83,8 @@ void links::leerLinks(std::string fileName){
         linkObj1 = link(idLink, idNode1, idNode2, lengthLink, widthLink);
         // dbLink.push_back(linkObj1);
         links::dbLinkTotal.push_back(linkObj1);
-        nodes::dbNodeTotal.at(idNode1).addIdLinkConnection(idLink);
-        nodes::dbNodeTotal.at(idNode2).addIdLinkConnection(idLink);
+        nodes::dbNodeTotal.at(idNode1)->addIdLinkConnection(idLink);
+        nodes::dbNodeTotal.at(idNode2)->addIdLinkConnection(idLink);
         // linkObj1.mostrarLink();
     }
     file.close(); 

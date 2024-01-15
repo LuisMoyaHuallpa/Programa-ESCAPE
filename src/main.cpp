@@ -21,7 +21,7 @@ int main() {
     // Lectura de simulaciones pasadas.
     // stateMatrixs dbStateMatrixs1;
     // dbNode1.mostrarNodes();
-    pedestrian::dbNodeTotal = nodes::dbNodeTotal;
+    pedestrian::dbNodeTotal = std::move(nodes::dbNodeTotal);
     pedestrian::dbLinkTotal = links::dbLinkTotal;
 
     pedestrian::leerPedestrians("population.csv");

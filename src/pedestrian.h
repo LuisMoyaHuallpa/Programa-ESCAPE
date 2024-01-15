@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <cmath>
 #include <math.h>
+#include <memory>
 #include <random>
 #include <iomanip>
 #include <vector>
@@ -42,6 +43,7 @@ private:
     // velocidad           |-->| VELOCIDAD DE LA PERSONA
     // tiempoInicial       |-->| TIEMPO DE INICIO PARA QUE LA PERSONA EMPIEZE A CAMINAR 
     // evacuado            |-->| LA PERSONA QUE LLEGO A UN PUNTO DE EVACUACION
+    // retorno             |-->| PODRIA COMO LA GANANCIA TOTAL 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     int idPedestrian;
@@ -67,8 +69,8 @@ private:
     // bool empezoCaminar;
     // bool primerTiempo;
     // bool saltoLink;
-    // int retorno;
     bool evacuado;
+    int retorno;
     // sarsa sarsaAlgorithm;
 
 public:
@@ -79,7 +81,7 @@ public:
     const static int surviveReward;
     const static int deadReward;
     const static int stepReward;
-    static std::vector<node> dbNodeTotal;
+    static std::vector<std::shared_ptr<node>> dbNodeTotal;
     static std::vector<link> dbLinkTotal;
     static std::vector<pedestrian> dbPedestrianTotal;
 
@@ -113,8 +115,8 @@ public:
     // void setEmpezoCaminar(bool empezoCaminar);
     // void setPrimerTiempo(bool primerTiempo);
     // void setSaltoLink(bool saltoLink);
-    // void setRetorno(int retorno);
     void setEvacuado(bool evacuado);
+    void setRetorno(int retorno);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getters
@@ -140,11 +142,11 @@ public:
     // bool getEmpezoCaminar();
     // bool getPrimerTiempo();
     // bool getSaltoLink();
-    // int getRetorno();
     bool getEvacuado();
+    int getRetorno();
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static getters
-    static std::vector<node> getDbNodeTotal();
+    static std::vector<std::shared_ptr<node>> getDbNodeTotal();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
@@ -167,8 +169,8 @@ public:
     void calcularDireccionPedestrian();
     vector2D calcularSignoDireccion();
     int calcularSignoNumero(double numero);
-    // void calcularRetorno();
-    // void verificarPedestrianEvacuation();
+    void calcularRetorno();
+    void verificarPedestrianEvacuation();
     // void contarPedestrainSubdivision();
     // bool verificarDirectionLink();
     // void encontrarPrimerTiempo();

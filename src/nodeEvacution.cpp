@@ -4,6 +4,9 @@
 // static member
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 int nodeEvacuation::personasEvacuadas=0;
+std::string nodeEvacuation::getNodeType() {
+    return "nodeEvacuation";
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
@@ -15,14 +18,14 @@ nodeEvacuation::nodeEvacuation(int id, int coordX, int coordY)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static metods
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-int nodeEvacuation::getPersonasEvacudas() {
+int nodeEvacuation::getPersonasEvacuadas() {
     return personasEvacuadas;
 }    
-void nodeEvacuation::sumarPersonaEvacuda() {
+void nodeEvacuation::sumarPersonaEvacuada() {
     personasEvacuadas++;
 }
 void nodeEvacuation::imprimirNodeEvacuation(std::fstream& file) {
-    file << getPersonasEvacudas();
+    file << getPersonasEvacuadas();
     file << std::endl;
 }
 
