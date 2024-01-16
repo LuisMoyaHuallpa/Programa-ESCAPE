@@ -1,0 +1,4 @@
+#!/bin/sh
+find -maxdepth 1 -name "[0-9]*" -exec rm -r {} \;
+find postprocessing/snapShot -maxdepth 1 -name "[0-9]*" -exec rm -r {} \;
+rm -rf mesh
