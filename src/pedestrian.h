@@ -192,7 +192,7 @@ public:
     static void tiempoInicioDistribution();
     static void modelamientoPedestrians(int valorTiempo);
     static void mostrarDbPedestrianTotal();
-    static void imprimirPedestrians(std::string folderName);
+    static void imprimirPedestrians(int valorTiempo);
     
 };
 #endif

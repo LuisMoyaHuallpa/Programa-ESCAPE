@@ -1,6 +1,7 @@
 #include "pedestrian.h"
 #include "nodeEvacution.h"
 #include <memory>
+#include <string>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -603,9 +604,11 @@ void pedestrian::mostrarMovimientoPedestrian(){
     std::cout << std::endl;
 }
 void pedestrian::imprimirPedestrianPosition(std::fstream& file){
-    file << getPosition().getX() << " ";
-    file << getPosition().getY() << " ";
-    file << std::endl;
+    // if (getEvacuado()) {
+        file << getPosition().getX() << " ";
+        file << getPosition().getY() << " ";
+        file << std::endl;
+    // }
 }
 void pedestrian::imprimirPedestrianVelocity(std::fstream& file){
     file << getVelocidad().getMagnitud() << " ";
@@ -816,19 +819,20 @@ void pedestrian::mostrarDbPedestrianTotal() {
         dbPedestrianTotal.at(i).mostrarMovimientoPedestrian();
     }
 }
-void pedestrian::imprimirPedestrians(std::string folderName){
+void pedestrian::imprimirPedestrians(int valorTiempo){
     /* imprimir datos de posicion y velocidad.*/
+    std::string folderName = std::to_string(valorTiempo);
     std::fstream file1, file2, file3;
     file1.open(folderName + "/xy", std::ios::out);
     file2.open(folderName + "/U", std::ios::out);
     file3.open(folderName + "/cantPedestrianEvacuated", std::ios::out);
     if (file1.is_open()) {
         for (int i=0; i < dbPedestrianTotal.size(); i++) {
-            // if (dbPedestrianTotal.at(i).getEmpezoCaminar()) {
+            if (valorTiempo > dbPedestrianTotal.at(i).getTiempoInicial()) {
                 dbPedestrianTotal.at(i).imprimirPedestrianPosition(file1);
                 dbPedestrianTotal.at(i).imprimirPedestrianVelocity(file2);
-                nodeEvacuation::imprimirNodeEvacuation(file3);
-            // }
+            }
         }
+        nodeEvacuation::imprimirNodeEvacuation(file3);
     }
 }

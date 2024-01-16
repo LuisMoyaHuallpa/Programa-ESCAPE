@@ -20,12 +20,10 @@ int main() {
     dbLink1.imprimirMeshLinks();
     // Lectura de simulaciones pasadas.
     // stateMatrixs dbStateMatrixs1;
-    // dbNode1.mostrarNodes();
     pedestrian::dbNodeTotal = std::move(nodes::dbNodeTotal);
     pedestrian::dbLinkTotal = links::dbLinkTotal;
 
     pedestrian::leerPedestrians("population.csv");
-    // pedestrian::mostrarDbPedestrianTotal();
     // tiempo de inicio segun la distribucion rayleigh
     pedestrian::tiempoInicioDistribution();
 
@@ -40,17 +38,7 @@ int main() {
         // crea carpetas del tiempoSimulado.
         tiempoSimulado.crearCarpetaTiempo();
         // imprimir datos para postprocesamiento.
-        pedestrian::imprimirPedestrians(std::to_string(tiempoSimulado.getValorTiempo()));
-
-        // if (tiempoSimulado.getWriteNow()) {
-        //     std::string folderName = std::to_string(tiempoSimulado.getValorTiempo());
-        //     createFolder(folderName);
-        //     dbPedestrian1.imprimirPedestrians(folderName);
-        //     dbNode1.imprimirCantPedestrianEvacuted(folderName);
-        // }
+        pedestrian::imprimirPedestrians(tiempoSimulado.getValorTiempo());
     }
-    // pedestrian::mostrarDbPedestrianTotal();
-     // dbNode1.imprimirNodes();
-    // dbStateMatrixs1.imprimirDbStateMatrixs();
 }
 
