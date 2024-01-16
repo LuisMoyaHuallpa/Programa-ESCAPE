@@ -37,6 +37,7 @@ private:
     // position            |-->| POSICION DE LA PERSONA
     // nodeInicio          |-->| INTERSECCION DE UNA CALLE 
     // nodeFinal           |-->| OTRA INTERSECCION DE LA MISMA CALLE
+    // nodeInicioAnterior  |-->| INTERSECCION INICIAL DE LA CALLE ANTERIOR
     // linkActual          |-->| CALLE POR DONDE ESTA ACTUALMENTE LA PERSONA 
     // linkPasado          |-->| CALLE ANTERIOR POR DONDE PASO
     // direccionPedestrian |-->| CALLE ANTERIOR POR DONDE PASO
@@ -45,7 +46,6 @@ private:
     // evacuado            |-->| LA PERSONA QUE LLEGO A UN PUNTO DE EVACUACION
     // retorno             |-->| PODRIA COMO LA GANANCIA TOTAL 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
     int idPedestrian;
     int edad;
     int gender;
@@ -54,7 +54,7 @@ private:
     vector2D position;
     node* nodeInicio;
     node* nodeFinal;
-    // node* nodeAnterior;
+    node* nodeInicioAnterior;
     link* linkActual;
     link* linkPasado;
     // vector2D orientacion;
@@ -62,6 +62,7 @@ private:
     vector2DVelocidad velocidad;
     int tiempoInicial;
     stateMatrix stateMatrixPedestrian;
+    stateMatrix stateMatrixPedestrianAnterior;
     
     // stateActionQ* qStateAction;
     // vector2D orientacionLinkPasado;
@@ -70,8 +71,8 @@ private:
     // bool primerTiempo;
     // bool saltoLink;
     bool evacuado;
-    int retorno;
-    // sarsa sarsaAlgorithm;
+    int reward;
+    sarsa sarsaAlgorithm;
 
 public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -102,7 +103,7 @@ public:
     void setPosition(vector2D position);
     void setNodeInicio(node* nodeInicio);
     void setNodeFinal(node* nodeFinal);
-    // void setNodeAnterior(node* nodeAnterior);
+    void setNodeInicioAnterior(node* nodeInicioAnterior);
     void setLinkActual(link* linkActual);
     void setLinkPasado(link* linkPasado);
     void setDireccionPedestrian(vector2D direccionPedestrian);
@@ -110,13 +111,14 @@ public:
     void setTiempoInicial(int tiempoInicial);
     // void setqStateAction(stateActionQ* qStateAction);
     void setStateMatrixPedestrian(stateMatrix stateMatrixPedestrian);
+    void setStateMatrixPedestrianAnterior(stateMatrix stateMatrixPedestrianAnterior);
     // void setOrientacionLinkPasado(vector2D orientacionLinkPasado);
     // void setTiempoFinal(int tiempoFinal);
     // void setEmpezoCaminar(bool empezoCaminar);
     // void setPrimerTiempo(bool primerTiempo);
     // void setSaltoLink(bool saltoLink);
     void setEvacuado(bool evacuado);
-    void setRetorno(int retorno);
+    void setReward(int reward);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getters
@@ -129,7 +131,7 @@ public:
     vector2D getPosition();
     node* getNodeInicio() const;
     node* getNodeFinal();
-    // node* getNodeAnterior();
+    node* getNodeInicioAnterior();
     // vector2D getOrientacionLinkPasado();
     link* getLinkActual();
     link* getLinkPasado();
@@ -137,13 +139,14 @@ public:
     vector2DVelocidad& getVelocidad();
     int getTiempoInicial();
     stateMatrix& getStateMatrixPedestrian();
+    stateMatrix& getStateMatrixPedestrianAnterior();
     // stateActionQ* getqStateAction();
     // int getTiempoFinal();
     // bool getEmpezoCaminar();
     // bool getPrimerTiempo();
     // bool getSaltoLink();
     bool getEvacuado();
-    int getRetorno();
+    int getReward();
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static getters
     static std::vector<std::shared_ptr<node>> getDbNodeTotal();
@@ -169,14 +172,14 @@ public:
     void calcularDireccionPedestrian();
     vector2D calcularSignoDireccion();
     int calcularSignoNumero(double numero);
-    void calcularRetorno();
+    void calcularReward();
     void verificarPedestrianEvacuation();
     // void contarPedestrainSubdivision();
     // bool verificarDirectionLink();
     // void encontrarPrimerTiempo();
     // bool verificarSaltoLink();
     // void correctionPosition(node* nodoBase);
-    // void algoritmoSarsa();
+    void algoritmoSarsa();
     // std::vector<stateActionQ>::iterator agregarObtenerqLista(node* nodeDeBusqueda,stateActionQ qBuscando);
     // voidbuscarQ(bool verificarQExistente, stateActionQ* qElemento);
     void calcularLevelDensityAtNode();

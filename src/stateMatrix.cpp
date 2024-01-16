@@ -41,6 +41,9 @@ void stateMatrix::setOtrosVector(std::vector<int> otrosVector) {
 void stateMatrix::setActionValue(action actionValue) {
     (*this).stateValue = stateValue;
 }
+void stateMatrix::setIStateMatrixTable(int iStateMatrixTable) {
+    (*this).iStateMatrixTable = iStateMatrixTable;
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getter
@@ -51,14 +54,17 @@ int stateMatrix::getIdNode() {
 state& stateMatrix::getStateValue() {
     return stateValue;
 }
-std::vector<double> stateMatrix::getQVector() {
+std::vector<double>& stateMatrix::getQVector() {
     return QVector;
 }
-std::vector<int> stateMatrix::getotrosVector() {
+std::vector<int>& stateMatrix::getotrosVector() {
     return otrosVector;
 }
-action &stateMatrix::getActionValue() {
+action& stateMatrix::getActionValue() {
     return actionValue;
+}
+int stateMatrix::getIStateMatrixTable() {
+    return iStateMatrixTable;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -69,7 +75,7 @@ bool stateMatrix::operator==(stateMatrix stateMatrix2) {
     // primero compara si el tamaño de los states son iguales
     if (getStateValue().getDensityLinks().size() == stateMatrix2.getStateValue().getDensityLinks().size()) {
         // compara la action y el state
-        if (getActionValue() == stateMatrix2.getActionValue() and getStateValue() == stateMatrix2.getStateValue()) {
+        if (getStateValue() == stateMatrix2.getStateValue()) {
             return true;
         }
     }

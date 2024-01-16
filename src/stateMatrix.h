@@ -23,6 +23,7 @@ private:
     std::vector<double> QVector;
     std::vector<int> otrosVector;
     action actionValue;
+    int iStateMatrixTable;
 
 
 public:
@@ -49,15 +50,17 @@ public:
     void setQVector(std::vector<double> actionVector);
     void setOtrosVector(std::vector<int> otrosVector);
     void setActionValue(action actionValue);
+    void setIStateMatrixTable(int iStateMatrixTable);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getter
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     int getIdNode();
     state& getStateValue();
-    std::vector<double> getQVector();
-    std::vector<int> getotrosVector();
+    std::vector<double>& getQVector();
+    std::vector<int>& getotrosVector();
     action& getActionValue();
+    int getIStateMatrixTable();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos

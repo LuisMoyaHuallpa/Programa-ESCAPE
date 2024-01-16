@@ -1,8 +1,15 @@
 #include "sarsa.h"
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// static member
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const double sarsa::alpha = 0.05;
+/* gamma es el discount un factor*/
 const int sarsa::gamma = 9;
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// constructor
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 sarsa::sarsa() {
     setQCurrent(0);
     setQPrevious(0);
@@ -14,6 +21,9 @@ sarsa::sarsa(double QCurrent, double QPrevious, double r){
     setR(r);
 }
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// setters
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void sarsa::setQCurrent(double QCurrent) {
     (*this).QCurrent = QCurrent;
 }
@@ -23,9 +33,22 @@ void sarsa::setQPrevious(double QPrevious) {
 void sarsa::setR(int r) {
     (*this).r = r;
 }
-double sarsa::sarsaActualizarQ() {
-    QPrevious += alpha * (r + gamma * QCurrent - QPrevious); 
-    // std::cout << "durante2: ";
-    // std::cout << QPrevious << std::endl;
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// getters
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+double sarsa::getQCurrent() {
+    return QCurrent;
+}
+double sarsa::getQPrevious() {
     return QPrevious;
+}
+double sarsa::getR() {
+    return r;  
+}
+
+void sarsa::sarsaActualizarQ() {
+    QPrevious += alpha * (r + gamma * QCurrent - QPrevious); 
+    std::cout << "r: " << getR() << std::endl;
+    std::cout << "qp: " << QPrevious << std::endl;
 }

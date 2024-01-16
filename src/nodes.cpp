@@ -81,32 +81,6 @@ void nodes::leerNodes(std::string fileName) {
         }
     }
     file.close(); 
-    // for (const auto& node1 : nodes::dbNodeTotal) {
-    //     std::cout << "Tipo del objeto: " << node1.getNodeType() << std::endl;
-
-    //     // Verificar si es de tipo NodeEvacuation
-    //     if (node.getNodeType() == "NodeEvacuation") {
-    //         std::cout << "Es un NodeEvacuation." << std::endl;
-    //     }
-    // }
-    for (auto& node : nodes::dbNodeTotal) {
-        std::cout << node->getIdNode() << " ";
-        std::cout << node->getNodeType() << std::endl;
-        // Intentar convertir el puntero de tipo Node a NodeEvacuation
-        // const nodeEvacuation* evacuationNode = dynamic_cast<const nodeEvacuation*>(&node);
-        // if (typeid(node) == typeid(nodeEvacuation)) {
-        //     std::cout << "matias" << std::endl;
-        // }
-        // if (const nodeEvacuation* evacuationNode = dynamic_cast<const nodeEvacuation*>(&node)) {
-        //     // La conversión fue exitosa. El objeto es de tipo NodeEvacuation.
-        //     std::cout << "matias" << std::endl;
-        // }
-        // if (evacuationNode != nullptr) {
-        //     // La conversión fue exitosa. El objeto es de tipo NodeEvacuation.
-        //     // std::cout << "ID: " << evacuationNode->id << ", X: " << evacuationNode->x << ", Y: " << evacuationNode->y << std::endl;
-        //     std::cout << "matias" << std::endl;
-        // }
-    }
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // mostrar
