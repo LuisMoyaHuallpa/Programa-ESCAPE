@@ -1,8 +1,9 @@
 * Sarsa
 * Installation
 
-```bash
-git clone https://github.com/juliocesar-ramirez/cplus-version.git
-cd cplus-version
-make
-source bashrc
+#+begin_src bash
+  git clone https://github.com/juliocesar-ramirez/cplus-version.git
+  cd cplus-version
+  make
+  source bashrc
+#+end_src
