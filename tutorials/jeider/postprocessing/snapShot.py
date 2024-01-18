@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import os
 
 
-pathMeshLink = "../meshLink/poliLinks"
+pathMeshLink = "../mesh/poliLinks"
 x1_values = []
 x2_values = []
 y1_values = []
