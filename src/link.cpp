@@ -140,7 +140,6 @@ void link::calcularDensityLevel() {
     else {
         densityLevel = 2;
     }
-    std::cout << "den: " << densityLevel << std::endl;
 }
 void link::mostrarLink(){
     std::cout << "link: ";

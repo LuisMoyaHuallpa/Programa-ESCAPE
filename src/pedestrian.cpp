@@ -329,8 +329,6 @@ void pedestrian::cambioCalle() {
         setStateMatrixPedestrianAnterior(stateMatrixPedestrian);
         // ahora la interseccion final es la interseccion inicial.
         setNodeInicio(getNodeFinal());
-        // verificarPedestrianEvacuation();
-        // correctionPosition(nodeInicio);
         // correcion de la posicion cuando se llega cerca al nodo.
         setPosition({getNodeInicio()->getCoordX(), getNodeInicio()->getCoordY()});
         // calculo del stateMatrix para obtener datos de state.
@@ -341,8 +339,6 @@ void pedestrian::cambioCalle() {
         stateMatrixtoTableAtNode();
         // algoritmo sarsa
         algoritmoSarsa();
-        // getStateMatrixPedestrian().mostrarStateMatrix();
-        // calcularQ(sarsaAlgorithm);
         // direccion de la persona en la calle.
         calcularDireccionPedestrian();
         // envio informacion de direccion al vector de velocidad.
@@ -519,10 +515,7 @@ void pedestrian::algoritmoSarsa() {
     sarsaAlgorithm.setQCurrent(QCurrent);
     // calcular Q
     sarsaAlgorithm.sarsaActualizarQ();
-    std::cout << "qp1: " << sarsaAlgorithm.getQPrevious() << std::endl;
     nodeInicioAnterior->getStateMatrixTable().at(stateMatrixPedestrianAnterior.getIStateMatrixTable()).getQVector().at(stateMatrixPedestrianAnterior.getActionValue().getILinkConnection()) = sarsaAlgorithm.getQPrevious();
-    nodeInicioAnterior->mostrarQTable();
-    
     // reinica el reward de la persona
     setReward(0);
 }
@@ -569,8 +562,6 @@ void pedestrian::stateMatrixtoTableAtNode() {
     else {
         nodeInicio->getStateMatrixTable().push_back(stateMatrixPedestrian);
         stateMatrixPedestrian.setIStateMatrixTable(nodeInicio->getStateMatrixTable().size()-1);
-        nodeInicio->mostrarNode();
-        nodeInicio->mostrarQTable();
     }
 }
 // // void pedestrian::crearStateAction() {
@@ -683,7 +674,12 @@ void pedestrian::tiempoInicioDistribution() {
 
     for (int i = 0; i < dbPedestrianTotal.size(); ++i) {
         double random_number = generate_rayleigh_random(scaleRayleigh, gen);
-        dbPedestrianTotal.at(i).setTiempoInicial(random_number);
+        if(random_number < 2.0){
+            dbPedestrianTotal.at(i).setTiempoInicial(2);
+        }
+        else {
+            dbPedestrianTotal.at(i).setTiempoInicial(random_number);
+        }
     }
 }
 
@@ -702,22 +698,15 @@ void pedestrian::modelamientoPedestrians(int valorTiempo) {
                 // guarda infomacion de stateMatrix de la persona en una tabla en nodo.
                 dbPedestrianTotal.at(i).stateMatrixtoTableAtNode();
                 
-                dbPedestrianTotal.at(i).getStateMatrixPedestrian().mostrarStateMatrix();
+                // dbPedestrianTotal.at(i).getStateMatrixPedestrian().mostrarStateMatrix();
                 
-                //
                 // dbPedestrianTotal.at(i).calcularAction();
                 // direccion de la persona en la calle.
                 dbPedestrianTotal.at(i).calcularDireccionPedestrian();
                 // envio informacion de direccion al vector de velocidad.
                 dbPedestrianTotal.at(i).getVelocidad().setDireccion(dbPedestrianTotal.at(i).getDireccionPedestrian());
-                
-                // dbPedestrianTotal.at(i).setEmpezoCami
-                // dbPedestrianTotal.at(i).inicializarq();
-                // dbPedestrian.at(i).getqStateAction()->mostrarQ();
-                // dbPedestrianTotal.at(i).getNodeInicio()->mostrarQTable();
             }
             if (valorTiempo > dbPedestrianTotal.at(i).getTiempoInicial()) {
-                // dbPedestrianTotal.at(i).mostrarMovimientoPedestrian();                  
                 // dbPedestrianTotal.at(i).contarPedestrainSubdivision();
                 dbPedestrianTotal.at(i).caminar();
                 // calculo del reward
