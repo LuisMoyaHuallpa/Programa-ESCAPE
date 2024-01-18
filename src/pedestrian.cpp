@@ -674,6 +674,8 @@ void pedestrian::tiempoInicioDistribution() {
 
     for (int i = 0; i < dbPedestrianTotal.size(); ++i) {
         double random_number = generate_rayleigh_random(scaleRayleigh, gen);
+        // debe mejorar,
+        // tengo problemas cuando la persona empiza a moverse en 0
         if(random_number < 2.0){
             dbPedestrianTotal.at(i).setTiempoInicial(2);
         }
