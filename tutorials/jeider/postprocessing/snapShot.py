@@ -2,7 +2,8 @@
 import csv
 import matplotlib.pyplot as plt
 import os
-
+import progressbar
+from screeninfo import get_monitors
 
 pathMeshLink = "../mesh/poliLinks"
 x1_values = []
@@ -30,8 +31,12 @@ carpetas_numericas = [elemento
                                                     elemento))
                       and elemento.isdigit()]
 carpetas_numericas_ordenadas = sorted(carpetas_numericas, key=int)
-width = 12
-height = 5
+
+bar = progressbar.ProgressBar(maxval=len(carpetas_numericas_ordenadas)).start()
+screen_width = get_monitors()[0].width
+screen_height = get_monitors()[0].height
+width = screen_width/100
+height = screen_height/100
 
 for i in carpetas_numericas_ordenadas:
     fileName = directorio_principal + i + "/xy"
@@ -86,3 +91,5 @@ for i in carpetas_numericas_ordenadas:
 
     plt.savefig("snapShot/" + i)
     plt.close(fig)
+    bar.update(carpetas_numericas_ordenadas.index(i) + 1)
+bar.finish()
