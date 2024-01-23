@@ -1,8 +1,4 @@
 #include "pedestrian.h"
-#include "nodeEvacution.h"
-#include "stateMatrix.h"
-#include <memory>
-#include <string>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -288,8 +284,10 @@ void pedestrian::eleccionRandomLinkActual() {
 bool pedestrian::verificarEndLink() {
     // Da verdadero si la persona se encuentra ubicada en el termino de calle.
     bool terminoLink = false;
-    if (position.getX()*std::copysign(1, direccionPedestrian.getX()) >= nodeFinal->getCoordX()*std::copysign(1, direccionPedestrian.getX()) and
-    position.getY()*std::copysign(1, direccionPedestrian.getY()) >= nodeFinal->getCoordY()*std::copysign(1, direccionPedestrian.getY())){
+    if (position.getX()*std::copysign(1, direccionPedestrian.getX()) >= nodeFinal->getCoordenada().getX()*std::copysign(1, direccionPedestrian.getX()) and
+    position.getY()*std::copysign(1, direccionPedestrian.getY()) >= nodeFinal->getCoordenada().getY()*std::copysign(1, direccionPedestrian.getY())){
+        std::cout << "veri: " << position.getX()*std::copysign(1, direccionPedestrian.getX()) << " ";
+        std::cout << nodeFinal->getCoordenada().getX()*std::copysign(1, direccionPedestrian.getX()) << std::endl;
         terminoLink = true;
     }
     return terminoLink;
@@ -330,7 +328,7 @@ void pedestrian::cambioCalle() {
         // ahora la interseccion final es la interseccion inicial.
         setNodeInicio(getNodeFinal());
         // correcion de la posicion cuando se llega cerca al nodo.
-        setPosition({getNodeInicio()->getCoordX(), getNodeInicio()->getCoordY()});
+        setPosition({getNodeInicio()->getCoordenada().getX(), getNodeInicio()->getCoordenada().getY()});
         // calculo del stateMatrix para obtener datos de state.
         calcularLevelDensityAtNode();
         // eleccionde de la calle
@@ -393,8 +391,8 @@ void pedestrian::calcularDireccionPedestrian() {
     setDireccionPedestrian(linkActual->getOrientacionLink() * calcularSignoDireccion());
 }
 vector2D pedestrian::calcularSignoDireccion() {
-    double x = calcularSignoNumero(nodeFinal->getCoordX() - nodeInicio->getCoordX());
-    double y = calcularSignoNumero(nodeFinal->getCoordY() - nodeInicio->getCoordY());
+    double x = calcularSignoNumero(nodeFinal->getCoordenada().getX() - nodeInicio->getCoordenada().getX());
+    double y = calcularSignoNumero(nodeFinal->getCoordenada().getY() - nodeInicio->getCoordenada().getY());
     return vector2D(x,y);
 }
 void pedestrian::calcularReward() {
@@ -577,23 +575,26 @@ void pedestrian::mostrarMovimientoPedestrian(){
     std::cout << getIdPedestrian() << ' ';
     std::cout << std::setw(6) << getNodeInicio()->getIdNode() << ' ';
     std::cout << "start: ";
-    std::cout << std::fixed << std::setprecision(1);
-    std::cout << std::setw(5) << getNodeInicio()->getCoordX() << ' ';
-    std::cout << std::setw(5) << getNodeInicio()->getCoordY() << ' ';
+    // decimales para imprecion
+    std::cout << std::fixed << std::setprecision(2);
+    std::cout << std::setw(5) << getNodeInicio()->getCoordenada().getX() << ' ';
+    std::cout << std::setw(5) << getNodeInicio()->getCoordenada().getY() << ' ';
     std::cout << "now: ";
     std::cout << std::setw(5) << getPosition().getX() << " ";
     std::cout << std::setw(5) << getPosition().getY() << " ";
     std::cout << "end: ";
-    std::cout << std::setw(5) << getNodeFinal()->getCoordX() << ' ';
-    std::cout << std::setw(5) << getNodeFinal()->getCoordY() << ' ';
+    std::cout << std::setw(5) << getNodeFinal()->getCoordenada().getX() << ' ';
+    std::cout << std::setw(5) << getNodeFinal()->getCoordenada().getY() << ' ';
     // std::cout << std::setw(5) << getReward() << ' ';
     std::cout << std::endl;
 }
 void pedestrian::imprimirPedestrianPosition(std::fstream& file){
     // if (getEvacuado()) {
-        file << getPosition().getX() << " ";
-        file << getPosition().getY() << " ";
-        file << std::endl;
+    // decimales para guardar en archivos.
+    file << std::fixed << std::setprecision(2);
+    file << getPosition().getX() << " ";
+    file << getPosition().getY() << " ";
+    file << std::endl;
     // }
 }
 void pedestrian::imprimirPedestrianVelocity(std::fstream& file){
@@ -692,7 +693,7 @@ void pedestrian::modelamientoPedestrians(int valorTiempo) {
         if (!dbPedestrianTotal.at(i).getEvacuado()) {
             if (valorTiempo == dbPedestrianTotal.at(i).getTiempoInicial()) {
                 // set la posicion de inicio del pedestrian
-                dbPedestrianTotal.at(i).setPosition({dbPedestrianTotal.at(i).nodeInicio->getCoordX(), dbPedestrianTotal.at(i).nodeInicio->getCoordY()});
+                dbPedestrianTotal.at(i).setPosition({dbPedestrianTotal.at(i).nodeInicio->getCoordenada().getX(), dbPedestrianTotal.at(i).nodeInicio->getCoordenada().getY()});
                 // calculo del stateMatrix para obtener datos de state.
                 dbPedestrianTotal.at(i).calcularLevelDensityAtNode();
                 // eleccionde de la calle
@@ -711,6 +712,11 @@ void pedestrian::modelamientoPedestrians(int valorTiempo) {
             if (valorTiempo > dbPedestrianTotal.at(i).getTiempoInicial()) {
                 // dbPedestrianTotal.at(i).contarPedestrainSubdivision();
                 dbPedestrianTotal.at(i).caminar();
+                dbPedestrianTotal.at(i).mostrarMovimientoPedestrian();
+                std::cout << "orientacion: ";
+                dbPedestrianTotal.at(i).getLinkActual()->getOrientacionLink().mostrarVector();
+                std::cout << "direcion: ";
+                dbPedestrianTotal.at(i).getDireccionPedestrian().mostrarVector();
                 // calculo del reward
                 dbPedestrianTotal.at(i).calcularReward();
                 // verifica el termino de la calle y actualiza a una nueva.
@@ -777,7 +783,7 @@ void pedestrian::imprimirPedestrians(int valorTiempo){
     file3.open(folderName + "/cantPedestrianEvacuated", std::ios::out);
     if (file1.is_open()) {
         for (int i=0; i < dbPedestrianTotal.size(); i++) {
-            if (valorTiempo > dbPedestrianTotal.at(i).getTiempoInicial()) {
+            if (valorTiempo >= dbPedestrianTotal.at(i).getTiempoInicial()) {
                 dbPedestrianTotal.at(i).imprimirPedestrianPosition(file1);
                 dbPedestrianTotal.at(i).imprimirPedestrianVelocity(file2);
             }

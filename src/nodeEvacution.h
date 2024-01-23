@@ -5,6 +5,7 @@
 // header propios
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "node.h"
+#include "vector2D.h"
 
 class nodeEvacuation: public node {
     
@@ -23,7 +24,7 @@ public:
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     nodeEvacuation();
-    nodeEvacuation(int id, int coordX, int coordY);
+    nodeEvacuation(int id, vector2D coordenada);
 
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

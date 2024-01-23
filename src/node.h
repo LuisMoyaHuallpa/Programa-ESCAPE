@@ -16,6 +16,7 @@ Punto de interseccion de calles.
 // header propios
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "stateMatrix.h"
+#include "vector2D.h"
 
 class node {
 private:
@@ -27,8 +28,7 @@ private:
     // stateMatrixTable  |-->| 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     int idNode;
-    double coordX;
-    double coordY;
+    vector2D coordenada;
     std::vector<int> idLinkConnection;
     std::vector<stateMatrix> stateMatrixTable;
 
@@ -37,7 +37,7 @@ public:
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     node();
-    node(int id, int coordX, int coordY);
+    node(int id, vector2D coordenada);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // destrutor
@@ -53,8 +53,7 @@ public:
     // setters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void setIdNode(int idNode);
-    void setCoorX(double coordX);
-    void setCoorY(double coordY);
+    void setCoordenada(vector2D coordenada);
     void setIdLinkConnection(std::vector<int> idLinkConnection);
     void setStateMatrixTable(std::vector<stateMatrix> stateMatrixTable);
     // void setRewardCode(int rewardCode);
@@ -63,8 +62,7 @@ public:
     // getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     int getIdNode() const;
-    double getCoordX() const;
-    double getCoordY() const;
+    vector2D getCoordenada();
     std::vector<int> getIdLinkConnection();
     std::vector<stateMatrix>& getStateMatrixTable();
     // int getRewardCode() const;

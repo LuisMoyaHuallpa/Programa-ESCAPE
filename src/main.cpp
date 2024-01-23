@@ -9,8 +9,6 @@
 #include "stateMatrixs.h"
 #include "pedestrian.h"
 
-
-
 int main() {
     // Creacion de data de interseccion.
     nodes dbNode1;

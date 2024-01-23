@@ -10,12 +10,14 @@ Una calle.
 #include <vector>
 #include <cmath>
 #include <iostream>
+#include "iomanip"
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // header propios
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "subLink.h"
 #include "vector2D.h"
 #include "vector"
+#include "nodes.h"
 
 class link{
     

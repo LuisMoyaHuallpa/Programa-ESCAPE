@@ -11,6 +11,7 @@ Punto de interseccion de calles.
 #include <memory>
 #include <vector>
 #include <iostream>
+
 #include <sstream>
 #include <fstream>
 #include <string>
@@ -18,6 +19,7 @@ Punto de interseccion de calles.
 // header propios
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "node.h"
+#include "vector2D.h"
 #include "nodeEvacution.h"
 
 class nodes{

@@ -1,4 +1,5 @@
 #include "nodeEvacution.h"
+#include "vector2D.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -11,8 +12,8 @@ std::string nodeEvacuation::getNodeType() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-nodeEvacuation::nodeEvacuation(int id, int coordX, int coordY)
-    : node(id, coordX, coordY) {
+nodeEvacuation::nodeEvacuation(int id, vector2D coordenada)
+    : node(id, coordenada) {
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

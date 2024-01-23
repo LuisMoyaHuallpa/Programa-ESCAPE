@@ -3,15 +3,12 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-node::node() {
+node::node() : coordenada() {
     (*this).idNode = 0;
-    (*this).coordX = 0;
-    (*this).coordY = 0;
 }
-node::node(int idNode, int coordX, int coordY) {
+node::node(int idNode, vector2D coordenada) {
     setIdNode(idNode);
-    setCoorX(coordX);
-    setCoorY(coordY);
+    setCoordenada(coordenada);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -28,11 +25,8 @@ std::string node::getNodeType() {
 void node::setIdNode(int idNode) {
     (*this).idNode = idNode;
 }
-void node::setCoorX(double coordX){
-    (*this).coordX = coordX;
-}
-void node::setCoorY(double coordY){
-    (*this).coordY = coordY;
+void node::setCoordenada(vector2D coordenada) {
+    (*this).coordenada = coordenada;
 }
 void node::setIdLinkConnection(std::vector<int> idLinkConnection) {
     (*this).idLinkConnection = idLinkConnection;
@@ -47,11 +41,8 @@ void node::setStateMatrixTable(std::vector<stateMatrix> stateMatrixTable) {
 int node::getIdNode() const{
     return idNode;
 }
-double node::getCoordX() const{
-    return coordX;
-}
-double node::getCoordY() const {
-    return coordY;
+vector2D node::getCoordenada() {
+    return coordenada;
 }
 std::vector<int> node::getIdLinkConnection() {
     return idLinkConnection;  
@@ -131,8 +122,8 @@ void node::mostrarNode() {
     // x y
     // idLinkConnections
     std::cout << "Node: " << getIdNode() << std::endl;
-    std::cout << "x: " << getCoordX() << " ";
-    std::cout << "y: " << getCoordY() << std::endl;
+    std::cout << "x: " << getCoordenada().getX() << " ";
+    std::cout << "y: " << getCoordenada().getY() << std::endl;
     std::cout << "linkConnections: ";
     for (int i = 0; i < idLinkConnection.size(); i++) {
         std::cout << idLinkConnection.at(i) << " "; 

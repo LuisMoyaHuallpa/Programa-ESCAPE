@@ -1,4 +1,5 @@
 #include "vector2D.h"
+#include <iomanip>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
@@ -56,7 +57,7 @@ vector2D vector2D::operator+=(vector2D vector2) {
     return *this;
 }
 void vector2D::mostrarVector() {
-    std::cout << "(" << getX() << ",";
-    std::cout << getY() << ")" << std::endl;
+    std::cout << "(" << std::setprecision(3) << getX() << ",";
+    std::cout << std::setprecision(3) << getY() << ")" << std::endl;
     
 }

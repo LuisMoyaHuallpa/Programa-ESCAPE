@@ -1,5 +1,4 @@
 #include "link.h"
-#include "nodes.h"
 
 int link::unitWidthPartion = 10;
 int link::getUnitWidthPartion() {
@@ -112,13 +111,13 @@ int link::getDensityLevel() {
 void link::calcularOrientacionLink() {
     /* deberia esta calcular orientacion pero necesita acceder a dbLink
         por ello se calculara la direccione en pedestrian*/
-    double x = nodes::dbNodeTotal.at(getIdNode2())->getCoordX() - nodes::dbNodeTotal.at(getIdNode1())->getCoordX();
-    double y = nodes::dbNodeTotal.at(getIdNode2())->getCoordY() - nodes::dbNodeTotal.at(getIdNode1())->getCoordY();
+    double x = nodes::dbNodeTotal.at(getIdNode2())->getCoordenada().getX() - nodes::dbNodeTotal.at(getIdNode1())->getCoordenada().getX();
+    double y = nodes::dbNodeTotal.at(getIdNode2())->getCoordenada().getY() - nodes::dbNodeTotal.at(getIdNode1())->getCoordenada().getY();
     // Calcula la magnitud del vector de dirección
     double magnitud = std::sqrt(std::pow(x, 2) + std::pow(y, 2));
     // Normaliza el vector de dirección (divide cada e por la magnitud)
-    orientacionLink.setX(x / magnitud);
-    orientacionLink.setY(y / magnitud);
+    orientacionLink.setX(std::abs(x / magnitud));
+    orientacionLink.setY(std::abs(y / magnitud));
 }
 int link::calcularNumberPartion() {
     /* calcula el numero de particiones para la calle */
@@ -150,10 +149,11 @@ void link::mostrarLink(){
     std::cout << std::endl;
 }
 void link::imprimirLink(std::fstream& file) {
-    file << nodes::dbNodeTotal.at(getIdNode1())->getCoordX() << " ";
-    file << nodes::dbNodeTotal.at(getIdNode1())->getCoordY() << " ";
-    file << nodes::dbNodeTotal.at(getIdNode2())->getCoordX() << " ";
-    file << nodes::dbNodeTotal.at(getIdNode2())->getCoordY() << " ";
+    file << std::fixed << std::setprecision(2);
+    file << nodes::dbNodeTotal.at(getIdNode1())->getCoordenada().getX() << " ";
+    file << nodes::dbNodeTotal.at(getIdNode1())->getCoordenada().getY() << " ";
+    file << nodes::dbNodeTotal.at(getIdNode2())->getCoordenada().getX() << " ";
+    file << nodes::dbNodeTotal.at(getIdNode2())->getCoordenada().getY() << " ";
     file << std::endl;
 }
 void link::mostrarSubLinks() {

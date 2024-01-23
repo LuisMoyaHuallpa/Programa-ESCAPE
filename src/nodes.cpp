@@ -1,6 +1,4 @@
 #include "nodes.h"
-#include "nodeEvacution.h"
-#include <memory>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static
@@ -70,12 +68,12 @@ void nodes::leerNodes(std::string fileName) {
         r = std::stoi(r_str);
         // Creacion de cada persona en la data base.
         if (e == 0) {
-            std::unique_ptr<node> nodoNuevo = std::make_unique<node>(n, x, y);
+            std::unique_ptr<node> nodoNuevo = std::make_unique<node>(n, vector2D(x, y));
             // node nodoNuevo1 = node(n, x, y);
             nodes::dbNodeTotal.push_back(std::move(nodoNuevo));
         }
         else {
-            std::unique_ptr<nodeEvacuation> nodoEvacuationNuevo = std::make_unique<nodeEvacuation>(n, x, y);
+            std::unique_ptr<nodeEvacuation> nodoEvacuationNuevo = std::make_unique<nodeEvacuation>(n, vector2D(x, y));
             // nodeEvacuation nodoEvacuationNuevo= nodeEvacuation(n, x, y);
             nodes::dbNodeTotal.push_back(std::move(nodoEvacuationNuevo));
         }
