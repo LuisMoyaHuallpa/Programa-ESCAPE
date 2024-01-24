@@ -218,6 +218,16 @@ std::vector<std::shared_ptr<node>> pedestrian::getDbNodeTotal() {
 void pedestrian::caminar() {
     position += velocidad * tiempo::deltaTiempo;
 }
+void pedestrian::eleccionLinkActual() {
+    // si son dos calle continuas
+    if (nodeInicio->getIdLinkConnection().size() == 1) {
+        eleccionDosCallesContinuas();
+    }
+    // existan mas de dos calles para elegir
+    else {
+        eleccionRandomLinkActual();
+    }
+}
 void pedestrian::eleccionRandomLinkActual() {
     /* La persona esta en una interseccion y tiene multiples opciones para elegir una calle.
         segun aletoriedad se decide cual sera la calle a tomar y se guardará en linkActual.*/
@@ -232,10 +242,36 @@ void pedestrian::eleccionRandomLinkActual() {
     // enviando informacion de action al stateMatrix
     getStateMatrixPedestrian().getActionValue().setILinkConnection(numero_aleatorio);
     getStateMatrixPedestrian().getActionValue().setIdLink(linkActual->getIdLink());
+    std::cout << "asignando: " << std::endl;
+    getStateMatrixPedestrian().mostrarStateMatrix();
     // sabiendo la calle defino el nodo final.
     calcularNodeFinal();
     // verificar si el nodo final es un nodo de evacucion.
     verificarPedestrianEvacuation();
+}
+void pedestrian::eleccionDosCallesContinuas() {
+        // linkActual es la calle a punto de cambiar
+    if (!(nodeInicio->getIdLinkConnection().at(0) == linkActual->getIdLink())) {
+        setLinkActual(&dbLinkTotal.at(getNodeInicio()->getIdLinkConnection().at(0)));
+        // enviando informacion de action al stateMatrix
+        getStateMatrixPedestrian().getActionValue().setILinkConnection(0);
+        getStateMatrixPedestrian().getActionValue().setIdLink(linkActual->getIdLink());
+        // sabiendo la calle defino el nodo final.
+        calcularNodeFinal();
+        // verificar si el nodo final es un nodo de evacucion.
+        verificarPedestrianEvacuation();
+    }
+    else {
+        setLinkActual(&dbLinkTotal.at(getNodeInicio()->getIdLinkConnection().at(1)));
+        // enviando informacion de action al stateMatrix
+        getStateMatrixPedestrian().getActionValue().setILinkConnection(1);
+        getStateMatrixPedestrian().getActionValue().setIdLink(linkActual->getIdLink());
+        // sabiendo la calle defino el nodo final.
+        calcularNodeFinal();
+        // verificar si el nodo final es un nodo de evacucion.
+        verificarPedestrianEvacuation();
+        
+    }
 }
 // int pedestrian::iEleccionRandomLinkActual() {
 //     // Eleccion de la calle de los posibles de la variables LinkConnection
@@ -286,8 +322,6 @@ bool pedestrian::verificarEndLink() {
     bool terminoLink = false;
     if (position.getX()*std::copysign(1, direccionPedestrian.getX()) >= nodeFinal->getCoordenada().getX()*std::copysign(1, direccionPedestrian.getX()) and
     position.getY()*std::copysign(1, direccionPedestrian.getY()) >= nodeFinal->getCoordenada().getY()*std::copysign(1, direccionPedestrian.getY())){
-        std::cout << "veri: " << position.getX()*std::copysign(1, direccionPedestrian.getX()) << " ";
-        std::cout << nodeFinal->getCoordenada().getX()*std::copysign(1, direccionPedestrian.getX()) << std::endl;
         terminoLink = true;
     }
     return terminoLink;
@@ -504,16 +538,26 @@ void pedestrian::algoritmoSarsa() {
         antes que cambia a la nueva calle
         y nodoInicia es la intersecion incial actual empezando en la nueva calle*/
     // R
+    std::cout << "1" << std::endl;
     sarsaAlgorithm.setR(getReward());
     // QPrevious
+    std::cout << "2" << std::endl;
+    nodeInicio->mostrarNode();
+    nodeInicioAnterior->mostrarNode();
+    nodeInicioAnterior->mostrarQTable();
+    stateMatrixPedestrian.mostrarStateMatrix();
+    stateMatrixPedestrianAnterior.mostrarStateMatrix();
     double QPrevious = nodeInicioAnterior->getStateMatrixTable().at(stateMatrixPedestrianAnterior.getIStateMatrixTable()).getQVector().at(stateMatrixPedestrianAnterior.getActionValue().getILinkConnection());
     sarsaAlgorithm.setQPrevious(QPrevious);
     // QCurrent
+    std::cout << "3" << std::endl;
     double QCurrent = nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQVector().at(stateMatrixPedestrian.getActionValue().getILinkConnection());
     sarsaAlgorithm.setQCurrent(QCurrent);
     // calcular Q
+    std::cout << "4" << std::endl;
     sarsaAlgorithm.sarsaActualizarQ();
     nodeInicioAnterior->getStateMatrixTable().at(stateMatrixPedestrianAnterior.getIStateMatrixTable()).getQVector().at(stateMatrixPedestrianAnterior.getActionValue().getILinkConnection()) = sarsaAlgorithm.getQPrevious();
+    std::cout << "5" << std::endl;
     // reinica el reward de la persona
     setReward(0);
 }
@@ -700,9 +744,6 @@ void pedestrian::modelamientoPedestrians(int valorTiempo) {
                 dbPedestrianTotal.at(i).eleccionRandomLinkActual();
                 // guarda infomacion de stateMatrix de la persona en una tabla en nodo.
                 dbPedestrianTotal.at(i).stateMatrixtoTableAtNode();
-                
-                // dbPedestrianTotal.at(i).getStateMatrixPedestrian().mostrarStateMatrix();
-                
                 // dbPedestrianTotal.at(i).calcularAction();
                 // direccion de la persona en la calle.
                 dbPedestrianTotal.at(i).calcularDireccionPedestrian();
@@ -712,11 +753,6 @@ void pedestrian::modelamientoPedestrians(int valorTiempo) {
             if (valorTiempo > dbPedestrianTotal.at(i).getTiempoInicial()) {
                 // dbPedestrianTotal.at(i).contarPedestrainSubdivision();
                 dbPedestrianTotal.at(i).caminar();
-                dbPedestrianTotal.at(i).mostrarMovimientoPedestrian();
-                std::cout << "orientacion: ";
-                dbPedestrianTotal.at(i).getLinkActual()->getOrientacionLink().mostrarVector();
-                std::cout << "direcion: ";
-                dbPedestrianTotal.at(i).getDireccionPedestrian().mostrarVector();
                 // calculo del reward
                 dbPedestrianTotal.at(i).calcularReward();
                 // verifica el termino de la calle y actualiza a una nueva.
@@ -747,25 +783,31 @@ void pedestrian::modelamientoPedestrians(int valorTiempo) {
         //     // envio informacion de direccion al vector de velocidad.
         //     dbPedestrianTotal.at(i).getVelocidad().setDireccion(dbPedestrianTotal.at(i).getDireccionPedestrian());
 
-        //     // dbPedestrianTotal.at(i).setEmpezoCami
-        //     // dbPedestrianTotal.at(i).inicializarq();
-        //     // dbPedestrian.at(i).getqStateAction()->mostrarQ();
-        //     // dbPedestrianTotal.at(i).getNodeInicio()->mostrarQTable();
-        // }
-        // if (!dbPedestrianTotal.at(i).getEvacuado()) {
-        //     if (valorTiempo > dbPedestrianTotal.at(i).getTiempoInicial()) {
-        //         // dbPedestrianTotal.at(i).mostrarMovimientoPedestrian();                  
-        //         // dbPedestrianTotal.at(i).contarPedestrainSubdivision();
-        //         dbPedestrianTotal.at(i).caminar();
-        //         dbPedestrianTotal.at(i).calcularReward();
-        //         // std::cout << dbPedestrianTotal.at(i).getReward() << std::endl;
-        //         // verifica el termino de la calle y actualiza a una nueva.
-        //         dbPedestrianTotal.at(i).cambioCalle();
-        //         // dbPedestrianTotal.at(i).encontrarPrimerTiempo();
-        //         // dbPedestrianTotal.at(i).updateLinkParameter();
-        //         // dbPedestrianTotal.at(i).calcularReward();
-        //     }
-        // }
+                //     // dbPedestrianTotal.at(i).setEmpezoCami
+                //     // dbPedestrianTotal.at(i).inicializarq();
+                //     // dbPedestrian.at(i).getqStateAction()->mostrarQ();
+                //     //
+                //     dbPedestrianTotal.at(i).getNodeInicio()->mostrarQTable();
+                // }
+                // if (!dbPedestrianTotal.at(i).getEvacuado()) {
+                //     if (valorTiempo >
+                //     dbPedestrianTotal.at(i).getTiempoInicial()) {
+                //         //
+                //         dbPedestrianTotal.at(i).mostrarMovimientoPedestrian();
+                //         //
+                //         dbPedestrianTotal.at(i).contarPedestrainSubdivision();
+                //         dbPedestrianTotal.at(i).caminar();
+                //         dbPedestrianTotal.at(i).calcularReward();
+                //         // std::cout << dbPedestrianTotal.at(i).getReward()
+                //         << std::endl;
+                //         // verifica el termino de la calle y actualiza a una
+                //         nueva. dbPedestrianTotal.at(i).cambioCalle();
+                //         // dbPedestrianTotal.at(i).encontrarPrimerTiempo();
+                //         // dbPedestrianTotal.at(i).updateLinkParameter();
+                //         // dbPedestrianTotal.at(i).calcularReward();
+                //     }
+                //
+                // }
     }
 }
 

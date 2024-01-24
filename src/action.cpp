@@ -34,6 +34,7 @@ bool action::operator==(action stateObject) {
     return false;
 }
 void action::mostrarAction() {
+    std::cout << getILinkConnection()<< " ";
     std::cout << getIdLink()<< " ";
 }
 void action::imprimirAction(std::fstream& file) {

@@ -156,7 +156,9 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void caminar();
     void cambioCalle();
+    void eleccionLinkActual();
     void eleccionRandomLinkActual();
+    void eleccionDosCallesContinuas();
     // int iEleccionRandomLinkActual();
     // void updateLinkActual(int iLinkConnection);
     // void updateStateAction(int iLinkConnection);

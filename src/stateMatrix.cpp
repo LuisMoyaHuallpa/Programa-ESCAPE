@@ -14,6 +14,7 @@ int stateMatrix::getTamanoVector() {
 stateMatrix::stateMatrix() : stateValue() {
     (*this).idNode = 0;
     QVector.resize(tamanoVector, 0);
+    setIStateMatrixTable(0);
     // otrosVector.resize(tamanoVector,0);
 }
 stateMatrix::stateMatrix(int idNode, state stateValue, std::vector<double> QVector, std::vector<int> otrosVector) {
@@ -21,6 +22,7 @@ stateMatrix::stateMatrix(int idNode, state stateValue, std::vector<double> QVect
     setStateValue(stateValue);
     setQVector(QVector);
     setOtrosVector(otrosVector);
+    setIStateMatrixTable(0);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -108,6 +110,8 @@ void stateMatrix::mostrarStateMatrix() {
     // }
     std::cout << "action: ";
     actionValue.mostrarAction();
+    std::cout << "itable: ";
+    std::cout << getIStateMatrixTable();
     std::cout << "Qs: ";
     for (int i = 0; i < QVector.size(); i++) {
         std::cout << QVector[i] << ",";
