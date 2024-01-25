@@ -8,8 +8,9 @@ int tiempo::deltaTiempo = 1;
 tiempo::tiempo() {
     (*this).valorTiempo = 0;
     (*this).deltaT = 1;
+    (*this).graphicPrintoutPeriod = 1;
     (*this).writeNow = true;
-    (*this).endTime = 800;
+    (*this).endTime = 200;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -21,6 +22,9 @@ void tiempo::setValorTiempo(int valorTiempo) {
 void tiempo::setDeltaT(int deltaT) {
     (*this).deltaT = deltaT;  
 }
+void tiempo::setGraphicPrintoutPeriod(int graphicPrintoutPeriod) {
+    (*this).graphicPrintoutPeriod = graphicPrintoutPeriod;
+}  
 void tiempo::setWriteNow(bool writeNow) {
     (*this).writeNow = writeNow;
 }
@@ -33,6 +37,9 @@ int tiempo::getValorTiempo() {
 }
 int tiempo::getDeltaT() {
     return deltaT;  
+}
+int tiempo::getGraphicPrintoutPeriod() {
+    return graphicPrintoutPeriod;
 }
 bool tiempo::getWriteNow() {
     return writeNow;  
@@ -60,5 +67,13 @@ void tiempo::crearCarpetaTiempo() {
         } else {
             // std::cerr << "Error al crear la carpeta." << std::endl;
         }
+    }
+}
+bool tiempo::verificarGraphicPrintout() {
+    if (getValorTiempo() % getGraphicPrintoutPeriod() == 0) {
+        return true;
+    }
+    else {
+        return false;
     }
 }

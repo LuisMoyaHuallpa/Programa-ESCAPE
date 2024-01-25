@@ -17,7 +17,7 @@ int main() {
     // imprimi malla de calles.
     dbLink1.imprimirMeshLinks();
     // Lectura de simulaciones pasadas.
-    // stateMatrixs dbStateMatrixs1;
+    stateMatrixs dbStateMatrixs1;
     pedestrian::dbNodeTotal = std::move(nodes::dbNodeTotal);
     pedestrian::dbLinkTotal = links::dbLinkTotal;
 
@@ -33,10 +33,12 @@ int main() {
         tiempoSimulado.mostrarTiempo();
         // modelamiento de pedestrian.
         pedestrian::modelamientoPedestrians(tiempoSimulado.getValorTiempo());
-        // crea carpetas del tiempoSimulado.
-        tiempoSimulado.crearCarpetaTiempo();
-        // imprimir datos para postprocesamiento.
-        pedestrian::imprimirPedestrians(tiempoSimulado.getValorTiempo());
+        if (tiempoSimulado.verificarGraphicPrintout()) {
+            // crea carpetas del tiempoSimulado.
+            tiempoSimulado.crearCarpetaTiempo();
+            // imprimir datos para postprocesamiento.
+            pedestrian::imprimirPedestrians(tiempoSimulado.getValorTiempo());
+        }
     }
 }
 

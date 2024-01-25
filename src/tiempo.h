@@ -9,14 +9,17 @@
 class tiempo {
 private:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // valorTiempo         |-->| TIEMPO DE SIMULACION 
-    // deltaT              |-->| TIEMPO DE PASO DE SIMULACION  
-    // writeNow            |-->| 
-    // endTime             |-->| TIEMPO DE TERMINO DE LA SIMULACION
+    // valorTiempo           |-->| TIEMPO DE SIMULACION 
+    // deltaT                |-->| TIEMPO DE PASO DE SIMULACION  
+    // graphicPrintoutPeriod |-->| PERIODO DE TIEMPO PARA IMPRIMIR DATOS
+    // writeNow              |-->| 
+    // endTime               |-->| TIEMPO DE TERMINO DE LA SIMULACION
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     int valorTiempo;
     int deltaT;
+    int graphicPrintoutPeriod;
     bool writeNow;
+    bool writeGraphicPrintout;
     int endTime;
 
 public:
@@ -35,6 +38,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void setValorTiempo(int valorTiempo);
     void setDeltaT(int deltaT);
+    void setGraphicPrintoutPeriod(int graphicPrintoutPeriod);
     void setWriteNow(bool writeNow);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -42,6 +46,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     int getValorTiempo();
     int getDeltaT();
+    int getGraphicPrintoutPeriod();
     bool getWriteNow();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -51,6 +56,7 @@ public:
     bool running();
     void mostrarTiempo();
     void crearCarpetaTiempo();
+    bool verificarGraphicPrintout(); 
     
 };
 

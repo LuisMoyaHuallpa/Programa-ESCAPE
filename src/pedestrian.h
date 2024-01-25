@@ -159,6 +159,7 @@ public:
     void eleccionLinkActual();
     void eleccionRandomLinkActual();
     void eleccionDosCallesContinuas();
+    void eleccionSarsa();
     // int iEleccionRandomLinkActual();
     // void updateLinkActual(int iLinkConnection);
     // void updateStateAction(int iLinkConnection);

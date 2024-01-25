@@ -24,7 +24,7 @@ with open(pathMeshLink, 'r') as csv_file:
 
 directorio_principal = '../'
 elementos = os.listdir(directorio_principal)
-
+# ubicar carpetas
 carpetas_numericas = [elemento
                       for elemento
                       in elementos
@@ -68,29 +68,28 @@ for i in carpetas_numericas_ordenadas:
         for row in csv_reader:
             cantPedestrianEvacuated.append(float(row[0]))
 
-    fig, ax = plt.subplots(1, 1, figsize=(width, height))
+    fig, ax = plt.subplots(1, 1, figsize=(width, height), tight_layout=True)
+    # lineas o calles
     ax.plot([x1_values, x2_values], [y1_values, y2_values], c="k", lw=1)
-    vmin, vmax = 0.0, 1.3  # Ajusta los límites según tus necesidades
+    vmin, vmax = 0.0, 1.3
+    # puntos o personas
     scatter = ax.scatter(x_values, y_values, c=magnitud,
                          cmap="jet_r", marker='o', edgecolors="none",
                          vmin=vmin, vmax=vmax)
-    # plt.title('Gráfico desde archivo CSV')
-    plt.xlabel('Valores X')
-    plt.ylabel('Valores Y')
+    # texto
     cantPeEv = str(int(cantPedestrianEvacuated[0]))
     text1 = "t = " + i + " seg; evacuated: " + cantPeEv
-    fig.text(0.05, 0.03, text1, fontsize=12, fontweight='normal')
-    plt.colorbar(scatter, ax=ax)
-    # Ajusta los valores vmin y vmax según tus preferencias
-
-    ax.set_axis_off()
-    if (i == "1"):
-        xlim_auto = ax.get_xlim()
-        ylim_auto = ax.get_ylim()
-    else:
-        ax.set_xlim(xlim_auto)
-        ax.set_ylim(ylim_auto)
-
+    fig.text(0.05, 0.03, text1, fontsize=12, fontweight='normal',
+             transform=ax.transAxes)
+    # barra
+    plt.colorbar(scatter, ax=ax, fraction=0.03)
+    # configuraciones
+    plt.xlabel('Valores X')
+    plt.ylabel('Valores Y')
+    xlim_auto = ax.get_xlim()
+    ylim_auto = ax.get_ylim()
+    ax.set_xlim(xlim_auto)
+    ax.set_ylim(ylim_auto)
     plt.savefig("snapShot/" + i)
     plt.close(fig)
     bar.update(carpetas_numericas_ordenadas.index(i) + 1)
