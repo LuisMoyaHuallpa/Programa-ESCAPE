@@ -272,10 +272,18 @@ void pedestrian::eleccionDosCallesContinuas() {
     }
 }
 void pedestrian::eleccionSarsa() {
+    std::cout << "a" <<std::endl;
+    nodeInicio->mostrarNode();
+    nodeInicio->mostrarQTable();
+    stateMatrixPedestrian.mostrarStateMatrix();
+    std::cout << getStateMatrixPedestrian().getIStateMatrixTable();
     double Qmenor = nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQVector().at(0);
     int iQmenor;
+    std::cout << "b" <<std::endl;
     for (int i = 0; i < nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQVector().size(); i++) {
+        std::cout << "c" << i <<std::endl;
         if (nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQVector().at(i) < Qmenor) {
+            std::cout << "d" << i <<std::endl;
             Qmenor= nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQVector().at(i);
             iQmenor = i;
         }
@@ -818,7 +826,11 @@ void pedestrian::modelamientoPedestrians(int valorTiempo) {
                 // }
     }
 }
-
+double pedestrian::calcularOptimalChoiceRate() {
+    int k, N;
+    double optimalChoiceRate = 1.0 / (4.0*k/N+1);
+    return 0;
+}
 void pedestrian::mostrarDbPedestrianTotal() {
     for (int i = 0; i < dbPedestrianTotal.size(); i++) {
         dbPedestrianTotal.at(i).mostrarMovimientoPedestrian();

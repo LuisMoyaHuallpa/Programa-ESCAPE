@@ -10,7 +10,7 @@ tiempo::tiempo() {
     (*this).deltaT = 1;
     (*this).graphicPrintoutPeriod = 1;
     (*this).writeNow = true;
-    (*this).endTime = 200;
+    (*this).endTime = std::stoi(dictionary::controlDict["endTime"]);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

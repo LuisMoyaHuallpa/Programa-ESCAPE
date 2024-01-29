@@ -197,6 +197,7 @@ public:
     static void leerPedestrians(std::string fileName);
     static void tiempoInicioDistribution();
     static void modelamientoPedestrians(int valorTiempo);
+    static double calcularOptimalChoiceRate();
     static void mostrarDbPedestrianTotal();
     static void imprimirPedestrians(int valorTiempo);
     

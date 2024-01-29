@@ -12,6 +12,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "nodes.h"
 #include "stateMatrix.h"
+#include "dictionary.h"
 
 class stateMatrixs {
 private:

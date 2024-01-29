@@ -1,19 +1,19 @@
 #include "stateMatrixs.h"
+#include "dictionary.h"
 #include "stateMatrix.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Nombre del la carpeta donde estan las simulaciones.
-const std::string stateMatrixs::simulationFile = "stateMatrices";
+const std::string stateMatrixs::simulationFile = "stateMatrices/";
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 stateMatrixs::stateMatrixs() {
     // Lectura de la ultima simulacion.
-    // No tiene logica usarlo.
-    leerDbStateMatrixs(encontrarUltimoFile()); 
+    leerDbStateMatrixs(simulationFile + dictionary::controlDict["previousComputationFile"]); 
 }
 // stateMatrixs::stateMatrixs(nodes* dbNode) {
 //     // dbNode contiene todos los nodos de la simulacion
@@ -54,13 +54,14 @@ std::string stateMatrixs::crearFilenameSalida() {
     // Crea el archivo inicial con el siguiente formato sim_000000001.csv
     filenameStream << std::setw(9) << std::setfill('0') << iFileInicio ;
     // Nombre final de exportacion 
-    return simulationFile + "/" +preName + filenameStream.str() + typeFile;
+    return simulationFile +preName + filenameStream.str() + typeFile;
 }
 void stateMatrixs::agregarStateMatrix(stateMatrix stateMatrixElement) {
     dbStateMatrixs.push_back(stateMatrixElement);
 }
 void stateMatrixs::leerDbStateMatrixs(std::string filename) {
     /* Lectura de datos de una simulación pasada.*/
+    std::cout << "Error al abrir el archivo: " << filename << std::endl;
     std::fstream file;
     file.open(filename, std::ios::in);
     if (file.fail()) {

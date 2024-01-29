@@ -21,6 +21,7 @@ Punto de interseccion de calles.
 #include "node.h"
 #include "vector2D.h"
 #include "nodeEvacution.h"
+#include "dictionary.h"
 
 class nodes{
 private:

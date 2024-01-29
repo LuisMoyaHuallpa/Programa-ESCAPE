@@ -23,11 +23,13 @@ int main() {
     // imprimi malla de calles.
     dbLink1.imprimirMeshLinks();
     // Lectura de simulaciones pasadas.
-    stateMatrixs dbStateMatrixs1;
+    if (dictionary::controlDict["computationContinued"] == "yes") {
+        stateMatrixs dbStateMatrixs1;
+    }
     pedestrian::dbNodeTotal = std::move(nodes::dbNodeTotal);
     pedestrian::dbLinkTotal = links::dbLinkTotal;
 
-    pedestrian::leerPedestrians(dictionary::controDict["populationFile"]);
+    pedestrian::leerPedestrians(dictionary::controlDict["populationsFile"]);
     // tiempo de inicio segun la distribucion rayleigh
     pedestrian::tiempoInicioDistribution();
 
@@ -47,9 +49,9 @@ int main() {
         }
     }
 
+    // Imprime la duración en milisegundos
     auto end_time = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::seconds>(end_time - start_time);
-    // Imprime la duración en milisegundos
     std::cout << "Tiempo de ejecución: " << duration.count() << " segundos" << std::endl;
 }
 

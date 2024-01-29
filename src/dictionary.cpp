@@ -4,7 +4,7 @@
 // static member
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const std::string dictionary::systemCarpet = "system/";
-std::map<std::string, std::string> dictionary::controDict;
+std::map<std::string, std::string> dictionary::controlDict;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
@@ -63,13 +63,25 @@ void dictionary::leerDictionary() {
         // Guardar cada line en la variable line. 
         std::istringstream iss(line);
         // Guardar cada valor en las variables.
-        std::getline(iss >> std::ws, keyword_str, ' ');
+        // guarda la primera para palabra hasta el primer espacio
+        iss >> keyword_str;
         std::getline(iss >> std::ws, value_str, ';');
         // guarda los valores en un dictionario
-        controDict[keyword_str] = value_str;
+        controlDict[keyword_str] = value_str;
 
     }
     file.close(); 
 
 
 }
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // static metods
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+void dictionary::mostrarControlDict() {
+    std::cout << "Contents of controlDict:" << std::endl;
+    for (const auto& entry : controlDict) {
+        std::cout << entry.first << ": " << entry.second << std::endl;
+    }
+}
+    

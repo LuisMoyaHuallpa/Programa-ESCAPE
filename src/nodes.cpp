@@ -1,4 +1,5 @@
 #include "nodes.h"
+#include "dictionary.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static
@@ -9,7 +10,7 @@ std::vector<std::shared_ptr<node>> nodes::dbNodeTotal;
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 nodes::nodes() {
-    (*this).fileName = "nodes.csv";
+    (*this).fileName = dictionary::controlDict["nodesFile"];
     leerNodes(fileName);
 }
 nodes::nodes(std::string fileName) {
