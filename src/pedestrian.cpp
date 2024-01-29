@@ -662,7 +662,7 @@ void pedestrian::imprimirPedestrianVelocity(std::fstream& file){
 void pedestrian::leerPedestrians(std::string fileName){
     std::fstream file;
     file.open(fileName, std::ios::in);
-    
+    // verificar si existe el archivo
     if (file.fail()) {
         std::cout << "Error opening the file " <<fileName << std::endl;
         exit(1);

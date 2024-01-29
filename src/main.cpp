@@ -8,8 +8,14 @@
 #include "links.h"
 #include "stateMatrixs.h"
 #include "pedestrian.h"
+#include "chrono"
+#include "dictionary.h"
 
 int main() {
+    // tiempo de performace
+    auto start_time = std::chrono::high_resolution_clock::now();
+    // leer controlDict
+    dictionary controDict("controlDict");
     // Creacion de data de interseccion.
     nodes dbNode1;
     // Creacion de data de calles.
@@ -21,7 +27,7 @@ int main() {
     pedestrian::dbNodeTotal = std::move(nodes::dbNodeTotal);
     pedestrian::dbLinkTotal = links::dbLinkTotal;
 
-    pedestrian::leerPedestrians("population.csv");
+    pedestrian::leerPedestrians(dictionary::controDict["populationFile"]);
     // tiempo de inicio segun la distribucion rayleigh
     pedestrian::tiempoInicioDistribution();
 
@@ -40,5 +46,10 @@ int main() {
             pedestrian::imprimirPedestrians(tiempoSimulado.getValorTiempo());
         }
     }
+
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::seconds>(end_time - start_time);
+    // Imprime la duración en milisegundos
+    std::cout << "Tiempo de ejecución: " << duration.count() << " segundos" << std::endl;
 }
 

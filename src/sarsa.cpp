@@ -49,5 +49,4 @@ double sarsa::getR() {
 
 void sarsa::sarsaActualizarQ() {
     QPrevious += alpha * (r + gamma * QCurrent - QPrevious); 
-    std::cout << QPrevious << std::endl;
 }
