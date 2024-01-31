@@ -23,30 +23,38 @@ int main() {
     // imprimi malla de calles.
     dbLink1.imprimirMeshLinks();
     // Lectura de simulaciones pasadas.
+    stateMatrixs dbStateMatrixs;
+    // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
     if (dictionary::controlDict["computationContinued"] == "yes") {
-        stateMatrixs dbStateMatrixs1;
+        dbStateMatrixs.leerDbStateMatrixs(stateMatrixs::simulationFile + dictionary::controlDict["previousComputationFile"]);
+        dbStateMatrixs.extracionINumeroSimulacion();
     }
     pedestrian::dbNodeTotal = std::move(nodes::dbNodeTotal);
     pedestrian::dbLinkTotal = links::dbLinkTotal;
 
+    // creacion de data de personas
     pedestrian::leerPedestrians(dictionary::controlDict["populationsFile"]);
     // tiempo de inicio segun la distribucion rayleigh
     pedestrian::tiempoInicioDistribution();
-
-    // creacionde del tiempo de simulacion.
-    tiempo tiempoSimulado;
-
-    while (tiempoSimulado.running()) {
-        tiempoSimulado++;
-        tiempoSimulado.mostrarTiempo();
-        // modelamiento de pedestrian.
-        pedestrian::modelamientoPedestrians(tiempoSimulado.getValorTiempo());
-        if (tiempoSimulado.verificarGraphicPrintout()) {
-            // crea carpetas del tiempoSimulado.
-            tiempoSimulado.crearCarpetaTiempo();
-            // imprimir datos para postprocesamiento.
-            pedestrian::imprimirPedestrians(tiempoSimulado.getValorTiempo());
+    // segun el número de simulaciones
+    for (int i = 1; i <= std::stoi(dictionary::controlDict["numberSimulation"]); i++) {
+        // creacionde del tiempo de simulacion.
+        tiempo tiempoSimulado;
+        // cantidad de simulaciones
+        while (tiempoSimulado.running()) {
+            tiempoSimulado++;
+            tiempoSimulado.mostrarTiempo();
+            // modelamiento de pedestrian.
+            pedestrian::modelamientoPedestrians(tiempoSimulado.getValorTiempo());
+            if (tiempoSimulado.verificarGraphicPrintout()) {
+                // crea carpetas del tiempoSimulado.
+                tiempoSimulado.crearCarpetaTiempo();
+                // imprimir datos para postprocesamiento.
+                pedestrian::imprimirPedestrians(tiempoSimulado.getValorTiempo());
+            }
         }
+        // Imprimir estados al terminar la simulación
+        dbStateMatrixs.imprimirDbStateMatrixs();
     }
 
     // Imprime la duración en milisegundos

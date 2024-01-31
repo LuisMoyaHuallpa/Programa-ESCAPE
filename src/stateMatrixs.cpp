@@ -1,5 +1,6 @@
 #include "stateMatrixs.h"
 #include "dictionary.h"
+#include "pedestrian.h"
 #include "stateMatrix.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -12,8 +13,9 @@ const std::string stateMatrixs::simulationFile = "stateMatrices/";
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 stateMatrixs::stateMatrixs() {
+    setINumeroSimulacion(1);
     // Lectura de la ultima simulacion.
-    leerDbStateMatrixs(simulationFile + dictionary::controlDict["previousComputationFile"]); 
+    // leerDbStateMatrixs(simulationFile + dictionary::controlDict["previousComputationFile"]); 
 }
 // stateMatrixs::stateMatrixs(nodes* dbNode) {
 //     // dbNode contiene todos los nodos de la simulacion
@@ -21,24 +23,33 @@ stateMatrixs::stateMatrixs() {
 //     // Lectura de la ultima simulacion.
 //     leerDbStateMatrixs(encontrarUltimoFile()); 
 // }
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// setters
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void stateMatrixs::setINumeroSimulacion(int iNumeroSimulacion) {
+    (*this).iNumeroSimulacion = iNumeroSimulacion;
+}
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// nodes *stateMatrixs::getDbNode() {
-//     return dbNode;  
-// }
-
+int stateMatrixs::getINumeroSimulacion() {
+    return iNumeroSimulacion;
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-std::string stateMatrixs::encontrarUltimoFile() {
-    // Encontrar la ultima simulacion para leerla
-    std::string ultimoFile;
-    ultimoFile = "stateMatrices/sim_000000006.csv";
-    return ultimoFile;
+void stateMatrixs::extracionINumeroSimulacion() {
+    std::string lastFile_str = dictionary::controlDict["previousComputationFile"];   
+    std::cout << lastFile_str;
+    size_t posicion = lastFile_str.find_first_of("123456789");
+    std::cout << std::stoi(lastFile_str.substr(posicion))<< std::endl;
+    setINumeroSimulacion(std::stoi(lastFile_str.substr(posicion)));
+    std::cout << getINumeroSimulacion() << std::endl;
 }
-std::string stateMatrixs::crearFilenameSalida() {
+std::string stateMatrixs::creacionArchivoSalida() {
     /* Crear el nombre del archivo de exportacion.*/
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // iFileInicio     |-->| ID DEL ARCHIVO DE inicio, 1
@@ -47,6 +58,39 @@ std::string stateMatrixs::crearFilenameSalida() {
     // filenameStream  |-->| ARCHIVO FALSO, PERMITE CONTROLAR LOS CARACTERES
     // DE UNA VARIABLE PARA LUEGO GUARDARLO EN UN STRING
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // aumento del numero de simulacion
+    setINumeroSimulacion(iNumeroSimulacion+1);
+    std::cout << iNumeroSimulacion << std::endl;
+    std::string preName = "sim_";
+    std::string typeFile = ".csv";
+    std::ostringstream filenameStream;
+    // Crea el archivo inicial con el siguiente formato sim_000000001.csv
+    filenameStream << std::setw(9) << std::setfill('0') << getINumeroSimulacion() ;
+    // Nombre final de exportacion 
+    return simulationFile +preName + filenameStream.str() + typeFile;
+}
+std::string stateMatrixs::encontrarUltimoFile() {
+    // Encontrar la ultima simulacion para leerla
+    std::string ultimoFile;
+    ultimoFile = "stateMatrices/sim_000000006.csv";
+    return ultimoFile;
+}
+std::string stateMatrixs::crearFilenameSalida(int numeroSimulacion) {
+    /* Crear el nombre del archivo de exportacion.*/
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // iFileInicio     |-->| ID DEL ARCHIVO DE inicio, 1
+    // preName         |-->| EXTENSION DE EXPORTACION
+    // typeFile        |-->| EXTENSION DE EXPORTACION
+    // filenameStream  |-->| ARCHIVO FALSO, PERMITE CONTROLAR LOS CARACTERES
+    // DE UNA VARIABLE PARA LUEGO GUARDARLO EN UN STRING
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // Si lee un archivo de estados
+    if (dictionary::controlDict["computationContinued"] == "yes" ) {
+        
+    }
+    else {
+        
+    }
     int iFileInicio = 1;
     std::string preName = "sim_";
     std::string typeFile = ".csv";
@@ -56,12 +100,22 @@ std::string stateMatrixs::crearFilenameSalida() {
     // Nombre final de exportacion 
     return simulationFile +preName + filenameStream.str() + typeFile;
 }
+std::string stateMatrixs::fileNameSalida() {
+    std::string lastFile_str = dictionary::controlDict["previousComputationFile"];   
+    size_t posicion = lastFile_str.find_first_of("123456789");
+    int iLastFile = std::stoi(lastFile_str.substr(posicion));
+    std::string preName = "sim_";
+    std::string typeFile = ".csv";
+    std::ostringstream filenameStream;
+    // Crea el archivo inicial con el siguiente formato sim_000000001.csv
+    filenameStream << std::setw(9) << std::setfill('0') << iLastFile ;
+    return simulationFile + preName + filenameStream.str() + typeFile;
+}
 void stateMatrixs::agregarStateMatrix(stateMatrix stateMatrixElement) {
     dbStateMatrixs.push_back(stateMatrixElement);
 }
 void stateMatrixs::leerDbStateMatrixs(std::string filename) {
     /* Lectura de datos de una simulación pasada.*/
-    std::cout << "Error al abrir el archivo: " << filename << std::endl;
     std::fstream file;
     file.open(filename, std::ios::in);
     if (file.fail()) {
@@ -178,19 +232,19 @@ void stateMatrixs::leerDbStateMatrixs(std::string filename) {
 //     std::cout << "hol1";
 //     dbNode->mostrarNodes();
 // }
-// void stateMatrixs::imprimirDbStateMatrixs(){
-//     // Crear el nombre del archivo de exportacion.
-//     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//     // file    |-->| ARCHIVO DE SALIDA, EL NOMBRE SE CREA CON crearFilenameSalida()
-//     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//     std::fstream file;
-//     file.open(crearFilenameSalida(), std::ios::out);
-//     // Imprime en todas las filas dbStateMatrixs.
-//     // for (int i = 0; i < dbStateMatrixs.size(); i++) {
-//     //     dbStateMatrixs[i].imprimirStateMatrix(file);
-//     // }
-//     for (int i = 0; i < dbNode->getDbNode().size(); i++) {
-//         // dbNode->getDbNode().at(i).imprimirQTable(file);
-//     }
-
-// }
+void stateMatrixs::imprimirDbStateMatrixs(){
+    // Crear el nombre del archivo de exportacion.
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // file    |-->| ARCHIVO DE SALIDA, EL NOMBRE SE CREA CON crearFilenameSalida()
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    std::fstream file;
+    file.open(creacionArchivoSalida(), std::ios::out);
+    // Imprime en todas las filas dbStateMatrixs.
+    // for (int i = 0; i < dbStateMatrixs.size(); i++) {
+    //     dbStateMatrixs[i].imprimirStateMatrix(file);
+    // }
+    for (int i = 0; i < pedestrian::dbNodeTotal.size(); i++) {
+        pedestrian::dbNodeTotal.at(i)->mostrarQTable();
+        // dbNode->getDbNode().at(i).imprimirQTable(file);
+    }
+}
