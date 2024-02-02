@@ -37,24 +37,20 @@ int main() {
     // tiempo de inicio segun la distribucion rayleigh
     pedestrian::tiempoInicioDistribution();
     // segun el número de simulaciones
-    for (int i = 1; i <= std::stoi(dictionary::controlDict["numberSimulation"]); i++) {
-        // creacionde del tiempo de simulacion.
-        tiempo tiempoSimulado;
-        // cantidad de simulaciones
-        while (tiempoSimulado.running()) {
-            tiempoSimulado++;
-            tiempoSimulado.mostrarTiempo();
-            // modelamiento de pedestrian.
-            pedestrian::modelamientoPedestrians(tiempoSimulado.getValorTiempo());
-            if (tiempoSimulado.verificarGraphicPrintout()) {
-                // crea carpetas del tiempoSimulado.
-                tiempoSimulado.crearCarpetaTiempo();
-                // imprimir datos para postprocesamiento.
-                pedestrian::imprimirPedestrians(tiempoSimulado.getValorTiempo());
-            }
+    while (tiempo::get()->getINumberSimulation() <= std::stoi(dictionary::controlDict["numberSimulation"])) {
+        // loop para una evacucion
+        while (tiempo::get()->running()) {
+            tiempo::get()->aumentarTiempo();
+            tiempo::get()->mostrarTiempo();
+            // // modelamiento de pedestrian.
+            pedestrian::modelamientoPedestrians(tiempo::get()->getValorTiempo());
+            // imprimir datos para postprocesamiento.
+            pedestrian::imprimirPedestrians();
         }
         // Imprimir estados al terminar la simulación
         dbStateMatrixs.imprimirDbStateMatrixs();
+        // aumentar el numero de simulation
+        tiempo::get()->aumentarINumberSimulation();
     }
 
     // Imprime la duración en milisegundos

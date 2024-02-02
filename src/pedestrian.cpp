@@ -1,4 +1,6 @@
 #include "pedestrian.h"
+#include "dictionary.h"
+#include "tiempo.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -216,7 +218,7 @@ std::vector<std::shared_ptr<node>> pedestrian::getDbNodeTotal() {
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void pedestrian::caminar() {
-    position += velocidad * tiempo::deltaTiempo;
+    position += velocidad * tiempo::get()->getDeltaT();
 }
 void pedestrian::eleccionLinkActual() {
     // si son dos calle continuas
@@ -272,18 +274,10 @@ void pedestrian::eleccionDosCallesContinuas() {
     }
 }
 void pedestrian::eleccionSarsa() {
-    std::cout << "a" <<std::endl;
-    nodeInicio->mostrarNode();
-    nodeInicio->mostrarQTable();
-    stateMatrixPedestrian.mostrarStateMatrix();
-    std::cout << getStateMatrixPedestrian().getIStateMatrixTable();
     double Qmenor = nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQVector().at(0);
     int iQmenor;
-    std::cout << "b" <<std::endl;
     for (int i = 0; i < nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQVector().size(); i++) {
-        std::cout << "c" << i <<std::endl;
         if (nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQVector().at(i) < Qmenor) {
-            std::cout << "d" << i <<std::endl;
             Qmenor= nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQVector().at(i);
             iQmenor = i;
         }
@@ -836,20 +830,29 @@ void pedestrian::mostrarDbPedestrianTotal() {
         dbPedestrianTotal.at(i).mostrarMovimientoPedestrian();
     }
 }
-void pedestrian::imprimirPedestrians(int valorTiempo){
+void pedestrian::imprimirPedestrians(){
     /* imprimir datos de posicion, cantidad de evacuados y velocidad.*/
-    std::string folderName = std::to_string(valorTiempo);
-    std::fstream file1, file2, file3;
-    file1.open(folderName + "/xy", std::ios::out);
-    file2.open(folderName + "/U", std::ios::out);
-    file3.open(folderName + "/cantPedestrianEvacuated", std::ios::out);
-    if (file1.is_open()) {
-        for (int i=0; i < dbPedestrianTotal.size(); i++) {
-            if (valorTiempo >= dbPedestrianTotal.at(i).getTiempoInicial()) {
-                dbPedestrianTotal.at(i).imprimirPedestrianPosition(file1);
-                dbPedestrianTotal.at(i).imprimirPedestrianVelocity(file2);
+    // imprimir solo en la ultima simulacion
+    if (tiempo::get()->getINumberSimulation() == std::stoi(dictionary::controlDict["numberSimulation"]) ) {
+        // imprime segun el valor de graphicPrintoutPeriod del controlDict
+        if (tiempo::get()->verificarGraphicPrintout()) {
+            //crea la carpeta de tiempo
+            tiempo::get()->crearCarpetaTiempo();
+            // impresion de datos
+            std::string folderName = std::to_string(tiempo::get()->getValorTiempo());
+            std::fstream file1, file2, file3;
+            file1.open(folderName + "/xy", std::ios::out);
+            file2.open(folderName + "/U", std::ios::out);
+            file3.open(folderName + "/cantPedestrianEvacuated", std::ios::out);
+            if (file1.is_open()) {
+                for (int i=0; i < dbPedestrianTotal.size(); i++) {
+                    if (tiempo::get()->getValorTiempo() >= dbPedestrianTotal.at(i).getTiempoInicial()) {
+                        dbPedestrianTotal.at(i).imprimirPedestrianPosition(file1);
+                        dbPedestrianTotal.at(i).imprimirPedestrianVelocity(file2);
+                    }
+                }
+                nodeEvacuation::imprimirNodeEvacuation(file3);
             }
         }
-        nodeEvacuation::imprimirNodeEvacuation(file3);
     }
 }

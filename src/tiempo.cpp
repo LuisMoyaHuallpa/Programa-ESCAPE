@@ -2,6 +2,9 @@
 
 int tiempo::deltaTiempo = 1;
 
+tiempo* tiempo::tiempoInstance = nullptr;
+
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -11,6 +14,7 @@ tiempo::tiempo() {
     (*this).graphicPrintoutPeriod = 1;
     (*this).writeNow = true;
     (*this).endTime = std::stoi(dictionary::controlDict["endTime"]);
+    (*this).iNumberSimulation = 1;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -28,6 +32,9 @@ void tiempo::setGraphicPrintoutPeriod(int graphicPrintoutPeriod) {
 void tiempo::setWriteNow(bool writeNow) {
     (*this).writeNow = writeNow;
 }
+void tiempo::setINumberSimulation(int iNumberSimulation) {
+    (*this).iNumberSimulation = iNumberSimulation;
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getters
@@ -44,6 +51,19 @@ int tiempo::getGraphicPrintoutPeriod() {
 bool tiempo::getWriteNow() {
     return writeNow;  
 }
+int tiempo::getINumberSimulation() {
+    return iNumberSimulation;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// static getters
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+tiempo *tiempo::get() {
+    if (!tiempoInstance) {
+        tiempoInstance =  new tiempo();
+    }
+    return tiempoInstance;
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
@@ -51,6 +71,12 @@ bool tiempo::getWriteNow() {
 tiempo& tiempo::operator++(int) {
     setValorTiempo(valorTiempo + deltaT); 
     return *this;
+}
+void tiempo::aumentarTiempo() {
+    setValorTiempo(valorTiempo + deltaT); 
+}
+void tiempo::aumentarINumberSimulation() {
+    setINumberSimulation(getINumberSimulation()+1);
 }
 bool tiempo::running() {
     return valorTiempo < (endTime - 0.5*deltaT);

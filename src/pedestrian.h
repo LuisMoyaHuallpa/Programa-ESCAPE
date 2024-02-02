@@ -199,7 +199,7 @@ public:
     static void modelamientoPedestrians(int valorTiempo);
     static double calcularOptimalChoiceRate();
     static void mostrarDbPedestrianTotal();
-    static void imprimirPedestrians(int valorTiempo);
+    static void imprimirPedestrians();
     
 };
 #endif

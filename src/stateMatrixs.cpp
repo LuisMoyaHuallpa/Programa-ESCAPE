@@ -244,7 +244,7 @@ void stateMatrixs::imprimirDbStateMatrixs(){
     //     dbStateMatrixs[i].imprimirStateMatrix(file);
     // }
     for (int i = 0; i < pedestrian::dbNodeTotal.size(); i++) {
-        pedestrian::dbNodeTotal.at(i)->mostrarQTable();
+        // pedestrian::dbNodeTotal.at(i)->mostrarQTable();
         // dbNode->getDbNode().at(i).imprimirQTable(file);
     }
 }
