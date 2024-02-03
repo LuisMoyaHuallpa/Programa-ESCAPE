@@ -1,4 +1,7 @@
 #include "tiempo.h"
+#include "dictionary.h"
+#include <cstdlib>
+#include <string>
 
 int tiempo::deltaTiempo = 1;
 
@@ -14,7 +17,7 @@ tiempo::tiempo() {
     (*this).graphicPrintoutPeriod = 1;
     (*this).writeNow = true;
     (*this).endTime = std::stoi(dictionary::controlDict["endTime"]);
-    (*this).iNumberSimulation = 1;
+    inicializarNumberSimulation();
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -32,8 +35,14 @@ void tiempo::setGraphicPrintoutPeriod(int graphicPrintoutPeriod) {
 void tiempo::setWriteNow(bool writeNow) {
     (*this).writeNow = writeNow;
 }
+void tiempo::setStartNumberSimulation(int startNumberSimulation) {
+    (*this).startNumberSimulation = startNumberSimulation;
+}
 void tiempo::setINumberSimulation(int iNumberSimulation) {
     (*this).iNumberSimulation = iNumberSimulation;
+}
+void tiempo::setEndNumberSimulation(int endNumberSimulation) {
+    (*this).endNumberSimulation = endNumberSimulation;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -51,8 +60,14 @@ int tiempo::getGraphicPrintoutPeriod() {
 bool tiempo::getWriteNow() {
     return writeNow;  
 }
+int tiempo::getStartNumberSimulation() {
+    return startNumberSimulation;
+}
 int tiempo::getINumberSimulation() {
     return iNumberSimulation;
+}
+int tiempo::getEndNumberSimulation() {
+    return endNumberSimulation;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -77,6 +92,44 @@ void tiempo::aumentarTiempo() {
 }
 void tiempo::aumentarINumberSimulation() {
     setINumberSimulation(getINumberSimulation()+1);
+}
+void tiempo::inicializarNumberSimulation() {
+    /* Inicializar las variables de NumberSimulation*/
+    // si lee archivos de estados pasados, si
+    if (dictionary::controlDict["computationContinued"] == "yes") {
+        if (dictionary::controlDict["stopSimulationAt"] == "endNumberSimulation") {
+            extractINumberSimulation();
+            endNumberSimulation = std::stoi(dictionary::controlDict["endNumberSimulation"]);
+        }
+        else if (dictionary::controlDict["stopSimulationAt"] == "addNumberSimulation") {
+            extractINumberSimulation();
+            endNumberSimulation = startNumberSimulation + std::stoi(dictionary::controlDict["addNumberSimulation"]);
+        }
+    }
+    // si no lee estados pasados
+    else {
+        startNumberSimulation = 1;
+        iNumberSimulation = 1;
+        if (dictionary::controlDict["stopSimulationAt"] == "endNumberSimulation") {
+            endNumberSimulation = std::stoi(dictionary::controlDict["endNumberSimulation"]);
+        }
+       }
+}
+void tiempo::extractINumberSimulation() {
+    /* Extrar el numero de simulacion actual segun el archivo sim de estados
+        anteriores del control de la variable previousComputation*/
+    if (dictionary::controlDict.find("previousComputationFile") != dictionary::controlDict.end()) {
+        std::string lastFile_str = dictionary::controlDict["previousComputationFile"];   
+        // busca el primer numero del 1-9 del nombre del archivo de estados
+        size_t posicion = lastFile_str.find_first_of("123456789");
+        int iLastFile = std::stoi(lastFile_str.substr(posicion));
+        startNumberSimulation = iLastFile;
+        iNumberSimulation = iLastFile;
+    }
+    else {
+        std::cout << "'previousComputationFile' no está presente en el controDict." << std::endl;
+        exit(1);
+    }
 }
 bool tiempo::running() {
     return valorTiempo < (endTime - 0.5*deltaT);

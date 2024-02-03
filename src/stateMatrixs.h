@@ -45,7 +45,6 @@ public:
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // void enviarDataNode(stateMatrix stateMatrixElement);
-    void extracionINumeroSimulacion();
     std::string creacionArchivoSalida();
     std::string encontrarUltimoFile();
     std::string crearFilenameSalida(int numeroSimulacion);

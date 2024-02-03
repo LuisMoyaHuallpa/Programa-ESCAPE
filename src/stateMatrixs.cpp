@@ -2,6 +2,7 @@
 #include "dictionary.h"
 #include "pedestrian.h"
 #include "stateMatrix.h"
+#include "tiempo.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static
@@ -41,11 +42,6 @@ int stateMatrixs::getINumeroSimulacion() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void stateMatrixs::extracionINumeroSimulacion() {
-    std::string lastFile_str = dictionary::controlDict["previousComputationFile"];   
-    size_t posicion = lastFile_str.find_first_of("123456789");
-    setINumeroSimulacion(std::stoi(lastFile_str.substr(posicion)));
-}
 std::string stateMatrixs::creacionArchivoSalida() {
     /* Crear el nombre del archivo de exportacion.*/
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -56,12 +52,11 @@ std::string stateMatrixs::creacionArchivoSalida() {
     // DE UNA VARIABLE PARA LUEGO GUARDARLO EN UN STRING
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // aumento del numero de simulacion
-    setINumeroSimulacion(iNumeroSimulacion+1);
     std::string preName = "sim_";
     std::string typeFile = ".csv";
     std::ostringstream filenameStream;
     // Crea el archivo inicial con el siguiente formato sim_000000001.csv
-    filenameStream << std::setw(9) << std::setfill('0') << getINumeroSimulacion() ;
+    filenameStream << std::setw(9) << std::setfill('0') << tiempo::get()->getINumberSimulation() ;
     // Nombre final de exportacion 
     return simulationFile +preName + filenameStream.str() + typeFile;
 }
@@ -217,14 +212,12 @@ void stateMatrixs::leerDbStateMatrixs(std::string filename) {
     }
     file.close(); 
 }
-// void stateMatrixs::mostrarDbStateMatrixs(){
-//     // Mostrar todos los stateMatrix dentro de dbStateMatrixs.
-//     for (int i = 0; i < dbStateMatrixs.size(); i++) {
-//         dbStateMatrixs[i].mostrarStateMatrix();
-//     }
-//     std::cout << "hol1";
-//     dbNode->mostrarNodes();
-// }
+void stateMatrixs::mostrarDbStateMatrixs(){
+    // Mostrar todos los stateMatrix dentro de dbStateMatrixs.
+    for (int i = 0; i < dbStateMatrixs.size(); i++) {
+        dbStateMatrixs[i].mostrarStateMatrix();
+    }
+}
 void stateMatrixs::imprimirDbStateMatrixs(){
     // Crear el nombre del archivo de exportacion.
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

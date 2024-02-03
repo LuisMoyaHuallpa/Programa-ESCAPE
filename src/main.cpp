@@ -27,7 +27,6 @@ int main() {
     // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
     if (dictionary::controlDict["computationContinued"] == "yes") {
         dbStateMatrixs.leerDbStateMatrixs(stateMatrixs::simulationFile + dictionary::controlDict["previousComputationFile"]);
-        dbStateMatrixs.extracionINumeroSimulacion();
     }
     pedestrian::dbNodeTotal = std::move(nodes::dbNodeTotal);
     pedestrian::dbLinkTotal = links::dbLinkTotal;
@@ -37,7 +36,9 @@ int main() {
     // tiempo de inicio segun la distribucion rayleigh
     pedestrian::tiempoInicioDistribution();
     // segun el número de simulaciones
-    while (tiempo::get()->getINumberSimulation() <= std::stoi(dictionary::controlDict["numberSimulation"])) {
+    while (tiempo::get()->getINumberSimulation() < tiempo::get()->getEndNumberSimulation()) {
+        // aumentar el numero de simulacion
+        tiempo::get()->aumentarINumberSimulation();
         // loop para una evacuacion
         while (tiempo::get()->running()) {
             tiempo::get()->aumentarTiempo();
@@ -51,8 +52,6 @@ int main() {
         dbStateMatrixs.imprimirDbStateMatrixs();
         // reiniciar el tiempo
         tiempo::get()->setValorTiempo(0);
-        // aumentar el numero de simulacion
-        tiempo::get()->aumentarINumberSimulation();
     }
 
     // Imprime la duración en milisegundos

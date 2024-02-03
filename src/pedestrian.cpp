@@ -286,11 +286,11 @@ void pedestrian::eleccionSarsa() {
             iQmenor = i;
         }
     }
-    std::cout << iQmenor << std::endl;
     setLinkActual(&dbLinkTotal.at(getNodeInicio()->getIdLinkConnection().at(iQmenor)));
     // enviando informacion de action al stateMatrix
     getStateMatrixPedestrian().getActionValue().setILinkConnection(iQmenor);
     getStateMatrixPedestrian().getActionValue().setIdLink(linkActual->getIdLink());
+
     // sabiendo la calle defino el nodo final.
     calcularNodeFinal();
     // verificar si el nodo final es un nodo de evacucion.
@@ -848,7 +848,7 @@ void pedestrian::modelamientoPedestrians(int valorTiempo) {
 }
 double pedestrian::calcularOptimalChoiceRate() {
     int k = tiempo::get()->getINumberSimulation();
-    int N = std::stoi(dictionary::controlDict["numberSimulation"]);
+    int N = tiempo::get()->getEndNumberSimulation();
     double optimalChoiceRate = 1.0 / (4.0* double(k)/double(N)+1);
     return optimalChoiceRate;
 }
@@ -860,9 +860,7 @@ void pedestrian::mostrarDbPedestrianTotal() {
 void pedestrian::imprimirPedestrians(){
     /* imprimir datos de posicion, cantidad de evacuados y velocidad.*/
     // imprimir solo en la ultima simulacion
-    std::cout << tiempo::get()->getINumberSimulation() << std::endl;
-    if (tiempo::get()->getINumberSimulation() == std::stoi(dictionary::controlDict["numberSimulation"]) ) {
-        std::cout << "hola" << std::endl;
+    if (tiempo::get()->getINumberSimulation() == tiempo::get()->getEndNumberSimulation() ) {
         // imprime segun el valor de graphicPrintoutPeriod del controlDict
         if (tiempo::get()->verificarGraphicPrintout()) {
             //crea la carpeta de tiempo

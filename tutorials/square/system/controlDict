@@ -1,0 +1,30 @@
+nodesFile        nodes.csv;
+
+linksFile        links.csv;
+
+populationsFile  population.csv;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         100;
+
+deltaT          1;
+
+graphicPrintoutPeriod 1;
+
+listingPrintoutPeriod 1;
+
+computationContinued  	yes;
+
+previousComputationFile	sim_000000006.csv;
+
+stopSimulationAt          endNumberSimulation;
+
+# stopSimulationAt          addNumberSimulation;
+
+endNumberSimulation 7;
+
+# addNumberSimulation 1;
+

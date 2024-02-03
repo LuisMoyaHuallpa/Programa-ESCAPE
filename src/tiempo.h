@@ -26,7 +26,9 @@ private:
     bool writeNow;
     bool writeGraphicPrintout;
     int endTime;
+    int startNumberSimulation;
     int iNumberSimulation;
+    int endNumberSimulation;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // constructor
@@ -48,7 +50,9 @@ public:
     void setDeltaT(int deltaT);
     void setGraphicPrintoutPeriod(int graphicPrintoutPeriod);
     void setWriteNow(bool writeNow);
+    void setStartNumberSimulation(int startNumberSimulation);
     void setINumberSimulation(int iNumberSimulation);
+    void setEndNumberSimulation(int endNumberSimulation);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getters
@@ -57,7 +61,9 @@ public:
     int getDeltaT();
     int getGraphicPrintoutPeriod();
     bool getWriteNow();
+    int getStartNumberSimulation();
     int getINumberSimulation();
+    int getEndNumberSimulation();k
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static getters
@@ -70,6 +76,8 @@ public:
     tiempo& operator++(int);
     void aumentarTiempo();
     void aumentarINumberSimulation();
+    void inicializarNumberSimulation();
+    void extractINumberSimulation();
     bool running();
     void mostrarTiempo();
     void crearCarpetaTiempo();
