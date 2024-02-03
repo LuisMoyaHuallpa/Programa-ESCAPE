@@ -13,14 +13,21 @@ Una fila de archivo de entrada o salida.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "state.h"
 #include "action.h"
+#include "Qs.h"
 
 // #include "node.h"
 
 class stateMatrix {
 private:
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // idNode         |-->| ID DE LA CALLE 
+    // stateValue     |-->| VECTOR DE ESTADO 
+    // QsValue        |-->| VECTOR DE Q
+    // tamanoVectorIO |-->| CANTIDAD DE ELEMENTOS PARA EL VECTOR DE ESTADO Y Q
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     int idNode;
     state stateValue;
-    std::vector<double> QVector;
+    Qs QsValue;
     std::vector<int> otrosVector;
     action actionValue;
     int iStateMatrixTable;
@@ -30,8 +37,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static member
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    static const int tamanoVector;
-    int static getTamanoVector();
+    static const int tamanoVectorIO;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // constructor
@@ -47,7 +53,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void setIdNode(int idNode);
     void setStateValue(state stateValue);
-    void setQVector(std::vector<double> actionVector);
+    void setQsValue(Qs QsValue);
     void setOtrosVector(std::vector<int> otrosVector);
     void setActionValue(action actionValue);
     void setIStateMatrixTable(int iStateMatrixTable);
@@ -57,10 +63,15 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     int getIdNode();
     state& getStateValue();
-    std::vector<double>& getQVector();
+    Qs& getQsValue();
     std::vector<int>& getotrosVector();
     action& getActionValue();
     int getIStateMatrixTable();
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // static getter
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    int static getTamanoVector();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos

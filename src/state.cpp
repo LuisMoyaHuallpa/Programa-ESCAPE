@@ -39,9 +39,6 @@ bool state::operator==(state stateObject) {
     // Si llegamos aquí, todos los elementos de densityLinks son iguales
     return true;
 }
-void state::agregarElementoState(int stateElemento) {
-    densityLinks.push_back(stateElemento);
-}
 void state::mostrarState() {
     for (int i = 0; i < densityLinks.size(); i++) {
         std::cout << getDensityLinks().at(i) << ',';

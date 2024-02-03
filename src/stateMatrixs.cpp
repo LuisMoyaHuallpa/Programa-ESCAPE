@@ -43,11 +43,8 @@ int stateMatrixs::getINumeroSimulacion() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void stateMatrixs::extracionINumeroSimulacion() {
     std::string lastFile_str = dictionary::controlDict["previousComputationFile"];   
-    std::cout << lastFile_str;
     size_t posicion = lastFile_str.find_first_of("123456789");
-    std::cout << std::stoi(lastFile_str.substr(posicion))<< std::endl;
     setINumeroSimulacion(std::stoi(lastFile_str.substr(posicion)));
-    std::cout << getINumeroSimulacion() << std::endl;
 }
 std::string stateMatrixs::creacionArchivoSalida() {
     /* Crear el nombre del archivo de exportacion.*/
@@ -60,7 +57,6 @@ std::string stateMatrixs::creacionArchivoSalida() {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // aumento del numero de simulacion
     setINumeroSimulacion(iNumeroSimulacion+1);
-    std::cout << iNumeroSimulacion << std::endl;
     std::string preName = "sim_";
     std::string typeFile = ".csv";
     std::ostringstream filenameStream;
@@ -169,28 +165,28 @@ void stateMatrixs::leerDbStateMatrixs(std::string filename) {
             if (i < nodes::dbNodeTotal.at(idNode)->getIdLinkConnection().size()) {
                 std::getline(iss, s_str, ',');
                 s = std::stoi(s_str);
-                stateLeido.agregarElementoState(s);
-                stateMatrixLeido.setStateValue(stateLeido);
+                stateLeido.getDensityLinks().push_back(s);
             } 
             else {
                 std::getline(iss, p0, ',');
             }
         }
-        // stateLeido.mostrarState();
+        stateMatrixLeido.setStateValue(stateLeido);
         // !-----------------------------------------------------------------------
         // Elementos de Q
         std::vector<double> Qvector;
+        Qs QsLeido;
         for (int i = 0; i < stateMatrix::getTamanoVector(); ++i) {
             if (i < nodes::dbNodeTotal.at(idNode)->getIdLinkConnection().size()) {
                 std::getline(iss, Q_str, ',');
                 Q = std::stod(Q_str);
-                Qvector.push_back(Q);
-                stateMatrixLeido.setQVector(Qvector);
+                QsLeido.getQsVector().push_back(Q);
             } 
             else {
                 std::getline(iss, p0, ',');
             }
         }
+        stateMatrixLeido.setQsValue(QsLeido);
         // !-----------------------------------------------------------------------
         // Falta definir
         // Elementos de o
@@ -218,9 +214,6 @@ void stateMatrixs::leerDbStateMatrixs(std::string filename) {
         // !-----------------------------------------------------------------------
         // Grabar datos de la fila del stateMatrix en en Qtable del nodo numero id.
         nodes::dbNodeTotal.at(idNode)->getStateMatrixTable().push_back(stateMatrixLeido);
-        // dbNode->getDbNode().at(idNode).getStateMatrixTable().push_back(stateMatrixLeido);
-        // stateMatrixLeido.mostrarStateMatrix();
-        // stateMatrixLeido.enviarDataNode(dbNode->getDbNode().at(idNode));
     }
     file.close(); 
 }

@@ -38,7 +38,7 @@ int main() {
     pedestrian::tiempoInicioDistribution();
     // segun el número de simulaciones
     while (tiempo::get()->getINumberSimulation() <= std::stoi(dictionary::controlDict["numberSimulation"])) {
-        // loop para una evacucion
+        // loop para una evacuacion
         while (tiempo::get()->running()) {
             tiempo::get()->aumentarTiempo();
             tiempo::get()->mostrarTiempo();
@@ -49,7 +49,9 @@ int main() {
         }
         // Imprimir estados al terminar la simulación
         dbStateMatrixs.imprimirDbStateMatrixs();
-        // aumentar el numero de simulation
+        // reiniciar el tiempo
+        tiempo::get()->setValorTiempo(0);
+        // aumentar el numero de simulacion
         tiempo::get()->aumentarINumberSimulation();
     }
 

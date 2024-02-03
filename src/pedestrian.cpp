@@ -1,6 +1,7 @@
 #include "pedestrian.h"
 #include "dictionary.h"
 #include "tiempo.h"
+#include <string>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -221,13 +222,15 @@ void pedestrian::caminar() {
     position += velocidad * tiempo::get()->getDeltaT();
 }
 void pedestrian::eleccionLinkActual() {
-    // si son dos calle continuas
-    if (nodeInicio->getIdLinkConnection().size() == 1) {
-        eleccionDosCallesContinuas();
-    }
+    if (nodeInicio->getStateMatrixTable().size() == 0) {
+        eleccionRandomLinkActual();
+    }    // si son dos calle continuas
+    // else if (nodeInicio->b) {
+    //     eleccionDosCallesContinuas();
+    // }
     // existan mas de dos calles para elegir
     else {
-        eleccionRandomLinkActual();
+        eleccionRandomSarsa();
     }
 }
 void pedestrian::eleccionRandomLinkActual() {
@@ -250,7 +253,7 @@ void pedestrian::eleccionRandomLinkActual() {
     verificarPedestrianEvacuation();
 }
 void pedestrian::eleccionDosCallesContinuas() {
-        // linkActual es la calle a punto de cambiar
+    // linkActual es la calle a punto de cambiar
     if (!(nodeInicio->getIdLinkConnection().at(0) == linkActual->getIdLink())) {
         setLinkActual(&dbLinkTotal.at(getNodeInicio()->getIdLinkConnection().at(0)));
         // enviando informacion de action al stateMatrix
@@ -274,14 +277,16 @@ void pedestrian::eleccionDosCallesContinuas() {
     }
 }
 void pedestrian::eleccionSarsa() {
-    double Qmenor = nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQVector().at(0);
-    int iQmenor;
-    for (int i = 0; i < nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQVector().size(); i++) {
-        if (nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQVector().at(i) < Qmenor) {
-            Qmenor= nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQVector().at(i);
+    // empieza con valores del primer elemento de QsVector
+    double Qmenor = nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().at(0);
+    int iQmenor = 0;
+    for (int i = 0; i < nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().size(); i++) {
+        if (nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().at(i) < Qmenor) {
+            Qmenor= nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().at(i);
             iQmenor = i;
         }
     }
+    std::cout << iQmenor << std::endl;
     setLinkActual(&dbLinkTotal.at(getNodeInicio()->getIdLinkConnection().at(iQmenor)));
     // enviando informacion de action al stateMatrix
     getStateMatrixPedestrian().getActionValue().setILinkConnection(iQmenor);
@@ -290,7 +295,27 @@ void pedestrian::eleccionSarsa() {
     calcularNodeFinal();
     // verificar si el nodo final es un nodo de evacucion.
     verificarPedestrianEvacuation();
-
+}
+void pedestrian::eleccionRandomSarsa() {
+   // Configurar el generador de números aleatorios
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<double> dis(0.0, 1.0);
+    // Generar un número aleatorio en el rango [0.0, 1.0)
+    double randomNumber = dis(gen);
+    // compara el numero aletorio con optima choice rate
+    // este ultimo debe ir descendiendo cuando halla mas simulaciones
+    // a mayor simulaciones mas uso de la elecion sarsa
+    switch (randomNumber <= calcularOptimalChoiceRate() ? 1 : 2) {
+        case 1:
+            eleccionRandomLinkActual();
+            break;
+        case 2:
+            eleccionSarsa();
+            break;
+        default:
+            std::cout << "Caso por defecto" << std::endl;
+    }
 }
 // int pedestrian::iEleccionRandomLinkActual() {
 //     // Eleccion de la calle de los posibles de la variables LinkConnection
@@ -385,8 +410,9 @@ void pedestrian::cambioCalle() {
         // calculo del stateMatrix para obtener datos de state.
         calcularLevelDensityAtNode();
         // eleccionde de la calle
+        eleccionLinkActual();
         // eleccionRandomLinkActual();
-        eleccionSarsa();
+        // eleccionSarsa();
         // guarda infomacion de stateMatrix de la persona en una tabla en nodo.
         stateMatrixtoTableAtNode();
         // algoritmo sarsa, actualiza en nodoAnterior
@@ -560,14 +586,14 @@ void pedestrian::algoritmoSarsa() {
     // R
     sarsaAlgorithm.setR(getReward());
     // QPrevious
-    double QPrevious = nodeInicioAnterior->getStateMatrixTable().at(stateMatrixPedestrianAnterior.getIStateMatrixTable()).getQVector().at(stateMatrixPedestrianAnterior.getActionValue().getILinkConnection());
+    double QPrevious = nodeInicioAnterior->getStateMatrixTable().at(stateMatrixPedestrianAnterior.getIStateMatrixTable()).getQsValue().getQsVector().at(stateMatrixPedestrianAnterior.getActionValue().getILinkConnection());
     sarsaAlgorithm.setQPrevious(QPrevious);
     // QCurrent
-    double QCurrent = nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQVector().at(stateMatrixPedestrian.getActionValue().getILinkConnection());
+    double QCurrent = nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().at(stateMatrixPedestrian.getActionValue().getILinkConnection());
     sarsaAlgorithm.setQCurrent(QCurrent);
     // calcular Q
     sarsaAlgorithm.sarsaActualizarQ();
-    nodeInicioAnterior->getStateMatrixTable().at(stateMatrixPedestrianAnterior.getIStateMatrixTable()).getQVector().at(stateMatrixPedestrianAnterior.getActionValue().getILinkConnection()) = sarsaAlgorithm.getQPrevious();
+    nodeInicioAnterior->getStateMatrixTable().at(stateMatrixPedestrianAnterior.getIStateMatrixTable()).getQsValue().getQsVector().at(stateMatrixPedestrianAnterior.getActionValue().getILinkConnection()) = sarsaAlgorithm.getQPrevious();
     // reinica el reward de la persona
     setReward(0);
 }
@@ -821,9 +847,10 @@ void pedestrian::modelamientoPedestrians(int valorTiempo) {
     }
 }
 double pedestrian::calcularOptimalChoiceRate() {
-    int k, N;
-    double optimalChoiceRate = 1.0 / (4.0*k/N+1);
-    return 0;
+    int k = tiempo::get()->getINumberSimulation();
+    int N = std::stoi(dictionary::controlDict["numberSimulation"]);
+    double optimalChoiceRate = 1.0 / (4.0* double(k)/double(N)+1);
+    return optimalChoiceRate;
 }
 void pedestrian::mostrarDbPedestrianTotal() {
     for (int i = 0; i < dbPedestrianTotal.size(); i++) {
@@ -833,7 +860,9 @@ void pedestrian::mostrarDbPedestrianTotal() {
 void pedestrian::imprimirPedestrians(){
     /* imprimir datos de posicion, cantidad de evacuados y velocidad.*/
     // imprimir solo en la ultima simulacion
+    std::cout << tiempo::get()->getINumberSimulation() << std::endl;
     if (tiempo::get()->getINumberSimulation() == std::stoi(dictionary::controlDict["numberSimulation"]) ) {
+        std::cout << "hola" << std::endl;
         // imprime segun el valor de graphicPrintoutPeriod del controlDict
         if (tiempo::get()->verificarGraphicPrintout()) {
             //crea la carpeta de tiempo

@@ -3,24 +3,20 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-const int stateMatrix::tamanoVector = 10;
-int stateMatrix::getTamanoVector() {
-    return tamanoVector;
-}
+const int stateMatrix::tamanoVectorIO = 10;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 stateMatrix::stateMatrix() : stateValue() {
     (*this).idNode = 0;
-    QVector.resize(tamanoVector, 0);
+    // se puede eleminar
     setIStateMatrixTable(0);
     // otrosVector.resize(tamanoVector,0);
 }
 stateMatrix::stateMatrix(int idNode, state stateValue, std::vector<double> QVector, std::vector<int> otrosVector) {
     setIdNode(idNode);
     setStateValue(stateValue);
-    setQVector(QVector);
     setOtrosVector(otrosVector);
     setIStateMatrixTable(0);
 }
@@ -34,8 +30,8 @@ void stateMatrix::setIdNode(int idNode) {
 void stateMatrix::setStateValue(state stateValue) {
     (*this).stateValue = stateValue;  
 }
-void stateMatrix::setQVector(std::vector<double> QVector) {
-    (*this).QVector = QVector;
+void stateMatrix::setQsValue(Qs QsValue) {
+    (*this).QsValue = QsValue;
 }
 void stateMatrix::setOtrosVector(std::vector<int> otrosVector) {
     (*this).otrosVector = otrosVector;
@@ -56,8 +52,8 @@ int stateMatrix::getIdNode() {
 state& stateMatrix::getStateValue() {
     return stateValue;
 }
-std::vector<double>& stateMatrix::getQVector() {
-    return QVector;
+Qs &stateMatrix::getQsValue() {
+    return QsValue;
 }
 std::vector<int>& stateMatrix::getotrosVector() {
     return otrosVector;
@@ -67,6 +63,13 @@ action& stateMatrix::getActionValue() {
 }
 int stateMatrix::getIStateMatrixTable() {
     return iStateMatrixTable;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// static getter
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+int stateMatrix::getTamanoVector() {
+    return tamanoVectorIO;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -83,16 +86,16 @@ bool stateMatrix::operator==(stateMatrix stateMatrix2) {
     }
     return false;
 }
-void stateMatrix::agregarQ(int i, double Q) {
-    QVector[i] = Q;
-    std::cout << Q << std::endl;
-    std::cout << QVector[i] << std::endl;
-    std::cout << i << std::endl;
-    for (int i = 0; i < QVector.size(); i++) {
-        std::cout << getQVector().at(i) << ",";
-    }
+// void stateMatrix::agregarQ(int i, double Q) {
+//     QVector[i] = Q;
+//     std::cout << Q << std::endl;
+//     std::cout << QVector[i] << std::endl;
+//     std::cout << i << std::endl;
+//     for (int i = 0; i < QVector.size(); i++) {
+//         std::cout << getQVector().at(i) << ",";
+//     }
 
-}
+// }
 // void stateMatrix::enviarDataNode(node* nodeAGuardar) {
     // Envia los datos leidos del csv al QTable de cada nodo.
     // for (int i = 0; i < stateValue.getDensityLinks().size(); i++) {
@@ -110,12 +113,10 @@ void stateMatrix::mostrarStateMatrix() {
     // }
     std::cout << "action: ";
     actionValue.mostrarAction();
-    std::cout << "itable: ";
+    std::cout << "iTable: ";
     std::cout << getIStateMatrixTable();
     std::cout << "Qs: ";
-    for (int i = 0; i < QVector.size(); i++) {
-        std::cout << QVector[i] << ",";
-    }
+    getQsValue().mostrarQs();
     std::cout << std::endl;
 
 
@@ -132,8 +133,8 @@ void stateMatrix::imprimirStateMatrix(std::fstream& file){
     // !-----------------------------------------------------------------------
     // Imprimir todos los elementos de state y se completa con 0 para llegar a
     // Falta verificar
-    for (int i = 0; i < QVector.size(); i++) {
-        file << getQVector().at(i) << ",";
-    }
+    // for (int i = 0; i < QVector.size(); i++) {
+    //     file << getQVector().at(i) << ",";
+    // }
     file << std::endl;
 }
