@@ -25,9 +25,8 @@ int main() {
     // Lectura de simulaciones pasadas.
     stateMatrixs dbStateMatrixs;
     // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
-    if (dictionary::controlDict["computationContinued"] == "yes") {
-        dbStateMatrixs.leerDbStateMatrixs(stateMatrixs::simulationFile + dictionary::controlDict["previousComputationFile"]);
-    }
+    dbStateMatrixs.leerDbStateMatrixs(stateMatrixs::simulationFile + dictionary::controlDict["previousComputationFile"]);
+
     pedestrian::dbNodeTotal = std::move(nodes::dbNodeTotal);
     pedestrian::dbLinkTotal = links::dbLinkTotal;
 
@@ -42,7 +41,7 @@ int main() {
         // loop para una evacuacion
         while (tiempo::get()->running()) {
             tiempo::get()->aumentarTiempo();
-            tiempo::get()->mostrarTiempo();
+            // tiempo::get()->mostrarTiempo();
             // // modelamiento de pedestrian.
             pedestrian::modelamientoPedestrians(tiempo::get()->getValorTiempo());
             // imprimir datos para postprocesamiento.

@@ -4,15 +4,13 @@ linksFile        links.csv;
 
 populationsFile  population.csv;
 
-startTime       0;
-
 stopAt          endTime;
 
-endTime         100;
+endTime         800;
 
 deltaT          1;
 
-graphicPrintoutPeriod 1;
+graphicPrintoutPeriod 5;
 
 listingPrintoutPeriod 1;
 
@@ -22,9 +20,9 @@ previousComputationFile	sim_000000006.csv;
 
 stopSimulationAt          endNumberSimulation;
 
-# stopSimulationAt          addNumberSimulation;
-
 endNumberSimulation 7;
+
+# stopSimulationAt          addNumberSimulation;
 
 # addNumberSimulation 1;
 

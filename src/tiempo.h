@@ -22,10 +22,8 @@ private:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     int valorTiempo;
     int deltaT;
-    int graphicPrintoutPeriod;
-    bool writeNow;
-    bool writeGraphicPrintout;
     int endTime;
+    int graphicPrintoutPeriod;
     int startNumberSimulation;
     int iNumberSimulation;
     int endNumberSimulation;
@@ -49,7 +47,6 @@ public:
     void setValorTiempo(int valorTiempo);
     void setDeltaT(int deltaT);
     void setGraphicPrintoutPeriod(int graphicPrintoutPeriod);
-    void setWriteNow(bool writeNow);
     void setStartNumberSimulation(int startNumberSimulation);
     void setINumberSimulation(int iNumberSimulation);
     void setEndNumberSimulation(int endNumberSimulation);
@@ -60,10 +57,9 @@ public:
     int getValorTiempo();
     int getDeltaT();
     int getGraphicPrintoutPeriod();
-    bool getWriteNow();
     int getStartNumberSimulation();
     int getINumberSimulation();
-    int getEndNumberSimulation();k
+    int getEndNumberSimulation();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static getters
