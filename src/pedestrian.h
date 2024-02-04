@@ -82,7 +82,6 @@ public:
     const static int surviveReward;
     const static int deadReward;
     const static int stepReward;
-    static std::vector<std::shared_ptr<node>> dbNodeTotal;
     static std::vector<link> dbLinkTotal;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -146,14 +145,12 @@ public:
     // bool getSaltoLink();
     bool getEvacuado();
     int getReward();
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // static getters
-    static std::vector<std::shared_ptr<node>> getDbNodeTotal();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void caminar();
+    void contar();
     void cambioCalle();
     void eleccionLinkActual();
     void eleccionRandomLinkActual();

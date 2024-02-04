@@ -28,9 +28,14 @@ private:
     vector2D puntoFinal;
     int cantidadPedestrian;
     double densidad;
-    std::vector<int> pedestriansIdsInSubLink;
+
+    std::vector<int> pedestriansInSubLink;
+    double anchoDivisiones;
     
 public:
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // static member
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     static int numberDivisiones;
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // constructor
@@ -44,7 +49,8 @@ public:
     void setPuntoFinal(vector2D puntoFinal);
     void setCantidadPedestrian(int cantidadPedestrian);
     void setDensidad(double densidad);
-    void setPedestriansIdsInSubLink(std::vector<int> pedestrianIdsInSubLink);
+
+    void setPedestriansInSubLink(std::vector<int> pedestriansInSubLink);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getters
@@ -53,14 +59,16 @@ public:
     vector2D getPuntoFinal();
     int getCantidadPedestrian();
     double getDensidad();
-    std::vector<int> getPedestrianIdsInSubLink();
+
+    std::vector<int> getPedestriansInSubLink();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    void calcularCantidadPedestrian();
+    // void calcularCantidadPedestrian();
     void calcularDensidad(int length, int width);
     double calcularAnchoDivisiones();
+    void calcular();
     bool verificarPedestrianId(int idPedestrian);
     void agregarPedestrianId(int idPedestrian);
     void quitarPedestrianId(int idPedestrian);

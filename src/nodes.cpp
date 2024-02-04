@@ -1,10 +1,12 @@
 #include "nodes.h"
 #include "dictionary.h"
+#include <memory>
+#include <vector>
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// static member
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// static
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-std::vector<std::shared_ptr<node>> nodes::dbNodeTotal;
+nodes* nodes::nodesInstance = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
@@ -23,6 +25,20 @@ nodes::nodes(std::string fileName) {
 std::string nodes::getFileName() {
     return fileName;  
 }
+std::vector<std::shared_ptr<node>> nodes::getDbNodeTotal() {
+    return dbNodeTotal;
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// static getters
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+nodes* nodes::get() {
+    /* si aun no existe crea la unica instancia de nodes*/
+    if (!nodesInstance) {
+        nodesInstance =  new nodes();
+    }
+    return nodesInstance;
+}
+
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void nodes::leerNodes(std::string fileName) {
@@ -76,7 +92,7 @@ void nodes::leerNodes(std::string fileName) {
         else {
             std::unique_ptr<nodeEvacuation> nodoEvacuationNuevo = std::make_unique<nodeEvacuation>(n, vector2D(x, y));
             // nodeEvacuation nodoEvacuationNuevo= nodeEvacuation(n, x, y);
-            nodes::dbNodeTotal.push_back(std::move(nodoEvacuationNuevo));
+            dbNodeTotal.push_back(std::move(nodoEvacuationNuevo));
         }
     }
     file.close(); 
@@ -85,9 +101,9 @@ void nodes::leerNodes(std::string fileName) {
 // mostrar
 void nodes::mostrarNodes() {
     // Muestra en el terminal todos los nodos y sus datos.
-    for (int i = 0; i < nodes::dbNodeTotal.size(); i++) {
-        nodes::dbNodeTotal.at(i)->mostrarNode();
-        nodes::dbNodeTotal.at(i)->mostrarQTable();
+    for (int i = 0; i < dbNodeTotal.size(); i++) {
+        dbNodeTotal.at(i)->mostrarNode();
+        dbNodeTotal.at(i)->mostrarQTable();
         // const node* baseNode = dbNode.at(i);
         // const nodeEvacuation* evacuationNode = dynamic_cast<const nodeEvacuation*>(baseNode);
         // if (evacuationNode) {
@@ -96,9 +112,9 @@ void nodes::mostrarNodes() {
     }
 }
 void nodes::mostrardbNodeTotal() {
-    for (int i = 0; i < nodes::dbNodeTotal.size(); i++) {
-        nodes::dbNodeTotal.at(i)->mostrarNode();
-        nodes::dbNodeTotal.at(i)->mostrarQTable();
+    for (int i = 0; i < dbNodeTotal.size(); i++) {
+        dbNodeTotal.at(i)->mostrarNode();
+        dbNodeTotal.at(i)->mostrarQTable();
     }
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

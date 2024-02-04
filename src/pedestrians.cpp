@@ -1,6 +1,10 @@
 #include "pedestrians.h"
 #include "dictionary.h"
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// static member
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pedestrians* pedestrians::pedestriansInstance = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
@@ -11,12 +15,6 @@ pedestrians::pedestrians() {
     // tiempo de inicio segun la distribucion rayleigh
     tiempoInicioDistribution();
 }
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// static member
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pedestrians* pedestrians::pedestriansInstance = nullptr;
-
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static getters
@@ -71,7 +69,7 @@ void pedestrians::leerPedestrians(std::string fileName){
         int hhId = std::stoi(hhId_str);
         int idNodeInicio = std::stoi(idNodeInicio_str);
         // Creacion de cada persona en la data base.
-        dbPedestrianTotal.push_back(pedestrian(edad, gender, hhType, hhId, pedestrian::dbNodeTotal.at(idNodeInicio).get()));
+        dbPedestrianTotal.push_back(pedestrian(edad, gender, hhType, hhId, nodes::get()->getDbNodeTotal().at(idNodeInicio).get()));
     }
     file.close(); 
 }

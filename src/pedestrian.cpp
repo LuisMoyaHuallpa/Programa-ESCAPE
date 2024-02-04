@@ -7,7 +7,6 @@ int pedestrian::contador = 1;
 const int pedestrian::surviveReward = 100000;
 const int pedestrian::deadReward = -1000; 
 const int pedestrian::stepReward = -1;
-std::vector<std::shared_ptr<node>> pedestrian::dbNodeTotal;
 std::vector<link> pedestrian::dbLinkTotal;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -205,17 +204,21 @@ bool pedestrian::getEvacuado() {
 int pedestrian::getReward() {
     return reward;  
 }
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// static getters
-std::vector<std::shared_ptr<node>> pedestrian::getDbNodeTotal() {
-    return dbNodeTotal;
-}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void pedestrian::caminar() {
     position += velocidad * tiempo::get()->getDeltaT();
+    contar();
+}
+void pedestrian::contar() {
+    // distancia de la persona al node1 del link
+    mostrarMovimientoPedestrian();
+    double index_x = (position.getX() - nodes::get()->getDbNodeTotal().at(linkActual->getIdNode1())->getCoordenada().getX()) / static_cast<double>(subLink::numberDivisiones);
+    double index_y = (position.getY() - nodes::get()->getDbNodeTotal().at(linkActual->getIdNode1())->getCoordenada().getY()) / static_cast<double>(subLink::numberDivisiones);
+    int index_hipo = std::trunc(std::sqrt(std::pow(index_x,2) + pow(index_y, 2)));
+    std::cout << index_hipo << std::endl;
 }
 void pedestrian::eleccionLinkActual() {
     if (nodeInicio->getStateMatrixTable().size() == 0) {
@@ -372,11 +375,11 @@ void pedestrian::calcularNodeFinal() {
         si esta de ida o vuelta delvolvera el nodo final
         esto seria ida */
     if(nodeInicio->getIdNode() == linkActual->getIdNode1()){
-        setNodeFinal(dbNodeTotal.at(linkActual->getIdNode2()).get());
+        setNodeFinal(nodes::get()->getDbNodeTotal().at(linkActual->getIdNode2()).get());
     }
     // esto seria vuelta
     else {
-        setNodeFinal(dbNodeTotal.at(linkActual->getIdNode1()).get());
+        setNodeFinal(nodes::get()->getDbNodeTotal().at(linkActual->getIdNode1()).get());
     }
 }
 int pedestrian::calcularSignoNumero(double numero) {
@@ -638,11 +641,6 @@ void pedestrian::stateMatrixtoTableAtNode() {
         stateMatrixPedestrian.setIStateMatrixTable(nodeInicio->getStateMatrixTable().size()-1);
     }
 }
-// // void pedestrian::crearStateAction() {
-// // //     qAnterior.setA(linkActual->getIdLink());
-// // //     qAnterior.setS(calcularLevelDensityLinks());
-// // //     nodeInicio->addqQTable(qAnterior);
-// // }
 
 void pedestrian::mostrarMovimientoPedestrian(){
     /* muestra la interseccion de partida y final de una calle, cuando
