@@ -70,6 +70,10 @@ void subLink::calcularDensidad(int length, int width) {
         densidad = 0;
     }
 }
+double subLink::calcularAnchoDivisiones() {
+    
+    return 0;
+}
 bool subLink::verificarPedestrianId(int idPedestrian) {
     for (int i = 0; i < pedestriansIdsInSubLink.size(); i++) {
         if (pedestriansIdsInSubLink.at(i) == idPedestrian) {

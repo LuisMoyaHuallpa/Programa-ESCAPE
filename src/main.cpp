@@ -8,6 +8,7 @@
 #include "links.h"
 #include "stateMatrixs.h"
 #include "pedestrian.h"
+#include "pedestrians.h"
 #include "chrono"
 #include "dictionary.h"
 
@@ -30,10 +31,6 @@ int main() {
     pedestrian::dbNodeTotal = std::move(nodes::dbNodeTotal);
     pedestrian::dbLinkTotal = links::dbLinkTotal;
 
-    // creacion de data de personas
-    pedestrian::leerPedestrians(dictionary::controlDict["populationsFile"]);
-    // tiempo de inicio segun la distribucion rayleigh
-    pedestrian::tiempoInicioDistribution();
     // segun el número de simulaciones
     while (tiempo::get()->getINumberSimulation() < tiempo::get()->getEndNumberSimulation()) {
         // aumentar el numero de simulacion
@@ -43,9 +40,9 @@ int main() {
             tiempo::get()->aumentarTiempo();
             // tiempo::get()->mostrarTiempo();
             // // modelamiento de pedestrian.
-            pedestrian::modelamientoPedestrians(tiempo::get()->getValorTiempo());
+            pedestrians::get()->modelamientoPedestrians(tiempo::get()->getValorTiempo());
             // imprimir datos para postprocesamiento.
-            pedestrian::imprimirPedestrians();
+            pedestrians::get()->imprimirPedestrians();
         }
         // Imprimir estados al terminar la simulación
         dbStateMatrixs.imprimirDbStateMatrixs();

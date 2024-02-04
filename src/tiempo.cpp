@@ -66,7 +66,7 @@ int tiempo::getEndNumberSimulation() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static getters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tiempo *tiempo::get() {
+tiempo* tiempo::get() {
     if (!tiempoInstance) {
         tiempoInstance =  new tiempo();
     }

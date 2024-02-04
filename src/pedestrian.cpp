@@ -1,7 +1,4 @@
 #include "pedestrian.h"
-#include "dictionary.h"
-#include "tiempo.h"
-#include <string>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -12,7 +9,6 @@ const int pedestrian::deadReward = -1000;
 const int pedestrian::stepReward = -1;
 std::vector<std::shared_ptr<node>> pedestrian::dbNodeTotal;
 std::vector<link> pedestrian::dbLinkTotal;
-std::vector<pedestrian> pedestrian::dbPedestrianTotal;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
@@ -411,8 +407,6 @@ void pedestrian::cambioCalle() {
         calcularLevelDensityAtNode();
         // eleccionde de la calle
         eleccionLinkActual();
-        // eleccionRandomLinkActual();
-        // eleccionSarsa();
         // guarda infomacion de stateMatrix de la persona en una tabla en nodo.
         stateMatrixtoTableAtNode();
         // algoritmo sarsa, actualiza en nodoAnterior
@@ -687,199 +681,10 @@ void pedestrian::imprimirPedestrianVelocity(std::fstream& file){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static metods
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void pedestrian::leerPedestrians(std::string fileName){
-    std::fstream file;
-    file.open(fileName, std::ios::in);
-    // verificar si existe el archivo
-    if (file.fail()) {
-        std::cout << "Error opening the file " <<fileName << std::endl;
-        exit(1);
-    }
-    // Variables de una fila del archivo nodos, que seria un solo node
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // edad                 |-->| EDAD DE LA PERSONA
-    // gender               |-->| GENERO DE LA PERSONA
-    // hhType               |-->| 
-    // hhId                 |-->| 
-    // idNodeInicio         |-->| ID DEL NODO DE INICIO 
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    std::string line;
-    std::string a1_str, a2_str, a3_str, a4_str, a5_str;
-    std::string edad_str, gender_str, hhType_str, hhId_str, idNodeInicio_str;
-    while (std::getline(file, line)) {
-        // Si el archivo tiene comentarios con #, no leerlos.
-        if (line[0] == '#') {
-            continue;
-        }
-        // Guardar cada line en la variable line. 
-        std::istringstream iss(line);
-        // Guardar cada valor en las variables.
-        std::getline(iss, edad_str, ',');
-        std::getline(iss, gender_str, ',');
-        std::getline(iss, hhType_str, ',');
-        std::getline(iss, hhId_str, ',');
-        std::getline(iss, idNodeInicio_str, '\n');
-        // Cambiar de str a int
-        int edad = std::stoi(edad_str);
-        int gender = std::stoi(gender_str);
-        int hhType = std::stoi(hhType_str);
-        int hhId = std::stoi(hhId_str);
-        int idNodeInicio = std::stoi(idNodeInicio_str);
-        // Creacion de cada persona en la data base.
-        pedestrian::dbPedestrianTotal.push_back(pedestrian(edad, gender, hhType, hhId, pedestrian::dbNodeTotal.at(idNodeInicio).get()));
-    }
-    file.close(); 
-}
 
-double generate_uniform_random(std::mt19937& gen) {
-    // Generar un número aleatorio uniforme en el rango (0, 1)
-    return std::generate_canonical<double, std::numeric_limits<double>::digits>(gen);
-}
-
-double generate_rayleigh_random(double sigma, std::mt19937& gen) {
-    // Generar un número aleatorio uniforme
-    double u = generate_uniform_random(gen);
-
-    // Calcular el número aleatorio según la distribución Rayleigh
-    double random_number = sigma * sqrt(-2.0 * log(1.0 - u));
-
-    return random_number;
-}
-
-void pedestrian::tiempoInicioDistribution() {
-    /* calcula el tiempo de inicio, mediante con la distribucion rayleigh*/
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    // Set the parameters for the Rayleigh distribution
-    double meanRayleigh = 7 * 60;
-    double scaleRayleigh = meanRayleigh * std::pow((2/M_PI), 05);
-
-    for (int i = 0; i < dbPedestrianTotal.size(); ++i) {
-        double random_number = generate_rayleigh_random(scaleRayleigh, gen);
-        // debe mejorar,
-        // tengo problemas cuando la persona empiza a moverse en 0
-        if(random_number < 2.0){
-            dbPedestrianTotal.at(i).setTiempoInicial(2);
-        }
-        else {
-            dbPedestrianTotal.at(i).setTiempoInicial(random_number);
-        }
-    }
-}
-
-void pedestrian::modelamientoPedestrians(int valorTiempo) {
-    //  
-    for (int i = 0; i < dbPedestrianTotal.size(); i++) {
-        // personas que aun no estan evacuadas
-        if (!dbPedestrianTotal.at(i).getEvacuado()) {
-            if (valorTiempo == dbPedestrianTotal.at(i).getTiempoInicial()) {
-                // set la posicion de inicio del pedestrian
-                dbPedestrianTotal.at(i).setPosition({dbPedestrianTotal.at(i).nodeInicio->getCoordenada().getX(), dbPedestrianTotal.at(i).nodeInicio->getCoordenada().getY()});
-                // calculo del stateMatrix para obtener datos de state.
-                dbPedestrianTotal.at(i).calcularLevelDensityAtNode();
-                // eleccionde de la calle
-                dbPedestrianTotal.at(i).eleccionRandomLinkActual();
-                // guarda infomacion de stateMatrix de la persona en una tabla en nodo.
-                dbPedestrianTotal.at(i).stateMatrixtoTableAtNode();
-                // direccion de la persona en la calle.
-                dbPedestrianTotal.at(i).calcularDireccionPedestrian();
-                // envio informacion de direccion al vector de velocidad.
-                dbPedestrianTotal.at(i).getVelocidad().setDireccion(dbPedestrianTotal.at(i).getDireccionPedestrian());
-            }
-            if (valorTiempo > dbPedestrianTotal.at(i).getTiempoInicial()) {
-                // dbPedestrianTotal.at(i).contarPedestrainSubdivision();
-                dbPedestrianTotal.at(i).caminar();
-                // calculo del reward
-                dbPedestrianTotal.at(i).calcularReward();
-                // verifica el termino de la calle y actualiza a una nueva.
-                dbPedestrianTotal.at(i).cambioCalle();
-                // dbPedestrianTotal.at(i).encontrarPrimerTiempo();
-            }
-        }
-        else {
-
-                }
-        // if (valorTiempo == dbPedestrianTotal.at(i).getTiempoInicial()) {
-        //     dbPedestrianTotal.at(i).verificarPedestrianEvacuation();
-        //     // set la posicion de inicio del pedestrian
-        //     dbPedestrianTotal.at(i).setPosition({dbPedestrianTotal.at(i).nodeInicio->getCoordX(), dbPedestrianTotal.at(i).nodeInicio->getCoordY()});
-        //     // calculo del stateMatrix para obtener datos de state.
-        //     dbPedestrianTotal.at(i).calcularLevelDensityAtNode();
-        //     // eleccionde de la calle
-        //     dbPedestrianTotal.at(i).eleccionRandomLinkActual();
-        //     // guarda infomacion de stateMatrix de la persona en una tabla en nodo.
-        //     dbPedestrianTotal.at(i).stateMatrixtoTableAtNode();
-
-        //     dbPedestrianTotal.at(i).getStateMatrixPedestrian().mostrarStateMatrix();
-
-        //     //
-        //     // dbPedestrianTotal.at(i).calcularAction();
-        //     // direccion de la persona en la calle.
-        //     dbPedestrianTotal.at(i).calcularDireccionPedestrian();
-        //     // envio informacion de direccion al vector de velocidad.
-        //     dbPedestrianTotal.at(i).getVelocidad().setDireccion(dbPedestrianTotal.at(i).getDireccionPedestrian());
-
-                //     // dbPedestrianTotal.at(i).setEmpezoCami
-                //     // dbPedestrianTotal.at(i).inicializarq();
-                //     // dbPedestrian.at(i).getqStateAction()->mostrarQ();
-                //     //
-                //     dbPedestrianTotal.at(i).getNodeInicio()->mostrarQTable();
-                // }
-                // if (!dbPedestrianTotal.at(i).getEvacuado()) {
-                //     if (valorTiempo >
-                //     dbPedestrianTotal.at(i).getTiempoInicial()) {
-                //         //
-                //         dbPedestrianTotal.at(i).mostrarMovimientoPedestrian();
-                //         //
-                //         dbPedestrianTotal.at(i).contarPedestrainSubdivision();
-                //         dbPedestrianTotal.at(i).caminar();
-                //         dbPedestrianTotal.at(i).calcularReward();
-                //         // std::cout << dbPedestrianTotal.at(i).getReward()
-                //         << std::endl;
-                //         // verifica el termino de la calle y actualiza a una
-                //         nueva. dbPedestrianTotal.at(i).cambioCalle();
-                //         // dbPedestrianTotal.at(i).encontrarPrimerTiempo();
-                //         // dbPedestrianTotal.at(i).updateLinkParameter();
-                //         // dbPedestrianTotal.at(i).calcularReward();
-                //     }
-                //
-                // }
-    }
-}
 double pedestrian::calcularOptimalChoiceRate() {
     int k = tiempo::get()->getINumberSimulation();
     int N = tiempo::get()->getEndNumberSimulation();
     double optimalChoiceRate = 1.0 / (4.0* double(k)/double(N)+1);
     return optimalChoiceRate;
-}
-void pedestrian::mostrarDbPedestrianTotal() {
-    for (int i = 0; i < dbPedestrianTotal.size(); i++) {
-        dbPedestrianTotal.at(i).mostrarMovimientoPedestrian();
-    }
-}
-void pedestrian::imprimirPedestrians(){
-    /* imprimir datos de posicion, cantidad de evacuados y velocidad.*/
-    // imprimir solo en la ultima simulacion
-    if (tiempo::get()->getINumberSimulation() == tiempo::get()->getEndNumberSimulation() ) {
-        // imprime segun el valor de graphicPrintoutPeriod del controlDict
-        if (tiempo::get()->verificarGraphicPrintout()) {
-            //crea la carpeta de tiempo
-            tiempo::get()->crearCarpetaTiempo();
-            // impresion de datos
-            std::string folderName = std::to_string(tiempo::get()->getValorTiempo());
-            std::fstream file1, file2, file3;
-            file1.open(folderName + "/xy", std::ios::out);
-            file2.open(folderName + "/U", std::ios::out);
-            file3.open(folderName + "/cantPedestrianEvacuated", std::ios::out);
-            if (file1.is_open()) {
-                for (int i=0; i < dbPedestrianTotal.size(); i++) {
-                    if (tiempo::get()->getValorTiempo() >= dbPedestrianTotal.at(i).getTiempoInicial()) {
-                        dbPedestrianTotal.at(i).imprimirPedestrianPosition(file1);
-                        dbPedestrianTotal.at(i).imprimirPedestrianVelocity(file2);
-                    }
-                }
-                nodeEvacuation::imprimirNodeEvacuation(file3);
-            }
-        }
-    }
 }

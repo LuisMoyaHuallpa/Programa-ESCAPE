@@ -1,6 +1,8 @@
 #ifndef subLink_h
 #define subLink_h
-
+/*---------------------------------------------------------------------------*\
+    Es la division de una calle o link.
+\*---------------------------------------------------------------------------*/
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // header generales
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -29,6 +31,7 @@ private:
     std::vector<int> pedestriansIdsInSubLink;
     
 public:
+    static int numberDivisiones;
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -57,6 +60,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void calcularCantidadPedestrian();
     void calcularDensidad(int length, int width);
+    double calcularAnchoDivisiones();
     bool verificarPedestrianId(int idPedestrian);
     void agregarPedestrianId(int idPedestrian);
     void quitarPedestrianId(int idPedestrian);

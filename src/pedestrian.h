@@ -84,7 +84,6 @@ public:
     const static int stepReward;
     static std::vector<std::shared_ptr<node>> dbNodeTotal;
     static std::vector<link> dbLinkTotal;
-    static std::vector<pedestrian> dbPedestrianTotal;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // constructor
@@ -195,12 +194,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static metods
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    static void leerPedestrians(std::string fileName);
-    static void tiempoInicioDistribution();
-    static void modelamientoPedestrians(int valorTiempo);
     static double calcularOptimalChoiceRate();
-    static void mostrarDbPedestrianTotal();
-    static void imprimirPedestrians();
     
 };
 #endif
