@@ -36,11 +36,18 @@ private:
     int length;
     int width;
     vector2D orientacionLink;
-    int numberPartion;
-    std::vector<subLink> subLinks;
+
+    // subLink divisionLink;
+    std::vector<int> pedestriansInSublink;
     int densityLevel;
+    double anchoDivisiones;
     
 public:
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // static member
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    static int numberDivisiones;
+
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -56,8 +63,9 @@ public:
     void setLength(int length);
     void setWidth(int width);
     void setOrientacionLink(vector2D orientacionLink);
-    void setSubLinks(std::vector<subLink> subLinks);
+    void setPedestriansInSublink(std::vector<int> pedestriansInSublink);
     void setDensityLevel(int densityLevel);
+    void setAnchoDivisiones(double anchoDivisiones);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getters
@@ -68,9 +76,9 @@ public:
     int getLength() const;
     int getWidth() const;
     vector2D getOrientacionLink() const;
-    int getNumberPartion();
-    std::vector<subLink>& getSubLinks();
+    std::vector<int>& getPedestriansInSublink();
     int getDensityLevel();
+    double getAnchoDivisiones();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
@@ -81,9 +89,10 @@ public:
     void calcularOrientacionLink();
     int calcularNumberPartion();
     void calcularDensityLevel();
+    void calcularAnchoDivisiones();
     void mostrarLink();
     void imprimirLink(std::fstream& file);
-    void mostrarSubLinks();
+    void mostrarSubLink();
 
     // void calcularSubdivision();
     // void guardarLinkConnection();

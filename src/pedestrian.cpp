@@ -210,15 +210,29 @@ int pedestrian::getReward() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void pedestrian::caminar() {
     position += velocidad * tiempo::get()->getDeltaT();
-    contar();
 }
-void pedestrian::contar() {
-    // distancia de la persona al node1 del link
-    mostrarMovimientoPedestrian();
-    double index_x = (position.getX() - nodes::get()->getDbNodeTotal().at(linkActual->getIdNode1())->getCoordenada().getX()) / static_cast<double>(subLink::numberDivisiones);
-    double index_y = (position.getY() - nodes::get()->getDbNodeTotal().at(linkActual->getIdNode1())->getCoordenada().getY()) / static_cast<double>(subLink::numberDivisiones);
-    int index_hipo = std::trunc(std::sqrt(std::pow(index_x,2) + pow(index_y, 2)));
-    std::cout << index_hipo << std::endl;
+int pedestrian::calcularISublink() {
+    /* Calcula la ubicacion de la persona en el array del subLink*/
+    // distancia de la persona al nodeInicio de la persona
+    position.mostrarVector();
+    nodes::get()->getDbNodeTotal().at(linkActual->getIdNode1())->getCoordenada().mostrarVector();
+    double index_x = position.getX() - nodeInicio->getCoordenada().getX();
+    double index_y = position.getY() - nodeInicio->getCoordenada().getY();
+    int index_hipo = std::sqrt(std::pow(index_x,2) + pow(index_y, 2)) / static_cast<double>(linkActual->getAnchoDivisiones());
+    if (direccionPedestrian.getX()<0) {
+        index_hipo = link::numberDivisiones-1-index_hipo;
+    }
+    std::cout << "i: " <<index_hipo << std::endl;
+    return index_hipo;
+}
+void pedestrian::contarPedestrianInSublink() {
+    /* En el vector pedestriansInSublink cuenta la cantidad total de personas que
+        en el index del vector.
+        Cuenta de forma total por cada tiempo*/
+    direccionPedestrian.mostrarVector();
+    linkActual->getPedestriansInSublink().at(calcularISublink())++;
+    linkActual->mostrarSubLink();
+
 }
 void pedestrian::eleccionLinkActual() {
     if (nodeInicio->getStateMatrixTable().size() == 0) {
@@ -365,6 +379,7 @@ bool pedestrian::verificarEndLink() {
     bool terminoLink = false;
     if (position.getX()*std::copysign(1, direccionPedestrian.getX()) >= nodeFinal->getCoordenada().getX()*std::copysign(1, direccionPedestrian.getX()) and
     position.getY()*std::copysign(1, direccionPedestrian.getY()) >= nodeFinal->getCoordenada().getY()*std::copysign(1, direccionPedestrian.getY())){
+        std::cout << "veri" << std::endl;
         terminoLink = true;
     }
     return terminoLink;
@@ -403,8 +418,9 @@ void pedestrian::cambioCalle() {
         // guarda el stateMatrix para calculos del algoritmo sarsa.
         setStateMatrixPedestrianAnterior(stateMatrixPedestrian);
         // ahora la interseccion final es la interseccion inicial.
-        setNodeInicio(getNodeFinal());
+        setNodeInicio(nodeFinal);
         // correcion de la posicion cuando se llega cerca al nodo.
+        std::cout << "corre" << std::endl;
         setPosition({getNodeInicio()->getCoordenada().getX(), getNodeInicio()->getCoordenada().getY()});
         // calculo del stateMatrix para obtener datos de state.
         calcularLevelDensityAtNode();
@@ -416,10 +432,18 @@ void pedestrian::cambioCalle() {
         algoritmoSarsa();
         // direccion de la persona en la calle.
         calcularDireccionPedestrian();
+        // cuenta las personas dentro de los sublink
+        contarPedestrianInSublink();
         // envio informacion de direccion al vector de velocidad.
         getVelocidad().setDireccion(getDireccionPedestrian());
         // falta mejor para que ajuste tambien esta velcoida
     }
+    else {
+        // cuenta las personas dentro de los sublink
+        contarPedestrianInSublink();
+    }
+    // resetear el contardor de person en los sublink
+    linkActual->getPedestriansInSublink().assign(linkActual->getPedestriansInSublink().size(), 0);
 }
 // void pedestrian::updateCalle() {
 //     // Actualizacion del parametros del peaton cuando ya esta en nueva calle.
@@ -641,7 +665,37 @@ void pedestrian::stateMatrixtoTableAtNode() {
         stateMatrixPedestrian.setIStateMatrixTable(nodeInicio->getStateMatrixTable().size()-1);
     }
 }
+void pedestrian::modelamientoPedestrian() {
+    // personas que aun no estan evacuadas
+    if (!evacuado) {
+        if (tiempo::get()->getValorTiempo() == tiempoInicial) {
+            // set la posicion de inicio del pedestrian
+            setPosition({nodeInicio->getCoordenada().getX(), nodeInicio->getCoordenada().getY()});
+            // calculo del stateMatrix para obtener datos de state.
+            calcularLevelDensityAtNode();
+            // eleccionde de la calle
+            eleccionRandomLinkActual();
+            // guarda infomacion de stateMatrix de la persona en una tabla en nodo.
+            stateMatrixtoTableAtNode();
+            // direccion de la persona en la calle.
+            calcularDireccionPedestrian();
+            // envio informacion de direccion al vector de velocidad.
+            velocidad.setDireccion(getDireccionPedestrian());
 
+            mostrarMovimientoPedestrian();
+        }
+        if (tiempo::get()->getValorTiempo() > tiempoInicial) {
+            // dbPedestrianTotal.at(i).contarPedestrainSubdivision();
+            caminar();
+            // calculo del reward
+            calcularReward();
+            // verifica el termino de la calle y actualiza a una nueva.
+            cambioCalle();
+            // dbPedestrianTotal.at(i).encontrarPrimerTiempo();
+            mostrarMovimientoPedestrian();
+        }
+    }
+}
 void pedestrian::mostrarMovimientoPedestrian(){
     /* muestra la interseccion de partida y final de una calle, cuando
       una persona pasa por una calle. Asimismo muestra la posicion actual

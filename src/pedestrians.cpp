@@ -1,5 +1,6 @@
 #include "pedestrians.h"
 #include "dictionary.h"
+#include "tiempo.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -112,32 +113,7 @@ void pedestrians::tiempoInicioDistribution() {
 void pedestrians::modelamientoPedestrians(int valorTiempo) {
     //  
     for (int i = 0; i < dbPedestrianTotal.size(); i++) {
-        // personas que aun no estan evacuadas
-        if (!dbPedestrianTotal.at(i).getEvacuado()) {
-            if (valorTiempo == dbPedestrianTotal.at(i).getTiempoInicial()) {
-                // set la posicion de inicio del pedestrian
-                dbPedestrianTotal.at(i).setPosition({dbPedestrianTotal.at(i).getNodeInicio()->getCoordenada().getX(), dbPedestrianTotal.at(i).getNodeInicio()->getCoordenada().getY()});
-                // calculo del stateMatrix para obtener datos de state.
-                dbPedestrianTotal.at(i).calcularLevelDensityAtNode();
-                // eleccionde de la calle
-                dbPedestrianTotal.at(i).eleccionRandomLinkActual();
-                // guarda infomacion de stateMatrix de la persona en una tabla en nodo.
-                dbPedestrianTotal.at(i).stateMatrixtoTableAtNode();
-                // direccion de la persona en la calle.
-                dbPedestrianTotal.at(i).calcularDireccionPedestrian();
-                // envio informacion de direccion al vector de velocidad.
-                dbPedestrianTotal.at(i).getVelocidad().setDireccion(dbPedestrianTotal.at(i).getDireccionPedestrian());
-            }
-            if (valorTiempo > dbPedestrianTotal.at(i).getTiempoInicial()) {
-                // dbPedestrianTotal.at(i).contarPedestrainSubdivision();
-                dbPedestrianTotal.at(i).caminar();
-                // calculo del reward
-                dbPedestrianTotal.at(i).calcularReward();
-                // verifica el termino de la calle y actualiza a una nueva.
-                dbPedestrianTotal.at(i).cambioCalle();
-                // dbPedestrianTotal.at(i).encontrarPrimerTiempo();
-            }
-        }
+        dbPedestrianTotal.at(i).modelamientoPedestrian();
     }
 }
 void pedestrians::mostrarDbPedestrianTotal() {

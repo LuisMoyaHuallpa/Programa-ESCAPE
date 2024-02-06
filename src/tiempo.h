@@ -16,9 +16,11 @@ private:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // valorTiempo           |-->| TIEMPO DE SIMULACION 
     // deltaT                |-->| TIEMPO DE PASO DE SIMULACION  
-    // graphicPrintoutPeriod |-->| PERIODO DE TIEMPO PARA IMPRIMIR DATOS
-    // writeNow              |-->| 
     // endTime               |-->| TIEMPO DE TERMINO DE LA SIMULACION
+    // graphicPrintoutPeriod |-->| PERIODO DE TIEMPO PARA IMPRIMIR DATOS
+    // startNumberSimulation |-->| INICIO DEL NUMERO DE SIMULACION
+    // iNumberSimulation     |-->| NUMERO DE SIMULACION ACTUAL
+    // endNumberSimulation   |-->| FIN DEL NUMERO DE SIMULACION
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     int valorTiempo;
     int deltaT;
@@ -33,6 +35,9 @@ private:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     tiempo();
 
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // static member
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     static tiempo* tiempoInstance;
 
 public:

@@ -1,4 +1,14 @@
 #include "link.h"
+#include "subLink.h"
+#include <cmath>
+#include <math.h>
+#include <vector>
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// static member
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+int link::numberDivisiones = 2;
+
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
@@ -20,6 +30,8 @@ link::link(int idLink, int idNode1, int idNode2, int length, int width)  {
     setLength(length);
     setWidth(width);
     setDensityLevel(0);
+    calcularAnchoDivisiones();
+    pedestriansInSublink.resize(link::numberDivisiones, 0);
     // calcula el numero de particiones y particiona la calle en subLink.
     // subLinks.resize(calcularNumberPartion());
 }
@@ -45,11 +57,14 @@ void link::setWidth(int width){
 void link::setOrientacionLink(vector2D orientacionLink) {
     (*this).orientacionLink = orientacionLink;
 }
-void link::setSubLinks(std::vector<subLink> subLinks) {
-    (*this).subLinks = subLinks;
+void link::setPedestriansInSublink(std::vector<int> pedestriansInSublink) {
+    (*this).pedestriansInSublink = pedestriansInSublink;
 }
 void link::setDensityLevel(int densityLevel) {
     (*this).densityLevel = densityLevel;
+}
+void link::setAnchoDivisiones(double anchoDivisiones) {
+    (*this).anchoDivisiones = anchoDivisiones;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -73,14 +88,14 @@ int link::getWidth() const{
 vector2D link::getOrientacionLink() const {
     return orientacionLink;
 }
-int link::getNumberPartion() {
-    return numberPartion;  
-}
-std::vector<subLink>& link::getSubLinks() {
-    return subLinks;
+std::vector<int>& link::getPedestriansInSublink() {
+    return pedestriansInSublink;
 }
 int link::getDensityLevel() {
     return densityLevel;
+}
+double link::getAnchoDivisiones() {
+    return anchoDivisiones;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -120,11 +135,11 @@ void link::calcularOrientacionLink() {
 // }
 void link::calcularDensityLevel() {
     double densidadMayorSubLink = 0.0;
-    for (int i = 0; i < subLinks.size(); i++) {
-        if (subLinks.at(i).getDensidad() > densidadMayorSubLink) {
-            densidadMayorSubLink = subLinks.at(i).getDensidad();
-        }
-    }
+    // for (int i = 0; i < subLinks.size(); i++) {
+    //     if (subLinks.at(i).getDensidad() > densidadMayorSubLink) {
+    //         densidadMayorSubLink = subLinks.at(i).getDensidad();
+    //     }
+    // }
     if(densidadMayorSubLink <= 0.5){
         densityLevel = 0;
     }  
@@ -135,12 +150,19 @@ void link::calcularDensityLevel() {
         densityLevel = 2;
     }
 }
+void link::calcularAnchoDivisiones() {
+    double ancho_x = nodes::get()->getDbNodeTotal().at(idNode1)->getCoordenada().getX() - nodes::get()->getDbNodeTotal().at(idNode2)->getCoordenada().getX();
+    double ancho_y = nodes::get()->getDbNodeTotal().at(idNode1)->getCoordenada().getY() - nodes::get()->getDbNodeTotal().at(idNode2)->getCoordenada().getY();
+    double ancho = std::sqrt(pow(ancho_x, 2) + pow(ancho_y, 2)) / double(link::numberDivisiones);
+    setAnchoDivisiones(ancho);
+}
 void link::mostrarLink(){
     std::cout << "link: ";
     std::cout << getIdLink() << " ";
     std::cout << "nodes: ";
     std::cout << getIdNode1() << " ";
     std::cout << getIdNode2() << " ";
+    std::cout << anchoDivisiones << std::endl;
     std::cout << std::endl;
 }
 void link::imprimirLink(std::fstream& file) {
@@ -151,10 +173,11 @@ void link::imprimirLink(std::fstream& file) {
     file << nodes::get()->getDbNodeTotal().at(getIdNode2())->getCoordenada().getY() << " ";
     file << std::endl;
 }
-void link::mostrarSubLinks() {
+void link::mostrarSubLink() {
     std::cout << getIdLink() << "  ";
-    for (int i = 0; i < subLinks.size(); i++) {
+    for (int i = 0; i < pedestriansInSublink.size(); i++) {
         // subLinks.at(i).mostrarSubLink();
+        std::cout << pedestriansInSublink.at(i) << " ";
     }
     std::cout << std::endl;
 }

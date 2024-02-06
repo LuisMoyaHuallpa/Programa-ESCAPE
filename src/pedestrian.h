@@ -150,7 +150,8 @@ public:
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void caminar();
-    void contar();
+    int calcularISublink();
+    void contarPedestrianInSublink();
     void cambioCalle();
     void eleccionLinkActual();
     void eleccionRandomLinkActual();
@@ -185,6 +186,7 @@ public:
     void calcularLevelDensityAtNode();
     void stateMatrixtoTableAtNode();
     // void crearqState(node* nodeActual);
+    void modelamientoPedestrian();
     void mostrarMovimientoPedestrian();
     void imprimirPedestrianPosition(std::fstream& file);
     void imprimirPedestrianVelocity(std::fstream& file);
