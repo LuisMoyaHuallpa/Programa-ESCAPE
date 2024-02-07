@@ -1,10 +1,17 @@
 #include "links.h"
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// static member
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// static
+links* links::linksInstance = nullptr;
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-std::vector<link> links::dbLinkTotal;
-// #include "pedestrian.h"
+// constructor
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+links::links() {
+    (*this).fileName = dictionary::controlDict["linksFile"];
+    leerLinks(fileName);
+}
 
 // nodes links::listaNode;
 // void links::setListaNode(const nodes& dbnode) {
@@ -14,26 +21,26 @@ std::vector<link> links::dbLinkTotal;
 // links::links(std::string filename) : dbNode(){
 //     leerLinks(filename);
 // }
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// constructor
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-links::links(){
-    (*this).fileName = "links.csv";
-    leerLinks(fileName);
-}
-
-// links::links(nodes* dbNode) {
-//     (*this).dbNode = dbNode;
-//     (*this).fileName = "links.csv";
-//     leerLinks(fileName);
-//     creacionLinkConnections();
-// }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 std::string links::getFileName() {
     return fileName;  
+}
+std::vector<std::shared_ptr<link>> links::getDbLinkTotal() {
+    return dbLinkTotal;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// static getters
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+links* links::get() {
+    /* si aun no existe crea la unica instancia de nodes*/
+    if (!linksInstance) {
+        linksInstance =  new links();
+    }
+    return linksInstance;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -79,10 +86,13 @@ void links::leerLinks(std::string fileName){
         int idNode2 = std::stoi(idNode2_str);
         int lengthLink = std::stoi(lengthLink_str);
         int widthLink = std::stoi(widthLink_str);
+
+        std::unique_ptr<link> linkNuevo = std::make_unique<link>(idLink, idNode1, idNode2, lengthLink, widthLink);
         linkObj1.setIdLink(idLink);
         linkObj1 = link(idLink, idNode1, idNode2, lengthLink, widthLink);
         // dbLink.push_back(linkObj1);
-        links::dbLinkTotal.push_back(linkObj1);
+        dbLinkTotal.push_back(std::move(linkNuevo));
+        // links::dbLinkTotal.push_back(linkObj1);
         nodes::get()->getDbNodeTotal().at(idNode1)->addIdLinkConnection(idLink);
         nodes::get()->getDbNodeTotal().at(idNode2)->addIdLinkConnection(idLink);
         // linkObj1.mostrarLink();
@@ -92,7 +102,7 @@ void links::leerLinks(std::string fileName){
 
 void links::mostrarLinks(){
     for (int i=0; i <dbLinkTotal.size(); i++) {
-        dbLinkTotal.at(i).mostrarLink();
+        dbLinkTotal.at(i)->mostrarLink();
         // dbLinkTotal.at(i).mostrarSubLinks();
     }
 }
@@ -108,7 +118,7 @@ void links::imprimirMeshLinks() {
     file.open(std::string(folderName) + "/poliLinks",std::ios::out);
     // recorre todas la base de datos de calle.
     for (int i=0; i < links::dbLinkTotal.size(); i++) {
-        dbLinkTotal.at(i).imprimirLink(file);
+        dbLinkTotal.at(i)->imprimirLink(file);
     }
 }
 

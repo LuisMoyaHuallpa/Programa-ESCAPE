@@ -17,17 +17,19 @@ int main() {
     auto start_time = std::chrono::high_resolution_clock::now();
     // leer controlDict
     dictionary controDict("controlDict");
+    controDict.mostrarControlDict();
     // Creacion de data de calles.
-    links dbLink1;
+    // links dbLink1;
     // imprimi malla de calles.
-    dbLink1.imprimirMeshLinks();
+    // dbLink1.imprimirMeshLinks();
+    links::get()->imprimirMeshLinks();
     // Lectura de simulaciones pasadas.
     stateMatrixs dbStateMatrixs;
     // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
     dbStateMatrixs.leerDbStateMatrixs(stateMatrixs::simulationFile + dictionary::controlDict["previousComputationFile"]);
 
     // pedestrian::dbNodeTotal = std::move(nodes::get()->dbNodeTotal);
-    pedestrian::dbLinkTotal = links::dbLinkTotal;
+    // pedestrian::dbLinkTotal = links::dbLinkTotal;
 
     // segun el número de simulaciones
     while (tiempo::get()->getINumberSimulation() < tiempo::get()->getEndNumberSimulation()) {

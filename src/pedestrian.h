@@ -82,7 +82,6 @@ public:
     const static int surviveReward;
     const static int deadReward;
     const static int stepReward;
-    static std::vector<link> dbLinkTotal;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // constructor

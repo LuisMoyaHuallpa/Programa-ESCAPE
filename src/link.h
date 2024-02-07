@@ -10,14 +10,16 @@ Una calle.
 #include <vector>
 #include <cmath>
 #include <iostream>
+#include <stdexcept>
 #include "iomanip"
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // header propios
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#include "subLink.h"
+// #include "subLink.h"
 #include "vector2D.h"
 #include "vector"
 #include "nodes.h"
+#include "dictionary.h"
 
 class link{
     
@@ -36,8 +38,6 @@ private:
     int length;
     int width;
     vector2D orientacionLink;
-
-    // subLink divisionLink;
     std::vector<int> pedestriansInSublink;
     int densityLevel;
     double anchoDivisiones;

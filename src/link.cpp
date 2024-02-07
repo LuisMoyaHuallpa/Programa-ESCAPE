@@ -1,14 +1,10 @@
 #include "link.h"
-#include "subLink.h"
-#include <cmath>
-#include <math.h>
-#include <vector>
+#include "dictionary.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-int link::numberDivisiones = 2;
-
+int link::numberDivisiones = 10;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
@@ -153,7 +149,7 @@ void link::calcularDensityLevel() {
 void link::calcularAnchoDivisiones() {
     double ancho_x = nodes::get()->getDbNodeTotal().at(idNode1)->getCoordenada().getX() - nodes::get()->getDbNodeTotal().at(idNode2)->getCoordenada().getX();
     double ancho_y = nodes::get()->getDbNodeTotal().at(idNode1)->getCoordenada().getY() - nodes::get()->getDbNodeTotal().at(idNode2)->getCoordenada().getY();
-    double ancho = std::sqrt(pow(ancho_x, 2) + pow(ancho_y, 2)) / double(link::numberDivisiones);
+    double ancho = std::sqrt(pow(ancho_x, 2) + pow(ancho_y, 2)) / static_cast<double>(link::numberDivisiones);
     setAnchoDivisiones(ancho);
 }
 void link::mostrarLink(){

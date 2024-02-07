@@ -1,4 +1,5 @@
 #include "pedestrian.h"
+#include "links.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -7,7 +8,6 @@ int pedestrian::contador = 1;
 const int pedestrian::surviveReward = 100000;
 const int pedestrian::deadReward = -1000; 
 const int pedestrian::stepReward = -1;
-std::vector<link> pedestrian::dbLinkTotal;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
@@ -256,7 +256,8 @@ void pedestrian::eleccionRandomLinkActual() {
     // Crear una distribución uniforme usando el rango especificado
     std::uniform_int_distribution<int> distribucion(0, limite_max);
     int numero_aleatorio = distribucion(generador);
-    setLinkActual(&dbLinkTotal.at(getNodeInicio()->getIdLinkConnection().at(numero_aleatorio)));
+    // setLinkActual(&links::get()->getDbLinkTotal().at(getNodeInicio()->getIdLinkConnection().at(numero_aleatorio)));
+    setLinkActual(links::get()->getDbLinkTotal().at(getNodeInicio()->getIdLinkConnection().at(numero_aleatorio)).get());
     // enviando informacion de action al stateMatrix
     getStateMatrixPedestrian().getActionValue().setILinkConnection(numero_aleatorio);
     getStateMatrixPedestrian().getActionValue().setIdLink(linkActual->getIdLink());
@@ -268,7 +269,8 @@ void pedestrian::eleccionRandomLinkActual() {
 void pedestrian::eleccionDosCallesContinuas() {
     // linkActual es la calle a punto de cambiar
     if (!(nodeInicio->getIdLinkConnection().at(0) == linkActual->getIdLink())) {
-        setLinkActual(&dbLinkTotal.at(getNodeInicio()->getIdLinkConnection().at(0)));
+        // setLinkActual(&dbLinkTotal.at(getNodeInicio()->getIdLinkConnection().at(0)));
+        setLinkActual(links::get()->getDbLinkTotal().at(getNodeInicio()->getIdLinkConnection().at(0)).get());
         // enviando informacion de action al stateMatrix
         getStateMatrixPedestrian().getActionValue().setILinkConnection(0);
         getStateMatrixPedestrian().getActionValue().setIdLink(linkActual->getIdLink());
@@ -278,7 +280,8 @@ void pedestrian::eleccionDosCallesContinuas() {
         verificarPedestrianEvacuation();
     }
     else {
-        setLinkActual(&dbLinkTotal.at(getNodeInicio()->getIdLinkConnection().at(1)));
+        // setLinkActual(&dbLinkTotal.at(getNodeInicio()->getIdLinkConnection().at(1)));
+        setLinkActual(links::get()->getDbLinkTotal().at(getNodeInicio()->getIdLinkConnection().at(1)).get());
         // enviando informacion de action al stateMatrix
         getStateMatrixPedestrian().getActionValue().setILinkConnection(1);
         getStateMatrixPedestrian().getActionValue().setIdLink(linkActual->getIdLink());
@@ -299,7 +302,8 @@ void pedestrian::eleccionSarsa() {
             iQmenor = i;
         }
     }
-    setLinkActual(&dbLinkTotal.at(getNodeInicio()->getIdLinkConnection().at(iQmenor)));
+    // setLinkActual(&dbLinkTotal.at(getNodeInicio()->getIdLinkConnection().at(iQmenor)));
+    setLinkActual(links::get()->getDbLinkTotal().at(getNodeInicio()->getIdLinkConnection().at(iQmenor)).get());
     // enviando informacion de action al stateMatrix
     getStateMatrixPedestrian().getActionValue().setILinkConnection(iQmenor);
     getStateMatrixPedestrian().getActionValue().setIdLink(linkActual->getIdLink());
@@ -629,10 +633,11 @@ void pedestrian::calcularLevelDensityAtNode() {
     // std::cout << stateMatrixPedestrian.getStateValue().getDensityLinks().size() << std::endl;
     for (int i = 0; i < nodeInicio->getIdLinkConnection().size(); i++) {
         // nodeInicio->getIdLinkConnection().at(i)->calcularDensityLevel();
-        pedestrian::dbLinkTotal.at(nodeInicio->getIdLinkConnection().at(i)).calcularDensityLevel();
+        // pedestrian::dbLinkTotal.at(nodeInicio->getIdLinkConnection().at(i)).calcularDensityLevel();
+        links::get()->getDbLinkTotal().at(nodeInicio->getIdLinkConnection().at(i))->calcularDensityLevel();
         // std::cout << nodeInicio->getLinkConnection().at(i)->getDensityLevel();
         // densityLinks.push_back(nodeInicio->getLinkConnection().at(i)->getDensityLevel());
-        stateMatrixPedestrian.getStateValue().getDensityLinks().at(i) = pedestrian::dbLinkTotal.at(i).getDensityLevel();
+        stateMatrixPedestrian.getStateValue().getDensityLinks().at(i) = links::get()->getDbLinkTotal().at(i)->getDensityLevel();
     }
 }
 // void pedestrian::crearqState(node* nodeActual) {
