@@ -110,6 +110,11 @@ void pedestrians::tiempoInicioDistribution() {
     }
 }
 
+void pedestrians::reset() {
+    for (int i = 0; i < dbPedestrianTotal.size(); i++) {
+        dbPedestrianTotal.at(i).getLinkActual()->getPedestriansInSublink().assign(dbPedestrianTotal.at(i).getLinkActual()->getPedestriansInSublink().size(), 0);
+    }
+}
 void pedestrians::modelamientoPedestrians(int valorTiempo) {
     //  
     for (int i = 0; i < dbPedestrianTotal.size(); i++) {

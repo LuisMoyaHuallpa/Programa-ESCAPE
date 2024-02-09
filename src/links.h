@@ -1,7 +1,7 @@
 #ifndef links_h
 #define links_h
 /*---------------------------------------------------------------------------*\
-Punto de interseccion de calles.
+    base de datos de calles o link.
 \*---------------------------------------------------------------------------*/
 //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -29,7 +29,7 @@ private:
     static links* linksInstance;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // dbNodeTotal     |-->| DATOS TOTALES DE LAS INTERSECCIONES
+    // dbLinkTotal     |-->| DATOS TOTALES DE LAS CALLES
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     std::string fileName;
     std::vector<std::shared_ptr<link>> dbLinkTotal;
@@ -56,7 +56,9 @@ public:
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void leerLinks(std::string fileName);
+    void resetSublinks();
     void mostrarLinks();
+    void mostrarSublink();
     void imprimirMeshLinks();
     // void creacionLinkConnections();
     // void buscarNode(int id);

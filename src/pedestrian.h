@@ -22,7 +22,7 @@
 #include "vector2D.h"
 #include "vector2DVelocidad.h"
 #include "node.h"
-#include "link.h"
+#include "links.h"
 #include "tiempo.h"
 #include "nodeEvacution.h"
 
@@ -151,6 +151,7 @@ public:
     void caminar();
     int calcularISublink();
     void contarPedestrianInSublink();
+    void calcularDensityInSublink();
     void cambioCalle();
     void eleccionLinkActual();
     void eleccionRandomLinkActual();

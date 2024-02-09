@@ -1,5 +1,4 @@
 #include "link.h"
-#include "dictionary.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -28,8 +27,7 @@ link::link(int idLink, int idNode1, int idNode2, int length, int width)  {
     setDensityLevel(0);
     calcularAnchoDivisiones();
     pedestriansInSublink.resize(link::numberDivisiones, 0);
-    // calcula el numero de particiones y particiona la calle en subLink.
-    // subLinks.resize(calcularNumberPartion());
+    densityInSublink.resize(link::numberDivisiones, 0);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -55,6 +53,9 @@ void link::setOrientacionLink(vector2D orientacionLink) {
 }
 void link::setPedestriansInSublink(std::vector<int> pedestriansInSublink) {
     (*this).pedestriansInSublink = pedestriansInSublink;
+}
+void link::setDensityInSublink(std::vector<int> densityInSublink) {
+    (*this).densityInSublink = densityInSublink;
 }
 void link::setDensityLevel(int densityLevel) {
     (*this).densityLevel = densityLevel;
@@ -87,6 +88,9 @@ vector2D link::getOrientacionLink() const {
 std::vector<int>& link::getPedestriansInSublink() {
     return pedestriansInSublink;
 }
+std::vector<int>& link::getDensityInSublink() {
+    return densityInSublink;
+}
 int link::getDensityLevel() {
     return densityLevel;
 }
@@ -97,23 +101,6 @@ double link::getAnchoDivisiones() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// longitud de cada
-// void link::calcularHistParam() {
-//     numberPartion = width/getUnitWidthPartion();
-// }
-// vector2D link::calcularDirectionLink() {
-//     vector2D direction;
-//     double x = node2->getCoordX() - node1->getCoordX();
-//     double y = node2->getCoordY() - node1->getCoordY();
-//     direction.setX(x);
-//     direction.setY(y);
-//     // Calcula la magnitud del vector de dirección
-//     double magnitud = std::sqrt(std::pow(direction.getX(), 2) + std::pow(direction.getY(), 2));
-//     // Normaliza el vector de dirección (divide cada e por la magnitud)
-//     direction.setX(direction.getX() / magnitud);
-//     direction.setY(direction.getY() / magnitud);
-//     return direction;
-// }
 void link::calcularOrientacionLink() {
     /* deberia esta calcular orientacion pero necesita acceder a dbLink
         por ello se calculara la direccione en pedestrian*/
@@ -125,17 +112,29 @@ void link::calcularOrientacionLink() {
     orientacionLink.setX(std::abs(x / magnitud));
     orientacionLink.setY(std::abs(y / magnitud));
 }
-// int link::calcularNumberPartion() {
-//     /* calcula el numero de particiones para la calle */
-//     return std::floor(static_cast<double>(length) / static_cast<double>(unitWidthPartion));
-// }
+void link::calcularAnchoDivisiones() {
+    /* Calcula el ancho de divisiones de la calle segun el numero de divisiones preestablecidas*/
+    double ancho_x = nodes::get()->getDbNodeTotal().at(idNode1)->getCoordenada().getX() - nodes::get()->getDbNodeTotal().at(idNode2)->getCoordenada().getX();
+    double ancho_y = nodes::get()->getDbNodeTotal().at(idNode1)->getCoordenada().getY() - nodes::get()->getDbNodeTotal().at(idNode2)->getCoordenada().getY();
+    double ancho = std::sqrt(pow(ancho_x, 2) + pow(ancho_y, 2)) / static_cast<double>(link::numberDivisiones);
+    anchoDivisiones = ancho;
+}
+void link::calcularDensity() {
+    /* calculo de la densidad en cada sublink de la calle*/
+    for (int i = 0; i < pedestriansInSublink.size(); i++) {
+        densityInSublink.at(i) = pedestriansInSublink.at(i) / (anchoDivisiones * width);
+    }
+}
 void link::calcularDensityLevel() {
+    /* calcula el nivel de densidad de la calle */
     double densidadMayorSubLink = 0.0;
-    // for (int i = 0; i < subLinks.size(); i++) {
-    //     if (subLinks.at(i).getDensidad() > densidadMayorSubLink) {
-    //         densidadMayorSubLink = subLinks.at(i).getDensidad();
-    //     }
-    // }
+    // Encontrar el sublink con mayor densidad de la calle
+    for (int i = 0; i < densityInSublink.size(); i++) {
+        if (densityInSublink.at(i) > densidadMayorSubLink) {
+            densidadMayorSubLink = densityInSublink.at(i);
+        }
+    }
+    // elecion del nivel de densidad segun rangos preestablecidos
     if(densidadMayorSubLink <= 0.5){
         densityLevel = 0;
     }  
@@ -146,12 +145,7 @@ void link::calcularDensityLevel() {
         densityLevel = 2;
     }
 }
-void link::calcularAnchoDivisiones() {
-    double ancho_x = nodes::get()->getDbNodeTotal().at(idNode1)->getCoordenada().getX() - nodes::get()->getDbNodeTotal().at(idNode2)->getCoordenada().getX();
-    double ancho_y = nodes::get()->getDbNodeTotal().at(idNode1)->getCoordenada().getY() - nodes::get()->getDbNodeTotal().at(idNode2)->getCoordenada().getY();
-    double ancho = std::sqrt(pow(ancho_x, 2) + pow(ancho_y, 2)) / static_cast<double>(link::numberDivisiones);
-    setAnchoDivisiones(ancho);
-}
+
 void link::mostrarLink(){
     std::cout << "link: ";
     std::cout << getIdLink() << " ";
@@ -172,7 +166,6 @@ void link::imprimirLink(std::fstream& file) {
 void link::mostrarSubLink() {
     std::cout << getIdLink() << "  ";
     for (int i = 0; i < pedestriansInSublink.size(); i++) {
-        // subLinks.at(i).mostrarSubLink();
         std::cout << pedestriansInSublink.at(i) << " ";
     }
     std::cout << std::endl;

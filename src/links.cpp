@@ -99,11 +99,20 @@ void links::leerLinks(std::string fileName){
     }
     file.close(); 
 }
-
+void links::resetSublinks() {
+    for (int i = 0; i < dbLinkTotal.size(); i++) {
+        dbLinkTotal.at(i)->getPedestriansInSublink().assign(link::numberDivisiones, 0);
+    }
+}
 void links::mostrarLinks(){
-    for (int i=0; i <dbLinkTotal.size(); i++) {
+    for (int i = 0; i < dbLinkTotal.size(); i++) {
         dbLinkTotal.at(i)->mostrarLink();
         // dbLinkTotal.at(i).mostrarSubLinks();
+    }
+}
+void links::mostrarSublink() {
+    for (int i = 0; i < dbLinkTotal.size(); i++) {
+        dbLinkTotal.at(i)->mostrarSubLink();
     }
 }
 void links::imprimirMeshLinks() {
