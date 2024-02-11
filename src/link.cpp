@@ -54,7 +54,7 @@ void link::setOrientacionLink(vector2D orientacionLink) {
 void link::setPedestriansInSublink(std::vector<int> pedestriansInSublink) {
     (*this).pedestriansInSublink = pedestriansInSublink;
 }
-void link::setDensityInSublink(std::vector<int> densityInSublink) {
+void link::setDensityInSublink(std::vector<double> densityInSublink) {
     (*this).densityInSublink = densityInSublink;
 }
 void link::setDensityLevel(int densityLevel) {
@@ -88,7 +88,7 @@ vector2D link::getOrientacionLink() const {
 std::vector<int>& link::getPedestriansInSublink() {
     return pedestriansInSublink;
 }
-std::vector<int>& link::getDensityInSublink() {
+std::vector<double>& link::getDensityInSublink() {
     return densityInSublink;
 }
 int link::getDensityLevel() {

@@ -32,12 +32,15 @@ int main() {
         while (tiempo::get()->running()) {
             tiempo::get()->aumentarTiempo();
             tiempo::get()->mostrarTiempo();
+            // contador de personas un tiempo atras de la funcion modelamiento de caminar de personas
+            pedestrians::get()->contarPedestriansInSublink();
+            links::get()->calcularDensityLevelLinks();
             // // modelamiento de pedestrian.
             pedestrians::get()->modelamientoPedestrians(tiempo::get()->getValorTiempo());
             // imprimir datos para postprocesamiento.
             pedestrians::get()->imprimirPedestrians();
             
-            links::get()->mostrarSublink();
+            // links::get()->mostrarSublink();
             
             links::get()->resetSublinks();
             // pedestrians::get()->reset();

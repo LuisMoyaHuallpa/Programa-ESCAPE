@@ -56,6 +56,7 @@ public:
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void leerLinks(std::string fileName);
+    void calcularDensityLevelLinks();
     void resetSublinks();
     void mostrarLinks();
     void mostrarSublink();

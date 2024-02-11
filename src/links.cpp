@@ -99,6 +99,12 @@ void links::leerLinks(std::string fileName){
     }
     file.close(); 
 }
+void links::calcularDensityLevelLinks() {
+    for (int i = 0; i < dbLinkTotal.size(); i++) {
+        dbLinkTotal.at(i)->calcularDensity();
+        dbLinkTotal.at(i)->calcularDensityLevel();
+    }
+}
 void links::resetSublinks() {
     for (int i = 0; i < dbLinkTotal.size(); i++) {
         dbLinkTotal.at(i)->getPedestriansInSublink().assign(link::numberDivisiones, 0);

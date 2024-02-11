@@ -149,7 +149,7 @@ public:
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void caminar();
-    int calcularISublink();
+    double calcularIDoubleSublink();
     void contarPedestrianInSublink();
     void calcularDensityInSublink();
     void cambioCalle();

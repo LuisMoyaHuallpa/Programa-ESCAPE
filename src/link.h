@@ -39,7 +39,7 @@ private:
     int width;
     vector2D orientacionLink;
     std::vector<int> pedestriansInSublink;
-    std::vector<int> densityInSublink;
+    std::vector<double> densityInSublink;
     int densityLevel;
     double anchoDivisiones;
     
@@ -65,7 +65,7 @@ public:
     void setWidth(int width);
     void setOrientacionLink(vector2D orientacionLink);
     void setPedestriansInSublink(std::vector<int> pedestriansInSublink);
-    void setDensityInSublink(std::vector<int> densityInSublink);
+    void setDensityInSublink(std::vector<double> densityInSublink);
     void setDensityLevel(int densityLevel);
     void setAnchoDivisiones(double anchoDivisiones);
 
@@ -79,7 +79,7 @@ public:
     int getWidth() const;
     vector2D getOrientacionLink() const;
     std::vector<int>& getPedestriansInSublink();
-    std::vector<int>& getDensityInSublink();
+    std::vector<double>& getDensityInSublink();
     int getDensityLevel();
     double getAnchoDivisiones();
 

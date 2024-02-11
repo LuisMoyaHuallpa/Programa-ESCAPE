@@ -11,6 +11,7 @@ const int stateMatrix::tamanoVectorIO = 10;
 stateMatrix::stateMatrix() : stateValue() {
     (*this).idNode = 0;
     // se puede eleminar
+
     setIStateMatrixTable(0);
     // otrosVector.resize(tamanoVector,0);
 }
