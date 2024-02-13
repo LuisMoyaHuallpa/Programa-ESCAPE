@@ -1,5 +1,6 @@
 #include "tiempo.h"
 #include "dictionary.h"
+#include "nodeEvacution.h"
 #include <cstdlib>
 #include <string>
 
@@ -85,6 +86,11 @@ void tiempo::aumentarTiempo() {
 }
 void tiempo::aumentarINumberSimulation() {
     setINumberSimulation(getINumberSimulation()+1);
+    // reiniciar el tiempo
+    tiempo::get()->setValorTiempo(0);
+    // reiniciar el conteo de personas Evacuadas
+    nodeEvacuation::personasEvacuadas = 0;
+
 }
 void tiempo::inicializarNumberSimulation() {
     /* Inicializar las variables de NumberSimulation*/
@@ -101,6 +107,7 @@ void tiempo::inicializarNumberSimulation() {
     }
     // si no lee estados pasados
     else {
+        // inicia el la simulacion 1
         startNumberSimulation = 1;
         iNumberSimulation = 1;
         if (dictionary::controlDict["stopSimulationAt"] == "endNumberSimulation") {

@@ -623,8 +623,6 @@ void pedestrian::modelamientoPedestrian() {
             calcularReward();
             // verifica el termino de la calle y actualiza a una nueva.
             cambioCalle();
-            // dbPedestrianTotal.at(i).encontrarPrimerTiempo();
-            // mostrarMovimientoPedestrian();
         }
     }
 }

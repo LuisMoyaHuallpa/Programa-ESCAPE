@@ -40,7 +40,7 @@ public:
     void leerPedestrians(std::string fileName);
     void tiempoInicioDistribution();
     void contarPedestriansInSublink();
-    void modelamientoPedestrians(int valorTiempo);
+    void modelamientoPedestrians();
     void mostrarDbPedestrianTotal();
     void imprimirPedestrians();
 };

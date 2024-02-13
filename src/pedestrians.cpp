@@ -119,7 +119,7 @@ void pedestrians::contarPedestriansInSublink() {
         }
     }
 }
-void pedestrians::modelamientoPedestrians(int valorTiempo) {
+void pedestrians::modelamientoPedestrians() {
     //  
     for (int i = 0; i < dbPedestrianTotal.size(); i++) {
         dbPedestrianTotal.at(i).modelamientoPedestrian();

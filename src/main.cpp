@@ -25,9 +25,7 @@ int main() {
     dbStateMatrixs.leerDbStateMatrixs(stateMatrixs::simulationFile + dictionary::controlDict["previousComputationFile"]);
 
     // segun el número de simulaciones
-    while (tiempo::get()->getINumberSimulation() < tiempo::get()->getEndNumberSimulation()) {
-        // aumentar el numero de simulacion
-        tiempo::get()->aumentarINumberSimulation();
+    while (tiempo::get()->getINumberSimulation() <= tiempo::get()->getEndNumberSimulation()) {
         // loop para una evacuacion
         while (tiempo::get()->running()) {
             tiempo::get()->aumentarTiempo();
@@ -36,7 +34,7 @@ int main() {
             pedestrians::get()->contarPedestriansInSublink();
             links::get()->calcularDensityLevelLinks();
             // // modelamiento de pedestrian.
-            pedestrians::get()->modelamientoPedestrians(tiempo::get()->getValorTiempo());
+            pedestrians::get()->modelamientoPedestrians();
             // imprimir datos para postprocesamiento.
             pedestrians::get()->imprimirPedestrians();
             
@@ -47,8 +45,8 @@ int main() {
         }
         // Imprimir estados al terminar la simulación
         dbStateMatrixs.imprimirDbStateMatrixs();
-        // reiniciar el tiempo
-        tiempo::get()->setValorTiempo(0);
+        // aumentar el numero de simulacion
+        tiempo::get()->aumentarINumberSimulation();
     }
 
     // Imprime la duración en milisegundos
