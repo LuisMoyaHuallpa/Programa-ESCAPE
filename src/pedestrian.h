@@ -36,6 +36,7 @@ private:
     // hhId                |-->| 
     // position            |-->| POSICION DE LA PERSONA
     // nodeInicio          |-->| INTERSECCION DE UNA CALLE 
+    // nodeArranque        |-->| INTERSECCION DE INICIO AL INICIAR SIMULACION  
     // nodeFinal           |-->| OTRA INTERSECCION DE LA MISMA CALLE
     // nodeInicioAnterior  |-->| INTERSECCION INICIAL DE LA CALLE ANTERIOR
     // linkActual          |-->| CALLE POR DONDE ESTA ACTUALMENTE LA PERSONA 
@@ -52,6 +53,7 @@ private:
     int hhType;
     int hhId;
     vector2D position;
+    node* nodeArranque;
     node* nodeInicio;
     node* nodeFinal;
     node* nodeInicioAnterior;
@@ -87,7 +89,7 @@ public:
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     pedestrian();
-    pedestrian(int edad, int gender, int hhType, int hhId, node* nodeInicio);
+    pedestrian(int edad, int gender, int hhType, int hhId, node* nodeArranque);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // setters
@@ -98,6 +100,7 @@ public:
     void setHHType(int hhType);
     void setHHId(int hhId);
     void setPosition(vector2D position);
+    void setNodeArranque(node* nodeArranque);
     void setNodeInicio(node* nodeInicio);
     void setNodeFinal(node* nodeFinal);
     void setNodeInicioAnterior(node* nodeInicioAnterior);
@@ -126,6 +129,7 @@ public:
     int getHHType() const;
     int getHHId() const;
     vector2D getPosition();
+    node* getNodeArranque();
     node* getNodeInicio() const;
     node* getNodeFinal();
     node* getNodeInicioAnterior();

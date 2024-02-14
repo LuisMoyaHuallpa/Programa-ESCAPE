@@ -18,6 +18,14 @@ pedestrians::pedestrians() {
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// getters
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+std::vector<pedestrian>& pedestrians::getDbPedestrianTotal() {
+    return dbPedestrianTotal; 
+}
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static getters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 pedestrians* pedestrians::get() {
@@ -49,7 +57,7 @@ void pedestrians::leerPedestrians(std::string fileName){
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     std::string line;
     std::string a1_str, a2_str, a3_str, a4_str, a5_str;
-    std::string edad_str, gender_str, hhType_str, hhId_str, idNodeInicio_str;
+    std::string edad_str, gender_str, hhType_str, hhId_str, idNodeArranque_str;
     while (std::getline(file, line)) {
         // Si el archivo tiene comentarios con #, no leerlos.
         if (line[0] == '#') {
@@ -62,15 +70,15 @@ void pedestrians::leerPedestrians(std::string fileName){
         std::getline(iss, gender_str, ',');
         std::getline(iss, hhType_str, ',');
         std::getline(iss, hhId_str, ',');
-        std::getline(iss, idNodeInicio_str, '\n');
+        std::getline(iss, idNodeArranque_str, '\n');
         // Cambiar de str a int
         int edad = std::stoi(edad_str);
         int gender = std::stoi(gender_str);
         int hhType = std::stoi(hhType_str);
         int hhId = std::stoi(hhId_str);
-        int idNodeInicio = std::stoi(idNodeInicio_str);
+        int idNodeArranque = std::stoi(idNodeArranque_str);
         // Creacion de cada persona en la data base.
-        dbPedestrianTotal.push_back(pedestrian(edad, gender, hhType, hhId, nodes::get()->getDbNodeTotal().at(idNodeInicio).get()));
+        dbPedestrianTotal.push_back(pedestrian(edad, gender, hhType, hhId, nodes::get()->getDbNodeTotal().at(idNodeArranque).get()));
     }
     file.close(); 
 }
@@ -117,6 +125,12 @@ void pedestrians::contarPedestriansInSublink() {
         tiempo::get()->getValorTiempo() > dbPedestrianTotal.at(i).getTiempoInicial()) {
             dbPedestrianTotal.at(i).contarPedestrianInSublink(); 
         }
+    }
+}
+void pedestrians::reiniciarPedestriansNodeArranque() {
+    // regresa a la persona a su posicion de salida inicial antes de empezar la evacuacion
+    for (int i = 0; i < dbPedestrianTotal.size(); i++) {
+        dbPedestrianTotal.at(i).setNodeInicio(dbPedestrianTotal.at(i).getNodeArranque());
     }
 }
 void pedestrians::modelamientoPedestrians() {

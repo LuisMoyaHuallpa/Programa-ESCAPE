@@ -1,5 +1,4 @@
 #include "pedestrian.h"
-#include "link.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -18,15 +17,16 @@ pedestrian::pedestrian() : nodeFinal() {
     (*this).hhType = 0;
     (*this).hhId = 0;
 }
-pedestrian::pedestrian(int edad, int gender, int hhType, int hhId, node *nodeInicio)
-    : nodeFinal(nullptr), nodeInicioAnterior(nullptr), direccionPedestrian(), velocidad(),
-      stateMatrixPedestrian(), stateMatrixPedestrianAnterior(), sarsaAlgorithm() {
+pedestrian::pedestrian(int edad, int gender, int hhType, int hhId,node* nodeArranque)
+    : nodeInicio(nullptr), nodeFinal(nullptr), nodeInicioAnterior(nullptr), direccionPedestrian(),
+      velocidad(), stateMatrixPedestrian(), stateMatrixPedestrianAnterior(), sarsaAlgorithm() {
     setIdPedestrian(contador++);
     setEdad(edad);
     setGender(gender);
     setHHType(hhType);
     setHHId(hhId);
-    setNodeInicio(nodeInicio);
+    setNodeArranque(nodeArranque);
+    setNodeInicio(nodeArranque);
     setTiempoInicial(0);
     // setNodeAnterior(nodeInicio);
     // setEmpezoCaminar(false);
@@ -67,6 +67,9 @@ void pedestrian::setHHId(int hhId){
 }
 void pedestrian::setPosition(vector2D position) {
     (*this).position = position;
+}
+void pedestrian::setNodeArranque(node* nodeArranque) {
+    (*this).nodeArranque = nodeArranque; 
 }
 void pedestrian::setNodeInicio(node* nodeInicio){
     (*this).nodeInicio = nodeInicio;
@@ -140,6 +143,9 @@ int pedestrian::getHHId() const{
 }
 vector2D pedestrian::getPosition() {
     return position;
+}
+node* pedestrian::getNodeArranque() {
+    return nodeArranque;
 }
 node* pedestrian::getNodeInicio() const{
     return nodeInicio;
@@ -286,12 +292,14 @@ void pedestrian::eleccionSarsa() {
     // empieza con valores del primer elemento de QsVector
     double Qmenor = nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().at(0);
     int iQmenor = 0;
+    // nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().mostrarQs();
     for (int i = 0; i < nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().size(); i++) {
         if (nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().at(i) < Qmenor) {
             Qmenor= nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().at(i);
             iQmenor = i;
         }
     }
+    // std::cout << "Qmenor: " << nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().at(iQmenor) << std::endl;
     // setLinkActual(&dbLinkTotal.at(getNodeInicio()->getIdLinkConnection().at(iQmenor)));
     setLinkActual(links::get()->getDbLinkTotal().at(getNodeInicio()->getIdLinkConnection().at(iQmenor)).get());
     // enviando informacion de action al stateMatrix
@@ -441,12 +449,15 @@ void pedestrian::calcularReward() {
     }
 }
 void pedestrian::verificarPedestrianEvacuation(){
-    /* verifica si el nodoFinal a la cual la persona esta caminado es un nodo de evacuacion */
+    /* verifica si el nodoInicio a la cual la persona esta caminado es un nodo de
+        evacuacion. Esto cuando cambia de calle y entra a la funcion cambioCalle*/
     if (nodeInicio->getNodeType() == "nodeEvacuation") {
-        setEvacuado(true);
+        evacuado= true;
         nodeEvacuation::sumarPersonaEvacuada();
-    }
-    else {
+        // eliminar la persona evacuada
+        // auto& dbPedestrianTotal = pedestrians::get()->getDbPedestrianTotal();
+        // auto it = std::find(dbPedestrianTotal.begin(), dbPedestrianTotal.end(), *this);
+        // dbPedestrianTotal.erase(it);
     }
 }
 // void pedestrian::contarPedestrainSubdivision() {
@@ -560,10 +571,11 @@ void pedestrian::calcularLevelDensityAtNode() {
     else {
         // crea el vector Q segun LinkConnection
         stateMatrixPedestrian.getQsValue().getQsVector().resize(nodeInicio->getIdLinkConnection().size(), 0);
-        // como lo agrega al final, guarda istateMatrixTable en stateMatrixPedestrian 
-        stateMatrixPedestrian.setIStateMatrixTable(nodeInicio->getStateMatrixTable().size()-1);
         // agrega el nuevo estado
         nodeInicio->getStateMatrixTable().push_back(stateMatrixPedestrian);
+        // se setea iStateMatrixTable despues de agregarlo al stateMatrixTable para que cuente bien
+        // como lo agrega al final, guarda istateMatrixTable en stateMatrixPedestrian 
+        stateMatrixPedestrian.setIStateMatrixTable(nodeInicio->getStateMatrixTable().size()-1);
     }
 }
 // void pedestrian::crearqState(node* nodeActual) {

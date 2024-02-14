@@ -28,11 +28,16 @@ private:
     pedestrians();
 
 public:
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // getters
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    std::vector<pedestrian>& getDbPedestrianTotal();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     static pedestrians* get();
+
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metods
@@ -40,6 +45,7 @@ public:
     void leerPedestrians(std::string fileName);
     void tiempoInicioDistribution();
     void contarPedestriansInSublink();
+    void reiniciarPedestriansNodeArranque();
     void modelamientoPedestrians();
     void mostrarDbPedestrianTotal();
     void imprimirPedestrians();

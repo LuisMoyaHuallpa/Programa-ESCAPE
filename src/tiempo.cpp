@@ -1,8 +1,5 @@
 #include "tiempo.h"
-#include "dictionary.h"
-#include "nodeEvacution.h"
-#include <cstdlib>
-#include <string>
+#include "pedestrians.h"
 
 int tiempo::deltaTiempo = 1;
 
@@ -90,7 +87,8 @@ void tiempo::aumentarINumberSimulation() {
     tiempo::get()->setValorTiempo(0);
     // reiniciar el conteo de personas Evacuadas
     nodeEvacuation::personasEvacuadas = 0;
-
+    // regresar a las personas al nodo de arranque
+    pedestrians::get()->reiniciarPedestriansNodeArranque();
 }
 void tiempo::inicializarNumberSimulation() {
     /* Inicializar las variables de NumberSimulation*/
@@ -113,7 +111,7 @@ void tiempo::inicializarNumberSimulation() {
         if (dictionary::controlDict["stopSimulationAt"] == "endNumberSimulation") {
             endNumberSimulation = std::stoi(dictionary::controlDict["endNumberSimulation"]);
         }
-       }
+    }
 }
 void tiempo::extractINumberSimulation() {
     /* Extrar el numero de simulacion actual segun el archivo sim de estados
