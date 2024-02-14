@@ -66,7 +66,7 @@ void links::leerLinks(std::string fileName){
     std::string a1_str, a2_str, a3_str, a4_str, a5_str;
     std::string idLink_str, idNode1_str, idNode2_str, lengthLink_str, widthLink_str;
     std::string line;
-    link linkObj1;
+    // link linkObj1;
     // Lectura de archivo de nodos
     while (std::getline(file, line)) {
         // Si el archivo tiene comentarios con #, no leerlos.

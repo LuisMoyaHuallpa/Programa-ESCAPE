@@ -8,18 +8,17 @@ int link::numberDivisiones = 10;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-link::link() : orientacionLink() {
-    (*this).idLink = 0;
-    (*this).idNode1 = 0;
-    (*this).idNode2 = 0;
-    (*this).length = 0;
-    (*this).width = 0;
-    (*this).densityLevel = 0;
-}
-link::link(int idLink, int idNode1, int idNode2, int length, int width)  {
+// link::link() : orientacionLink() {
+//     (*this).idLink = 0;
+//     (*this).idNode1 = 0;
+//     (*this).idNode2 = 0;
+//     (*this).length = 0;
+//     (*this).width = 0;
+//     (*this).densityLevel = 0;
+// }
+link::link(int idLink, int idNode1, int idNode2, int length, int width) :
+    idNode1(idNode1), idNode2(idNode2){
     setIdLink(idLink);
-    setIdNode1(idNode1);
-    setIdNode2(idNode2);
     // calcula la orientacion de la calle segun el node 1 y 2.
     calcularOrientacionLink();
     setLength(length);
@@ -35,12 +34,6 @@ link::link(int idLink, int idNode1, int idNode2, int length, int width)  {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void link::setIdLink(int idLink) {
     (*this).idLink = idLink;  
-}
-void link::setIdNode1(int idNode1) {
-    (*this).idNode1 = idNode1;
-}
-void link::setIdNode2(int idNode2) {
-    (*this).idNode2 = idNode2;  
 }
 void link::setLength(int length){
     (*this).length = length;

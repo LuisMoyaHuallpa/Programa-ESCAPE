@@ -48,6 +48,5 @@ int main() {
         // aumentar el numero de simulacion y reinciar
         tiempo::get()->aumentarINumberSimulation();
     }
-
 }
 
