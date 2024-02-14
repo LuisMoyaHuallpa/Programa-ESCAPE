@@ -6,7 +6,7 @@ populationsFile  population.csv;
 
 stopAt          endTime;
 
-endTime         800;
+endTime         200;
 
 deltaT          1;
 
@@ -14,13 +14,13 @@ graphicPrintoutPeriod 5;
 
 listingPrintoutPeriod 1;
 
-computationContinued  	yes;
+computationContinued  	no;
 
 previousComputationFile	sim_000000006.csv;
 
 stopSimulationAt          endNumberSimulation;
 
-endNumberSimulation 7;
+endNumberSimulation 1;
 
 # stopSimulationAt          addNumberSimulation;
 
