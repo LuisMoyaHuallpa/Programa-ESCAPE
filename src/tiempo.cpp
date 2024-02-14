@@ -89,6 +89,8 @@ void tiempo::aumentarINumberSimulation() {
     nodeEvacuation::personasEvacuadas = 0;
     // regresar a las personas al nodo de arranque
     pedestrians::get()->reiniciarPedestriansNodeArranque();
+    // reinicar el timer de una simulacion 
+    startTimeSimulation = std::chrono::high_resolution_clock::now();
 }
 void tiempo::inicializarNumberSimulation() {
     /* Inicializar las variables de NumberSimulation*/
@@ -112,6 +114,9 @@ void tiempo::inicializarNumberSimulation() {
             endNumberSimulation = std::stoi(dictionary::controlDict["endNumberSimulation"]);
         }
     }
+    // iniciar el timer tiempo real de simulacion
+    startTimeSimulation = std::chrono::high_resolution_clock::now();
+
 }
 void tiempo::extractINumberSimulation() {
     /* Extrar el numero de simulacion actual segun el archivo sim de estados
@@ -132,9 +137,17 @@ void tiempo::extractINumberSimulation() {
 bool tiempo::running() {
     return valorTiempo < (endTime - 0.5*deltaT);
 }
+void tiempo::mostrarIResultadosSimulacion() {
+    // auto end_time = std::chrono::high_resolution_clock::now();
+    endTimeSimulation = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTimeSimulation - startTimeSimulation);
+
+    std::cout << "Simu: " << iNumberSimulation << std::endl;
+    std::cout << "Tiempo de ejecución: " << duration.count() << " milisegundos" << std::endl;
+}
 void tiempo::mostrarTiempo() {
     // Mostrar en terminal tiempo actual.
-    std::cout << "Time = " << getValorTiempo() << std::endl;
+    std::cout << "Time = " << valorTiempo << std::endl;
 }
 void tiempo::crearCarpetaTiempo() {
     std::string folderName = std::to_string(getValorTiempo());

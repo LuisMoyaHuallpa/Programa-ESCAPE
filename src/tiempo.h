@@ -11,6 +11,7 @@
 // header propios
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "dictionary.h"
+#include "chrono"
 
 class tiempo {
 private:
@@ -30,7 +31,8 @@ private:
     int startNumberSimulation;
     int iNumberSimulation;
     int endNumberSimulation;
-
+    std::chrono::high_resolution_clock::time_point startTimeSimulation;
+    std::chrono::high_resolution_clock::time_point endTimeSimulation;
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -82,6 +84,7 @@ public:
     void extractINumberSimulation();
     bool running();
     void mostrarTiempo();
+    void mostrarIResultadosSimulacion();
     void crearCarpetaTiempo();
     bool verificarGraphicPrintout(); 
     
