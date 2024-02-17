@@ -33,8 +33,10 @@ private:
     // orientacionLink  |-->| ANGULO QUE FORMA LA HORIZONTAL CON LA CALLE
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     int idLink;
-    const int idNode1;
-    const int idNode2;
+    const node* node1;
+    const node* node2;
+    // const int idNode1;
+    // const int idNode2;
     int length;
     int width;
     vector2D orientacionLink;
@@ -53,7 +55,7 @@ public:
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // link();
-    link(int idLink, int idNode1, int idNode2, int length, int width);
+    link(int idLink, node* node1, node* node2, int idNode1, int idNode2, int length, int width);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // setters
@@ -71,8 +73,10 @@ public:
     // getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     int getIdLink() const;
-    int getIdNode1() const;
-    int getIdNode2() const;
+    const node* getNode1();
+    const node* getNode2();
+    // int getIdNode1() const;
+    // int getIdNode2() const;
     int getLength() const;
     int getWidth() const;
     vector2D getOrientacionLink() const;

@@ -138,12 +138,16 @@ bool tiempo::running() {
     return valorTiempo < (endTime - 0.5*deltaT);
 }
 void tiempo::mostrarIResultadosSimulacion() {
-    // auto end_time = std::chrono::high_resolution_clock::now();
-    endTimeSimulation = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTimeSimulation - startTimeSimulation);
-
     std::cout << "Simu: " << iNumberSimulation << std::endl;
-    std::cout << "Tiempo de ejecución: " << duration.count() << " milisegundos" << std::endl;
+    // termino de la simulacion
+    endTimeSimulation = std::chrono::high_resolution_clock::now();
+    auto duration = endTimeSimulation - startTimeSimulation;
+    // Calcula la duración en milisegundos
+    auto durationMilliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(duration);
+    std::cout << "Duración en milisegundos: " << durationMilliseconds.count() << " ms" << std::endl;
+    // Calcula la duración en segundos
+    auto durationSeconds = std::chrono::duration_cast<std::chrono::seconds>(duration);
+    std::cout << "Duración en segundos: " << durationSeconds.count() << " s" << std::endl;
 }
 void tiempo::mostrarTiempo() {
     // Mostrar en terminal tiempo actual.

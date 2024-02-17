@@ -49,7 +49,7 @@ pedestrian::pedestrian(int edad, int gender, int hhType, int hhId,node* nodeArra
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // setters
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void pedestrian::setIdPedestrian(int id){
     (*this).idPedestrian = id;
 }
@@ -234,6 +234,7 @@ void pedestrian::contarPedestrianInSublink() {
 }
 void pedestrian::eleccionLinkActual() {
     if (nodeInicio->getStateMatrixTable().size() == 0) {
+        std::cout  << "primera "<< std::endl;
         eleccionRandomLinkActual();
     }    // si son dos calle continuas
     // else if (nodeInicio->b) {
@@ -241,7 +242,8 @@ void pedestrian::eleccionLinkActual() {
     // }
     // existan mas de dos calles para elegir
     else {
-        eleccionRandomSarsa();
+        eleccionRandomLinkActual();
+        // eleccionRandomSarsa();
     }
 }
 void pedestrian::eleccionRandomLinkActual() {
@@ -344,13 +346,14 @@ void pedestrian::calcularNodeFinal() {
     /* busqueda del node final segun la calle que se encuentre
         cada calle tiene un nodo de inicio y final depeendiendo
         si esta de ida o vuelta delvolvera el nodo final
-        esto seria ida */
-    if(nodeInicio->getIdNode() == linkActual->getIdNode1()){
-        setNodeFinal(nodes::get()->getDbNodeTotal().at(linkActual->getIdNode2()).get());
+      esto seria ida */
+    if(nodeInicio->getIdNode() == linkActual->getNode1()->getIdNode()){
+        // setNodeFinal(nodes::get()->getDbNodeTotal().at(linkActual->getIdNode2()).get());
+        setNodeFinal(const_cast<node*>(linkActual->getNode2()));
     }
     // esto seria vuelta
     else {
-        setNodeFinal(nodes::get()->getDbNodeTotal().at(linkActual->getIdNode1()).get());
+        setNodeFinal(const_cast<node*>(linkActual->getNode1()));
     }
 }
 int pedestrian::calcularSignoNumero(double numero) {
@@ -376,7 +379,9 @@ void pedestrian::cambioCalle() {
         calcularLevelDensityAtNode();
         // stateMatrixPedestrian.mostrarStateMatrix();
         // eleccionde de la calle
-        eleccionLinkActual();
+
+        eleccionRandomLinkActual();
+        // eleccionLinkActual();
         // guarda infomacion de stateMatrix de la persona en una tabla en nodo.
         // stateMatrixtoTableAtNode();
         // algoritmo sarsa, actualiza en nodoAnterior
@@ -626,8 +631,6 @@ void pedestrian::modelamientoPedestrian() {
             calcularDireccionPedestrian();
             // envio informacion de direccion al vector de velocidad.
             velocidad.setDireccion(getDireccionPedestrian());
-
-            // mostrarMovimientoPedestrian();
         }
         if (tiempo::get()->getValorTiempo() > tiempoInicial) {
             caminar();

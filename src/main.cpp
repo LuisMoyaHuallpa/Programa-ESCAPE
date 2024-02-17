@@ -22,12 +22,11 @@ int main() {
     dbStateMatrixs.leerDbStateMatrixs(stateMatrixs::simulationFile + dictionary::controlDict["previousComputationFile"]);
 
     // segun el número de simulaciones
-    std::cout << tiempo::get()->getEndNumberSimulation()<<std::endl;
     while (tiempo::get()->getINumberSimulation() <= tiempo::get()->getEndNumberSimulation()) {
         // loop para una evacuacion
         while (tiempo::get()->running()) {
             tiempo::get()->aumentarTiempo();
-            // tiempo::get()->mostrarTiempo();
+            tiempo::get()->mostrarTiempo();
             // contador de personas un tiempo atras de la funcion modelamiento de caminar de personas
             pedestrians::get()->contarPedestriansInSublink();
             links::get()->calcularDensityLevelLinks();

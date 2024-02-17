@@ -86,11 +86,14 @@ void links::leerLinks(std::string fileName){
         int idNode2 = std::stoi(idNode2_str);
         int lengthLink = std::stoi(lengthLink_str);
         int widthLink = std::stoi(widthLink_str);
-
-        std::unique_ptr<link> linkNuevo = std::make_unique<link>(idLink, idNode1, idNode2, lengthLink, widthLink);
+        node* node1 =nodes::get()->getDbNodeTotal().at(idNode1).get();
+        node* node2 =nodes::get()->getDbNodeTotal().at(idNode2).get();
+        std::unique_ptr<link> linkNuevo = std::make_unique<link>(idLink, node1, node2, idNode1, idNode2, lengthLink, widthLink);
         dbLinkTotal.push_back(std::move(linkNuevo));
-        nodes::get()->getDbNodeTotal().at(idNode1)->addIdLinkConnection(idLink);
-        nodes::get()->getDbNodeTotal().at(idNode2)->addIdLinkConnection(idLink);
+        node1->getIdLinkConnection().push_back(idLink);
+        node2->getIdLinkConnection().push_back(idLink);
+        // nodes::get()->getDbNodeTotal().at(idNode1)->addIdLinkConnection(idLink);
+        // nodes::get()->getDbNodeTotal().at(idNode2)->addIdLinkConnection(idLink);
         // linkObj1.mostrarLink();
     }
     file.close(); 

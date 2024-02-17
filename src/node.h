@@ -27,7 +27,7 @@ private:
     // idLinkConnection  |-->| 
     // stateMatrixTable  |-->| 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    int idNode;
+    const int idNode;
     vector2D coordenada;
     std::vector<int> idLinkConnection;
     std::vector<stateMatrix> stateMatrixTable;
@@ -52,7 +52,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // setters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    void setIdNode(int idNode);
+    // void setIdNode(int idNode);
     void setCoordenada(vector2D coordenada);
     void setIdLinkConnection(std::vector<int> idLinkConnection);
     void setStateMatrixTable(std::vector<stateMatrix> stateMatrixTable);
@@ -62,8 +62,8 @@ public:
     // getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     int getIdNode() const;
-    vector2D getCoordenada();
-    std::vector<int> getIdLinkConnection();
+    vector2D getCoordenada() const;
+    std::vector<int>& getIdLinkConnection();
     std::vector<stateMatrix>& getStateMatrixTable();
     // int getRewardCode() const;
 
