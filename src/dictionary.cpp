@@ -33,7 +33,6 @@ std::string dictionary::getNameDictionary() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 void dictionary::leerDictionary() {
     std::string fileName = dictionary::systemCarpet + getNameDictionary();
     std::fstream file;
@@ -68,15 +67,17 @@ void dictionary::leerDictionary() {
         std::getline(iss >> std::ws, value_str, ';');
         // guarda los valores en un dictionario
         controlDict[keyword_str] = value_str;
-
     }
     file.close(); 
+}
 
-
+int dictionary::lookup(std::string keyword) {
+    
+    return 0; 
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // static metods
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// static metods
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 void dictionary::mostrarControlDict() {
     std::cout << "Contents of controlDict:" << std::endl;

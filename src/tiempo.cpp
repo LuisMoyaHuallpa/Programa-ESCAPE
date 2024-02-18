@@ -167,7 +167,6 @@ void tiempo::mostrarIResultadosSimulacion() {
     std::cout << "***** Simu: " << iNumberSimulation << " *****" << std::endl;
     std::cout << "epsilon greedy - exploration: " << randomChoiceRate << std::endl;
     std::cout << "survived pedestrian: " << nodeEvacuation::getPersonasEvacuadas() << std::endl;
-    std::cout << std::endl;
     // termino de la simulacion
     endTimeSimulation = std::chrono::high_resolution_clock::now();
     auto duration = endTimeSimulation - startTimeSimulation;
@@ -177,6 +176,7 @@ void tiempo::mostrarIResultadosSimulacion() {
     // Calcula la duración en segundos
     auto durationSeconds = std::chrono::duration_cast<std::chrono::seconds>(duration);
     std::cout << "Duración en segundos: " << durationSeconds.count() << " s" << std::endl;
+    std::cout << std::endl;
 }
 void tiempo::mostrarTiempo() {
     // Mostrar en terminal tiempo actual.

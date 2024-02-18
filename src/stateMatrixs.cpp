@@ -198,16 +198,18 @@ void stateMatrixs::leerDbStateMatrixs(std::string filename) {
             std::getline(iss, o9_str, ',');
             std::getline(iss, o10_str, '\n');
             // Elementos de o
-            o1 = std::stoi(o1_str);
-            o2 = std::stoi(o2_str);
-            o3 = std::stoi(o3_str);
-            o4 = std::stoi(o4_str);
-            o5 = std::stoi(o5_str);
-            o6 = std::stoi(o6_str);
-            o7 = std::stoi(o7_str);
-            o8 = std::stoi(o8_str);
-            o9 = std::stoi(o9_str);
-            o10 = std::stoi(o10_str);
+            if (dictionary::controlDict["readPedestrianMassState"] == "yes") {
+                o1 = std::stoi(o1_str);
+                o2 = std::stoi(o2_str);
+                o3 = std::stoi(o3_str);
+                o4 = std::stoi(o4_str);
+                o5 = std::stoi(o5_str);
+                o6 = std::stoi(o6_str);
+                o7 = std::stoi(o7_str);
+                o8 = std::stoi(o8_str);
+                o9 = std::stoi(o9_str);
+                o10 = std::stoi(o10_str);
+            }
             // !-----------------------------------------------------------------------
             // Grabar datos de la fila del stateMatrix en en Qtable del nodo numero id.
             nodes::get()->getDbNodeTotal().at(idNode)->getStateMatrixTable().push_back(stateMatrixLeido);

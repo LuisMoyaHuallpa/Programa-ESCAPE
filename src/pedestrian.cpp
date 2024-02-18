@@ -643,7 +643,7 @@ void pedestrian::modelamientoPedestrian() {
 }
 void pedestrian::mostrarMovimientoPedestrian(){
     /* muestra la interseccion de partida y final de una calle, cuando
-      una persona pasa por una calle. Asimismo muestra la posicion actual
+
       la persona.*/
     std::cout << getIdPedestrian() << ' ';
     std::cout << std::setw(6) << getNodeInicio()->getIdNode() << ' ';
@@ -674,18 +674,3 @@ void pedestrian::imprimirPedestrianVelocity(std::fstream& file){
     file << getVelocidad().getMagnitud() << " ";
     file << std::endl;
 }
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// static metods
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// double pedestrian::calcularOptimalChoiceRate() {
-//     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//     // k          |-->| NUMERO DE SIMULACION ACTUAL
-//     // N          |-->| NUMERO DE SIMULACION FINAL O TERMINO
-//     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//     int k = tiempo::get()->getINumberSimulation();
-//     int N = tiempo::get()->getEndNumberSimulation();
-//     double optimalChoiceRate = 1.0 / (4.0* double(k)/double(N)+1);
-//     return optimalChoiceRate;
-// }
