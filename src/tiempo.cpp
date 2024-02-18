@@ -88,6 +88,7 @@ void tiempo::aumentarTiempo() {
 }
 void tiempo::aumentarINumberSimulation() {
     setINumberSimulation(getINumberSimulation()+1);
+    std::cout << "T final: " << tiempo::get()->getValorTiempo() << std::endl;
     // reiniciar el tiempo
     tiempo::get()->setValorTiempo(0);
     // reiniciar el conteo de personas Evacuadas
@@ -147,7 +148,19 @@ void tiempo::calcularRandomChoiceRate() {
     randomChoiceRate = 1.0 / (gleeFactor * double(k - 1) + 1.0);
 }
 bool tiempo::running() {
-    return valorTiempo < (endTime - 0.5*deltaT);
+    // verificar que tiempo sea el menor a tiempo total de la evacuacion
+    if (valorTiempo < (endTime - 0.5*deltaT)) {
+        // verifica que todas las personas hayan sido evacuadas
+        if (nodeEvacuation::personasEvacuadas == pedestrians::get()->getDbPedestrianTotal().size()) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+    else {
+        return false;
+    }
 }
 void tiempo::mostrarIResultadosSimulacion() {
     // mostrar 
