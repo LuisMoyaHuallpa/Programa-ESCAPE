@@ -25,7 +25,6 @@ private:
     // QsValue        |-->| VECTOR DE Q
     // tamanoVectorIO |-->| CANTIDAD DE ELEMENTOS PARA EL VECTOR DE ESTADO Y Q
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    int idNode;
     state stateValue;
     Qs QsValue;
     std::vector<int> otrosVector;
@@ -43,7 +42,7 @@ public:
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     stateMatrix();
-    stateMatrix(int idNode, state stateValue, std::vector<double> QVector, std::vector<int> otrosValue);
+    stateMatrix(state stateValue, std::vector<double> QVector, std::vector<int> otrosValue);
 
     // void leerStateMatrix(std::string filename);
     // void imprimirStateMatrix();
@@ -51,7 +50,6 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // setters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    void setIdNode(int idNode);
     void setStateValue(state stateValue);
     void setQsValue(Qs QsValue);
     void setOtrosVector(std::vector<int> otrosVector);
@@ -61,7 +59,6 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getter
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    int getIdNode();
     state& getStateValue();
     Qs& getQsValue();
     std::vector<int>& getotrosVector();

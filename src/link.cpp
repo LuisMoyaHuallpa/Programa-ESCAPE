@@ -16,7 +16,7 @@ int link::numberDivisiones = 10;
 //     (*this).width = 0;
 //     (*this).densityLevel = 0;
 // }
-link::link(int idLink, node* node1, node* node2, int idNode1, int idNode2, int length, int width) :
+link::link(int idLink, node* node1, node* node2, int length, int width) :
     node1(node1), node2(node2){
     setIdLink(idLink);
     // calcula la orientacion de la calle segun el node 1 y 2.
@@ -69,12 +69,6 @@ const node* link::getNode1() {
 const node* link::getNode2() {
     return node2;
 }
-// int link::getIdNode1() const{
-//     return idNode1;
-// }
-// int link::getIdNode2() const{
-//     return idNode2;
-// }
 int link::getLength() const{
     return length;
 }

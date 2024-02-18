@@ -1,4 +1,5 @@
 #include "Qs.h"
+#include "stateMatrix.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
@@ -27,5 +28,15 @@ void Qs::mostrarQs() {
     for (int i = 0; i < QsVector.size(); i++) {
         std::cout << QsVector.at(i) << ",";
     }
+}
+void Qs::imprimirQs(std::fstream &file) {
+    for (int i = 0; i < stateMatrix::tamanoVectorIO; i++) {
+        if (i < QsVector.size()) {
+            file << QsVector.at(i) << ',';
+        } else {
+            file << "0,";
+        }
+                
+    }  
 }
 

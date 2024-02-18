@@ -228,12 +228,9 @@ void stateMatrixs::imprimirDbStateMatrixs(){
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     std::fstream file;
     file.open(creacionArchivoSalida(), std::ios::out);
-    // Imprime en todas las filas dbStateMatrixs.
-    // for (int i = 0; i < dbStateMatrixs.size(); i++) {
-    //     dbStateMatrixs[i].imprimirStateMatrix(file);
-    // }
+    // Recorre todos los nodos
     for (int i = 0; i < nodes::get()->getDbNodeTotal().size(); i++) {
-        // pedestrian::dbNodeTotal.at(i)->mostrarQTable();
-        // dbNode->getDbNode().at(i).imprimirQTable(file);
+        // imprimir los statesMatrix de las tablas de cada nodo 
+        nodes::get()->getDbNodeTotal().at(i)->imprimirQTable(file);
     }
 }

@@ -23,6 +23,7 @@ private:
     // startNumberSimulation |-->| INICIO DEL NUMERO DE SIMULACION
     // iNumberSimulation     |-->| NUMERO DE SIMULACION ACTUAL
     // endNumberSimulation   |-->| FIN DEL NUMERO DE SIMULACION
+    // randomChoiceRate      |-->| COEFICIENTE DE ELECCION ENTRE RANDOM O SARSA 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     int valorTiempo;
     int deltaT;
@@ -33,6 +34,7 @@ private:
     int endNumberSimulation;
     std::chrono::high_resolution_clock::time_point startTimeSimulation;
     std::chrono::high_resolution_clock::time_point endTimeSimulation;
+    double randomChoiceRate;
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -68,6 +70,7 @@ public:
     int getStartNumberSimulation();
     int getINumberSimulation();
     int getEndNumberSimulation();
+    double getRandomChoiceRate();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static getters
@@ -82,6 +85,7 @@ public:
     void aumentarINumberSimulation();
     void inicializarNumberSimulation();
     void extractINumberSimulation();
+    void calcularRandomChoiceRate();
     bool running();
     void mostrarTiempo();
     void mostrarIResultadosSimulacion();

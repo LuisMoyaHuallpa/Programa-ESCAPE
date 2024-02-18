@@ -1,5 +1,7 @@
 #include "tiempo.h"
+#include "nodeEvacution.h"
 #include "pedestrians.h"
+#include <cstdlib>
 
 int tiempo::deltaTiempo = 1;
 
@@ -59,6 +61,9 @@ int tiempo::getINumberSimulation() {
 }
 int tiempo::getEndNumberSimulation() {
     return endNumberSimulation;
+}
+double tiempo::getRandomChoiceRate() {
+    return randomChoiceRate;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -134,11 +139,22 @@ void tiempo::extractINumberSimulation() {
         exit(1);
     }
 }
+void tiempo::calcularRandomChoiceRate() {
+    int k = iNumberSimulation;
+    int N = endNumberSimulation;
+    double gleeFactor = 4.0 / double(N);
+    // el -1 es para empezar el numero de simulaciones en 0
+    randomChoiceRate = 1.0 / (gleeFactor * double(k - 1) + 1.0);
+}
 bool tiempo::running() {
     return valorTiempo < (endTime - 0.5*deltaT);
 }
 void tiempo::mostrarIResultadosSimulacion() {
-    std::cout << "Simu: " << iNumberSimulation << std::endl;
+    // mostrar 
+    std::cout << "***** Simu: " << iNumberSimulation << " *****" << std::endl;
+    std::cout << "epsilon greedy - exploration: " << randomChoiceRate << std::endl;
+    std::cout << "survived pedestrian: " << nodeEvacuation::getPersonasEvacuadas() << std::endl;
+    std::cout << std::endl;
     // termino de la simulacion
     endTimeSimulation = std::chrono::high_resolution_clock::now();
     auto duration = endTimeSimulation - startTimeSimulation;

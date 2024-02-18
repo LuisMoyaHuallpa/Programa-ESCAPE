@@ -1,4 +1,5 @@
 #include "pedestrian.h"
+#include "tiempo.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -296,11 +297,12 @@ void pedestrian::eleccionSarsa() {
     int iQmenor = 0;
     // nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().mostrarQs();
     for (int i = 0; i < nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().size(); i++) {
-        if (nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().at(i) < Qmenor) {
+        if (nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().at(i) > Qmenor) {
             Qmenor= nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().at(i);
             iQmenor = i;
         }
     }
+    // nodeInicio->getStateMatrixTable().at(size_type __n)
     // std::cout << "Qmenor: " << nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().at(iQmenor) << std::endl;
     // setLinkActual(&dbLinkTotal.at(getNodeInicio()->getIdLinkConnection().at(iQmenor)));
     setLinkActual(links::get()->getDbLinkTotal().at(getNodeInicio()->getIdLinkConnection().at(iQmenor)).get());
@@ -312,7 +314,7 @@ void pedestrian::eleccionSarsa() {
     // verificar si el nodo final es un nodo de evacucion.
     verificarPedestrianEvacuation();
 }
-void pedestrian::eleccionRandomSarsa() {
+void pedestrian::eleccionGeneralLinkActual() {
    // Configurar el generador de números aleatorios
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -322,15 +324,13 @@ void pedestrian::eleccionRandomSarsa() {
     // compara el numero aletorio con optima choice rate
     // este ultimo debe ir descendiendo cuando halla mas simulaciones
     // a mayor simulaciones mas uso de la elecion sarsa
-    switch (randomNumber <= calcularOptimalChoiceRate() ? 1 : 2) {
+    switch (randomNumber <= tiempo::get()->getRandomChoiceRate() ? 1 : 2) {
         case 1:
             eleccionRandomLinkActual();
             break;
         case 2:
             eleccionSarsa();
             break;
-        default:
-            std::cout << "Caso por defecto" << std::endl;
     }
 }
 bool pedestrian::verificarEndLink() {
@@ -345,8 +345,7 @@ bool pedestrian::verificarEndLink() {
 void pedestrian::calcularNodeFinal() {
     /* busqueda del node final segun la calle que se encuentre
         cada calle tiene un nodo de inicio y final depeendiendo
-        si esta de ida o vuelta delvolvera el nodo final
-      esto seria ida */
+        si esta de ida o vuelta delvolvera el nodo final esto seria ida */
     if(nodeInicio->getIdNode() == linkActual->getNode1()->getIdNode()){
         // setNodeFinal(nodes::get()->getDbNodeTotal().at(linkActual->getIdNode2()).get());
         setNodeFinal(const_cast<node*>(linkActual->getNode2()));
@@ -379,8 +378,8 @@ void pedestrian::cambioCalle() {
         calcularLevelDensityAtNode();
         // stateMatrixPedestrian.mostrarStateMatrix();
         // eleccionde de la calle
-
-        eleccionRandomLinkActual();
+        // eleccionRandomLinkActual();
+        eleccionGeneralLinkActual();
         // eleccionLinkActual();
         // guarda infomacion de stateMatrix de la persona en una tabla en nodo.
         // stateMatrixtoTableAtNode();
@@ -631,6 +630,7 @@ void pedestrian::modelamientoPedestrian() {
             calcularDireccionPedestrian();
             // envio informacion de direccion al vector de velocidad.
             velocidad.setDireccion(getDireccionPedestrian());
+
         }
         if (tiempo::get()->getValorTiempo() > tiempoInicial) {
             caminar();
@@ -679,13 +679,13 @@ void pedestrian::imprimirPedestrianVelocity(std::fstream& file){
 // static metods
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-double pedestrian::calcularOptimalChoiceRate() {
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // k          |-->| NUMERO DE SIMULACION ACTUAL
-    // N          |-->| NUMERO DE SIMULACION FINAL O TERMINO
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    int k = tiempo::get()->getINumberSimulation();
-    int N = tiempo::get()->getEndNumberSimulation();
-    double optimalChoiceRate = 1.0 / (4.0* double(k)/double(N)+1);
-    return optimalChoiceRate;
-}
+// double pedestrian::calcularOptimalChoiceRate() {
+//     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//     // k          |-->| NUMERO DE SIMULACION ACTUAL
+//     // N          |-->| NUMERO DE SIMULACION FINAL O TERMINO
+//     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//     int k = tiempo::get()->getINumberSimulation();
+//     int N = tiempo::get()->getEndNumberSimulation();
+//     double optimalChoiceRate = 1.0 / (4.0* double(k)/double(N)+1);
+//     return optimalChoiceRate;
+// }

@@ -142,48 +142,13 @@ void node::mostrarQTable() {
         std::cout << std::endl;
     }
 }
-// void node::imprimirQTable(std::fstream& file) {
-//     // Impresion de sim.csv
-//     stateMatrix stateMatrixElement;
-//     state stateAnterior;
-//     for (int i = 0; i < qTable.size(); i++) {
-//         getQTable()->at(i).mostrarQ();
-//         std::cout << std::endl;
-//         // !-----------------------------------------------------------------------
-//         // Primer stateActionQ
-//         if (i == 0) {
-//             // Set idNode en stateMatrixElement. Es el id del nodo de la interseccion.
-//             stateMatrixElement.setIdNode(getQTable()->at(i).getA().getIdLink());
-//             // Set stateValue en stateMatrixElement. Es el state de la interseccion. 
-//             stateMatrixElement.setStateValue(getQTable()->at(i).getS());
-//             // Set valor de Q en el vectorQ en la locacion i.
-//             stateMatrixElement.agregarQ(getQTable()->at(i).getA().getILinkConnection(), getQTable()->at(i).getQ());
-//         }
-//         // !-----------------------------------------------------------------------
-//         // Siguiente stateActionQ
-//         else {
-//             // !-----------------------------------------------------------------------
-//             // Si no hay cambio de state realiza lo siguiente
-//             if (!(verificarCambioState(stateAnterior, qTable[i].getS()))) {
-//                 // Set valor de Q en el vectorQ en la locacion i.
-//                 stateMatrixElement.agregarQ(qTable[i].getA().getILinkConnection(), qTable[i].getQ());
-//             }
-//             else {
-//                 // !-----------------------------------------------------------------------
-//                 // Imprime el stateMatrixElement final
-//                 stateMatrixElement.imprimirStateMatrix(file);
-//                 // !-----------------------------------------------------------------------
-//                 // Continua con un nuevo stateMatrixElement
-//                 // Set idNode en stateMatrixElement. Es el id del nodo de la interseccion.
-//                 stateMatrixElement.setIdNode(qTable[i].getA().getIdLink());
-//                 // Set stateValue en stateMatrixElement. Es el state de la interseccion. 
-//                 stateMatrixElement.setStateValue(qTable[i].getS());
-//             }
-//         }
-//         // Guarda el state del stateActionQ anterior.
-//         stateAnterior = qTable[i].getS();
-//         // Guardar stateMatrixElement y el vector dbStateMatrix
-//     }
-// }
+void node::imprimirQTable(std::fstream& file) {
+    // Impresion de sim.csv
+    for (auto it = stateMatrixTable.begin(); it != stateMatrixTable.end(); ++it) {
+        // Imprimir id del nodo o intersección
+        file << idNode << ",";
+        it->imprimirStateMatrix(file);
+    }
+}
 
 

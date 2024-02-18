@@ -79,7 +79,7 @@ public:
     bool verificarCambioState(state stateAnterior, state stateActual);
     void mostrarNode();
     void mostrarQTable();
-    // void imprimirQTable(std::fstream& file);
+    void imprimirQTable(std::fstream& file);
 
 };
 #endif

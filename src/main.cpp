@@ -20,13 +20,15 @@ int main() {
     stateMatrixs dbStateMatrixs;
     // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
     dbStateMatrixs.leerDbStateMatrixs(stateMatrixs::simulationFile + dictionary::controlDict["previousComputationFile"]);
-
     // segun el número de simulaciones
     while (tiempo::get()->getINumberSimulation() <= tiempo::get()->getEndNumberSimulation()) {
         // loop para una evacuacion
+        // calcula el valor el valor del randomChoiceRate
+        tiempo::get()->calcularRandomChoiceRate();
         while (tiempo::get()->running()) {
             tiempo::get()->aumentarTiempo();
-            tiempo::get()->mostrarTiempo();
+            // tiempo::get()->mostrarTiempo();
+
             // contador de personas un tiempo atras de la funcion modelamiento de caminar de personas
             pedestrians::get()->contarPedestriansInSublink();
             links::get()->calcularDensityLevelLinks();

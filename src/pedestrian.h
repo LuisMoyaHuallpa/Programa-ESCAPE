@@ -161,7 +161,7 @@ public:
     void eleccionRandomLinkActual();
     void eleccionDosCallesContinuas();
     void eleccionSarsa();
-    void eleccionRandomSarsa();
+    void eleccionGeneralLinkActual();
     // int iEleccionRandomLinkActual();
     // void updateLinkActual(int iLinkConnection);
     // void updateStateAction(int iLinkConnection);
@@ -197,7 +197,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static metods
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    static double calcularOptimalChoiceRate();
+    // static double calcularOptimalChoiceRate();
     
 };
 #endif

@@ -119,12 +119,8 @@ void nodes::mostrardbNodeTotal() {
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // imprimir
-// void nodes::imprimirNodes(std::fstream& file) {
-//     for (int i = 0; i < dbNode.size(); i++) {
-//         dbNode.at(i).ordenarQTable();
-//         dbNode.at(i).imprimirQTable(file);
-//     }
-// }
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 // void nodes::imprimirCantPedestrianEvacuted(std::string folderName) {
 //     std::fstream file3;

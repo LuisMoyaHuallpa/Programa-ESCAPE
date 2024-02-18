@@ -1,4 +1,5 @@
 #include "state.h"
+#include "stateMatrix.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
@@ -45,12 +46,11 @@ void state::mostrarState() {
     }
 }
 void state::imprimirState(std::fstream& file) {
-    int tamanoState = 10;
-    for (int i = 0; i < tamanoState; i++) {
+    for (int i = 0; i < stateMatrix::tamanoVectorIO; i++) {
         if (i < densityLinks.size()) {
-            file << getDensityLinks().at(i) << ' ';
+            file << getDensityLinks().at(i) << ',';
         } else {
-            file << "0 ";
+            file << "0,";
         }
     }
 }

@@ -9,14 +9,10 @@ const int stateMatrix::tamanoVectorIO = 10;
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 stateMatrix::stateMatrix() : stateValue() {
-    (*this).idNode = 0;
-    // se puede eleminar
-
     setIStateMatrixTable(0);
     // otrosVector.resize(tamanoVector,0);
 }
-stateMatrix::stateMatrix(int idNode, state stateValue, std::vector<double> QVector, std::vector<int> otrosVector) {
-    setIdNode(idNode);
+stateMatrix::stateMatrix(state stateValue, std::vector<double> QVector, std::vector<int> otrosVector) {
     setStateValue(stateValue);
     setOtrosVector(otrosVector);
     setIStateMatrixTable(0);
@@ -25,9 +21,6 @@ stateMatrix::stateMatrix(int idNode, state stateValue, std::vector<double> QVect
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // setters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void stateMatrix::setIdNode(int idNode) {
-    (*this).idNode = idNode;
-}
 void stateMatrix::setStateValue(state stateValue) {
     (*this).stateValue = stateValue;  
 }
@@ -47,9 +40,6 @@ void stateMatrix::setIStateMatrixTable(int iStateMatrixTable) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getter
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-int stateMatrix::getIdNode() {
-    return idNode;  
-}
 state& stateMatrix::getStateValue() {
     return stateValue;
 }
@@ -125,17 +115,11 @@ void stateMatrix::mostrarStateMatrix() {
 void stateMatrix::imprimirStateMatrix(std::fstream& file){
    // Imprimir una fila del elemento stateMatrix.
     // !-----------------------------------------------------------------------
-    // Imprimir id del nodo.
-    file << getIdNode() << ",";
-    // !-----------------------------------------------------------------------
     // Imprimir todos los elementos de state y se completa con 0 para llegar a
     // 10 elementos.
     stateValue.imprimirState(file);
     // !-----------------------------------------------------------------------
-    // Imprimir todos los elementos de state y se completa con 0 para llegar a
-    // Falta verificar
-    // for (int i = 0; i < QVector.size(); i++) {
-    //     file << getQVector().at(i) << ",";
-    // }
+    // Imprimir todos los elementos de Q y se completa con 0 para llegar a
+    QsValue.imprimirQs(file);
     file << std::endl;
 }

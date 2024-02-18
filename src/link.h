@@ -55,7 +55,7 @@ public:
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // link();
-    link(int idLink, node* node1, node* node2, int idNode1, int idNode2, int length, int width);
+    link(int idLink, node* node1, node* node2, int length, int width);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // setters
@@ -75,8 +75,6 @@ public:
     int getIdLink() const;
     const node* getNode1();
     const node* getNode2();
-    // int getIdNode1() const;
-    // int getIdNode2() const;
     int getLength() const;
     int getWidth() const;
     vector2D getOrientacionLink() const;

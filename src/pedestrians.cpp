@@ -130,6 +130,7 @@ void pedestrians::contarPedestriansInSublink() {
 void pedestrians::reiniciarPedestriansNodeArranque() {
     // regresa a la persona a su posicion de salida inicial antes de empezar la evacuacion
     for (int i = 0; i < dbPedestrianTotal.size(); i++) {
+        dbPedestrianTotal.at(i).setEvacuado(false);
         dbPedestrianTotal.at(i).setNodeInicio(dbPedestrianTotal.at(i).getNodeArranque());
     }
 }
