@@ -1,4 +1,5 @@
 #include "links.h"
+#include "dictionary.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -9,7 +10,8 @@ links* links::linksInstance = nullptr;
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 links::links() {
-    (*this).fileName = dictionary::controlDict["linksFile"];
+    // (*this).fileName = dictionary::controlDict["linksFile"];
+    (*this).fileName = dictionary::get()->lookupDefault("linksFile");
     leerLinks(fileName);
 }
 

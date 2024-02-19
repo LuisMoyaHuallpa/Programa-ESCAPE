@@ -12,7 +12,7 @@ nodes* nodes::nodesInstance = nullptr;
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 nodes::nodes() {
-    (*this).fileName = dictionary::controlDict["nodesFile"];
+    (*this).fileName = dictionary::get()->lookupDefault("nodesFile");
     leerNodes(fileName);
 }
 nodes::nodes(std::string fileName) {

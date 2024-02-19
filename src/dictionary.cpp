@@ -3,24 +3,24 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-const std::string dictionary::systemCarpet = "system/";
-std::map<std::string, std::string> dictionary::controlDict;
+dictionary* dictionary::dictionaryInstance = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+dictionary::dictionary() {
+    leerDictionary();
+}
 dictionary::dictionary(std::string nameDictionary) {
-    (*this).nameDictionary = nameDictionary;
     leerDictionary();
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // setters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void dictionary::setNameDictionary(std::string nameDictionary) {
-    (*this).nameDictionary = nameDictionary;
-}
+// void dictionary::setNameDictionary(std::string nameDictionary) {
+//     (*this).nameDictionary = nameDictionary;
+// }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getters
@@ -28,7 +28,20 @@ void dictionary::setNameDictionary(std::string nameDictionary) {
 std::string dictionary::getNameDictionary() {
     return nameDictionary;
 }
+const std::map<std::string, std::string> dictionary::getControlDict() {
+    return controlDict;
+}
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// static getters
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+dictionary* dictionary::get() {
+    /* si aun no existe crea la unica instancia de dictionario*/
+    if (!dictionaryInstance) {
+        dictionaryInstance =  new dictionary();
+    }
+    return dictionaryInstance;
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
@@ -71,9 +84,30 @@ void dictionary::leerDictionary() {
     file.close(); 
 }
 
-int dictionary::lookup(std::string keyword) {
-    
+std::string dictionary::lookup(std::string keyword) {
+    /* busca la keyword y devuelve su respuesta*/
+    auto it = controlDict.find(keyword);
+    // si no lo encuentra
+    if (it != controlDict.end()) {
+        return it->second;
+    }
+    else {
+        std::cout << "El keyword "<< keyword << " no está presente en el controDict.\n";
+        // Terminar el programa con un código de error
+        std::exit(EXIT_FAILURE);
+    }
     return 0; 
+}
+std::string dictionary::lookupDefault(std::string keyword) {
+    /* busca la keyword y devuelve su respuesta*/
+    auto it = controlDict.find(keyword);
+    // si no lo encuentra
+    if (it != controlDict.end()) {
+        return it->second;
+    }
+    else {
+        return controlDictDefault.at(keyword);
+    }
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static metods

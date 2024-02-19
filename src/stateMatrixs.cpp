@@ -76,12 +76,12 @@ std::string stateMatrixs::crearFilenameSalida(int numeroSimulacion) {
     // DE UNA VARIABLE PARA LUEGO GUARDARLO EN UN STRING
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Si lee un archivo de estados
-    if (dictionary::controlDict["computationContinued"] == "yes" ) {
+    // if (dictionary::controlDict["computationContinued"] == "yes" ) {
         
-    }
-    else {
+    // }
+    // else {
         
-    }
+    // }
     int iFileInicio = 1;
     std::string preName = "sim_";
     std::string typeFile = ".csv";
@@ -92,7 +92,7 @@ std::string stateMatrixs::crearFilenameSalida(int numeroSimulacion) {
     return simulationFile +preName + filenameStream.str() + typeFile;
 }
 std::string stateMatrixs::fileNameSalida() {
-    std::string lastFile_str = dictionary::controlDict["previousComputationFile"];   
+    std::string lastFile_str = dictionary::get()->lookup("previousComputationFile");   
     size_t posicion = lastFile_str.find_first_of("123456789");
     int iLastFile = std::stoi(lastFile_str.substr(posicion));
     std::string preName = "sim_";
@@ -107,7 +107,8 @@ void stateMatrixs::agregarStateMatrix(stateMatrix stateMatrixElement) {
 }
 void stateMatrixs::leerDbStateMatrixs(std::string filename) {
     // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
-    if (dictionary::controlDict["computationContinued"] == "yes") {
+    // if (dictionary::controlDict["computationContinued"] == "yes") {
+    if (dictionary::get()->lookupDefault("computationContinued") == "yes") {
         /* Lectura de datos de una simulación pasada.*/
         std::fstream file;
         file.open(filename, std::ios::in);
@@ -198,7 +199,7 @@ void stateMatrixs::leerDbStateMatrixs(std::string filename) {
             std::getline(iss, o9_str, ',');
             std::getline(iss, o10_str, '\n');
             // Elementos de o
-            if (dictionary::controlDict["readPedestrianMassState"] == "yes") {
+            if (dictionary::get()->lookupDefault("readPedestrianMassState") == "yes") {
                 o1 = std::stoi(o1_str);
                 o2 = std::stoi(o2_str);
                 o3 = std::stoi(o3_str);

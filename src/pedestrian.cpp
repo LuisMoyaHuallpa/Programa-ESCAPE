@@ -272,8 +272,8 @@ void pedestrian::eleccionDosCallesContinuas() {
         // setLinkActual(&dbLinkTotal.at(getNodeInicio()->getIdLinkConnection().at(0)));
         setLinkActual(links::get()->getDbLinkTotal().at(getNodeInicio()->getIdLinkConnection().at(0)).get());
         // enviando informacion de action al stateMatrix
-        getStateMatrixPedestrian().getActionValue().setILinkConnection(0);
-        getStateMatrixPedestrian().getActionValue().setIdLink(linkActual->getIdLink());
+        stateMatrixPedestrian.getActionValue().setILinkConnection(0);
+        stateMatrixPedestrian.getActionValue().setIdLink(linkActual->getIdLink());
         // sabiendo la calle defino el nodo final.
         calcularNodeFinal();
         // verificar si el nodo final es un nodo de evacucion.
@@ -540,7 +540,7 @@ void pedestrian::algoritmoSarsa() {
         antes que cambia a la nueva calle
         y nodoInicia es la intersecion incial actual empezando en la nueva calle*/
     // R
-    sarsaAlgorithm.setR(getReward());
+    sarsaAlgorithm.setR(reward);
     // QPrevious
     double QPrevious = nodeInicioAnterior->getStateMatrixTable().at(stateMatrixPedestrianAnterior.getIStateMatrixTable()).getQsValue().getQsVector().at(stateMatrixPedestrianAnterior.getActionValue().getILinkConnection());
     sarsaAlgorithm.setQPrevious(QPrevious);
@@ -646,18 +646,18 @@ void pedestrian::mostrarMovimientoPedestrian(){
 
       la persona.*/
     std::cout << getIdPedestrian() << ' ';
-    std::cout << std::setw(6) << getNodeInicio()->getIdNode() << ' ';
+    std::cout << std::setw(6) << nodeInicio->getIdNode() << ' ';
     std::cout << "start: ";
     // decimales para imprecion
     std::cout << std::fixed << std::setprecision(2);
-    std::cout << std::setw(5) << getNodeInicio()->getCoordenada().getX() << ' ';
-    std::cout << std::setw(5) << getNodeInicio()->getCoordenada().getY() << ' ';
+    std::cout << std::setw(5) << nodeInicio->getCoordenada().getX() << ' ';
+    std::cout << std::setw(5) << nodeInicio->getCoordenada().getY() << ' ';
     std::cout << "now: ";
-    std::cout << std::setw(5) << getPosition().getX() << " ";
-    std::cout << std::setw(5) << getPosition().getY() << " ";
+    std::cout << std::setw(5) << position.getX() << " ";
+    std::cout << std::setw(5) << position.getY() << " ";
     std::cout << "end: ";
-    std::cout << std::setw(5) << getNodeFinal()->getCoordenada().getX() << ' ';
-    std::cout << std::setw(5) << getNodeFinal()->getCoordenada().getY() << ' ';
+    std::cout << std::setw(5) << nodeFinal->getCoordenada().getX() << ' ';
+    std::cout << std::setw(5) << nodeFinal->getCoordenada().getY() << ' ';
     // std::cout << std::setw(5) << getReward() << ' ';
     std::cout << std::endl;
 }
@@ -665,12 +665,12 @@ void pedestrian::imprimirPedestrianPosition(std::fstream& file){
     // if (getEvacuado()) {
     // decimales para guardar en archivos.
     file << std::fixed << std::setprecision(2);
-    file << getPosition().getX() << " ";
-    file << getPosition().getY() << " ";
+    file << position.getX() << " ";
+    file << position.getY() << " ";
     file << std::endl;
     // }
 }
 void pedestrian::imprimirPedestrianVelocity(std::fstream& file){
-    file << getVelocidad().getMagnitud() << " ";
+    file << velocidad.getMagnitud() << " ";
     file << std::endl;
 }

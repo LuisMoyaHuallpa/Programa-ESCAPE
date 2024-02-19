@@ -13,13 +13,13 @@
 
 int main() {
     // leer controlDict
-    dictionary controDict("controlDict");
+    // dictionary controDict("controlDict");
     // imprimi malla de calles.
     links::get()->imprimirMeshLinks();
     // Lectura de simulaciones pasadas.
     stateMatrixs dbStateMatrixs;
     // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
-    dbStateMatrixs.leerDbStateMatrixs(stateMatrixs::simulationFile + dictionary::controlDict["previousComputationFile"]);
+    dbStateMatrixs.leerDbStateMatrixs(stateMatrixs::simulationFile + dictionary::get()->lookup("previousComputationFile"));
     // segun el número de simulaciones
     while (tiempo::get()->getINumberSimulation() <= tiempo::get()->getEndNumberSimulation()) {
         // loop para una evacuacion

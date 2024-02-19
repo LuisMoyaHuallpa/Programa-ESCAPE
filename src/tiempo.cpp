@@ -14,8 +14,8 @@ tiempo* tiempo::tiempoInstance = nullptr;
 tiempo::tiempo() {
     (*this).valorTiempo = 0;
     (*this).deltaT = 1;
-    (*this).graphicPrintoutPeriod = std::stoi(dictionary::controlDict["graphicPrintoutPeriod"]);
-    (*this).endTime = std::stoi(dictionary::controlDict["endTime"]);
+    (*this).graphicPrintoutPeriod = std::stoi(dictionary::get()->lookupDefault("graphicPrintoutPeriod"));
+    (*this).endTime = std::stoi(dictionary::get()->lookup("endTime"));
     inicializarNumberSimulation();
 }
 
@@ -88,7 +88,6 @@ void tiempo::aumentarTiempo() {
 }
 void tiempo::aumentarINumberSimulation() {
     setINumberSimulation(getINumberSimulation()+1);
-    std::cout << "T final: " << tiempo::get()->getValorTiempo() << std::endl;
     // reiniciar el tiempo
     tiempo::get()->setValorTiempo(0);
     // reiniciar el conteo de personas Evacuadas
@@ -101,14 +100,14 @@ void tiempo::aumentarINumberSimulation() {
 void tiempo::inicializarNumberSimulation() {
     /* Inicializar las variables de NumberSimulation*/
     // si lee archivos de estados pasados, si
-    if (dictionary::controlDict["computationContinued"] == "yes") {
-        if (dictionary::controlDict["stopSimulationAt"] == "endNumberSimulation") {
+    if (dictionary::get()->lookupDefault("computationContinued") == "yes") {
+        if (dictionary::get()->lookupDefault("stopSimulationAt") == "endNumberSimulation") {
             extractINumberSimulation();
-            endNumberSimulation = std::stoi(dictionary::controlDict["endNumberSimulation"]);
+            endNumberSimulation = std::stoi(dictionary::get()->lookup("endNumberSimulation"));
         }
-        else if (dictionary::controlDict["stopSimulationAt"] == "addNumberSimulation") {
+        else if (dictionary::get()->lookupDefault("stopSimulationAt") == "addNumberSimulation") {
             extractINumberSimulation();
-            endNumberSimulation = startNumberSimulation + std::stoi(dictionary::controlDict["addNumberSimulation"]);
+            endNumberSimulation = startNumberSimulation + std::stoi(dictionary::get()->lookup("addNumberSimulation"));
         }
     }
     // si no lee estados pasados
@@ -116,8 +115,8 @@ void tiempo::inicializarNumberSimulation() {
         // inicia el la simulacion 1
         startNumberSimulation = 1;
         iNumberSimulation = 1;
-        if (dictionary::controlDict["stopSimulationAt"] == "endNumberSimulation") {
-            endNumberSimulation = std::stoi(dictionary::controlDict["endNumberSimulation"]);
+        if (dictionary::get()->lookupDefault("stopSimulationAt") == "endNumberSimulation") {
+            endNumberSimulation = std::stoi(dictionary::get()->lookup("endNumberSimulation"));
         }
     }
     // iniciar el timer tiempo real de simulacion
@@ -127,8 +126,8 @@ void tiempo::inicializarNumberSimulation() {
 void tiempo::extractINumberSimulation() {
     /* Extrar el numero de simulacion actual segun el archivo sim de estados
         anteriores del control de la variable previousComputation*/
-    if (dictionary::controlDict.find("previousComputationFile") != dictionary::controlDict.end()) {
-        std::string lastFile_str = dictionary::controlDict["previousComputationFile"];   
+    if (dictionary::get()->getControlDict().find("previousComputationFile") != dictionary::get()->getControlDict().end()) {
+        std::string lastFile_str = dictionary::get()->lookup("previousComputationFile");   
         // busca el primer numero del 1-9 del nombre del archivo de estados
         size_t posicion = lastFile_str.find_first_of("123456789");
         int iLastFile = std::stoi(lastFile_str.substr(posicion));

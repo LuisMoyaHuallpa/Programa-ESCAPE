@@ -12,7 +12,7 @@ pedestrians* pedestrians::pedestriansInstance = nullptr;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 pedestrians::pedestrians() {
     // creacion de data de personas
-    leerPedestrians(dictionary::controlDict["populationsFile"]);
+    leerPedestrians(dictionary::get()->lookupDefault("populationsFile"));
     // tiempo de inicio segun la distribucion rayleigh
     tiempoInicioDistribution();
 }
@@ -23,7 +23,6 @@ pedestrians::pedestrians() {
 std::vector<pedestrian>& pedestrians::getDbPedestrianTotal() {
     return dbPedestrianTotal; 
 }
-
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static getters
