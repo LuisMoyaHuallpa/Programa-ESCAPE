@@ -55,8 +55,7 @@ void dictionary::leerDictionary() {
         std::cout << "Error opening the file " <<fileName << std::endl;
         exit(1);
     }
-
-        // Variables de una fila del archivo nodos, que seria un solo node
+    // Variables de una fila del archivo nodos, que seria un solo node
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // edad                 |-->| EDAD DE LA PERSONA
     // gender               |-->| GENERO DE LA PERSONA

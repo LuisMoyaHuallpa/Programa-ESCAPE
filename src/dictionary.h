@@ -33,6 +33,7 @@ private:
         {"populationsFile", "population.csv"},
         {"graphicPrintoutPeriod", "1"},
         {"computationContinued", "no"},
+        {"readPedestriansMassState", "no"},
         {"stopSimulationAt", "endNumberSimulation"}
     };
     std::map<std::string, std::string> controlDict;
