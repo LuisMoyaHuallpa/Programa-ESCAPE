@@ -3,6 +3,7 @@ import csv
 import matplotlib.pyplot as plt
 import os
 from matplotlib.animation import FuncAnimation
+from screeninfo import get_monitors
 
 pathMeshLink = "../mesh/poliLinks"
 x1_values = []
@@ -30,6 +31,12 @@ carpetas_numericas = [elemento
 carpetas_numericas_ordenadas = sorted(carpetas_numericas, key=int)
 width = 12
 height = 5
+# tamaño de figura
+screen_width = get_monitors()[0].width
+screen_height = get_monitors()[0].height
+width = screen_width/100
+height = screen_height/100
+
 fig, ax = plt.subplots(1, 1, figsize=(width, height))
 i_inicial = int(carpetas_numericas_ordenadas[0])
 
@@ -41,9 +48,11 @@ def actualizar(i):
     print(i)
     fileName = directorio_principal + str(i) + "/xy"
     fileName2 = directorio_principal + str(i) + "/U"
+    fileName3 = directorio_principal + str(i) + "/cantPedestrianEvacuated"
     x_values = []
     y_values = []
     magnitud = []
+    cantPedestrianEvacuated = []
 
     with open(fileName, 'r') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=' ')
@@ -56,16 +65,24 @@ def actualizar(i):
         for row in csv_reader:
             magnitud.append(float(row[0]))
 
+    with open(fileName3, 'r') as csv_file3:
+        csv_reader = csv.reader(csv_file3, delimiter=' ')
+        for row in csv_reader:
+            cantPedestrianEvacuated.append(float(row[0]))
+
+    # lineas o calles
     ax.plot([x1_values, x2_values], [y1_values, y2_values], c="k", lw=1)
     vmin, vmax = 0.0, 1.3
+    # puntos o personas
     scatter = ax.scatter(x_values, y_values, c=magnitud,
                          cmap="jet_r", marker='o', edgecolors="none",
                          vmin=vmin, vmax=vmax)
-    # text_esquina = "t = " + str(i) + "seg; evacuted: "
-    # fig.text(0.05, 0.03, text_esquina, fontsize=12, fontweight='normal')
-    ax.set_xlabel(
-        't= {time} seg; evacuted:'.format(
-            time=i))
+    # texto
+    cantPeEv = str(int(cantPedestrianEvacuated[0]))
+    text1 = "t = " + str(i) + " seg; evacuated: " + cantPeEv
+    ax.text(0.05, 0.03, text1, fontsize=12, fontweight='normal',
+            transform=ax.transAxes)
+
     ax.xaxis.set_label_coords(0, -0.06)
     if i == i_inicial:
         cax = fig.add_axes([0.93, 0.1, 0.02, 0.8])

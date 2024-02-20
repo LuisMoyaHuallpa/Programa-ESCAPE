@@ -101,13 +101,17 @@ void tiempo::inicializarNumberSimulation() {
     /* Inicializar las variables de NumberSimulation*/
     // si lee archivos de estados pasados, si
     if (dictionary::get()->lookupDefault("computationContinued") == "yes") {
-        if (dictionary::get()->lookupDefault("stopSimulationAt") == "endNumberSimulation") {
+        if (dictionary::get()->lookup("stopSimulationAt") == "endNumberSimulation") {
             extractINumberSimulation();
             endNumberSimulation = std::stoi(dictionary::get()->lookup("endNumberSimulation"));
+            startNumberSimulation = startNumberSimulation + 1;
+            iNumberSimulation = startNumberSimulation;
         }
-        else if (dictionary::get()->lookupDefault("stopSimulationAt") == "addNumberSimulation") {
+        else if (dictionary::get()->lookup("stopSimulationAt") == "addNumberSimulation") {
             extractINumberSimulation();
-            endNumberSimulation = startNumberSimulation + std::stoi(dictionary::get()->lookup("addNumberSimulation"));
+            endNumberSimulation = startNumberSimulation  + std::stoi(dictionary::get()->lookup("addNumberSimulation"));
+            startNumberSimulation = startNumberSimulation + 1;
+            iNumberSimulation = startNumberSimulation;
         }
     }
     // si no lee estados pasados
@@ -131,12 +135,8 @@ void tiempo::extractINumberSimulation() {
         // busca el primer numero del 1-9 del nombre del archivo de estados
         size_t posicion = lastFile_str.find_first_of("123456789");
         int iLastFile = std::stoi(lastFile_str.substr(posicion));
-        startNumberSimulation = iLastFile;
-        iNumberSimulation = iLastFile;
-    }
-    else {
-        std::cout << "'previousComputationFile' no está presente en el controDict." << std::endl;
-        exit(1);
+        startNumberSimulation = iLastFile ;
+        // iNumberSimulation = iLastFile + 1;
     }
 }
 void tiempo::calcularRandomChoiceRate() {
