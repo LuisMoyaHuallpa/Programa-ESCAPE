@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Directorio en el que se encuentra este archivo
+directory="$(dirname "$0")"
+
+# Nombre del archivo que deseas conservar
+file_to_keep="sim_000006000.csv"
+
+# Encuentra todos los archivos CSV en el directorio
+files_to_delete=$(find "$directory" -type f -name "*.csv" ! -name "$file_to_keep")
+
+# Elimina los archivos encontrados
+echo "Eliminando archivos CSV:"
+echo "$files_to_delete" | while IFS= read -r file; do
+    echo "$file"
+    rm "$file"
+done
+
+echo "Archivos CSV eliminados."
