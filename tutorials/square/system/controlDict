@@ -6,21 +6,23 @@ populationsFile  population.csv;
 
 stopAt          endTime;
 
-endTime         200;
+endTime         800;
 
 deltaT          1;
 
-graphicPrintoutPeriod 5;
+graphicPrintoutPeriod 1;
 
 listingPrintoutPeriod 1;
 
-computationContinued  	no;
+# computationContinued  	yes;
 
-previousComputationFile	sim_000000006.csv;
+previousComputationFile	sim_000006000.csv;
 
 stopSimulationAt          endNumberSimulation;
 
-endNumberSimulation 1;
+endNumberSimulation 200;
+
+readPedestriansMassState no;
 
 # stopSimulationAt          addNumberSimulation;
 

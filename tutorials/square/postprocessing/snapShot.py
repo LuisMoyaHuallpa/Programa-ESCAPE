@@ -35,6 +35,7 @@ carpetas_numericas_ordenadas = sorted(carpetas_numericas, key=int)
 
 bar = progressbar.ProgressBar(maxval=len(carpetas_numericas_ordenadas)).start()
 bar = progressbar.ProgressBar(maxval=len(carpetas_numericas_ordenadas)).start()
+# tamaño de figura
 screen_width = get_monitors()[0].width
 screen_height = get_monitors()[0].height
 width = screen_width/100
