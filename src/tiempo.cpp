@@ -122,6 +122,9 @@ void tiempo::inicializarNumberSimulation() {
         if (dictionary::get()->lookupDefault("stopSimulationAt") == "endNumberSimulation") {
             endNumberSimulation = std::stoi(dictionary::get()->lookup("endNumberSimulation"));
         }
+        else{
+            endNumberSimulation = startNumberSimulation  + std::stoi(dictionary::get()->lookup("addNumberSimulation"));
+        }
     }
     // iniciar el timer tiempo real de simulacion
     startTimeSimulation = std::chrono::high_resolution_clock::now();
