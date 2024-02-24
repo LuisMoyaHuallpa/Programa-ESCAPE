@@ -10,16 +10,24 @@
 #include "pedestrian.h"
 #include "pedestrians.h"
 #include "dictionary.h"
+#include "chrono"
 
 int main() {
     // leer controlDict
     // dictionary controDict("controlDict");
     // imprimi malla de calles.
     links::get()->imprimirMeshLinks();
+
+    auto start = std::chrono::high_resolution_clock::now();
     // Lectura de simulaciones pasadas.
-    stateMatrixs dbStateMatrixs;
+    // stateMatrixs dbStateMatrixs;
     // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
-    dbStateMatrixs.leerDbStateMatrixs(stateMatrixs::simulationFile + dictionary::get()->lookup("previousComputationFile"));
+    stateMatrixs::get()->leerDbStateMatrixs();
+    auto stop = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::seconds>(stop - start);
+    std::cout << duration.count() << std::endl;
+    std::cout << "Duración lectura: " << duration.count() << " s" << std::endl;
+
     // segun el número de simulaciones
     while (tiempo::get()->getINumberSimulation() <= tiempo::get()->getEndNumberSimulation()) {
         // loop para una evacuacion
@@ -42,7 +50,7 @@ int main() {
             // pedestrians::get()->reset();
         }
         // Imprimir estados al terminar la simulación
-        dbStateMatrixs.imprimirDbStateMatrixs();
+        stateMatrixs::get()->imprimirDbStateMatrixs();
         // mostrar resultados simulation
         tiempo::get()->mostrarIResultadosSimulacion();
         // aumentar el numero de simulacion y reinciar

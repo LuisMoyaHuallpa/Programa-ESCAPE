@@ -3,6 +3,20 @@
 #include "pedestrian.h"
 #include "stateMatrix.h"
 #include "tiempo.h"
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// static member
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+stateMatrixs* stateMatrixs::stateMatrixsInstance = nullptr;
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// constructor
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+stateMatrixs::stateMatrixs() {
+    // setINumeroSimulacion(1);
+    leerDbStateMatrixs();
+    // Lectura de la ultima simulacion.
+    // leerDbStateMatrixs(simulationFile + dictionary::controlDict["previousComputationFile"]); 
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static
@@ -10,14 +24,6 @@
 // Nombre del la carpeta donde estan las simulaciones.
 const std::string stateMatrixs::simulationFile = "stateMatrices/";
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// constructor
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-stateMatrixs::stateMatrixs() {
-    setINumeroSimulacion(1);
-    // Lectura de la ultima simulacion.
-    // leerDbStateMatrixs(simulationFile + dictionary::controlDict["previousComputationFile"]); 
-}
 // stateMatrixs::stateMatrixs(nodes* dbNode) {
 //     // dbNode contiene todos los nodos de la simulacion
 //     (*this).dbNode = dbNode;
@@ -28,16 +34,24 @@ stateMatrixs::stateMatrixs() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // setters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void stateMatrixs::setINumeroSimulacion(int iNumeroSimulacion) {
-    (*this).iNumeroSimulacion = iNumeroSimulacion;
-}
+
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-int stateMatrixs::getINumeroSimulacion() {
-    return iNumeroSimulacion;
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// static getters
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+stateMatrixs* stateMatrixs::get() {
+    /* si aun no existe crea la unica instancia de nodes*/
+    if (!stateMatrixsInstance) {
+        stateMatrixsInstance =  new stateMatrixs();
+    }
+    return stateMatrixsInstance;
 }
+
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
@@ -105,17 +119,17 @@ std::string stateMatrixs::fileNameSalida() {
 void stateMatrixs::agregarStateMatrix(stateMatrix stateMatrixElement) {
     dbStateMatrixs.push_back(stateMatrixElement);
 }
-void stateMatrixs::leerDbStateMatrixs(std::string filename) {
+void stateMatrixs::leerDbStateMatrixs() {
     // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
     // if (dictionary::controlDict["computationContinued"] == "yes") {
     if (dictionary::get()->lookupDefault("computationContinued") == "yes") {
         /* Lectura de datos de una simulación pasada.*/
         std::fstream file;
-        file.open(filename, std::ios::in);
-        if (file.fail()) {
-            std::cout << "Error al abrir el archivo: " << filename << std::endl;
-            exit(1);
-        }
+        file.open(simulationFile + dictionary::get()->lookup("previousComputationFile"), std::ios::in);
+        // if (file.fail()) {
+        //     std::cout << "Error al abrir el archivo: " <<  << std::endl;
+        //     exit(1);
+        // }
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         // iLinkConnection          |-->| POSICION EN EL ARREGLO linkConection
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -132,7 +146,6 @@ void stateMatrixs::leerDbStateMatrixs(std::string filename) {
         // stateMatrixLeido |-->| CLASS SE CREA Y LUEGO SE DESTRUYE DENTRO DE ESTE
         // AMBITO
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        const int cantidadColumnasCsv = 10;
         // id podria pasar unsigned short int
         int idNode;
         int s;
@@ -144,6 +157,8 @@ void stateMatrixs::leerDbStateMatrixs(std::string filename) {
         std::string Q_str;
         std::string o1_str, o2_str, o3_str, o4_str, o5_str, o6_str, o7_str, o8_str, o9_str, o10_str; 
         stateMatrix stateMatrixLeido;
+        state stateLeido;
+        Qs QsLeido;
         // Recorre todas las line del archivo.
         while (std::getline(file, line)) {
             // Si el archivo tiene comentarios con #, no leerlos.
@@ -158,8 +173,7 @@ void stateMatrixs::leerDbStateMatrixs(std::string filename) {
             idNode = std::stoi(idNode_str);
             // !-----------------------------------------------------------------------
             // Guarda los elementos de state
-            state stateLeido;
-            for (int i = 0; i < cantidadColumnasCsv; ++i) {
+            for (int i = 0; i < stateMatrix::tamanoVectorIO; ++i) {
                 if (i < nodes::get()->getDbNodeTotal().at(idNode)->getIdLinkConnection().size()) {
                     std::getline(iss, s_str, ',');
                     s = std::stoi(s_str);
@@ -172,8 +186,6 @@ void stateMatrixs::leerDbStateMatrixs(std::string filename) {
             stateMatrixLeido.setStateValue(stateLeido);
             // !-----------------------------------------------------------------------
             // Elementos de Q
-            std::vector<double> Qvector;
-            Qs QsLeido;
             for (int i = 0; i < stateMatrix::getTamanoVector(); ++i) {
                 if (i < nodes::get()->getDbNodeTotal().at(idNode)->getIdLinkConnection().size()) {
                     std::getline(iss, Q_str, ',');
