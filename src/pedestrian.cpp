@@ -18,10 +18,10 @@ const int pedestrian::stepReward = -1;
 //     (*this).hhId = 0;
 // }
 pedestrian::pedestrian(int edad, int gender, int hhType, int hhId,node* nodeArranque)
-    : idPedestrian(contador++), edad(edad), gender(gender), hhType(hhType), hhId(hhId), nodeInicio(nullptr),
-      nodeFinal(nullptr), nodeInicioAnterior(nullptr), direccionPedestrian(),
+    : idPedestrian(contador++), edad(edad), gender(gender), hhType(hhType), hhId(hhId),
+      nodeArranque(nodeArranque), nodeInicio(nullptr), nodeFinal(nullptr), nodeInicioAnterior(nullptr),
+      direccionPedestrian(),
       velocidad(), stateMatrixPedestrian(), stateMatrixPedestrianAnterior(), sarsaAlgorithm() {
-    setNodeArranque(nodeArranque);
     setNodeInicio(nodeArranque);
     setTiempoInicial(0);
     // setNodeAnterior(nodeInicio);
@@ -48,9 +48,6 @@ pedestrian::pedestrian(int edad, int gender, int hhType, int hhId,node* nodeArra
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void pedestrian::setPosition(vector2D position) {
     (*this).position = position;
-}
-void pedestrian::setNodeArranque(node* nodeArranque) {
-    (*this).nodeArranque = nodeArranque; 
 }
 void pedestrian::setNodeInicio(node* nodeInicio){
     (*this).nodeInicio = nodeInicio;
@@ -125,7 +122,7 @@ int pedestrian::getHHId() const{
 vector2D pedestrian::getPosition() {
     return position;
 }
-node* pedestrian::getNodeArranque() {
+const node* pedestrian::getNodeArranque() {
     return nodeArranque;
 }
 node* pedestrian::getNodeInicio() const{

@@ -53,7 +53,7 @@ private:
     const int hhType;
     const int hhId;
     vector2D position;
-    node* nodeArranque;
+    const node* nodeArranque;
     node* nodeInicio;
     node* nodeFinal;
     node* nodeInicioAnterior;
@@ -95,7 +95,6 @@ public:
     // setters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void setPosition(vector2D position);
-    void setNodeArranque(node* nodeArranque);
     void setNodeInicio(node* nodeInicio);
     void setNodeFinal(node* nodeFinal);
     void setNodeInicioAnterior(node* nodeInicioAnterior);
@@ -124,7 +123,7 @@ public:
     int getHHType() const;
     int getHHId() const;
     vector2D getPosition();
-    node* getNodeArranque();
+    const node* getNodeArranque();
     node* getNodeInicio() const;
     node* getNodeFinal();
     node* getNodeInicioAnterior();
