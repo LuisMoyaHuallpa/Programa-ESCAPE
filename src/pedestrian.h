@@ -47,11 +47,11 @@ private:
     // evacuado            |-->| LA PERSONA QUE LLEGO A UN PUNTO DE EVACUACION
     // retorno             |-->| PODRIA COMO LA GANANCIA TOTAL 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    int idPedestrian;
-    int edad;
-    int gender;
-    int hhType;
-    int hhId;
+    const int idPedestrian;
+    const int edad;
+    const int gender;
+    const int hhType;
+    const int hhId;
     vector2D position;
     node* nodeArranque;
     node* nodeInicio;
@@ -88,17 +88,12 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    pedestrian();
+    // pedestrian();
     pedestrian(int edad, int gender, int hhType, int hhId, node* nodeArranque);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // setters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    void setIdPedestrian(int idPedestrian);
-    void setEdad(int edad);
-    void setGender(int gender);
-    void setHHType(int hhType);
-    void setHHId(int hhId);
     void setPosition(vector2D position);
     void setNodeArranque(node* nodeArranque);
     void setNodeInicio(node* nodeInicio);

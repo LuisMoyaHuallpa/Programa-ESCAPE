@@ -123,7 +123,7 @@ void tiempo::inicializarNumberSimulation() {
             endNumberSimulation = std::stoi(dictionary::get()->lookup("endNumberSimulation"));
         }
         else{
-            endNumberSimulation = startNumberSimulation  + std::stoi(dictionary::get()->lookup("addNumberSimulation"));
+            endNumberSimulation = std::stoi(dictionary::get()->lookup("addNumberSimulation"));
         }
     }
     // iniciar el timer tiempo real de simulacion
@@ -139,7 +139,6 @@ void tiempo::extractINumberSimulation() {
         size_t posicion = lastFile_str.find_first_of("123456789");
         int iLastFile = std::stoi(lastFile_str.substr(posicion));
         startNumberSimulation = iLastFile ;
-        // iNumberSimulation = iLastFile + 1;
     }
 }
 void tiempo::calcularRandomChoiceRate() {
