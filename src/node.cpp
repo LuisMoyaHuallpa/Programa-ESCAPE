@@ -1,21 +1,18 @@
 #include "node.h"
+#include "link.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// node::node() : coordenada() {
-//     (*this).idNode = 0;
-// }
 node::node(int idNode, vector2D coordenada) :
     idNode(idNode), coordenada(coordenada){
-    // setIdNode(idNode);
-    // setCoordenada(coordenada);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // destrutor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // node::~node(){}
+
 std::string node::getNodeType() {
     return "node";
 }
@@ -23,9 +20,6 @@ std::string node::getNodeType() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // setters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// void node::setIdNode(int idNode) {
-//     (*this).idNode = idNode;
-// }
 void node::setIdLinkConnection(std::vector<int> idLinkConnection) {
     (*this).idLinkConnection = idLinkConnection;
 }
@@ -45,6 +39,9 @@ const vector2D node::getCoordenada() const{
 std::vector<int>& node::getIdLinkConnection() {
     return idLinkConnection;  
 }
+std::vector<link*>& node::getLinkConnection() {
+    return linkConnection;  
+}
 std::vector<stateMatrix>& node::getStateMatrixTable() {
     return stateMatrixTable;
 }
@@ -52,9 +49,6 @@ std::vector<stateMatrix>& node::getStateMatrixTable() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// void node::agregarLink(link* link) {
-//     // linkConnection.push_back(link);
-// }
 void node::buscarStateMatrix(stateMatrix stateMatrixBuscando, bool& verificarStateMatrix, int& iStateMatrixTable) {
     /* recorre la tabla de stateMatrix en busqueda del elemento stateMatrixBuscando  */
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -73,11 +67,6 @@ void node::buscarStateMatrix(stateMatrix stateMatrixBuscando, bool& verificarSta
 // void node::addqQTable(stateActionQ qElemento) {
 //     qTable.push_back(qElemento); 
 // }
-void node::addIdLinkConnection(int idLink) {
-    // Añade un idLink, identificador de calle, al vector de idLinkConnection,
-    // donde estas todas las calles con posible coneccion
-    idLinkConnection.push_back(idLink); 
-}
 // void node::ordenarQTable() {
 //     std::sort(qTable.begin(), qTable.end(), stateActionQ::compararId);
 // }
@@ -123,8 +112,8 @@ void node::mostrarNode() {
     std::cout << "x: " << coordenada.getX() << " ";
     std::cout << "y: " << coordenada.getY() << std::endl;
     std::cout << "linkConnections: ";
-    for (int i = 0; i < idLinkConnection.size(); i++) {
-        std::cout << idLinkConnection.at(i) << " "; 
+    for (int i = 0; i < linkConnection.size(); i++) {
+        std::cout << linkConnection.at(i)->getIdLink() << " "; 
     }
     std::cout << std::endl;
 }

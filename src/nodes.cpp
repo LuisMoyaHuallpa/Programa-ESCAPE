@@ -1,7 +1,4 @@
 #include "nodes.h"
-#include "dictionary.h"
-#include <memory>
-#include <vector>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member

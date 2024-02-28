@@ -119,10 +119,10 @@ void pedestrians::tiempoInicioDistribution() {
 void pedestrians::contarPedestriansInSublink() {
     /* cuenta la personas que no han sido evacuadas y hayan empezado a caminar
         solo donde hay personas*/ 
-    for (int i = 0; i < dbPedestrianTotal.size(); i++) {
-        if (!dbPedestrianTotal.at(i).getEvacuado()and
-        tiempo::get()->getValorTiempo() > dbPedestrianTotal.at(i).getTiempoInicial()) {
-            dbPedestrianTotal.at(i).contarPedestrianInSublink(); 
+    for (auto it = dbPedestrianTotal.begin(); it != dbPedestrianTotal.end(); ++it) {
+        if (!it->getEvacuado()and
+        tiempo::get()->getValorTiempo() > it->getTiempoInicial()) {
+            it->contarPedestrianInSublink(); 
         }
     }
 }
@@ -135,8 +135,8 @@ void pedestrians::reiniciarPedestriansNodeArranque() {
 }
 void pedestrians::modelamientoPedestrians() {
     //  
-    for (int i = 0; i < dbPedestrianTotal.size(); i++) {
-        dbPedestrianTotal.at(i).modelamientoPedestrian();
+    for (auto it = dbPedestrianTotal.begin(); it != dbPedestrianTotal.end(); ++it) {
+        it->modelamientoPedestrian();
     }
 }
 void pedestrians::mostrarDbPedestrianTotal() {

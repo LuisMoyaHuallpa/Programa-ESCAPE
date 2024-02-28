@@ -77,16 +77,6 @@ bool stateMatrix::operator==(stateMatrix stateMatrix2) {
     }
     return false;
 }
-// void stateMatrix::agregarQ(int i, double Q) {
-//     QVector[i] = Q;
-//     std::cout << Q << std::endl;
-//     std::cout << QVector[i] << std::endl;
-//     std::cout << i << std::endl;
-//     for (int i = 0; i < QVector.size(); i++) {
-//         std::cout << getQVector().at(i) << ",";
-//     }
-
-// }
 // void stateMatrix::enviarDataNode(node* nodeAGuardar) {
     // Envia los datos leidos del csv al QTable de cada nodo.
     // for (int i = 0; i < stateValue.getDensityLinks().size(); i++) {

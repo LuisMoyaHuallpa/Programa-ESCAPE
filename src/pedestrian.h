@@ -59,19 +59,11 @@ private:
     node* nodeInicioAnterior;
     link* linkActual;
     link* linkPasado;
-    // vector2D orientacion;
     vector2D direccionPedestrian;
     vector2DVelocidad velocidad;
     int tiempoInicial;
     stateMatrix stateMatrixPedestrian;
     stateMatrix stateMatrixPedestrianAnterior;
-    
-    // stateActionQ* qStateAction;
-    // vector2D orientacionLinkPasado;
-    // int tiempoFinal;
-    // bool empezoCaminar;
-    // bool primerTiempo;
-    // bool saltoLink;
     bool evacuado;
     int reward;
     sarsa sarsaAlgorithm;

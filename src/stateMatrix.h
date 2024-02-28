@@ -75,7 +75,6 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     bool operator==(stateMatrix stateMatrix2);
-    void agregarQ(int i, double Q);
     void mostrarStateMatrix();
     void imprimirStateMatrix(std::fstream& file);
 

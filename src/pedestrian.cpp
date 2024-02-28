@@ -234,7 +234,8 @@ void pedestrian::eleccionRandomLinkActual() {
     // Crear una distribución uniforme usando el rango especificado
     std::uniform_int_distribution<int> distribucion(0, limite_max);
     int numero_aleatorio = distribucion(generador);
-    setLinkActual(links::get()->getDbLinkTotal().at(getNodeInicio()->getIdLinkConnection().at(numero_aleatorio)).get());
+    // setLinkActual(links::get()->getDbLinkTotal().at(nodeInicio->getIdLinkConnection().at(numero_aleatorio)).get());
+    setLinkActual(nodeInicio->getLinkConnection().at(numero_aleatorio));
     // enviando informacion de action al stateMatrix
     stateMatrixPedestrian.getActionValue().setILinkConnection(numero_aleatorio);
     stateMatrixPedestrian.getActionValue().setIdLink(linkActual->getIdLink());
@@ -247,7 +248,8 @@ void pedestrian::eleccionDosCallesContinuas() {
     // linkActual es la calle a punto de cambiar
     if (!(nodeInicio->getIdLinkConnection().at(0) == linkActual->getIdLink())) {
         // setLinkActual(&dbLinkTotal.at(getNodeInicio()->getIdLinkConnection().at(0)));
-        setLinkActual(links::get()->getDbLinkTotal().at(getNodeInicio()->getIdLinkConnection().at(0)).get());
+        // setLinkActual(links::get()->getDbLinkTotal().at(getNodeInicio()->getIdLinkConnection().at(0)).get());
+        setLinkActual(nodeInicio->getLinkConnection().at(0));
         // enviando informacion de action al stateMatrix
         stateMatrixPedestrian.getActionValue().setILinkConnection(0);
         stateMatrixPedestrian.getActionValue().setIdLink(linkActual->getIdLink());
@@ -258,10 +260,11 @@ void pedestrian::eleccionDosCallesContinuas() {
     }
     else {
         // setLinkActual(&dbLinkTotal.at(getNodeInicio()->getIdLinkConnection().at(1)));
-        setLinkActual(links::get()->getDbLinkTotal().at(getNodeInicio()->getIdLinkConnection().at(1)).get());
+        // setLinkActual(links::get()->getDbLinkTotal().at(getNodeInicio()->getIdLinkConnection().at(1)).get());
+        setLinkActual(nodeInicio->getLinkConnection().at(0));
         // enviando informacion de action al stateMatrix
-        getStateMatrixPedestrian().getActionValue().setILinkConnection(1);
-        getStateMatrixPedestrian().getActionValue().setIdLink(linkActual->getIdLink());
+        stateMatrixPedestrian.getActionValue().setILinkConnection(1);
+        stateMatrixPedestrian.getActionValue().setIdLink(linkActual->getIdLink());
         // sabiendo la calle defino el nodo final.
         calcularNodeFinal();
         // verificar si el nodo final es un nodo de evacucion.
@@ -282,10 +285,11 @@ void pedestrian::eleccionSarsa() {
     // nodeInicio->getStateMatrixTable().at(size_type __n)
     // std::cout << "Qmenor: " << nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().at(iQmenor) << std::endl;
     // setLinkActual(&dbLinkTotal.at(getNodeInicio()->getIdLinkConnection().at(iQmenor)));
-    setLinkActual(links::get()->getDbLinkTotal().at(getNodeInicio()->getIdLinkConnection().at(iQmenor)).get());
+    // setLinkActual(links::get()->getDbLinkTotal().at(getNodeInicio()->getIdLinkConnection().at(iQmenor)).get());
+    setLinkActual(nodeInicio->getLinkConnection().at(iQmenor));
     // enviando informacion de action al stateMatrix
-    getStateMatrixPedestrian().getActionValue().setILinkConnection(iQmenor);
-    getStateMatrixPedestrian().getActionValue().setIdLink(linkActual->getIdLink());
+    stateMatrixPedestrian.getActionValue().setILinkConnection(iQmenor);
+    stateMatrixPedestrian.getActionValue().setIdLink(linkActual->getIdLink());
     // sabiendo la calle defino el nodo final.
     calcularNodeFinal();
     // verificar si el nodo final es un nodo de evacucion.
@@ -493,7 +497,7 @@ void pedestrian::modelamientoPedestrian() {
 void pedestrian::mostrarMovimientoPedestrian(){
     /* muestra la interseccion de partida y final de una calle, cuando
         la persona.*/
-    std::cout << getIdPedestrian() << ' ';
+    std::cout << idPedestrian << ' ';
     std::cout << std::setw(6) << nodeInicio->getIdNode() << ' ';
     std::cout << "start: ";
     // decimales para imprecion

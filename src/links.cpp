@@ -95,8 +95,8 @@ void links::leerLinks(std::string fileName){
         dbLinkTotal.push_back(std::move(linkNuevo));
         node1->getIdLinkConnection().push_back(idLink);
         node2->getIdLinkConnection().push_back(idLink);
-        // nodes::get()->getDbNodeTotal().at(idNode1)->addIdLinkConnection(idLink);
-        // nodes::get()->getDbNodeTotal().at(idNode2)->addIdLinkConnection(idLink);
+        node1->getLinkConnection().push_back(dbLinkTotal.back().get());
+        node2->getLinkConnection().push_back(dbLinkTotal.back().get());
     }
     file.close(); 
 }
@@ -107,6 +107,9 @@ void links::calcularDensityLevelLinks() {
     }
 }
 void links::resetSublinks() {
+    /* reinicia valores de conteo de sublink*/
+    // no hacerlo si estas en la ultima simulaciones, debido a que ya las personas se movieron y no
+    // necesitaran esta información
     for (int i = 0; i < dbLinkTotal.size(); i++) {
         dbLinkTotal.at(i)->getPedestriansInSublink().assign(link::numberDivisiones, 0);
     }

@@ -18,6 +18,9 @@ Punto de interseccion de calles.
 #include "stateMatrix.h"
 #include "vector2D.h"
 
+// forward declaration
+class link;
+
 class node {
 private:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -30,6 +33,7 @@ private:
     const int idNode;
     const vector2D coordenada;
     std::vector<int> idLinkConnection;
+    std::vector<link*> linkConnection;
     std::vector<stateMatrix> stateMatrixTable;
 
 public:
@@ -63,16 +67,15 @@ public:
     int getIdNode() const;
     const vector2D getCoordenada() const;
     std::vector<int>& getIdLinkConnection();
+    std::vector<link*>& getLinkConnection();
     std::vector<stateMatrix>& getStateMatrixTable();
     // int getRewardCode() const;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // void agregarLink(link* link);
     void buscarStateMatrix(stateMatrix stateMatrixBuscando, bool& verificarStateMatrix, int& iStateMatrixTable);
     // void addqQTable(stateActionQ qElemento);
-    void addIdLinkConnection(int idLink);
     // void ordenarQTable();
     // void crearStateMatrix();
     bool verificarCambioState(state stateAnterior, state stateActual);
