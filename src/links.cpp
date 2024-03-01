@@ -93,8 +93,8 @@ void links::leerLinks(std::string fileName){
         node* node2 =nodes::get()->getDbNodeTotal().at(idNode2).get();
         std::unique_ptr<link> linkNuevo = std::make_unique<link>(idLink, node1, node2, lengthLink, widthLink);
         dbLinkTotal.push_back(std::move(linkNuevo));
-        node1->getIdLinkConnection().push_back(idLink);
-        node2->getIdLinkConnection().push_back(idLink);
+        // node1->getIdLinkConnection().push_back(idLink);
+        // node2->getIdLinkConnection().push_back(idLink);
         node1->getLinkConnection().push_back(dbLinkTotal.back().get());
         node2->getLinkConnection().push_back(dbLinkTotal.back().get());
     }

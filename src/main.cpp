@@ -17,6 +17,7 @@ int main() {
     // dictionary controDict("controlDict");
     // imprimi malla de calles.
 
+    
     links::get()->imprimirMeshLinks();
 
     auto start = std::chrono::high_resolution_clock::now();
@@ -56,6 +57,7 @@ int main() {
         tiempo::get()->mostrarIResultadosSimulacion();
         // aumentar el numero de simulacion y reinciar
         tiempo::get()->aumentarINumberSimulation();
+
     }
 }
 

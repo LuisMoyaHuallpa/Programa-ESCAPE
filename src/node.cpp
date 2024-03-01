@@ -20,9 +20,9 @@ std::string node::getNodeType() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // setters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void node::setIdLinkConnection(std::vector<int> idLinkConnection) {
-    (*this).idLinkConnection = idLinkConnection;
-}
+// void node::setIdLinkConnection(std::vector<int> idLinkConnection) {
+//     (*this).idLinkConnection = idLinkConnection;
+// }
 void node::setStateMatrixTable(std::vector<stateMatrix> stateMatrixTable) {
     (*this).stateMatrixTable = stateMatrixTable;  
 }
@@ -36,9 +36,9 @@ int node::getIdNode() const{
 const vector2D node::getCoordenada() const{
     return coordenada;
 }
-std::vector<int>& node::getIdLinkConnection() {
-    return idLinkConnection;  
-}
+// std::vector<int>& node::getIdLinkConnection() {
+//     return idLinkConnection;  
+// }
 std::vector<link*>& node::getLinkConnection() {
     return linkConnection;  
 }

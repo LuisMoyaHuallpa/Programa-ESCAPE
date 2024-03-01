@@ -230,7 +230,7 @@ void pedestrian::eleccionRandomLinkActual() {
     std::random_device rd;
     // Algoritmo Motor Mersenne Twister
     std::mt19937 generador(rd());
-    int limite_max = nodeInicio->getIdLinkConnection().size() - 1 ;
+    int limite_max = nodeInicio->getLinkConnection().size() - 1 ;
     // Crear una distribución uniforme usando el rango especificado
     std::uniform_int_distribution<int> distribucion(0, limite_max);
     int numero_aleatorio = distribucion(generador);
@@ -246,7 +246,7 @@ void pedestrian::eleccionRandomLinkActual() {
 }
 void pedestrian::eleccionDosCallesContinuas() {
     // linkActual es la calle a punto de cambiar
-    if (!(nodeInicio->getIdLinkConnection().at(0) == linkActual->getIdLink())) {
+    if (!(nodeInicio->getLinkConnection().at(0)->getIdLink() == linkActual->getIdLink())) {
         // setLinkActual(&dbLinkTotal.at(getNodeInicio()->getIdLinkConnection().at(0)));
         // setLinkActual(links::get()->getDbLinkTotal().at(getNodeInicio()->getIdLinkConnection().at(0)).get());
         setLinkActual(nodeInicio->getLinkConnection().at(0));
@@ -424,11 +424,12 @@ void pedestrian::calcularLevelDensityAtNode() {
     /* cuando una persona llega a una interseccion debe saber los estados de las
         diferentes calle, esta informacion se enviará a objeto stateMatrix */
     // crear el vector densidad segun el tamaño del LinkConnection de donde nodo donde esta
-    stateMatrixPedestrian.getStateValue().getDensityLinks().resize(nodeInicio->getIdLinkConnection().size(), 0);
+    stateMatrixPedestrian.getStateValue().getDensityLinks().resize(nodeInicio->getLinkConnection().size(), 0);
     // stateMatrixPedestrian.getQsValue().getQsVector().resize(nodeInicio->getIdLinkConnection().size(), 0);
     // ya sabiendo los estados de cada calle, utilizo los de linkConnection y los envio al stateMatrixPedestrian
-    for (int i = 0; i < nodeInicio->getIdLinkConnection().size(); i++) {
-        stateMatrixPedestrian.getStateValue().getDensityLinks().at(i) = links::get()->getDbLinkTotal().at(nodeInicio->getIdLinkConnection().at(i))->getDensityLevel();
+    for (int i = 0; i < nodeInicio->getLinkConnection().size(); i++) {
+        // stateMatrixPedestrian.getStateValue().getDensityLinks().at(i) = links::get()->getDbLinkTotal().at(nodeInicio->getIdLinkConnection().at(i))->getDensityLevel();
+        stateMatrixPedestrian.getStateValue().getDensityLinks().at(i) = nodeInicio->getLinkConnection().at(i)->getDensityLevel();
     }
     // con el stateMatrixPedestrian lo busco en la tabla de Q del nodo de Inicio de la nueva calle
     bool verificarStateMatrix = false;
@@ -441,7 +442,7 @@ void pedestrian::calcularLevelDensityAtNode() {
     // no lo encuentra, se agrega el estado y se guarda la posicion de la tabla
     else {
         // crea el vector Q segun LinkConnection
-        stateMatrixPedestrian.getQsValue().getQsVector().resize(nodeInicio->getIdLinkConnection().size(), 0);
+        stateMatrixPedestrian.getQsValue().getQsVector().resize(nodeInicio->getLinkConnection().size(), 0);
         // agrega el nuevo estado
         nodeInicio->getStateMatrixTable().push_back(stateMatrixPedestrian);
         // se setea iStateMatrixTable despues de agregarlo al stateMatrixTable para que cuente bien
@@ -462,7 +463,7 @@ void pedestrian::stateMatrixtoTableAtNode() {
     // no lo encuentra, se agrega el estado y se guarda la posicion de la tabla
     else {
         // crea el vector Q segun LinkConnection
-        stateMatrixPedestrian.getQsValue().getQsVector().resize(nodeInicio->getIdLinkConnection().size(), 0);
+        stateMatrixPedestrian.getQsValue().getQsVector().resize(nodeInicio->getLinkConnection().size(), 0);
         // agrega el nuevo estado
         nodeInicio->getStateMatrixTable().push_back(stateMatrixPedestrian);
         stateMatrixPedestrian.setIStateMatrixTable(nodeInicio->getStateMatrixTable().size()-1);

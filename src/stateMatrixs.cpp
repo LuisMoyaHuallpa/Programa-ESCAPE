@@ -174,7 +174,7 @@ void stateMatrixs::leerDbStateMatrixs() {
             // !-----------------------------------------------------------------------
             // Guarda los elementos de state
             for (int i = 0; i < stateMatrix::tamanoVectorIO; ++i) {
-                if (i < nodes::get()->getDbNodeTotal().at(idNode)->getIdLinkConnection().size()) {
+                if (i < nodes::get()->getDbNodeTotal().at(idNode)->getLinkConnection().size()) {
                     std::getline(iss, s_str, ',');
                     s = std::stoi(s_str);
                     stateLeido.getDensityLinks().push_back(s);
@@ -187,7 +187,7 @@ void stateMatrixs::leerDbStateMatrixs() {
             // !-----------------------------------------------------------------------
             // Elementos de Q
             for (int i = 0; i < stateMatrix::getTamanoVector(); ++i) {
-                if (i < nodes::get()->getDbNodeTotal().at(idNode)->getIdLinkConnection().size()) {
+                if (i < nodes::get()->getDbNodeTotal().at(idNode)->getLinkConnection().size()) {
                     std::getline(iss, Q_str, ',');
                     Q = std::stod(Q_str);
                     QsLeido.getQsVector().push_back(Q);
