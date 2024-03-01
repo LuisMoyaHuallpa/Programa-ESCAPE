@@ -32,13 +32,13 @@ private:
     // width            |-->| ANCHO DE LA CALLE
     // orientacionLink  |-->| ANGULO QUE FORMA LA HORIZONTAL CON LA CALLE
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    int idLink;
+    const int idLink;
     const node* node1;
     const node* node2;
     // const int idNode1;
     // const int idNode2;
-    int length;
-    int width;
+    const int length;
+    const int width;
     vector2D orientacionLink;
     std::vector<int> pedestriansInSublink;
     std::vector<double> densityInSublink;
@@ -60,9 +60,6 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // setters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    void setIdLink(int idLink);
-    void setLength(int length);
-    void setWidth(int width);
     void setOrientacionLink(vector2D orientacionLink);
     void setPedestriansInSublink(std::vector<int> pedestriansInSublink);
     void setDensityInSublink(std::vector<double> densityInSublink);
@@ -72,11 +69,11 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    int getIdLink() const;
+    const int getIdLink() const;
     const node* getNode1();
     const node* getNode2();
-    int getLength() const;
-    int getWidth() const;
+    const int getLength() const;
+    const int getWidth() const;
     vector2D getOrientacionLink() const;
     std::vector<int>& getPedestriansInSublink();
     std::vector<double>& getDensityInSublink();

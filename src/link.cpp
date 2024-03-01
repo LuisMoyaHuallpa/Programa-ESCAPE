@@ -17,12 +17,9 @@ int link::numberDivisiones = 10;
 //     (*this).densityLevel = 0;
 // }
 link::link(int idLink, node* node1, node* node2, int length, int width) :
-    node1(node1), node2(node2){
-    setIdLink(idLink);
+    idLink(idLink), node1(node1), node2(node2), length(length), width(width){
     // calcula la orientacion de la calle segun el node 1 y 2.
     calcularOrientacionLink();
-    setLength(length);
-    setWidth(width);
     setDensityLevel(0);
     calcularAnchoDivisiones();
     pedestriansInSublink.resize(link::numberDivisiones, 0);
@@ -32,15 +29,6 @@ link::link(int idLink, node* node1, node* node2, int length, int width) :
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // setters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void link::setIdLink(int idLink) {
-    (*this).idLink = idLink;  
-}
-void link::setLength(int length){
-    (*this).length = length;
-}
-void link::setWidth(int width){
-    (*this).width = width;
-}
 void link::setOrientacionLink(vector2D orientacionLink) {
     (*this).orientacionLink = orientacionLink;
 }
@@ -60,7 +48,7 @@ void link::setAnchoDivisiones(double anchoDivisiones) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-int link::getIdLink() const {
+const int link::getIdLink() const {
     return idLink;  
 }
 const node* link::getNode1() {
@@ -69,10 +57,10 @@ const node* link::getNode1() {
 const node* link::getNode2() {
     return node2;
 }
-int link::getLength() const{
+const int link::getLength() const{
     return length;
 }
-int link::getWidth() const{
+const int link::getWidth() const{
     return width;
 }
 vector2D link::getOrientacionLink() const {
