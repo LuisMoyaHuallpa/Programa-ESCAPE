@@ -1,4 +1,5 @@
 #include "link.h"
+#include "vector2D.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -16,10 +17,11 @@ int link::numberDivisiones = 10;
 //     (*this).width = 0;
 //     (*this).densityLevel = 0;
 // }
-link::link(int idLink, node* node1, node* node2, int length, int width) :
-    idLink(idLink), node1(node1), node2(node2), length(length), width(width){
+link::link(int idLink, node *node1, node *node2, int length, int width)
+    : idLink(idLink), node1(node1), node2(node2), length(length), width(width),
+      orientacionLink(calcularOrientacionLink()){
     // calcula la orientacion de la calle segun el node 1 y 2.
-    calcularOrientacionLink();
+    // calcularOrientacionLink();
     setDensityLevel(0);
     calcularAnchoDivisiones();
     pedestriansInSublink.resize(link::numberDivisiones, 0);
@@ -29,9 +31,9 @@ link::link(int idLink, node* node1, node* node2, int length, int width) :
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // setters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void link::setOrientacionLink(vector2D orientacionLink) {
-    (*this).orientacionLink = orientacionLink;
-}
+// void link::setOrientacionLink(vector2D orientacionLink) {
+//     (*this).orientacionLink = orientacionLink;
+// }
 void link::setPedestriansInSublink(std::vector<int> pedestriansInSublink) {
     (*this).pedestriansInSublink = pedestriansInSublink;
 }
@@ -63,7 +65,7 @@ const int link::getLength() const{
 const int link::getWidth() const{
     return width;
 }
-vector2D link::getOrientacionLink() const {
+const vector2D link::getOrientacionLink() const {
     return orientacionLink;
 }
 std::vector<int>& link::getPedestriansInSublink() {
@@ -82,7 +84,7 @@ double link::getAnchoDivisiones() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void link::calcularOrientacionLink() {
+vector2D link::calcularOrientacionLink() {
     /* deberia esta calcular orientacion pero necesita acceder a dbLink
         por ello se calculara la direccione en pedestrian*/
     double x = node2->getCoordenada().getX() - node1->getCoordenada().getX();
@@ -90,8 +92,9 @@ void link::calcularOrientacionLink() {
     // Calcula la magnitud del vector de dirección
     double magnitud = std::sqrt(std::pow(x, 2) + std::pow(y, 2));
     // Normaliza el vector de dirección (divide cada e por la magnitud)
-    orientacionLink.setX(std::abs(x / magnitud));
-    orientacionLink.setY(std::abs(y / magnitud));
+    // orientacionLink.setX(std::abs(x / magnitud));
+    // orientacionLink.setY(std::abs(y / magnitud));
+    return {std::abs(x / magnitud), std::abs(y / magnitud)};
 }
 void link::calcularAnchoDivisiones() {
     /* Calcula el ancho de divisiones de la calle segun el numero de divisiones preestablecidas*/

@@ -39,7 +39,13 @@ vector2D vector2D::operator+(vector2D vector2) {
     double y = this->getY() + vector2.getY();
     return vector2D(x, y);
 }
-vector2D vector2D::operator*(vector2D vector2) {
+vector2D vector2D::operator*(vector2D& vector2) {
+    /* operacion multiplicacion de vectores*/
+    double x = this->getX() * vector2.getX();
+    double y = this->getY() * vector2.getY();
+    return vector2D(x, y);
+}
+vector2D vector2D::operator*(const vector2D& vector2) const {
     /* operacion multiplicacion de vectores*/
     double x = this->getX() * vector2.getX();
     double y = this->getY() * vector2.getY();

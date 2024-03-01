@@ -39,7 +39,7 @@ private:
     // const int idNode2;
     const int length;
     const int width;
-    vector2D orientacionLink;
+    const vector2D orientacionLink;
     std::vector<int> pedestriansInSublink;
     std::vector<double> densityInSublink;
     int densityLevel;
@@ -60,7 +60,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // setters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    void setOrientacionLink(vector2D orientacionLink);
+    // void setOrientacionLink(vector2D orientacionLink);
     void setPedestriansInSublink(std::vector<int> pedestriansInSublink);
     void setDensityInSublink(std::vector<double> densityInSublink);
     void setDensityLevel(int densityLevel);
@@ -74,7 +74,7 @@ public:
     const node* getNode2();
     const int getLength() const;
     const int getWidth() const;
-    vector2D getOrientacionLink() const;
+    const vector2D getOrientacionLink() const;
     std::vector<int>& getPedestriansInSublink();
     std::vector<double>& getDensityInSublink();
     int getDensityLevel();
@@ -83,7 +83,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    void calcularOrientacionLink();
+    vector2D calcularOrientacionLink();
     void calcularAnchoDivisiones();
     void calcularDensity();
     void calcularDensityLevel();
