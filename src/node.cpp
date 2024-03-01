@@ -39,7 +39,7 @@ const vector2D node::getCoordenada() const{
 // std::vector<int>& node::getIdLinkConnection() {
 //     return idLinkConnection;  
 // }
-std::vector<link*>& node::getLinkConnection() {
+const std::vector<link*>& node::getLinkConnection() {
     return linkConnection;  
 }
 std::vector<stateMatrix>& node::getStateMatrixTable() {

@@ -33,7 +33,7 @@ private:
     const int idNode;
     const vector2D coordenada;
     // std::vector<int> idLinkConnection;
-    std::vector<link*> linkConnection;
+    const std::vector<link*> linkConnection;
     std::vector<stateMatrix> stateMatrixTable;
 
 public:
@@ -66,7 +66,7 @@ public:
     const int getIdNode() const;
     const vector2D getCoordenada() const;
     // std::vector<int>& getIdLinkConnection();
-    std::vector<link*>& getLinkConnection();
+    const std::vector<link*>& getLinkConnection();
     std::vector<stateMatrix>& getStateMatrixTable();
     // int getRewardCode() const;
 

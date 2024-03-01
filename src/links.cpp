@@ -1,5 +1,6 @@
 #include "links.h"
 #include "dictionary.h"
+#include <vector>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -95,8 +96,9 @@ void links::leerLinks(std::string fileName){
         dbLinkTotal.push_back(std::move(linkNuevo));
         // node1->getIdLinkConnection().push_back(idLink);
         // node2->getIdLinkConnection().push_back(idLink);
-        node1->getLinkConnection().push_back(dbLinkTotal.back().get());
-        node2->getLinkConnection().push_back(dbLinkTotal.back().get());
+        // node1->getLinkConnection().push_back(dbLinkTotal.back().get());
+        const_cast<std::vector<link*>&>(node1->getLinkConnection()).push_back(dbLinkTotal.back().get());
+        const_cast<std::vector<link*>&>(node2->getLinkConnection()).push_back(dbLinkTotal.back().get());
     }
     file.close(); 
 }
