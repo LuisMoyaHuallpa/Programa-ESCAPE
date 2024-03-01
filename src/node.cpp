@@ -30,7 +30,7 @@ void node::setStateMatrixTable(std::vector<stateMatrix> stateMatrixTable) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getter
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-int node::getIdNode() const{
+const int node::getIdNode() const{
     return idNode;
 }
 const vector2D node::getCoordenada() const{

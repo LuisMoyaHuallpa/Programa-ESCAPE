@@ -63,7 +63,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    int getIdNode() const;
+    const int getIdNode() const;
     const vector2D getCoordenada() const;
     // std::vector<int>& getIdLinkConnection();
     std::vector<link*>& getLinkConnection();
