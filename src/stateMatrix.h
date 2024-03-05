@@ -20,7 +20,6 @@ Una fila de archivo de entrada o salida.
 class stateMatrix {
 private:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // idNode         |-->| ID DE LA CALLE 
     // stateValue     |-->| VECTOR DE ESTADO 
     // QsValue        |-->| VECTOR DE Q
     // tamanoVectorIO |-->| CANTIDAD DE ELEMENTOS PARA EL VECTOR DE ESTADO Y Q

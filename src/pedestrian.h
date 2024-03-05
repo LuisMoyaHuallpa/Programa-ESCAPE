@@ -61,7 +61,7 @@ private:
     link* linkPasado;
     vector2D direccionPedestrian;
     vector2DVelocidad velocidad;
-    int tiempoInicial;
+    const int tiempoInicial;
     stateMatrix stateMatrixPedestrian;
     stateMatrix stateMatrixPedestrianAnterior;
     bool evacuado;

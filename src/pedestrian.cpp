@@ -20,10 +20,10 @@ const int pedestrian::stepReward = -1;
 pedestrian::pedestrian(int edad, int gender, int hhType, int hhId,node* nodeArranque)
     : idPedestrian(contador++), edad(edad), gender(gender), hhType(hhType), hhId(hhId),
       nodeArranque(nodeArranque), nodeInicio(nullptr), nodeFinal(nullptr), nodeInicioAnterior(nullptr),
-      direccionPedestrian(),
+      direccionPedestrian(), tiempoInicial(0),
       velocidad(), stateMatrixPedestrian(), stateMatrixPedestrianAnterior(), sarsaAlgorithm() {
     setNodeInicio(nodeArranque);
-    setTiempoInicial(0);
+    // setTiempoInicial(0);
     // setNodeAnterior(nodeInicio);
     // setEmpezoCaminar(false);
     // setPrimerTiempo(true);
@@ -71,7 +71,7 @@ void pedestrian::setVelocidad(vector2DVelocidad velocidad) {
     (*this).velocidad = velocidad;
 }
 void pedestrian::setTiempoInicial(int tiempoInicial) {
-    (*this).tiempoInicial = tiempoInicial;
+    const_cast<int&>((*this).tiempoInicial) = tiempoInicial;
 }
 void pedestrian::setStateMatrixPedestrian(stateMatrix stateMatrixPedestrian) {
     (*this).stateMatrixPedestrian = stateMatrixPedestrian;
@@ -155,22 +155,6 @@ stateMatrix& pedestrian::getStateMatrixPedestrian() {
 stateMatrix& pedestrian::getStateMatrixPedestrianAnterior() {
     return stateMatrixPedestrianAnterior;
 }
-// vector2D pedestrian::getOrientacionLinkPasado() {
-//     return orientacionLinkPasado;
-// }
-
-// int pedestrian::getTiempoFinal() {
-//     return tiempoFinal;  
-// }
-// bool pedestrian::getEmpezoCaminar() {
-//     return empezoCaminar;
-// }
-// bool pedestrian::getPrimerTiempo() {
-//     return primerTiempo;  
-// }
-// bool pedestrian::getSaltoLink() {
-//     return saltoLink;  
-// }
 bool pedestrian::getEvacuado() {
     return evacuado;
 }
