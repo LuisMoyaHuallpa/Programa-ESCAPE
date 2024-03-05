@@ -95,7 +95,6 @@ public:
     void setDireccionPedestrian(vector2D direccionPedestrian);
     void setVelocidad(vector2DVelocidad velocidad);
     void setTiempoInicial(int tiempoInicial);
-    // void setqStateAction(stateActionQ* qStateAction);
     void setStateMatrixPedestrian(stateMatrix stateMatrixPedestrian);
     void setStateMatrixPedestrianAnterior(stateMatrix stateMatrixPedestrianAnterior);
     // void setOrientacionLinkPasado(vector2D orientacionLinkPasado);
@@ -109,11 +108,11 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    int getIdPedestrian() const;
-    int getEdad() const;
-    int getGender();
-    int getHHType() const;
-    int getHHId() const;
+    const int getIdPedestrian() const;
+    const int getEdad() const;
+    const int getGender();
+    const int getHHType() const;
+    const int getHHId() const;
     vector2D getPosition();
     const node* getNodeArranque();
     node* getNodeInicio() const;

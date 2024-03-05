@@ -30,6 +30,7 @@ int main() {
     std::cout << duration.count() << std::endl;
     std::cout << "Duración lectura: " << duration.count() << " s" << std::endl;
 
+    // nodes::get()->mostrarNodes();
     // segun el número de simulaciones
     while (tiempo::get()->getINumberSimulation() <= tiempo::get()->getEndNumberSimulation()) {
         // loop para una evacuacion

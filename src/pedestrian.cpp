@@ -104,19 +104,19 @@ void pedestrian::setReward(int reward) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-int pedestrian::getIdPedestrian() const {
+const int pedestrian::getIdPedestrian() const {
     return idPedestrian;
 }
-int pedestrian::getEdad() const{
+const int pedestrian::getEdad() const{
     return edad;
 }
-int pedestrian::getGender() {
+const int pedestrian::getGender() {
     return gender;
 }
-int pedestrian::getHHType() const{
+const int pedestrian::getHHType() const{
     return hhType;
 }
-int pedestrian::getHHId() const{
+const int pedestrian::getHHId() const{
     return hhId;
 }
 vector2D pedestrian::getPosition() {
