@@ -14,17 +14,17 @@ graphicPrintoutPeriod 1;
 
 listingPrintoutPeriod 1;
 
-# computationContinued  	yes;
+computationContinued  	yes;
 
 previousComputationFile	sim_000006000.csv;
 
-stopSimulationAt          endNumberSimulation;
+# stopSimulationAt          endNumberSimulation;
 
-endNumberSimulation 200;
+# endNumberSimulation 6003;
 
-readPedestriansMassState no;
+readPedestrianMassState no;
 
-# stopSimulationAt          addNumberSimulation;
+stopSimulationAt          addNumberSimulation;
 
-# addNumberSimulation 1;
+addNumberSimulation 3;
 

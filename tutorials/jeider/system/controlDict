@@ -24,8 +24,10 @@ previousComputationFile	sim_000007000.csv;
 
 stopSimulationAt          addNumberSimulation;
 
+readPedestrianMassState no;
+
 # endNumberSimulation 7001;
 
-addNumberSimulation 5;
+addNumberSimulation 3;
 
 
