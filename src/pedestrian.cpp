@@ -223,6 +223,8 @@ void pedestrian::eleccionRandomLinkActual() {
     // enviando informacion de action al stateMatrix
     stateMatrixPedestrian.getActionValue().setILinkConnection(numero_aleatorio);
     stateMatrixPedestrian.getActionValue().setIdLink(linkActual->getIdLink());
+    // contando persona que experimenta state y action
+    stateMatrixPedestrian.getPedestrianMassState().at(numero_aleatorio)++;
     // sabiendo la calle defino el nodo final.
     calcularNodeFinal();
     // verificar si el nodo final es un nodo de evacucion.
@@ -274,6 +276,8 @@ void pedestrian::eleccionSarsa() {
     // enviando informacion de action al stateMatrix
     stateMatrixPedestrian.getActionValue().setILinkConnection(iQmenor);
     stateMatrixPedestrian.getActionValue().setIdLink(linkActual->getIdLink());
+    // contando persona que experimenta state y action
+    stateMatrixPedestrian.getPedestrianMassState().at(iQmenor)++;
     // sabiendo la calle defino el nodo final.
     calcularNodeFinal();
     // verificar si el nodo final es un nodo de evacucion.

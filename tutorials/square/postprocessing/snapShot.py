@@ -80,17 +80,16 @@ for i in carpetas_numericas_ordenadas:
     # texto
     cantPeEv = str(int(cantPedestrianEvacuated[0]))
     text1 = "t = " + i + " seg; evacuated: " + cantPeEv
-    fig.text(0.05, 0.03, text1, fontsize=12, fontweight='normal',
+    fig.text(0.05, 0.02, text1, fontsize=20, fontweight='normal',
              transform=ax.transAxes)
     # barra
     plt.colorbar(scatter, ax=ax, fraction=0.03)
     # configuraciones
-    plt.xlabel('Valores X')
-    plt.ylabel('Valores Y')
     xlim_auto = ax.get_xlim()
     ylim_auto = ax.get_ylim()
     ax.set_xlim(xlim_auto)
     ax.set_ylim(ylim_auto)
+    ax.axis('off')
     plt.savefig("snapShot/" + i)
     plt.close(fig)
     bar.update(carpetas_numericas_ordenadas.index(i) + 1)

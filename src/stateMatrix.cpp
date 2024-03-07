@@ -1,4 +1,5 @@
 #include "stateMatrix.h"
+#include <vector>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -30,6 +31,9 @@ void stateMatrix::setQsValue(Qs QsValue) {
 void stateMatrix::setOtrosVector(std::vector<int> otrosVector) {
     (*this).otrosVector = otrosVector;
 }
+void stateMatrix::setPedestrianMassState(std::vector<int> pedestrianMassState) {
+    (*this).pedestrianMassState = pedestrianMassState;
+}
 void stateMatrix::setActionValue(action actionValue) {
     (*this).stateValue = stateValue;
 }
@@ -48,6 +52,9 @@ Qs &stateMatrix::getQsValue() {
 }
 std::vector<int>& stateMatrix::getotrosVector() {
     return otrosVector;
+}
+std::vector<int> &stateMatrix::getPedestrianMassState() {
+    return pedestrianMassState;  
 }
 action& stateMatrix::getActionValue() {
     return actionValue;

@@ -37,18 +37,16 @@ screen_height = get_monitors()[0].height
 width = screen_width/100
 height = screen_height/100
 
-fig, ax = plt.subplots(1, 1, figsize=(width, height))
+fig, ax = plt.subplots(1, 1, figsize=(width, height), tight_layout=True)
 i_inicial = int(carpetas_numericas_ordenadas[0])
 
 
 def actualizar(i):
     """Loop each timestep."""
     ax.clear()
-    i = i_inicial + i
-    print(i)
-    fileName = directorio_principal + str(i) + "/xy"
-    fileName2 = directorio_principal + str(i) + "/U"
-    fileName3 = directorio_principal + str(i) + "/cantPedestrianEvacuated"
+    fileName = directorio_principal + carpetas_numericas_ordenadas[i] + "/xy"
+    fileName2 = directorio_principal + carpetas_numericas_ordenadas[i] + "/U"
+    fileName3 = directorio_principal + carpetas_numericas_ordenadas[i] + "/cantPedestrianEvacuated"
     x_values = []
     y_values = []
     magnitud = []
@@ -80,13 +78,15 @@ def actualizar(i):
     # texto
     cantPeEv = str(int(cantPedestrianEvacuated[0]))
     text1 = "t = " + str(i) + " seg; evacuated: " + cantPeEv
-    ax.text(0.05, 0.03, text1, fontsize=12, fontweight='normal',
+    ax.text(0.05, 0.02, text1, fontsize=20, fontweight='normal',
             transform=ax.transAxes)
-
-    ax.xaxis.set_label_coords(0, -0.06)
+    # configuraciones
+    ax.axis('off')
+    # ax.xaxis.set_label_coords(0, -0.06)
+    # ax.set_axis_off()
     if i == i_inicial:
-        cax = fig.add_axes([0.93, 0.1, 0.02, 0.8])
-        plt.colorbar(scatter, cax=cax)
+        # cax = fig.add_axes([0.93, 0.1, 0.02, 0.8])
+        plt.colorbar(scatter, ax=ax, fraction=0.03)
     # ax.set_axis_off()
     # if (i == "1"):
     #     xlim_auto = ax.get_xlim()
@@ -97,5 +97,5 @@ def actualizar(i):
 
 
 ani = FuncAnimation(fig, actualizar, len(carpetas_numericas_ordenadas)-1,
-                    interval=400, repeat_delay=900)
+                    interval=100, repeat_delay=900)
 ani.save('animation.mp4')

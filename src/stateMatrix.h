@@ -27,6 +27,7 @@ private:
     state stateValue;
     Qs QsValue;
     std::vector<int> otrosVector;
+    std::vector<int> pedestrianMassState;
     action actionValue;
     int iStateMatrixTable;
 
@@ -52,6 +53,7 @@ public:
     void setStateValue(state stateValue);
     void setQsValue(Qs QsValue);
     void setOtrosVector(std::vector<int> otrosVector);
+    void setPedestrianMassState(std::vector<int> pedestrianMassState);
     void setActionValue(action actionValue);
     void setIStateMatrixTable(int iStateMatrixTable);
 
@@ -61,6 +63,7 @@ public:
     state& getStateValue();
     Qs& getQsValue();
     std::vector<int>& getotrosVector();
+    std::vector<int>& getPedestrianMassState();
     action& getActionValue();
     int getIStateMatrixTable();
 
