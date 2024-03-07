@@ -1,6 +1,6 @@
 * Sarsa
 
-[[https://youtu.be/0RpVIt6iqHw][Square case]]
+[[https://youtu.be/0RpVIt6iqHw]]
 
 [[https://user-images.githubusercontent.com/8607532/135746327-c400aaf9-4aa1-4b6e-8b0a-0dd58c2690bb.mp4]]
 
