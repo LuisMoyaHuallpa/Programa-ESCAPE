@@ -1,5 +1,7 @@
 * Sarsa
 
+[[https://youtu.be/0RpVIt6iqHw][Square case]]
+
 * Installation
 
 #+begin_src bash

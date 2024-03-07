@@ -16,16 +16,16 @@ graphicPrintoutPeriod 5;
 
 listingPrintoutPeriod 1;
 
-computationContinued  	yes;
+computationContinued  	no;
 
 previousComputationFile	sim_000007000.csv;
 
-stopSimulationAt          endNumberSimulation;
+# stopSimulationAt          endNumberSimulation;
 
-# stopSimulationAt          addNumberSimulation;
+stopSimulationAt          addNumberSimulation;
 
-endNumberSimulation 7001;
+# endNumberSimulation 7001;
 
-# addNumberSimulation 1;
+addNumberSimulation 5;
 
 

@@ -16,7 +16,6 @@ int main() {
     // leer controlDict
     // dictionary controDict("controlDict");
     // imprimi malla de calles.
-
     
     links::get()->imprimirMeshLinks();
 
