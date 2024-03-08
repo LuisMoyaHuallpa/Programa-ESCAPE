@@ -224,7 +224,7 @@ void pedestrian::eleccionRandomLinkActual() {
     stateMatrixPedestrian.getActionValue().setILinkConnection(numero_aleatorio);
     stateMatrixPedestrian.getActionValue().setIdLink(linkActual->getIdLink());
     // contando persona que experimenta state y action
-    stateMatrixPedestrian.getPedestrianMassState().at(numero_aleatorio)++;
+    stateMatrixPedestrian.getPedestrianMassState().getPedestrianMassStateVector().at(numero_aleatorio)++;
     // sabiendo la calle defino el nodo final.
     calcularNodeFinal();
     // verificar si el nodo final es un nodo de evacucion.
@@ -277,7 +277,7 @@ void pedestrian::eleccionSarsa() {
     stateMatrixPedestrian.getActionValue().setILinkConnection(iQmenor);
     stateMatrixPedestrian.getActionValue().setIdLink(linkActual->getIdLink());
     // contando persona que experimenta state y action
-    stateMatrixPedestrian.getPedestrianMassState().at(iQmenor)++;
+    // stateMatrixPedestrian.getPedestrianMassState().at(iQmenor)++;
     // sabiendo la calle defino el nodo final.
     calcularNodeFinal();
     // verificar si el nodo final es un nodo de evacucion.
@@ -413,6 +413,8 @@ void pedestrian::calcularLevelDensityAtNode() {
         diferentes calle, esta informacion se enviará a objeto stateMatrix */
     // crear el vector densidad segun el tamaño del LinkConnection de donde nodo donde esta
     stateMatrixPedestrian.getStateValue().getDensityLinks().resize(nodeInicio->getLinkConnection().size(), 0);
+    // crear el vector PedestrianMassState segun el tamaño del LinkConnection de donde nodo donde esta
+    stateMatrixPedestrian.getPedestrianMassState().getPedestrianMassStateVector().resize(nodeInicio->getLinkConnection().size(), 0);
     // stateMatrixPedestrian.getQsValue().getQsVector().resize(nodeInicio->getIdLinkConnection().size(), 0);
     // ya sabiendo los estados de cada calle, utilizo los de linkConnection y los envio al stateMatrixPedestrian
     for (int i = 0; i < nodeInicio->getLinkConnection().size(); i++) {
@@ -429,8 +431,10 @@ void pedestrian::calcularLevelDensityAtNode() {
     }
     // no lo encuentra, se agrega el estado y se guarda la posicion de la tabla
     else {
-        // crea el vector Q segun LinkConnection
+        // crea el vector Q segun linkConnection
         stateMatrixPedestrian.getQsValue().getQsVector().resize(nodeInicio->getLinkConnection().size(), 0);
+        // crea el vector pedestrianMassState segun linkConnection
+        // stateMatrixPedestrian.getPedestrianMassState().resize(nodeInicio->getLinkConnection().size(), 0);
         // agrega el nuevo estado
         nodeInicio->getStateMatrixTable().push_back(stateMatrixPedestrian);
         // se setea iStateMatrixTable despues de agregarlo al stateMatrixTable para que cuente bien
@@ -438,25 +442,29 @@ void pedestrian::calcularLevelDensityAtNode() {
         stateMatrixPedestrian.setIStateMatrixTable(nodeInicio->getStateMatrixTable().size()-1);
     }
 }
-void pedestrian::stateMatrixtoTableAtNode() {
-    // Inicializar action en el primer instante. 
-    stateMatrix stateMatrixEncontrado;
-    bool verificarStateMatrix = false;
-    int idq = 0;
-    nodeInicio->buscarStateMatrix(stateMatrixPedestrian, verificarStateMatrix, idq);
-    // si lo encuentra, significa que el estado ya se experimento por tanto no se agrega, se guarda la posicion de la tabla
-    if (verificarStateMatrix) {
-        stateMatrixPedestrian.setIStateMatrixTable(idq);
-    }
-    // no lo encuentra, se agrega el estado y se guarda la posicion de la tabla
-    else {
-        // crea el vector Q segun LinkConnection
-        stateMatrixPedestrian.getQsValue().getQsVector().resize(nodeInicio->getLinkConnection().size(), 0);
-        // agrega el nuevo estado
-        nodeInicio->getStateMatrixTable().push_back(stateMatrixPedestrian);
-        stateMatrixPedestrian.setIStateMatrixTable(nodeInicio->getStateMatrixTable().size()-1);
-    }
-}
+// void pedestrian::stateMatrixtoTableAtNode() {
+//     // Inicializar action en el primer instante. 
+//     stateMatrix stateMatrixEncontrado;
+//     bool verificarStateMatrix = false;
+//     int idq = 0;
+//     nodeInicio->buscarStateMatrix(stateMatrixPedestrian, verificarStateMatrix, idq);
+//     // si lo encuentra, significa que el estado ya se experimento por tanto no se agrega, se guarda la posicion de la tabla
+//     if (verificarStateMatrix) {
+//         stateMatrixPedestrian.setIStateMatrixTable(idq);
+//     }
+//     // no lo encuentra, se agrega el estado y se guarda la posicion de la tabla
+//     else {
+//         // crea el vector Q segun LinkConnection
+//         stateMatrixPedestrian.getQsValue().getQsVector().resize(nodeInicio->getLinkConnection().size(), 0);
+//         // crea el vector pedestrianMassState segun linkConnection
+//         // stateMatrixPedestrian.getPedestrianMassState().resize(nodeInicio->getLinkConnection().size(), 0);
+//         stateMatrixPedestrian.getPedestrianMassState().getPedestrianMassStateVector().resize(nodeInicio->getLinkConnection().size(), 0);
+//         stateMatrixPedestrian.mostrarStateMatrix();
+//         // agrega el nuevo estado
+//         nodeInicio->getStateMatrixTable().push_back(stateMatrixPedestrian);
+//         stateMatrixPedestrian.setIStateMatrixTable(nodeInicio->getStateMatrixTable().size()-1);
+//     }
+// }
 void pedestrian::modelamientoPedestrian() {
     // personas que aun no estan evacuadas
     if (!evacuado) {

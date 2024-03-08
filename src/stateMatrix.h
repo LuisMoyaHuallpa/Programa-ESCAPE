@@ -14,6 +14,7 @@ Una fila de archivo de entrada o salida.
 #include "state.h"
 #include "action.h"
 #include "Qs.h"
+#include "pedestrianMassState.h"
 
 // #include "node.h"
 
@@ -27,7 +28,7 @@ private:
     state stateValue;
     Qs QsValue;
     std::vector<int> otrosVector;
-    std::vector<int> pedestrianMassState;
+    pedestrianMassState pedestrianMassStateValue;
     action actionValue;
     int iStateMatrixTable;
 
@@ -53,7 +54,7 @@ public:
     void setStateValue(state stateValue);
     void setQsValue(Qs QsValue);
     void setOtrosVector(std::vector<int> otrosVector);
-    void setPedestrianMassState(std::vector<int> pedestrianMassState);
+    void setPedestrianMassState(pedestrianMassState pedestrianMassStateValue);
     void setActionValue(action actionValue);
     void setIStateMatrixTable(int iStateMatrixTable);
 
@@ -63,7 +64,7 @@ public:
     state& getStateValue();
     Qs& getQsValue();
     std::vector<int>& getotrosVector();
-    std::vector<int>& getPedestrianMassState();
+    pedestrianMassState& getPedestrianMassState();
     action& getActionValue();
     int getIStateMatrixTable();
 

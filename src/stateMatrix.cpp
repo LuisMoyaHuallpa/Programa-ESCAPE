@@ -1,4 +1,5 @@
 #include "stateMatrix.h"
+#include "pedestrianMassState.h"
 #include <vector>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -31,8 +32,8 @@ void stateMatrix::setQsValue(Qs QsValue) {
 void stateMatrix::setOtrosVector(std::vector<int> otrosVector) {
     (*this).otrosVector = otrosVector;
 }
-void stateMatrix::setPedestrianMassState(std::vector<int> pedestrianMassState) {
-    (*this).pedestrianMassState = pedestrianMassState;
+void stateMatrix::setPedestrianMassState(pedestrianMassState pedestrianMassStateValue) {
+    (*this).pedestrianMassStateValue = pedestrianMassStateValue;
 }
 void stateMatrix::setActionValue(action actionValue) {
     (*this).stateValue = stateValue;
@@ -53,8 +54,8 @@ Qs &stateMatrix::getQsValue() {
 std::vector<int>& stateMatrix::getotrosVector() {
     return otrosVector;
 }
-std::vector<int> &stateMatrix::getPedestrianMassState() {
-    return pedestrianMassState;  
+pedestrianMassState &stateMatrix::getPedestrianMassState() {
+    return pedestrianMassStateValue;  
 }
 action& stateMatrix::getActionValue() {
     return actionValue;
@@ -105,6 +106,8 @@ void stateMatrix::mostrarStateMatrix() {
     std::cout << getIStateMatrixTable();
     std::cout << "Qs: ";
     getQsValue().mostrarQs();
+    std::cout << "pedestrianMassState: ";
+    pedestrianMassStateValue.mostrarPedestrianMassStateVector();
     std::cout << std::endl;
 
 
@@ -117,6 +120,10 @@ void stateMatrix::imprimirStateMatrix(std::fstream& file){
     stateValue.imprimirState(file);
     // !-----------------------------------------------------------------------
     // Imprimir todos los elementos de Q y se completa con 0 para llegar a
+    // 10 elementos.
     QsValue.imprimirQs(file);
+    // Imprimir todos los elementos de pedestrianMassState y se completa con 0 para llegar a
+    // 10 elementos.
+    pedestrianMassStateValue.imprimirPedestrianMassStateVector(file);
     file << std::endl;
 }

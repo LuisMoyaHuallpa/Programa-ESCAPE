@@ -173,7 +173,7 @@ public:
     // std::vector<stateActionQ>::iterator agregarObtenerqLista(node* nodeDeBusqueda,stateActionQ qBuscando);
     // voidbuscarQ(bool verificarQExistente, stateActionQ* qElemento);
     void calcularLevelDensityAtNode();
-    void stateMatrixtoTableAtNode();
+    // void stateMatrixtoTableAtNode();
     // void crearqState(node* nodeActual);
     void modelamientoPedestrian();
     void mostrarMovimientoPedestrian();

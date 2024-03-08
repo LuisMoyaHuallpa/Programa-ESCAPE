@@ -17,7 +17,7 @@ void Qs::setQsVector(std::vector<double> QsVector) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getter
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-std::vector<double> &Qs::getQsVector() {
+std::vector<double>& Qs::getQsVector() {
     return QsVector;
 }
 
@@ -36,7 +36,6 @@ void Qs::imprimirQs(std::fstream &file) {
         } else {
             file << "0,";
         }
-                
     }  
 }
 
