@@ -210,7 +210,8 @@ void pedestrian::eleccionRandomLinkActual() {
     stateMatrixPedestrian.getActionValue().setILinkConnection(numero_aleatorio);
     stateMatrixPedestrian.getActionValue().setIdLink(linkActual->getIdLink());
     // contando persona que experimenta state y action
-    stateMatrixPedestrian.getPedestrianMassState().getPedestrianMassStateVector().at(numero_aleatorio)++;
+    nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getPedestrianMassState().getPedestrianMassStateVector().at(numero_aleatorio)++;
+    // stateMatrixPedestrian.getPedestrianMassState().getPedestrianMassStateVector().at(numero_aleatorio)++;
     // sabiendo la calle defino el nodo final.
     calcularNodeFinal();
     // verificar si el nodo final es un nodo de evacucion.
@@ -263,7 +264,8 @@ void pedestrian::eleccionSarsa() {
     stateMatrixPedestrian.getActionValue().setILinkConnection(iQmenor);
     stateMatrixPedestrian.getActionValue().setIdLink(linkActual->getIdLink());
     // contando persona que experimenta state y action
-    stateMatrixPedestrian.getPedestrianMassState().getPedestrianMassStateVector().at(iQmenor)++;
+    // stateMatrixPedestrian.getPedestrianMassState().getPedestrianMassStateVector().at(iQmenor)++;
+    nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getPedestrianMassState().getPedestrianMassStateVector().at(iQmenor)++;
     // stateMatrixPedestrian.getPedestrianMassState().at(iQmenor)++;
     // sabiendo la calle defino el nodo final.
     calcularNodeFinal();
