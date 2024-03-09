@@ -103,17 +103,17 @@ void links::leerLinks(std::string fileName){
     file.close(); 
 }
 void links::calcularDensityLevelLinks() {
-    for (int i = 0; i < dbLinkTotal.size(); i++) {
-        dbLinkTotal.at(i)->calcularDensity();
-        dbLinkTotal.at(i)->calcularDensityLevel();
+    for (auto it = dbLinkTotal.begin(); it != dbLinkTotal.end(); ++it) {
+        it->get()->calcularDensity();
+        it->get()->calcularDensityLevel();
     }
 }
 void links::resetSublinks() {
     /* reinicia valores de conteo de sublink*/
     // no hacerlo si estas en la ultima simulaciones, debido a que ya las personas se movieron y no
     // necesitaran esta información
-    for (int i = 0; i < dbLinkTotal.size(); i++) {
-        dbLinkTotal.at(i)->getPedestriansInSublink().assign(link::numberDivisiones, 0);
+    for (auto it = dbLinkTotal.begin(); it != dbLinkTotal.end(); ++it) {
+        it->get()->getPedestriansInSublink().assign(link::numberDivisiones, 0);
     }
 }
 void links::mostrarLinks(){
@@ -142,9 +142,3 @@ void links::imprimirMeshLinks() {
         dbLinkTotal.at(i)->imprimirLink(file);
     }
 }
-
-// void links::creacionLinkConnections() {
-//     for (int i = 0; i < dbLink.size(); i++) {
-//         dbLink.at(i).creacionLinkConnection();
-//     }
-// }
