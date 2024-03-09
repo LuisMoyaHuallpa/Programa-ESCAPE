@@ -1,4 +1,5 @@
 #include "pedestrian.h"
+#include "nodeEvacution.h"
 #include "tiempo.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,24 +24,9 @@ pedestrian::pedestrian(int edad, int gender, int hhType, int hhId,node* nodeArra
       direccionPedestrian(), tiempoInicial(0),
       velocidad(), stateMatrixPedestrian(), stateMatrixPedestrianAnterior(), sarsaAlgorithm() {
     setNodeInicio(nodeArranque);
-    // setTiempoInicial(0);
-    // setNodeAnterior(nodeInicio);
-    // setEmpezoCaminar(false);
-    // setPrimerTiempo(true);
-    // setSaltoLink(false);
     setEvacuado(false);
     setReward(0);
     verificarPedestrianEvacuation();
-    // setRetorno(0);
-    // double x = nodeInicio->getCoordX();
-    // double y = nodeInicio->getCoordY();
-    // vector2D position(x, y);
-    // setPosition(position);
-    // eleccionRandomLinkActual();
-    // setLinkPasado(linkActual);
-    // calcularNodeFinal();
-    // calcularOrientacion();
-    // velocidad.setOrientacion(orientacion);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

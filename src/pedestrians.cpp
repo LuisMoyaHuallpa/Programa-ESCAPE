@@ -159,10 +159,10 @@ void pedestrians::imprimirPedestrians(){
             file2.open(folderName + "/U", std::ios::out);
             file3.open(folderName + "/cantPedestrianEvacuated", std::ios::out);
             if (file1.is_open()) {
-                for (int i=0; i < dbPedestrianTotal.size(); i++) {
-                    if (tiempo::get()->getValorTiempo() >= dbPedestrianTotal.at(i).getTiempoInicial()) {
-                        dbPedestrianTotal.at(i).imprimirPedestrianPosition(file1);
-                        dbPedestrianTotal.at(i).imprimirPedestrianVelocity(file2);
+                for (auto it = dbPedestrianTotal.begin(); it != dbPedestrianTotal.end(); ++it) {
+                    if (tiempo::get()->getValorTiempo() >= it->getTiempoInicial()) {
+                        it->imprimirPedestrianPosition(file1);
+                        it->imprimirPedestrianVelocity(file2);
                     }
                 }
                 nodeEvacuation::imprimirNodeEvacuation(file3);
