@@ -32,6 +32,7 @@ private:
         {"linksFile", "links.csv"},
         {"populationsFile", "population.csv"},
         {"graphicPrintoutPeriod", "1"},
+        {"pedestrianCountPeriod", "1"},
         {"computationContinued", "no"},
         {"readPedestriansMassState", "no"},
         {"stopSimulationAt", "endNumberSimulation"}

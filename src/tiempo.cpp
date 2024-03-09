@@ -1,7 +1,9 @@
 #include "tiempo.h"
+#include "dictionary.h"
 #include "nodeEvacution.h"
 #include "pedestrians.h"
 #include <cstdlib>
+#include <string>
 
 int tiempo::deltaTiempo = 1;
 
@@ -15,6 +17,7 @@ tiempo::tiempo() {
     (*this).valorTiempo = 0;
     (*this).deltaT = 1;
     (*this).graphicPrintoutPeriod = std::stoi(dictionary::get()->lookupDefault("graphicPrintoutPeriod"));
+    (*this).pedestrianCountPeriod = std::stoi(dictionary::get()->lookupDefault("pedestrianCountPeriod"));
     (*this).endTime = std::stoi(dictionary::get()->lookup("endTime"));
     inicializarNumberSimulation();
 }
@@ -40,6 +43,9 @@ void tiempo::setINumberSimulation(int iNumberSimulation) {
 void tiempo::setEndNumberSimulation(int endNumberSimulation) {
     (*this).endNumberSimulation = endNumberSimulation;
 }
+void tiempo::setPedestrianCountPeriod(int pedestrianCountPeriod) {
+    (*this).pedestrianCountPeriod = pedestrianCountPeriod;
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getters
@@ -61,6 +67,9 @@ int tiempo::getINumberSimulation() const {
 }
 int tiempo::getEndNumberSimulation() const {
     return endNumberSimulation;
+}
+int tiempo::getPedestrianCountPeriod() const {
+    return pedestrianCountPeriod;
 }
 double tiempo::getRandomChoiceRate() const {
     return randomChoiceRate;
@@ -196,3 +205,12 @@ bool tiempo::verificarGraphicPrintout() {
         return false;
     }
 }
+bool tiempo::verificarPedestrianCountPeriod() {
+    if (getValorTiempo() % getPedestrianCountPeriod() == 0) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+

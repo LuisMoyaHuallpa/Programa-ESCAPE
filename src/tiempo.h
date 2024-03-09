@@ -32,6 +32,7 @@ private:
     int startNumberSimulation;
     int iNumberSimulation;
     int endNumberSimulation;
+    int pedestrianCountPeriod;
     std::chrono::high_resolution_clock::time_point startTimeSimulation;
     std::chrono::high_resolution_clock::time_point endTimeSimulation;
     double randomChoiceRate;
@@ -60,6 +61,7 @@ public:
     void setStartNumberSimulation(int startNumberSimulation);
     void setINumberSimulation(int iNumberSimulation);
     void setEndNumberSimulation(int endNumberSimulation);
+    void setPedestrianCountPeriod(int pedestrianCountPeriod);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getters
@@ -70,6 +72,7 @@ public:
     int getStartNumberSimulation() const;
     int getINumberSimulation() const;
     int getEndNumberSimulation() const;
+    int getPedestrianCountPeriod() const;
     double getRandomChoiceRate() const;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -91,6 +94,7 @@ public:
     void mostrarIResultadosSimulacion();
     void crearCarpetaTiempo();
     bool verificarGraphicPrintout(); 
+    bool verificarPedestrianCountPeriod(); 
     
 };
 

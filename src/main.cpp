@@ -16,7 +16,7 @@ int main() {
     // leer controlDict
     // dictionary controDict("controlDict");
     // imprimi malla de calles.
-    
+
     links::get()->imprimirMeshLinks();
 
     auto start = std::chrono::high_resolution_clock::now();
@@ -40,7 +40,7 @@ int main() {
             // tiempo::get()->mostrarTiempo();
             // contador de personas un tiempo atras de la funcion modelamiento de caminar de personas
             pedestrians::get()->contarPedestriansInSublink();
-            links::get()->calcularDensityLevelLinks();
+            // links::get()->calcularDensityLevelLinks();
             // // modelamiento de pedestrian.
             pedestrians::get()->modelamientoPedestrians();
             // imprimir datos para postprocesamiento.

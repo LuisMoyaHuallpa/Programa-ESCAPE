@@ -119,11 +119,15 @@ void pedestrians::tiempoInicioDistribution() {
 void pedestrians::contarPedestriansInSublink() {
     /* cuenta la personas que no han sido evacuadas y hayan empezado a caminar
         solo donde hay personas*/ 
-    for (auto it = dbPedestrianTotal.begin(); it != dbPedestrianTotal.end(); ++it) {
-        if (!it->getEvacuado()and
-        tiempo::get()->getValorTiempo() > it->getTiempoInicial()) {
-            it->contarPedestrianInSublink(); 
+    if (tiempo::get()->verificarPedestrianCountPeriod()) {
+        for (auto it = dbPedestrianTotal.begin(); it != dbPedestrianTotal.end(); ++it) {
+            if (!it->getEvacuado()and
+            tiempo::get()->getValorTiempo() > it->getTiempoInicial()) {
+                it->contarPedestrianInSublink(); 
+            }
         }
+        // calcula el nivel de densidad de todas las calles con los datos anterios
+        links::get()->calcularDensityLevelLinks();
     }
 }
 void pedestrians::reiniciarPedestriansNodeArranque() {
