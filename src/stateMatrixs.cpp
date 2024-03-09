@@ -1,5 +1,6 @@
 #include "stateMatrixs.h"
 #include "dictionary.h"
+#include "nodes.h"
 #include "pedestrian.h"
 #include "stateMatrix.h"
 #include "tiempo.h"
@@ -244,8 +245,8 @@ void stateMatrixs::imprimirDbStateMatrixs(){
     std::fstream file;
     file.open(creacionArchivoSalida(), std::ios::out);
     // Recorre todos los nodos
-    for (int i = 0; i < nodes::get()->getDbNodeTotal().size(); i++) {
+    for (const auto& it : nodes::get()->getDbNodeTotal()) {
         // imprimir los statesMatrix de las tablas de cada nodo 
-        nodes::get()->getDbNodeTotal().at(i)->imprimirQTable(file);
+        it->imprimirQTable(file);
     }
 }

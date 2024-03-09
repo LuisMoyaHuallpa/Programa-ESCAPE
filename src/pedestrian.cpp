@@ -277,6 +277,7 @@ void pedestrian::eleccionSarsa() {
     stateMatrixPedestrian.getActionValue().setILinkConnection(iQmenor);
     stateMatrixPedestrian.getActionValue().setIdLink(linkActual->getIdLink());
     // contando persona que experimenta state y action
+    stateMatrixPedestrian.getPedestrianMassState().getPedestrianMassStateVector().at(iQmenor)++;
     // stateMatrixPedestrian.getPedestrianMassState().at(iQmenor)++;
     // sabiendo la calle defino el nodo final.
     calcularNodeFinal();
