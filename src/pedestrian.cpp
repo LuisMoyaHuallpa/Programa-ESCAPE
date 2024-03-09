@@ -132,7 +132,7 @@ vector2D pedestrian::getDireccionPedestrian() {
 vector2DVelocidad& pedestrian::getVelocidad() {
     return velocidad;
 }
-int pedestrian::getTiempoInicial() {
+int pedestrian::getTiempoInicial() const {
     return tiempoInicial;
 }
 stateMatrix& pedestrian::getStateMatrixPedestrian() {
@@ -497,7 +497,7 @@ void pedestrian::mostrarMovimientoPedestrian(){
     // std::cout << std::setw(5) << getReward() << ' ';
     std::cout << std::endl;
 }
-void pedestrian::imprimirPedestrianPosition(std::fstream& file){
+void pedestrian::imprimirPedestrianPosition(std::fstream& file) const {
     // if (getEvacuado()) {
     // decimales para guardar en archivos.
     file << std::fixed << std::setprecision(2);
@@ -506,7 +506,7 @@ void pedestrian::imprimirPedestrianPosition(std::fstream& file){
     file << std::endl;
     // }
 }
-void pedestrian::imprimirPedestrianVelocity(std::fstream& file){
+void pedestrian::imprimirPedestrianVelocity(std::fstream& file) const {
     file << velocidad.getMagnitud() << " ";
     file << std::endl;
 }

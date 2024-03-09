@@ -129,7 +129,7 @@ void node::mostrarQTable() {
     }
 }
 void node::imprimirQTable(std::fstream& file) {
-    // Impresion de sim.csv
+   // Impresion de sim.csv
     for (auto it = stateMatrixTable.begin(); it != stateMatrixTable.end(); ++it) {
         // Imprimir id del nodo o intersección
         file << idNode << ",";

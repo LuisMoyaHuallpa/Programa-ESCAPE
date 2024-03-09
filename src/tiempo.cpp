@@ -44,25 +44,25 @@ void tiempo::setEndNumberSimulation(int endNumberSimulation) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-int tiempo::getValorTiempo() {
+int tiempo::getValorTiempo() const {
     return valorTiempo;
 }
-int tiempo::getDeltaT() {
+int tiempo::getDeltaT() const {
     return deltaT;  
 }
-int tiempo::getGraphicPrintoutPeriod() {
+int tiempo::getGraphicPrintoutPeriod() const {
     return graphicPrintoutPeriod;
 }
-int tiempo::getStartNumberSimulation() {
+int tiempo::getStartNumberSimulation() const {
     return startNumberSimulation;
 }
-int tiempo::getINumberSimulation() {
+int tiempo::getINumberSimulation() const {
     return iNumberSimulation;
 }
-int tiempo::getEndNumberSimulation() {
+int tiempo::getEndNumberSimulation() const {
     return endNumberSimulation;
 }
-double tiempo::getRandomChoiceRate() {
+double tiempo::getRandomChoiceRate() const {
     return randomChoiceRate;
 }
 

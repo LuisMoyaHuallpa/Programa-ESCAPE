@@ -123,7 +123,7 @@ public:
     link* getLinkPasado();
     vector2D getDireccionPedestrian();
     vector2DVelocidad& getVelocidad();
-    int getTiempoInicial();
+    int getTiempoInicial() const;
     stateMatrix& getStateMatrixPedestrian();
     stateMatrix& getStateMatrixPedestrianAnterior();
     // stateActionQ* getqStateAction();
@@ -177,8 +177,8 @@ public:
     // void crearqState(node* nodeActual);
     void modelamientoPedestrian();
     void mostrarMovimientoPedestrian();
-    void imprimirPedestrianPosition(std::fstream& file);
-    void imprimirPedestrianVelocity(std::fstream& file);
+    void imprimirPedestrianPosition(std::fstream& file) const;
+    void imprimirPedestrianVelocity(std::fstream& file) const;
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static metods
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

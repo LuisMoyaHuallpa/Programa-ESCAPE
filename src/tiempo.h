@@ -64,13 +64,13 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    int getValorTiempo();
-    int getDeltaT();
-    int getGraphicPrintoutPeriod();
-    int getStartNumberSimulation();
-    int getINumberSimulation();
-    int getEndNumberSimulation();
-    double getRandomChoiceRate();
+    int getValorTiempo() const;
+    int getDeltaT() const;
+    int getGraphicPrintoutPeriod() const;
+    int getStartNumberSimulation() const;
+    int getINumberSimulation() const;
+    int getEndNumberSimulation() const;
+    double getRandomChoiceRate() const;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static getters
