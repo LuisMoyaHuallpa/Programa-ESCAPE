@@ -13,12 +13,11 @@ tiempo* tiempo::tiempoInstance = nullptr;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tiempo::tiempo() {
+tiempo::tiempo()
+    : deltaT(1), endTime(std::stoi(dictionary::get()->lookup("endTime"))),
+      graphicPrintoutPeriod(std::stoi(dictionary::get()->lookupDefault("graphicPrintoutPeriod"))),
+      pedestrianCountPeriod(std::stoi(dictionary::get()->lookupDefault("pedestrianCountPeriod"))){
     (*this).valorTiempo = 0;
-    (*this).deltaT = 1;
-    (*this).graphicPrintoutPeriod = std::stoi(dictionary::get()->lookupDefault("graphicPrintoutPeriod"));
-    (*this).pedestrianCountPeriod = std::stoi(dictionary::get()->lookupDefault("pedestrianCountPeriod"));
-    (*this).endTime = std::stoi(dictionary::get()->lookup("endTime"));
     inicializarNumberSimulation();
 }
 
@@ -28,12 +27,6 @@ tiempo::tiempo() {
 void tiempo::setValorTiempo(int valorTiempo) {
     (*this).valorTiempo = valorTiempo;
 }
-void tiempo::setDeltaT(int deltaT) {
-    (*this).deltaT = deltaT;  
-}
-void tiempo::setGraphicPrintoutPeriod(int graphicPrintoutPeriod) {
-    (*this).graphicPrintoutPeriod = graphicPrintoutPeriod;
-}  
 void tiempo::setStartNumberSimulation(int startNumberSimulation) {
     (*this).startNumberSimulation = startNumberSimulation;
 }
@@ -43,9 +36,6 @@ void tiempo::setINumberSimulation(int iNumberSimulation) {
 void tiempo::setEndNumberSimulation(int endNumberSimulation) {
     (*this).endNumberSimulation = endNumberSimulation;
 }
-void tiempo::setPedestrianCountPeriod(int pedestrianCountPeriod) {
-    (*this).pedestrianCountPeriod = pedestrianCountPeriod;
-}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getters
@@ -53,10 +43,10 @@ void tiempo::setPedestrianCountPeriod(int pedestrianCountPeriod) {
 int tiempo::getValorTiempo() const {
     return valorTiempo;
 }
-int tiempo::getDeltaT() const {
+const int tiempo::getDeltaT() const {
     return deltaT;  
 }
-int tiempo::getGraphicPrintoutPeriod() const {
+const int tiempo::getGraphicPrintoutPeriod() const {
     return graphicPrintoutPeriod;
 }
 int tiempo::getStartNumberSimulation() const {
@@ -68,7 +58,7 @@ int tiempo::getINumberSimulation() const {
 int tiempo::getEndNumberSimulation() const {
     return endNumberSimulation;
 }
-int tiempo::getPedestrianCountPeriod() const {
+const int tiempo::getPedestrianCountPeriod() const {
     return pedestrianCountPeriod;
 }
 double tiempo::getRandomChoiceRate() const {

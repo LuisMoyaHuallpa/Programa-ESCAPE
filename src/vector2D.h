@@ -33,6 +33,6 @@ public:
     vector2D operator*(const vector2D& vector2) const;
     vector2D operator*(double scalar);
     vector2D operator+=(vector2D vector2);
-    void mostrarVector();
+    void mostrarVector() const;
 };
 #endif

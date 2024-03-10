@@ -62,8 +62,8 @@ vector2D vector2D::operator+=(vector2D vector2) {
     Y += vector2.getY();
     return *this;
 }
-void vector2D::mostrarVector() {
-    std::cout << "(" << std::setprecision(3) << getX() << ",";
-    std::cout << std::setprecision(3) << getY() << ")" << std::endl;
-    
+void vector2D::mostrarVector() const {
+    /* Muestra en el terminal en formato vector*/
+    std::cout << "(" << std::setprecision(3) << X << ",";
+    std::cout << std::setprecision(3) << Y << ")" << std::endl;
 }

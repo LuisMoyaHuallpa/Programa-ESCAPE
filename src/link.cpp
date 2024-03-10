@@ -9,14 +9,6 @@ int link::numberDivisiones = 10;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// link::link() : orientacionLink() {
-//     (*this).idLink = 0;
-//     (*this).idNode1 = 0;
-//     (*this).idNode2 = 0;
-//     (*this).length = 0;
-//     (*this).width = 0;
-//     (*this).densityLevel = 0;
-// }
 link::link(int idLink, node *node1, node *node2, int length, int width)
     : idLink(idLink), node1(node1), node2(node2), length(length), width(width),
       orientacionLink(calcularOrientacionLink()){
@@ -31,9 +23,6 @@ link::link(int idLink, node *node1, node *node2, int length, int width)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // setters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// void link::setOrientacionLink(vector2D orientacionLink) {
-//     (*this).orientacionLink = orientacionLink;
-// }
 void link::setPedestriansInSublink(std::vector<int> pedestriansInSublink) {
     (*this).pedestriansInSublink = pedestriansInSublink;
 }

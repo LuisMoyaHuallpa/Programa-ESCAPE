@@ -35,8 +35,6 @@ private:
     const int idLink;
     const node* node1;
     const node* node2;
-    // const int idNode1;
-    // const int idNode2;
     const int length;
     const int width;
     const vector2D orientacionLink;
@@ -54,13 +52,11 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // link();
     link(int idLink, node* node1, node* node2, int length, int width);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // setters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // void setOrientacionLink(vector2D orientacionLink);
     void setPedestriansInSublink(std::vector<int> pedestriansInSublink);
     void setDensityInSublink(std::vector<double> densityInSublink);
     void setDensityLevel(int densityLevel);
@@ -90,9 +86,6 @@ public:
     void mostrarLink();
     void mostrarSubLink();
     void imprimirLink(std::fstream& file);
-
-    // void calcularSubdivision();
-    // void guardarLinkConnection();
 };
 #endif
 
