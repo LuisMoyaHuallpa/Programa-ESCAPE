@@ -120,7 +120,7 @@ void pedestrians::contarPedestriansInSublink() {
     /* cuenta la personas que no han sido evacuadas y hayan empezado a caminar
         solo donde hay personas*/ 
     if (tiempo::get()->verificarPedestrianCountPeriod()) {
-            #pragma omp parallel for num_threads(8)
+            #pragma omp parallel for num_threads(std::stoi(dictionary::get()->lookupDefault("parallelProcessors")))
         for (auto it = dbPedestrianTotal.begin(); it != dbPedestrianTotal.end(); ++it) {
             if (!it->getEvacuado()and
             tiempo::get()->getValorTiempo() > it->getTiempoInicial()) {

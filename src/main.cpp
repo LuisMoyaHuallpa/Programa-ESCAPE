@@ -37,7 +37,13 @@ int main() {
             tiempo::get()->aumentarTiempo();
             // tiempo::get()->mostrarTiempo();
             // contador de personas un tiempo atras de la funcion modelamiento de caminar de personas
+            auto start = std::chrono::high_resolution_clock::now();
             pedestrians::get()->contarPedestriansInSublink();
+            auto stop = std::chrono::high_resolution_clock::now();
+            auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
+            std::cout << duration.count() << std::endl;
+            std::cout << "Duración contar: " << duration.count() << " ms" << std::endl;
+
             // // modelamiento de pedestrian.
             pedestrians::get()->modelamientoPedestrians();
             // imprimir datos para postprocesamiento.

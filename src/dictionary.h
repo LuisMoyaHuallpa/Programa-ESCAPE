@@ -35,7 +35,8 @@ private:
         {"pedestrianCountPeriod", "1"},
         {"computationContinued", "no"},
         {"readPedestriansMassState", "no"},
-        {"stopSimulationAt", "endNumberSimulation"}
+        {"stopSimulationAt", "endNumberSimulation"},
+        {"parallelProcessors", "1"}
     };
     std::map<std::string, std::string> controlDict;
 
