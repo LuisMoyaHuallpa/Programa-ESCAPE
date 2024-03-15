@@ -26,7 +26,6 @@ int main() {
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
     std::cout << duration.count() << std::endl;
     std::cout << "Duración lectura: " << duration.count() << " ms" << std::endl;
-
     // nodes::get()->mostrarNodes();
     // segun el número de simulaciones
     while (tiempo::get()->getINumberSimulation() <= tiempo::get()->getEndNumberSimulation()) {
@@ -37,7 +36,8 @@ int main() {
             tiempo::get()->aumentarTiempo();
             // tiempo::get()->mostrarTiempo();
             // contador de personas un tiempo atras de la funcion modelamiento de caminar de personas
-            pedestrians::get()->contarPedestriansInSublink();
+            // pedestrians::get()->contarPedestriansInSublink();
+            links::get()->contarPedestriansInSublink();
             // // modelamiento de pedestrian.
             pedestrians::get()->modelamientoPedestrians();
             // imprimir datos para postprocesamiento.
@@ -46,11 +46,12 @@ int main() {
             links::get()->resetSublinks();
             // pedestrians::get()->reset();
         }
+        // links::get()->mostrarLinks();
         // Imprimir estados al terminar la simulación
         stateMatrixs::get()->imprimirDbStateMatrixs();
         // mostrar resultados simulation
         tiempo::get()->mostrarIResultadosSimulacion();
-        // aumentar el numero de simulacion y reinciar
+        // aumentar el numero de simulacion y reiniciar valores
         tiempo::get()->aumentarINumberSimulation();
     }
 }
