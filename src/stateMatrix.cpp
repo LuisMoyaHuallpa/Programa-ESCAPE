@@ -77,9 +77,9 @@ int stateMatrix::getTamanoVector() {
 bool stateMatrix::operator==(stateMatrix stateMatrix2) {
     /* compara si dos stateMatrix son iguales */
     // primero compara si el tamaño de los states son iguales
-    if (getStateValue().getDensityLinks().size() == stateMatrix2.getStateValue().getDensityLinks().size()) {
-        // compara la action y el state
-        if (getStateValue() == stateMatrix2.getStateValue()) {
+    if (stateValue.getDensityLinks().size() == stateMatrix2.getStateValue().getDensityLinks().size()) {
+        // la comparacion es con el state, el state es como id del stateMatrix en un mismo nodo
+        if (stateValue == stateMatrix2.getStateValue()) {
             return true;
         }
     }

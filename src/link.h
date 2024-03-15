@@ -21,6 +21,7 @@ Una calle.
 #include "nodes.h"
 #include "dictionary.h"
 
+class pedestrian;
 class link{
     
 private:
@@ -38,6 +39,7 @@ private:
     const int length;
     const int width;
     const vector2D orientacionLink;
+    std::vector<pedestrian*> pedestriansLink;
     std::vector<int> pedestriansInSublink;
     std::vector<double> densityInSublink;
     int densityLevel;
@@ -57,6 +59,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // setters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    void setPedestriansLink(std::vector<pedestrian*> pedestriansLink);
     void setPedestriansInSublink(std::vector<int> pedestriansInSublink);
     void setDensityInSublink(std::vector<double> densityInSublink);
     void setDensityLevel(int densityLevel);
@@ -71,6 +74,7 @@ public:
     const int getLength() const;
     const int getWidth() const;
     const vector2D getOrientacionLink() const;
+    std::vector<pedestrian*>& getPedestriansLink();
     std::vector<int>& getPedestriansInSublink();
     std::vector<double>& getDensityInSublink();
     int getDensityLevel();

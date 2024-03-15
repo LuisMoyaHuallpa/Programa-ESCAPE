@@ -137,16 +137,16 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    bool operator==(pedestrian pedestrian2);
     void caminar();
     double calcularIDoubleSublink();
     void contarPedestrianInSublink();
     void calcularDensityInSublink();
     void cambioCalle();
-    void eleccionLinkActual();
-    void eleccionRandomLinkActual();
-    void eleccionDosCallesContinuas();
-    void eleccionSarsa();
     void eleccionGeneralLinkActual();
+    void eleccionRandomLinkActual();
+    void eleccionSarsa();
+    void eleccionDosCallesContinuas();
     // int iEleccionRandomLinkActual();
     // void updateLinkActual(int iLinkConnection);
     // void updateStateAction(int iLinkConnection);

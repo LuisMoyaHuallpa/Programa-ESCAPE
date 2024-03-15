@@ -26,5 +26,5 @@ readPedestrianMassState no;
 
 stopSimulationAt          addNumberSimulation;
 
-addNumberSimulation 3;
+addNumberSimulation 5;
 

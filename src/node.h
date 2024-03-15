@@ -70,8 +70,6 @@ public:
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void buscarStateMatrix(stateMatrix stateMatrixBuscando, bool& verificarStateMatrix, int& iStateMatrixTable);
-    // void addqQTable(stateActionQ qElemento);
-    // void ordenarQTable();
     // void crearStateMatrix();
     bool verificarCambioState(state stateAnterior, state stateActual);
     void mostrarNode();
