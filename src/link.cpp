@@ -1,5 +1,7 @@
 #include "link.h"
+#include "pedestrian.h"
 #include "vector2D.h"
+#include <vector>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -23,6 +25,9 @@ link::link(int idLink, node *node1, node *node2, int length, int width)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // setters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void link::setPedestriansLink(std::vector<pedestrian*> pedestriansLink) {
+    (*this).pedestriansLink = pedestriansLink;
+}
 void link::setPedestriansInSublink(std::vector<int> pedestriansInSublink) {
     (*this).pedestriansInSublink = pedestriansInSublink;
 }
@@ -56,6 +61,9 @@ const int link::getWidth() const{
 }
 const vector2D link::getOrientacionLink() const {
     return orientacionLink;
+}
+std::vector<pedestrian*>& link::getPedestriansLink() {
+    return pedestriansLink;
 }
 std::vector<int>& link::getPedestriansInSublink() {
     return pedestriansInSublink;
@@ -125,6 +133,10 @@ void link::mostrarLink(){
     std::cout << "nodes: ";
     std::cout << node1->getIdNode() << " ";
     std::cout << node2->getIdNode() << " ";
+    std::cout << "pedestrianLink: ";
+    for (int i = 0; i < pedestriansLink.size(); i++) {
+        std::cout << pedestriansLink.at(i)->getIdPedestrian() << " ";
+    }
     std::cout << std::endl;
 }
 void link::imprimirLink(std::fstream& file) {

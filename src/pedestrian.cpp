@@ -151,6 +151,14 @@ int pedestrian::getReward() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+bool pedestrian::operator==(pedestrian pedestrian2) {
+    /* compara si dos pedestrian son iguales*/
+    // la comparacion es con id
+    if (idPedestrian == pedestrian2.idPedestrian) {
+        return true;
+    }
+    return false;
+}
 void pedestrian::caminar() {
     /* formula de desplazamiento*/
     position += velocidad * tiempo::get()->getDeltaT();
@@ -158,8 +166,6 @@ void pedestrian::caminar() {
 double pedestrian::calcularIDoubleSublink() {
     /* Calcula la ubicacion de la persona en el array del subLink*/
     // distancia de la persona al nodeInicio de la persona
-    // position.mostrarVector();
-    // nodes::get()->getDbNodeTotal().at(linkActual->getIdNode1())->getCoordenada().mostrarVector();
     double index_x = position.getX() - nodeInicio->getCoordenada().getX();
     double index_y = position.getY() - nodeInicio->getCoordenada().getY();
     double index_hipo = std::sqrt(std::pow(index_x,2) + pow(index_y, 2)) / static_cast<double>(linkActual->getAnchoDivisiones());
@@ -180,18 +186,23 @@ void pedestrian::contarPedestrianInSublink() {
         linkActual->getPedestriansInSublink().at(index)++;
     }
 }
-void pedestrian::eleccionLinkActual() {
-    if (nodeInicio->getStateMatrixTable().size() == 0) {
-        std::cout  << "primera "<< std::endl;
-        eleccionRandomLinkActual();
-    }    // si son dos calle continuas
-    // else if (nodeInicio->b) {
-    //     eleccionDosCallesContinuas();
-    // }
-    // existan mas de dos calles para elegir
-    else {
-        eleccionRandomLinkActual();
-        // eleccionRandomSarsa();
+void pedestrian::eleccionGeneralLinkActual() {
+   // Configurar el generador de números aleatorios
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<double> dis(0.0, 1.0);
+    // Generar un número aleatorio en el rango [0.0, 1.0)
+    double randomNumber = dis(gen);
+    // compara el numero aletorio con optima choice rate
+    // este ultimo debe ir descendiendo cuando halla mas simulaciones
+    // a mayor simulaciones mas uso de la elecion sarsa
+    switch (randomNumber <= tiempo::get()->getRandomChoiceRate() ? 1 : 2) {
+        case 1:
+            eleccionRandomLinkActual();
+            break;
+        case 2:
+            eleccionSarsa();
+            break;
     }
 }
 void pedestrian::eleccionRandomLinkActual() {
@@ -205,13 +216,47 @@ void pedestrian::eleccionRandomLinkActual() {
     std::uniform_int_distribution<int> distribucion(0, limite_max);
     int numero_aleatorio = distribucion(generador);
     // setLinkActual(links::get()->getDbLinkTotal().at(nodeInicio->getIdLinkConnection().at(numero_aleatorio)).get());
+    // eleccion de la calle nueva, parte principal de la funcion
     setLinkActual(nodeInicio->getLinkConnection().at(numero_aleatorio));
+    // agrega persona a la calle
+    linkActual->getPedestriansLink().push_back(this);
     // enviando informacion de action al stateMatrix
     stateMatrixPedestrian.getActionValue().setILinkConnection(numero_aleatorio);
     stateMatrixPedestrian.getActionValue().setIdLink(linkActual->getIdLink());
     // contando persona que experimenta state y action
-    nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getPedestrianMassState().getPedestrianMassStateVector().at(numero_aleatorio)++;
+    // nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getPedestrianMassState().getPedestrianMassStateVector().at(numero_aleatorio)++;
     // stateMatrixPedestrian.getPedestrianMassState().getPedestrianMassStateVector().at(numero_aleatorio)++;
+    // sabiendo la calle defino el nodo final.
+    calcularNodeFinal();
+    // verificar si el nodo final es un nodo de evacucion.
+    verificarPedestrianEvacuation();
+}
+void pedestrian::eleccionSarsa() {
+    // empieza con valores del primer elemento de QsVector
+    double Qmenor = nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().at(0);
+    int iQmenor = 0;
+    // nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().mostrarQs();
+    for (int i = 0; i < nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().size(); i++) {
+        if (nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().at(i) > Qmenor) {
+            Qmenor= nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().at(i);
+            iQmenor = i;
+        }
+    }
+    // nodeInicio->getStateMatrixTable().at(size_type __n)
+    // std::cout << "Qmenor: " << nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().at(iQmenor) << std::endl;
+    // setLinkActual(&dbLinkTotal.at(getNodeInicio()->getIdLinkConnection().at(iQmenor)));
+    // setLinkActual(links::get()->getDbLinkTotal().at(getNodeInicio()->getIdLinkConnection().at(iQmenor)).get());
+    // eleccion de la calle nueva, parte principal de la funcion
+    setLinkActual(nodeInicio->getLinkConnection().at(iQmenor));
+    // agrega persona a la calle
+    linkActual->getPedestriansLink().push_back(this);
+    // enviando informacion de action al stateMatrix
+    stateMatrixPedestrian.getActionValue().setILinkConnection(iQmenor);
+    stateMatrixPedestrian.getActionValue().setIdLink(linkActual->getIdLink());
+    // contando persona que experimenta state y action
+    // stateMatrixPedestrian.getPedestrianMassState().getPedestrianMassStateVector().at(iQmenor)++;
+    // nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getPedestrianMassState().getPedestrianMassStateVector().at(iQmenor)++;
+    // stateMatrixPedestrian.getPedestrianMassState().at(iQmenor)++;
     // sabiendo la calle defino el nodo final.
     calcularNodeFinal();
     // verificar si el nodo final es un nodo de evacucion.
@@ -242,53 +287,6 @@ void pedestrian::eleccionDosCallesContinuas() {
         calcularNodeFinal();
         // verificar si el nodo final es un nodo de evacucion.
         verificarPedestrianEvacuation();
-    }
-}
-void pedestrian::eleccionSarsa() {
-    // empieza con valores del primer elemento de QsVector
-    double Qmenor = nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().at(0);
-    int iQmenor = 0;
-    // nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().mostrarQs();
-    for (int i = 0; i < nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().size(); i++) {
-        if (nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().at(i) > Qmenor) {
-            Qmenor= nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().at(i);
-            iQmenor = i;
-        }
-    }
-    // nodeInicio->getStateMatrixTable().at(size_type __n)
-    // std::cout << "Qmenor: " << nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().at(iQmenor) << std::endl;
-    // setLinkActual(&dbLinkTotal.at(getNodeInicio()->getIdLinkConnection().at(iQmenor)));
-    // setLinkActual(links::get()->getDbLinkTotal().at(getNodeInicio()->getIdLinkConnection().at(iQmenor)).get());
-    setLinkActual(nodeInicio->getLinkConnection().at(iQmenor));
-    // enviando informacion de action al stateMatrix
-    stateMatrixPedestrian.getActionValue().setILinkConnection(iQmenor);
-    stateMatrixPedestrian.getActionValue().setIdLink(linkActual->getIdLink());
-    // contando persona que experimenta state y action
-    // stateMatrixPedestrian.getPedestrianMassState().getPedestrianMassStateVector().at(iQmenor)++;
-    nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getPedestrianMassState().getPedestrianMassStateVector().at(iQmenor)++;
-    // stateMatrixPedestrian.getPedestrianMassState().at(iQmenor)++;
-    // sabiendo la calle defino el nodo final.
-    calcularNodeFinal();
-    // verificar si el nodo final es un nodo de evacucion.
-    verificarPedestrianEvacuation();
-}
-void pedestrian::eleccionGeneralLinkActual() {
-   // Configurar el generador de números aleatorios
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_real_distribution<double> dis(0.0, 1.0);
-    // Generar un número aleatorio en el rango [0.0, 1.0)
-    double randomNumber = dis(gen);
-    // compara el numero aletorio con optima choice rate
-    // este ultimo debe ir descendiendo cuando halla mas simulaciones
-    // a mayor simulaciones mas uso de la elecion sarsa
-    switch (randomNumber <= tiempo::get()->getRandomChoiceRate() ? 1 : 2) {
-        case 1:
-            eleccionRandomLinkActual();
-            break;
-        case 2:
-            eleccionSarsa();
-            break;
     }
 }
 bool pedestrian::verificarEndLink() {
@@ -324,21 +322,26 @@ int pedestrian::calcularSignoNumero(double numero) {
 void pedestrian::cambioCalle() {
     /* se cambia de calle cuando se termina de recorre la calle actual*/
     if (verificarEndLink()) {
-        // guarda el la intersesccional inicial anterior antes que sea cambiada
+        // guarda la interseccion actual antes que sea cambiada, por tanto es la interseccion anterior
         setNodeInicioAnterior(nodeInicio);
+        // guarda calle actual antes que sea cambiada, por tanto es la calle anterior
+        setLinkPasado(linkActual);
+        // busca y elimina esta persona en la calle pasada, porque esta a punto de estar en una calle nueva
+        std::vector<pedestrian*>& pedestrianLink = linkPasado->getPedestriansLink();
+        pedestrianLink.erase(std::remove(pedestrianLink.begin(), pedestrianLink.end(), this), pedestrianLink.end());
         // guarda el stateMatrix para calculos del algoritmo sarsa.
         setStateMatrixPedestrianAnterior(stateMatrixPedestrian);
         // ahora la interseccion final es la interseccion inicial.
         setNodeInicio(nodeFinal);
         // correcion de la posicion cuando se llega cerca al nodo.
-        setPosition({getNodeInicio()->getCoordenada().getX(), getNodeInicio()->getCoordenada().getY()});
+        setPosition({nodeInicio->getCoordenada().getX(), nodeInicio->getCoordenada().getY()});
         // calculo del stateMatrix para obtener datos de state.
         calcularLevelDensityAtNode();
         // stateMatrixPedestrian.mostrarStateMatrix();
         // eleccionde de la calle
         // eleccionRandomLinkActual();
         eleccionGeneralLinkActual();
-        // eleccionLinkActual();
+        //
         // guarda infomacion de stateMatrix de la persona en una tabla en nodo.
         // stateMatrixtoTableAtNode();
         // algoritmo sarsa, actualiza en nodoAnterior
@@ -348,6 +351,7 @@ void pedestrian::cambioCalle() {
         // envio informacion de direccion al vector de velocidad.
         getVelocidad().setDireccion(getDireccionPedestrian());
         // falta mejor para que ajuste tambien esta velcoida
+        // nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).mostrarStateMatrix();
     }
 }
 void pedestrian::calcularDireccionPedestrian() {

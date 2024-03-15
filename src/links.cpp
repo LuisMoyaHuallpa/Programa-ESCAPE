@@ -1,6 +1,8 @@
 #include "links.h"
 #include "dictionary.h"
+#include "tiempo.h"
 #include <vector>
+#include "pedestrian.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -108,12 +110,32 @@ void links::calcularDensityLevelLinks() {
         it->get()->calcularDensityLevel();
     }
 }
+void links::contarPedestriansInSublink() {
+    if(tiempo::get()->verificarPedestrianCountPeriod()){
+        // recorre todas las calles
+        for (auto it = dbLinkTotal.begin(); it != dbLinkTotal.end(); ++it) {
+            // recorre las personas que estan en una calle
+            for (auto p :  it->get()->getPedestriansLink()) {
+                p->contarPedestrianInSublink();
+            }
+            // calcula el nivel de densidad de todas las calles con los datos anterios
+            it->get()->calcularDensity();
+            it->get()->calcularDensityLevel();
+        }
+    }
+}
 void links::resetSublinks() {
     /* reinicia valores de conteo de sublink*/
     // no hacerlo si estas en la ultima simulaciones, debido a que ya las personas se movieron y no
     // necesitaran esta información
     for (auto it = dbLinkTotal.begin(); it != dbLinkTotal.end(); ++it) {
         it->get()->getPedestriansInSublink().assign(link::numberDivisiones, 0);
+    }
+}
+void links::resetPedestriansLink() {
+    /* reinicia los valores de los pedestriansLink*/  
+    for (auto it = dbLinkTotal.begin(); it != dbLinkTotal.end(); ++it) {
+        it->get()->getPedestriansLink().clear();
     }
 }
 void links::mostrarLinks(){

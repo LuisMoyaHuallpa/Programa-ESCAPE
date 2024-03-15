@@ -57,7 +57,9 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void leerLinks(std::string fileName);
     void calcularDensityLevelLinks();
+    void contarPedestriansInSublink();
     void resetSublinks();
+    void resetPedestriansLink();
     void mostrarLinks();
     void mostrarSublink();
     void imprimirMeshLinks();
