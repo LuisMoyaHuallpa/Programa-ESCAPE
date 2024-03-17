@@ -77,7 +77,7 @@ public:
     std::vector<pedestrian*>& getPedestriansLink();
     std::vector<int>& getPedestriansInSublink();
     std::vector<double>& getDensityInSublink();
-    int getDensityLevel();
+    int* getDensityLevel();
     double getAnchoDivisiones();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

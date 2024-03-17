@@ -14,6 +14,11 @@ stateMatrix::stateMatrix() : stateValue() {
     setIStateMatrixTable(0);
     // otrosVector.resize(tamanoVector,0);
 }
+stateMatrix::stateMatrix(state stateValue) {
+    setStateValue(stateValue);  
+    QsValue.getQsVector().resize(stateValue.getDensityLinks().size(), 0);
+    pedestrianMassStateValue.getPedestrianMassStateVector().resize(stateValue.getDensityLinks().size(), 0);
+}
 stateMatrix::stateMatrix(state stateValue, std::vector<double> QVector, std::vector<int> otrosVector) {
     setStateValue(stateValue);
     setOtrosVector(otrosVector);
@@ -85,6 +90,10 @@ bool stateMatrix::operator==(stateMatrix stateMatrix2) {
     }
     return false;
 }
+// struct stateM {
+//     si
+// }
+
 // void stateMatrix::enviarDataNode(node* nodeAGuardar) {
     // Envia los datos leidos del csv al QTable de cada nodo.
     // for (int i = 0; i < stateValue.getDensityLinks().size(); i++) {
