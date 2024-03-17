@@ -1,6 +1,10 @@
 #include "pedestrian.h"
 #include "nodeEvacution.h"
+#include "stateMatrix.h"
 #include "tiempo.h"
+#include <map>
+#include <utility>
+#include <vector>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -22,7 +26,7 @@ pedestrian::pedestrian(int edad, int gender, int hhType, int hhId,node* nodeArra
     : idPedestrian(contador++), edad(edad), gender(gender), hhType(hhType), hhId(hhId),
       nodeArranque(nodeArranque), nodeInicio(nullptr), nodeFinal(nullptr), nodeInicioAnterior(nullptr),
       direccionPedestrian(), tiempoInicial(0),
-      velocidad(), stateMatrixPedestrian(), stateMatrixPedestrianAnterior(), sarsaAlgorithm() {
+      velocidad(), stateMatrixActual(nullptr), stateMatrixPasado(nullptr), sarsaAlgorithm() {
     setNodeInicio(nodeArranque);
     setEvacuado(false);
     setReward(0);
@@ -58,12 +62,6 @@ void pedestrian::setVelocidad(vector2DVelocidad velocidad) {
 }
 void pedestrian::setTiempoInicial(int tiempoInicial) {
     const_cast<int&>((*this).tiempoInicial) = tiempoInicial;
-}
-void pedestrian::setStateMatrixPedestrian(stateMatrix stateMatrixPedestrian) {
-    (*this).stateMatrixPedestrian = stateMatrixPedestrian;
-}
-void pedestrian::setStateMatrixPedestrianAnterior(stateMatrix stateMatrixPedestrianAnterior) {
-    (*this).stateMatrixPedestrianAnterior = stateMatrixPedestrianAnterior;
 }
 // void pedestrian::setOrientacionLinkPasado(vector2D orientacionLinkPasado) {
 //     (*this).orientacionLinkPasado = orientacionLinkPasado;
@@ -135,13 +133,7 @@ vector2DVelocidad& pedestrian::getVelocidad() {
 int pedestrian::getTiempoInicial() const {
     return tiempoInicial;
 }
-stateMatrix& pedestrian::getStateMatrixPedestrian() {
-    return stateMatrixPedestrian;
-}
-stateMatrix& pedestrian::getStateMatrixPedestrianAnterior() {
-    return stateMatrixPedestrianAnterior;
-}
-bool pedestrian::getEvacuado() const {
+bool pedestrian::getEvacuado() {
     return evacuado;
 }
 int pedestrian::getReward() const {
@@ -221,11 +213,10 @@ void pedestrian::eleccionRandomLinkActual() {
     // agrega persona a la calle
     linkActual->getPedestriansLink().push_back(this);
     // enviando informacion de action al stateMatrix
-    stateMatrixPedestrian.getActionValue().setILinkConnection(numero_aleatorio);
-    stateMatrixPedestrian.getActionValue().setIdLink(linkActual->getIdLink());
+    stateMatrixActual->getActionValue().setILinkConnection(numero_aleatorio);
+    stateMatrixActual->getActionValue().setIdLink(linkActual->getIdLink());
     // contando persona que experimenta state y action
-    // nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getPedestrianMassState().getPedestrianMassStateVector().at(numero_aleatorio)++;
-    // stateMatrixPedestrian.getPedestrianMassState().getPedestrianMassStateVector().at(numero_aleatorio)++;
+    stateMatrixActual->getPedestrianMassState().getPedestrianMassStateVector().at(numero_aleatorio)++;
     // sabiendo la calle defino el nodo final.
     calcularNodeFinal();
     // verificar si el nodo final es un nodo de evacucion.
@@ -233,62 +224,57 @@ void pedestrian::eleccionRandomLinkActual() {
 }
 void pedestrian::eleccionSarsa() {
     // empieza con valores del primer elemento de QsVector
-    double Qmenor = nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().at(0);
+    double Qmenor = stateMatrixActual->getQsValue().getQsVector().at(0);
+    // valor de inicio para comparar con los del vector Qs
     int iQmenor = 0;
-    // nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().mostrarQs();
-    for (int i = 0; i < nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().size(); i++) {
-        if (nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().at(i) > Qmenor) {
-            Qmenor= nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().at(i);
+    // me devuele el menor Q
+    for (int i = 0; i < stateMatrixActual->getQsValue().getQsVector().size(); i++) {
+        if (stateMatrixActual->getQsValue().getQsVector().at(i) > Qmenor) {
+            Qmenor= stateMatrixActual->getQsValue().getQsVector().at(i);
             iQmenor = i;
         }
     }
-    // nodeInicio->getStateMatrixTable().at(size_type __n)
-    // std::cout << "Qmenor: " << nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().at(iQmenor) << std::endl;
-    // setLinkActual(&dbLinkTotal.at(getNodeInicio()->getIdLinkConnection().at(iQmenor)));
-    // setLinkActual(links::get()->getDbLinkTotal().at(getNodeInicio()->getIdLinkConnection().at(iQmenor)).get());
     // eleccion de la calle nueva, parte principal de la funcion
     setLinkActual(nodeInicio->getLinkConnection().at(iQmenor));
     // agrega persona a la calle
     linkActual->getPedestriansLink().push_back(this);
     // enviando informacion de action al stateMatrix
-    stateMatrixPedestrian.getActionValue().setILinkConnection(iQmenor);
-    stateMatrixPedestrian.getActionValue().setIdLink(linkActual->getIdLink());
+    stateMatrixActual->getActionValue().setILinkConnection(iQmenor);
+    stateMatrixActual->getActionValue().setIdLink(linkActual->getIdLink());
     // contando persona que experimenta state y action
-    // stateMatrixPedestrian.getPedestrianMassState().getPedestrianMassStateVector().at(iQmenor)++;
-    nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getPedestrianMassState().getPedestrianMassStateVector().at(iQmenor)++;
-    // stateMatrixPedestrian.getPedestrianMassState().at(iQmenor)++;
+    stateMatrixActual->getPedestrianMassState().getPedestrianMassStateVector().at(iQmenor)++;
     // sabiendo la calle defino el nodo final.
     calcularNodeFinal();
     // verificar si el nodo final es un nodo de evacucion.
     verificarPedestrianEvacuation();
 }
-void pedestrian::eleccionDosCallesContinuas() {
-    // linkActual es la calle a punto de cambiar
-    if (!(nodeInicio->getLinkConnection().at(0)->getIdLink() == linkActual->getIdLink())) {
-        // setLinkActual(&dbLinkTotal.at(getNodeInicio()->getIdLinkConnection().at(0)));
-        // setLinkActual(links::get()->getDbLinkTotal().at(getNodeInicio()->getIdLinkConnection().at(0)).get());
-        setLinkActual(nodeInicio->getLinkConnection().at(0));
-        // enviando informacion de action al stateMatrix
-        stateMatrixPedestrian.getActionValue().setILinkConnection(0);
-        stateMatrixPedestrian.getActionValue().setIdLink(linkActual->getIdLink());
-        // sabiendo la calle defino el nodo final.
-        calcularNodeFinal();
-        // verificar si el nodo final es un nodo de evacucion.
-        verificarPedestrianEvacuation();
-    }
-    else {
-        // setLinkActual(&dbLinkTotal.at(getNodeInicio()->getIdLinkConnection().at(1)));
-        // setLinkActual(links::get()->getDbLinkTotal().at(getNodeInicio()->getIdLinkConnection().at(1)).get());
-        setLinkActual(nodeInicio->getLinkConnection().at(0));
-        // enviando informacion de action al stateMatrix
-        stateMatrixPedestrian.getActionValue().setILinkConnection(1);
-        stateMatrixPedestrian.getActionValue().setIdLink(linkActual->getIdLink());
-        // sabiendo la calle defino el nodo final.
-        calcularNodeFinal();
-        // verificar si el nodo final es un nodo de evacucion.
-        verificarPedestrianEvacuation();
-    }
-}
+// void pedestrian::eleccionDosCallesContinuas() {
+//     // linkActual es la calle a punto de cambiar
+//     if (!(nodeInicio->getLinkConnection().at(0)->getIdLink() == linkActual->getIdLink())) {
+//         // setLinkActual(&dbLinkTotal.at(getNodeInicio()->getIdLinkConnection().at(0)));
+//         // setLinkActual(links::get()->getDbLinkTotal().at(getNodeInicio()->getIdLinkConnection().at(0)).get());
+//         setLinkActual(nodeInicio->getLinkConnection().at(0));
+//         // enviando informacion de action al stateMatrix
+//         stateMatrixPedestrian.getActionValue().setILinkConnection(0);
+//         stateMatrixPedestrian.getActionValue().setIdLink(linkActual->getIdLink());
+//         // sabiendo la calle defino el nodo final.
+//         calcularNodeFinal();
+//         // verificar si el nodo final es un nodo de evacucion.
+//         verificarPedestrianEvacuation();
+//     }
+//     else {
+//         // setLinkActual(&dbLinkTotal.at(getNodeInicio()->getIdLinkConnection().at(1)));
+//         // setLinkActual(links::get()->getDbLinkTotal().at(getNodeInicio()->getIdLinkConnection().at(1)).get());
+//         setLinkActual(nodeInicio->getLinkConnection().at(0));
+//         // enviando informacion de action al stateMatrix
+//         stateMatrixPedestrian.getActionValue().setILinkConnection(1);
+//         stateMatrixPedestrian.getActionValue().setIdLink(linkActual->getIdLink());
+//         // sabiendo la calle defino el nodo final.
+//         calcularNodeFinal();
+//         // verificar si el nodo final es un nodo de evacucion.
+//         verificarPedestrianEvacuation();
+//     }
+// }
 bool pedestrian::verificarEndLink() {
     // Da verdadero si la persona se encuentra ubicada en el termino de calle.
     bool terminoLink = false;
@@ -330,18 +316,15 @@ void pedestrian::cambioCalle() {
         std::vector<pedestrian*>& pedestrianLink = linkPasado->getPedestriansLink();
         pedestrianLink.erase(std::remove(pedestrianLink.begin(), pedestrianLink.end(), this), pedestrianLink.end());
         // guarda el stateMatrix para calculos del algoritmo sarsa.
-        setStateMatrixPedestrianAnterior(stateMatrixPedestrian);
+        stateMatrixPasado = stateMatrixActual;
         // ahora la interseccion final es la interseccion inicial.
         setNodeInicio(nodeFinal);
         // correcion de la posicion cuando se llega cerca al nodo.
         setPosition({nodeInicio->getCoordenada().getX(), nodeInicio->getCoordenada().getY()});
         // calculo del stateMatrix para obtener datos de state.
         calcularLevelDensityAtNode();
-        // stateMatrixPedestrian.mostrarStateMatrix();
         // eleccionde de la calle
-        // eleccionRandomLinkActual();
         eleccionGeneralLinkActual();
-        //
         // guarda infomacion de stateMatrix de la persona en una tabla en nodo.
         // stateMatrixtoTableAtNode();
         // algoritmo sarsa, actualiza en nodoAnterior
@@ -351,7 +334,7 @@ void pedestrian::cambioCalle() {
         // envio informacion de direccion al vector de velocidad.
         getVelocidad().setDireccion(getDireccionPedestrian());
         // falta mejor para que ajuste tambien esta velcoida
-        // nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).mostrarStateMatrix();
+        stateMatrixActual->mostrarStateMatrix();
     }
 }
 void pedestrian::calcularDireccionPedestrian() {
@@ -390,50 +373,74 @@ void pedestrian::algoritmoSarsa() {
     // R
     sarsaAlgorithm.setR(reward);
     // QPrevious
-    double QPrevious = nodeInicioAnterior->getStateMatrixTable().at(stateMatrixPedestrianAnterior.getIStateMatrixTable()).getQsValue().getQsVector().at(stateMatrixPedestrianAnterior.getActionValue().getILinkConnection());
+    double QPrevious = stateMatrixPasado->getQsValue().getQsVector().at(stateMatrixPasado->getActionValue().getILinkConnection());
     sarsaAlgorithm.setQPrevious(QPrevious);
     // QCurrent
-    double QCurrent = nodeInicio->getStateMatrixTable().at(stateMatrixPedestrian.getIStateMatrixTable()).getQsValue().getQsVector().at(stateMatrixPedestrian.getActionValue().getILinkConnection());
+    double QCurrent = stateMatrixActual->getQsValue().getQsVector().at(stateMatrixActual->getActionValue().getILinkConnection()); 
     sarsaAlgorithm.setQCurrent(QCurrent);
     // calcular Q
     sarsaAlgorithm.sarsaActualizarQ();
-    nodeInicioAnterior->getStateMatrixTable().at(stateMatrixPedestrianAnterior.getIStateMatrixTable()).getQsValue().getQsVector().at(stateMatrixPedestrianAnterior.getActionValue().getILinkConnection()) = sarsaAlgorithm.getQPrevious();
+    stateMatrixPasado->getQsValue().getQsVector().at(stateMatrixPasado->getActionValue().getILinkConnection()) = sarsaAlgorithm.getQPrevious();
     // reinica el reward de la persona
     setReward(0);
 }
 void pedestrian::calcularLevelDensityAtNode() {
     /* cuando una persona llega a una interseccion debe saber los estados de las
         diferentes calle, esta informacion se enviará a objeto stateMatrix */
-    // crear el vector densidad segun el tamaño del LinkConnection de donde nodo donde esta
-    stateMatrixPedestrian.getStateValue().getDensityLinks().resize(nodeInicio->getLinkConnection().size(), 0);
-    // crear el vector PedestrianMassState segun el tamaño del LinkConnection de donde nodo donde esta
-    stateMatrixPedestrian.getPedestrianMassState().getPedestrianMassStateVector().resize(nodeInicio->getLinkConnection().size(), 0);
-    // stateMatrixPedestrian.getQsValue().getQsVector().resize(nodeInicio->getIdLinkConnection().size(), 0);
-    // ya sabiendo los estados de cada calle, utilizo los de linkConnection y los envio al stateMatrixPedestrian
-    for (int i = 0; i < nodeInicio->getLinkConnection().size(); i++) {
-        // stateMatrixPedestrian.getStateValue().getDensityLinks().at(i) = links::get()->getDbLinkTotal().at(nodeInicio->getIdLinkConnection().at(i))->getDensityLevel();
-        stateMatrixPedestrian.getStateValue().getDensityLinks().at(i) = nodeInicio->getLinkConnection().at(i)->getDensityLevel();
+    // // crear el vector densidad segun el tamaño del LinkConnection de donde nodo donde esta
+    // stateMatrixPedestrian.getStateValue().getDensityLinks().resize(nodeInicio->getLinkConnection().size(), 0);
+    // // crear el vector PedestrianMassState segun el tamaño del LinkConnection de donde nodo donde esta
+    // stateMatrixPedestrian.getPedestrianMassState().getPedestrianMassStateVector().resize(nodeInicio->getLinkConnection().size(), 0);
+    // // stateMatrixPedestrian.getQsValue().getQsVector().resize(nodeInicio->getIdLinkConnection().size(), 0);
+    // // ya sabiendo los estados de cada calle, utilizo los de linkConnection y los envio al stateMatrixPedestrian
+    // for (int i = 0; i < nodeInicio->getLinkConnection().size(); i++) {
+    //     // stateMatrixPedestrian.getStateValue().getDensityLinks().at(i) = links::get()->getDbLinkTotal().at(nodeInicio->getIdLinkConnection().at(i))->getDensityLevel();
+    //     stateMatrixPedestrian.getStateValue().getDensityLinks().at(i) = *(nodeInicio->getLinkConnection().at(i)->getDensityLevel());
+    // }
+    // // con el stateMatrixPedestrian lo busco en la tabla de Q del nodo de Inicio de la nueva calle
+    // bool verificarStateMatrix = false;
+    // int idq = 0;
+    // nodeInicio->buscarStateMatrix(stateMatrixPedestrian, verificarStateMatrix, idq);
+    // // si lo encuentra, significa que el estado ya se experimento por tanto no se agrega, se guarda la posicion de la tabla
+    // if (verificarStateMatrix) {
+    //     stateMatrixPedestrian.setIStateMatrixTable(idq);
+    // }
+    // // no lo encuentra, se agrega el estado y se guarda la posicion de la tabla
+    // else {
+    //     // crea el vector Q segun linkConnection
+    //     stateMatrixPedestrian.getQsValue().getQsVector().resize(nodeInicio->getLinkConnection().size(), 0);
+    //     // crea el vector pedestrianMassState segun linkConnection
+    //     // stateMatrixPedestrian.getPedestrianMassState().resize(nodeInicio->getLinkConnection().size(), 0);
+    //     // agrega el nuevo estado
+    //     nodeInicio->getStateMatrixTable().push_back(stateMatrixPedestrian);
+    //     // se setea iStateMatrixTable despues de agregarlo al stateMatrixTable para que cuente bien
+    //     // como lo agrega al final, guarda istateMatrixTable en stateMatrixPedestrian 
+    //     stateMatrixPedestrian.setIStateMatrixTable(nodeInicio->getStateMatrixTable().size()-1);
+    // }
+
+    // alternativa
+    std::map<std::vector<int>, stateMatrix*> stateMatrixTableMap = nodeInicio->getStateMatrixTableMap();
+    std::vector<int*> a= nodeInicio->getDensityLevelNode();
+    std::vector<int> convertedVector(a.size());
+    std::transform(a.begin(), a.end(), convertedVector.begin(), [](int* ptr) { return *ptr; });
+    // si encuentra un stateMatrix con el estado experimenta en el nodo
+    if (stateMatrixTableMap.find(convertedVector) != stateMatrixTableMap.end()) {
+        // guardo el stateMatrix encontraro en la variable de stateMatrixActual, del estado y accion actual
+        stateMatrixActual = stateMatrixTableMap.at(convertedVector);
     }
-    // con el stateMatrixPedestrian lo busco en la tabla de Q del nodo de Inicio de la nueva calle
-    bool verificarStateMatrix = false;
-    int idq = 0;
-    nodeInicio->buscarStateMatrix(stateMatrixPedestrian, verificarStateMatrix, idq);
-    // si lo encuentra, significa que el estado ya se experimento por tanto no se agrega, se guarda la posicion de la tabla
-    if (verificarStateMatrix) {
-        stateMatrixPedestrian.setIStateMatrixTable(idq);
-    }
-    // no lo encuentra, se agrega el estado y se guarda la posicion de la tabla
+    // no encuentro el estado, por tanto lo añado en tabla de estados del nodo
     else {
-        // crea el vector Q segun linkConnection
-        stateMatrixPedestrian.getQsValue().getQsVector().resize(nodeInicio->getLinkConnection().size(), 0);
-        // crea el vector pedestrianMassState segun linkConnection
-        // stateMatrixPedestrian.getPedestrianMassState().resize(nodeInicio->getLinkConnection().size(), 0);
-        // agrega el nuevo estado
-        nodeInicio->getStateMatrixTable().push_back(stateMatrixPedestrian);
-        // se setea iStateMatrixTable despues de agregarlo al stateMatrixTable para que cuente bien
-        // como lo agrega al final, guarda istateMatrixTable en stateMatrixPedestrian 
-        stateMatrixPedestrian.setIStateMatrixTable(nodeInicio->getStateMatrixTable().size()-1);
+        // creo el stateMatrix
+        stateMatrix* stateMatrixNuevo = new stateMatrix(convertedVector);
+        // guardo el stateMatrix creado en la variable de stateMatrixActual, del estado y accion actual
+        stateMatrixActual = stateMatrixNuevo;
+        // guardo en el stateMatrix en la tabla de estados del nodo
+        // stateMatrixTableMap.insert(std::make_pair(convertedVector, stateMatrixNuevo));
+        nodeInicio->getStateMatrixTableMap().emplace(convertedVector, stateMatrixNuevo);
+        // stateMatrixTableMap.at(convertedVector)->mostrarStateMatrix();
     }
+
+
 }
 // void pedestrian::stateMatrixtoTableAtNode() {
 //     // Inicializar action en el primer instante. 

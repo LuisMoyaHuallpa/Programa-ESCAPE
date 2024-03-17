@@ -12,6 +12,8 @@ Punto de interseccion de calles.
 #include <iostream>
 #include <ostream>
 #include <vector>
+#include "unordered_map"
+#include "map"
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // header propios
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -33,7 +35,9 @@ private:
     const int idNode;
     const vector2D coordenada;
     const std::vector<link*> linkConnection;
-    std::vector<stateMatrix> stateMatrixTable;
+    // std::vector<stateMatrix> stateMatrixTable;
+    std::map<std::vector<int>, stateMatrix*> stateMatrixTableMap;
+    std::vector<int*> densityLevelNode;
 
 public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -54,7 +58,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // setters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    void setStateMatrixTable(std::vector<stateMatrix> stateMatrixTable);
+    // void setStateMatrixTable(std::vector<stateMatrix> stateMatrixTable);
     // void setRewardCode(int rewardCode);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -63,7 +67,9 @@ public:
     const int getIdNode() const;
     const vector2D getCoordenada() const;
     const std::vector<link*>& getLinkConnection();
-    std::vector<stateMatrix>& getStateMatrixTable();
+    // std::vector<stateMatrix>& getStateMatrixTable();
+    std::map<std::vector<int>, stateMatrix*>& getStateMatrixTableMap();
+    std::vector<int*>& getDensityLevelNode();
     // int getRewardCode() const;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

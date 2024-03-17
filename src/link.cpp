@@ -71,8 +71,8 @@ std::vector<int>& link::getPedestriansInSublink() {
 std::vector<double>& link::getDensityInSublink() {
     return densityInSublink;
 }
-int link::getDensityLevel() const {
-    return densityLevel;
+int* link::getDensityLevel() {
+    return &densityLevel;
 }
 double link::getAnchoDivisiones() const {
     return anchoDivisiones;

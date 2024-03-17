@@ -1,5 +1,7 @@
 #include "node.h"
 #include "link.h"
+#include "stateMatrix.h"
+#include <vector>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
@@ -23,9 +25,9 @@ std::string node::getNodeType() {
 // void node::setIdLinkConnection(std::vector<int> idLinkConnection) {
 //     (*this).idLinkConnection = idLinkConnection;
 // }
-void node::setStateMatrixTable(std::vector<stateMatrix> stateMatrixTable) {
-    (*this).stateMatrixTable = stateMatrixTable;  
-}
+// void node::setStateMatrixTable(std::vector<stateMatrix> stateMatrixTable) {
+//     (*this).stateMatrixTable = stateMatrixTable;  
+// }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getter
@@ -42,28 +44,33 @@ const vector2D node::getCoordenada() const{
 const std::vector<link*>& node::getLinkConnection() {
     return linkConnection;  
 }
-std::vector<stateMatrix>& node::getStateMatrixTable() {
-    return stateMatrixTable;
+// std::vector<stateMatrix>& node::getStateMatrixTable() {
+//     return stateMatrixTable;
+// }
+std::map<std::vector<int>, stateMatrix*>& node::getStateMatrixTableMap() {
+    return stateMatrixTableMap;  
 }
-
+std::vector<int*>& node::getDensityLevelNode() {
+    return densityLevelNode;
+}
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void node::buscarStateMatrix(stateMatrix stateMatrixBuscando, bool& verificarStateMatrix, int& iStateMatrixTable) {
-    /* recorre la tabla de stateMatrix en busqueda del elemento stateMatrixBuscando  */
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // stateMatrixBuscando   |-->| ELEMENTO stateMatrix a buscar 
-    // verificarStateMatrix  |-->| SI ENCUENTRA EL ELEMENTO, ES VERDADERO 
-    for (int i = 0; i < stateMatrixTable.size(); i++) {
-        if (stateMatrixTable.at(i) == stateMatrixBuscando) {
-            verificarStateMatrix = true;
-            iStateMatrixTable = i;
-            return;
-        }
-    } 
-    // Establecer verificarQ basado en qEncontrado
-    verificarStateMatrix = false;
-}
+// void node::buscarStateMatrix(stateMatrix stateMatrixBuscando, bool& verificarStateMatrix, int& iStateMatrixTable) {
+//     /* recorre la tabla de stateMatrix en busqueda del elemento stateMatrixBuscando  */
+//     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//     // stateMatrixBuscando   |-->| ELEMENTO stateMatrix a buscar 
+//     // verificarStateMatrix  |-->| SI ENCUENTRA EL ELEMENTO, ES VERDADERO 
+//     for (int i = 0; i < stateMatrixTable.size(); i++) {
+//         if (stateMatrixTable.at(i) == stateMatrixBuscando) {
+//             verificarStateMatrix = true;
+//             iStateMatrixTable = i;
+//             return;
+//         }
+//     } 
+//     // Establecer verificarQ basado en qEncontrado
+//     verificarStateMatrix = false;
+// }
 // void node::addqQTable(stateActionQ qElemento) {
 //     qTable.push_back(qElemento); 
 // }
@@ -121,19 +128,26 @@ void node::mostrarQTable() const {
     // Muestra en el terminal datos de la tabla de stateMatrix:
     // IdNode
     // x y
-    std::cout << "# q:" << stateMatrixTable.size() << std::endl;
-    for (int i = 0; i < stateMatrixTable.size(); i++) {
-        std::cout << i << " ";
-        stateMatrixTable.at(i).mostrarStateMatrix();
+    // std::cout << "# q:" << stateMatrixTable.size() << std::endl;
+    std::cout << "# q:" << stateMatrixTableMap.size() << std::endl;
+    // for (int i = 0; i < stateMatrixTableMap.size(); i++) {
+    for (auto& s : stateMatrixTableMap) {
+        s.second->mostrarStateMatrix(); 
         std::cout << std::endl;
     }
 }
 void node::imprimirQTable(std::fstream& file) const {
    // Impresion de sim.csv
-    for (auto it = stateMatrixTable.begin(); it != stateMatrixTable.end(); ++it) {
+    // for (auto it = stateMatrixTable.begin(); it != stateMatrixTable.end(); ++it) {
+    //     // Imprimir id del nodo o intersección
+    //     file << idNode << ",";
+    //     it->imprimirStateMatrix(file);
+    // }
+    //alternativa
+    for (auto& s : stateMatrixTableMap) {
         // Imprimir id del nodo o intersección
         file << idNode << ",";
-        it->imprimirStateMatrix(file);
+        s.second->imprimirStateMatrix(file);
     }
 }
 

@@ -227,7 +227,8 @@ void stateMatrixs::leerDbStateMatrixs() {
             }
             // !-----------------------------------------------------------------------
             // Grabar datos de la fila del stateMatrix en en Qtable del nodo numero id.
-            nodeLeido->getStateMatrixTable().push_back(stateMatrixLeido);
+            // falta
+            // nodes::get()->getDbNodeTotal().at(idNode)->getStateMatrixTable().push_back(stateMatrixLeido);
         }
         file.close(); 
     }

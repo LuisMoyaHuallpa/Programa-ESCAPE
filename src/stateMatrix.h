@@ -43,6 +43,7 @@ public:
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     stateMatrix();
+    stateMatrix(state stateValue);
     stateMatrix(state stateValue, std::vector<double> QVector, std::vector<int> otrosValue);
 
     // void leerStateMatrix(std::string filename);
@@ -78,8 +79,9 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     bool operator==(stateMatrix stateMatrix2);
-    void mostrarStateMatrix() const;
-    void imprimirStateMatrix(std::fstream& file) const;
+    // struct stateMatrixHash<stateMatrix>;
+    void mostrarStateMatrix();
+    void imprimirStateMatrix(std::fstream& file);
 
 };
 #endif

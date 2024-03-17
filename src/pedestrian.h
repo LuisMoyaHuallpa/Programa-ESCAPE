@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <cmath>
 #include <math.h>
+                                                \
 #include <memory>
 #include <random>
 #include <iomanip>
@@ -19,6 +20,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "sarsa.h"
 // #include "subLink.h"
+#include "stateMatrix.h"
 #include "vector2D.h"
 #include "vector2DVelocidad.h"
 #include "node.h"
@@ -35,8 +37,8 @@ private:
     // hhType              |-->| 
     // hhId                |-->| 
     // position            |-->| POSICION DE LA PERSONA
-    // nodeInicio          |-->| INTERSECCION DE UNA CALLE 
     // nodeArranque        |-->| INTERSECCION DE INICIO AL INICIAR SIMULACION  
+    // nodeInicio          |-->| INTERSECCION DE UNA CALLE 
     // nodeFinal           |-->| OTRA INTERSECCION DE LA MISMA CALLE
     // nodeInicioAnterior  |-->| INTERSECCION INICIAL DE LA CALLE ANTERIOR
     // linkActual          |-->| CALLE POR DONDE ESTA ACTUALMENTE LA PERSONA 
@@ -44,6 +46,8 @@ private:
     // direccionPedestrian |-->| CALLE ANTERIOR POR DONDE PASO
     // velocidad           |-->| VELOCIDAD DE LA PERSONA
     // tiempoInicial       |-->| TIEMPO DE INICIO PARA QUE LA PERSONA EMPIEZE A CAMINAR 
+    // stateMatrixActual   |-->| ESTADO Y ACCION ACTUAL QUE EXPERIMENTO LA PERSONA 
+    // stateMatrixPasado   |-->| ESTADO Y ACCION PASADO QUE EXPERIMENTO LA PERSONA 
     // evacuado            |-->| LA PERSONA QUE LLEGO A UN PUNTO DE EVACUACION
     // retorno             |-->| PODRIA COMO LA GANANCIA TOTAL 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -62,8 +66,8 @@ private:
     vector2D direccionPedestrian;
     vector2DVelocidad velocidad;
     const int tiempoInicial;
-    stateMatrix stateMatrixPedestrian;
-    stateMatrix stateMatrixPedestrianAnterior;
+    stateMatrix* stateMatrixActual;
+    stateMatrix* stateMatrixPasado;
     bool evacuado;
     int reward;
     sarsa sarsaAlgorithm;
@@ -95,8 +99,6 @@ public:
     void setDireccionPedestrian(vector2D direccionPedestrian);
     void setVelocidad(vector2DVelocidad velocidad);
     void setTiempoInicial(int tiempoInicial);
-    void setStateMatrixPedestrian(stateMatrix stateMatrixPedestrian);
-    void setStateMatrixPedestrianAnterior(stateMatrix stateMatrixPedestrianAnterior);
     // void setOrientacionLinkPasado(vector2D orientacionLinkPasado);
     // void setTiempoFinal(int tiempoFinal);
     // void setEmpezoCaminar(bool empezoCaminar);
@@ -124,8 +126,6 @@ public:
     vector2D getDireccionPedestrian() const;
     vector2DVelocidad& getVelocidad();
     int getTiempoInicial() const;
-    stateMatrix& getStateMatrixPedestrian();
-    stateMatrix& getStateMatrixPedestrianAnterior();
     // stateActionQ* getqStateAction();
     // int getTiempoFinal();
     // bool getEmpezoCaminar();

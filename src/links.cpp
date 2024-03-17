@@ -101,6 +101,11 @@ void links::leerLinks(std::string fileName){
         // node1->getLinkConnection().push_back(dbLinkTotal.back().get());
         const_cast<std::vector<link*>&>(node1->getLinkConnection()).push_back(dbLinkTotal.back().get());
         const_cast<std::vector<link*>&>(node2->getLinkConnection()).push_back(dbLinkTotal.back().get());
+        // Obtener la dirección de memoria de getDensityLevel() y almacenarla en el vector
+        // int densityLevelValue = dbLinkTotal.back().get()->getDensityLevel();
+        // node1->getDensityLevelNode().push_back(&densityLevelValue);
+        node1->getDensityLevelNode().push_back(dbLinkTotal.back().get()->getDensityLevel());
+        node2->getDensityLevelNode().push_back(dbLinkTotal.back().get()->getDensityLevel());
     }
     file.close(); 
 }
@@ -111,6 +116,7 @@ void links::calcularDensityLevelLinks() {
     }
 }
 void links::contarPedestriansInSublink() {
+    /* calcula el nivel de densidad en las calles*/
     if(tiempo::get()->verificarPedestrianCountPeriod()){
         // recorre todas las calles
         for (auto it = dbLinkTotal.begin(); it != dbLinkTotal.end(); ++it) {
