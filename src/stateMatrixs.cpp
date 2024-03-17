@@ -157,11 +157,13 @@ void stateMatrixs::leerDbStateMatrixs() {
         std::string s_str;
         std::string Q_str;
         std::string o1_str, o2_str, o3_str, o4_str, o5_str, o6_str, o7_str, o8_str, o9_str, o10_str; 
-        stateMatrix stateMatrixLeido;
+        // stateMatrix stateMatrixLeido;
         state stateLeido;
         Qs QsLeido;
         // Recorre todas las line del archivo.
         while (std::getline(file, line)) {
+            // creaacion de un stateMatrixLeido
+            stateMatrix* stateMatrixLeido = new stateMatrix();
             // Si el archivo tiene comentarios con #, no leerlos.
             if (line[0] == '#') {
                 continue;
@@ -184,7 +186,7 @@ void stateMatrixs::leerDbStateMatrixs() {
                     std::getline(iss, p0, ',');
                 }
             }
-            stateMatrixLeido.setStateValue(stateLeido);
+            stateMatrixLeido->setStateValue(stateLeido);
             // !-----------------------------------------------------------------------
             // Elementos de Q
             for (int i = 0; i < stateMatrix::getTamanoVector(); ++i) {
@@ -197,7 +199,7 @@ void stateMatrixs::leerDbStateMatrixs() {
                     std::getline(iss, p0, ',');
                 }
             }
-            stateMatrixLeido.setQsValue(QsLeido);
+            stateMatrixLeido->setQsValue(QsLeido);
             // !-----------------------------------------------------------------------
             // Falta definir
             // Elementos de o
@@ -228,7 +230,9 @@ void stateMatrixs::leerDbStateMatrixs() {
             // Grabar datos de la fila del stateMatrix en en Qtable del nodo numero id.
             // falta
             // nodes::get()->getDbNodeTotal().at(idNode)->getStateMatrixTable().push_back(stateMatrixLeido);
+            nodes::get()->getDbNodeTotal().at(idNode)->getStateMatrixTableMap().emplace(stateMatrixLeido->getStateValue().getDensityLinks(),stateMatrixLeido);
         }
+
         file.close(); 
     }
 }

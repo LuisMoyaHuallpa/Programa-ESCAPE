@@ -216,7 +216,7 @@ void pedestrian::eleccionRandomLinkActual() {
     stateMatrixActual->getActionValue().setILinkConnection(numero_aleatorio);
     stateMatrixActual->getActionValue().setIdLink(linkActual->getIdLink());
     // contando persona que experimenta state y action
-    stateMatrixActual->getPedestrianMassState().getPedestrianMassStateVector().at(numero_aleatorio)++;
+    // stateMatrixActual->getPedestrianMassState().getPedestrianMassStateVector().at(numero_aleatorio)++;
     // sabiendo la calle defino el nodo final.
     calcularNodeFinal();
     // verificar si el nodo final es un nodo de evacucion.
@@ -242,7 +242,7 @@ void pedestrian::eleccionSarsa() {
     stateMatrixActual->getActionValue().setILinkConnection(iQmenor);
     stateMatrixActual->getActionValue().setIdLink(linkActual->getIdLink());
     // contando persona que experimenta state y action
-    stateMatrixActual->getPedestrianMassState().getPedestrianMassStateVector().at(iQmenor)++;
+    // stateMatrixActual->getPedestrianMassState().getPedestrianMassStateVector().at(iQmenor)++;
     // sabiendo la calle defino el nodo final.
     calcularNodeFinal();
     // verificar si el nodo final es un nodo de evacucion.
@@ -334,7 +334,7 @@ void pedestrian::cambioCalle() {
         // envio informacion de direccion al vector de velocidad.
         getVelocidad().setDireccion(getDireccionPedestrian());
         // falta mejor para que ajuste tambien esta velcoida
-        stateMatrixActual->mostrarStateMatrix();
+        // stateMatrixActual->mostrarStateMatrix();
     }
 }
 void pedestrian::calcularDireccionPedestrian() {
