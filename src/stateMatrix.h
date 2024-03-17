@@ -30,7 +30,6 @@ private:
     std::vector<int> otrosVector;
     pedestrianMassState pedestrianMassStateValue;
     action actionValue;
-    int iStateMatrixTable;
 
 
 public:
@@ -57,7 +56,6 @@ public:
     void setOtrosVector(std::vector<int> otrosVector);
     void setPedestrianMassState(pedestrianMassState pedestrianMassStateValue);
     void setActionValue(action actionValue);
-    void setIStateMatrixTable(int iStateMatrixTable);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getter
@@ -67,7 +65,6 @@ public:
     std::vector<int>& getotrosVector();
     pedestrianMassState& getPedestrianMassState();
     action& getActionValue();
-    int getIStateMatrixTable();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static getter

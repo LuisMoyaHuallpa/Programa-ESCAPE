@@ -11,7 +11,6 @@ const int stateMatrix::tamanoVectorIO = 10;
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 stateMatrix::stateMatrix() : stateValue() {
-    setIStateMatrixTable(0);
     // otrosVector.resize(tamanoVector,0);
 }
 stateMatrix::stateMatrix(state stateValue) {
@@ -22,7 +21,6 @@ stateMatrix::stateMatrix(state stateValue) {
 stateMatrix::stateMatrix(state stateValue, std::vector<double> QVector, std::vector<int> otrosVector) {
     setStateValue(stateValue);
     setOtrosVector(otrosVector);
-    setIStateMatrixTable(0);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -43,9 +41,7 @@ void stateMatrix::setPedestrianMassState(pedestrianMassState pedestrianMassState
 void stateMatrix::setActionValue(action actionValue) {
     (*this).stateValue = stateValue;
 }
-void stateMatrix::setIStateMatrixTable(int iStateMatrixTable) {
-    (*this).iStateMatrixTable = iStateMatrixTable;
-}
+
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getter
@@ -64,9 +60,6 @@ pedestrianMassState &stateMatrix::getPedestrianMassState() {
 }
 action& stateMatrix::getActionValue() {
     return actionValue;
-}
-int stateMatrix::getIStateMatrixTable() {
-    return iStateMatrixTable;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -111,8 +104,6 @@ void stateMatrix::mostrarStateMatrix() const {
     // }
     std::cout << "action: ";
     actionValue.mostrarAction();
-    std::cout << "iTable: ";
-    std::cout << iStateMatrixTable;
     std::cout << "Qs: ";
     QsValue.mostrarQs();
     std::cout << "pedestrianMassState: ";
