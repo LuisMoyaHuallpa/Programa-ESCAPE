@@ -38,7 +38,7 @@ int main() {
             // contador de personas un tiempo atras de la funcion modelamiento de caminar de personas
             // pedestrians::get()->contarPedestriansInSublink();
             links::get()->contarPedestriansInSublink();
-            // // modelamiento de pedestrian.
+            // modelamiento de pedestrian.
             pedestrians::get()->modelamientoPedestrians();
             // imprimir datos para postprocesamiento.
             pedestrians::get()->imprimirPedestrians();

@@ -12,7 +12,7 @@ endTime         800;
 
 deltaT          1;
 
-graphicPrintoutPeriod 5;
+graphicPrintoutPeriod 10;
 
 listingPrintoutPeriod 1;
 
@@ -28,6 +28,6 @@ readPedestrianMassState no;
 
 # endNumberSimulation 7001;
 
-addNumberSimulation 3;
+addNumberSimulation 10;
 
 
