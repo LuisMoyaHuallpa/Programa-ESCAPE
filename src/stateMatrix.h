@@ -25,7 +25,7 @@ private:
     // QsValue        |-->| VECTOR DE Q
     // tamanoVectorIO |-->| CANTIDAD DE ELEMENTOS PARA EL VECTOR DE ESTADO Y Q
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    state stateValue;
+    const state stateValue;
     Qs QsValue;
     std::vector<int> otrosVector;
     pedestrianMassState pedestrianMassStateValue;
@@ -51,7 +51,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // setters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    void setStateValue(state stateValue);
+    // void setStateValue(state stateValue);
     void setQsValue(Qs QsValue);
     void setOtrosVector(std::vector<int> otrosVector);
     void setPedestrianMassState(pedestrianMassState pedestrianMassStateValue);
@@ -60,7 +60,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getter
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    state& getStateValue();
+    const state& getStateValue() const;
     Qs& getQsValue();
     std::vector<int>& getotrosVector();
     pedestrianMassState& getPedestrianMassState();
@@ -76,7 +76,6 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     bool operator==(stateMatrix stateMatrix2);
-    // struct stateMatrixHash<stateMatrix>;
     void mostrarStateMatrix();
     void imprimirStateMatrix(std::fstream& file);
 

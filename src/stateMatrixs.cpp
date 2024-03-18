@@ -4,6 +4,7 @@
 #include "pedestrian.h"
 #include "stateMatrix.h"
 #include "tiempo.h"
+#include <vector>
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -162,8 +163,6 @@ void stateMatrixs::leerDbStateMatrixs() {
         Qs QsLeido;
         // Recorre todas las line del archivo.
         while (std::getline(file, line)) {
-            // creaacion de un stateMatrixLeido
-            stateMatrix* stateMatrixLeido = new stateMatrix();
             // Si el archivo tiene comentarios con #, no leerlos.
             if (line[0] == '#') {
                 continue;
@@ -181,13 +180,14 @@ void stateMatrixs::leerDbStateMatrixs() {
                 if (i < nodeLeido->getLinkConnection().size()) {
                     std::getline(iss, s_str, ',');
                     s = std::stoi(s_str);
-                    stateLeido.getDensityLinks().push_back(s);
+                    const_cast<std::vector<int>&>(stateLeido.getDensityLinks()).push_back(s);
                 } 
                 else {
                     std::getline(iss, p0, ',');
                 }
             }
-            stateMatrixLeido->setStateValue(stateLeido);
+            // creacion de un stateMatrixLeido
+            stateMatrix* stateMatrixLeido = new stateMatrix(stateLeido);
             // !-----------------------------------------------------------------------
             // Elementos de Q
             for (int i = 0; i < stateMatrix::getTamanoVector(); ++i) {

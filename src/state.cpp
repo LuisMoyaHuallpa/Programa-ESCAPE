@@ -6,34 +6,32 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 state::state() {
 }
-state::state(std::vector<int> densityLinks) {
-    setDensityLinks(densityLinks); 
+state::state(std::vector<int> densityLinks)
+    : densityLinks(densityLinks){
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // setters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void state::setDensityLinks(std::vector<int> densityLinks) {
-    (*this).densityLinks = densityLinks;
-}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getter
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-std::vector<int>& state::getDensityLinks() {
+const std::vector<int>& state::getDensityLinks() const {
     return densityLinks;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-bool state::operator==(state stateObject) {
-    if (densityLinks.size() != stateObject.densityLinks.size()) {
+bool state::operator==(const state state2) const {
+    /* Compara si dos estados son iguales*/
+    if (densityLinks.size() != state2.densityLinks.size()) {
         return false;
     }
     // Compara si los elementos de densityLinks son idénticos
     for (int i = 0; i < densityLinks.size(); i++) {
-        if (getDensityLinks()[i] != stateObject.getDensityLinks()[i]) {
+        if (densityLinks[i] != state2.getDensityLinks()[i]) {
             return false;
         }
     }

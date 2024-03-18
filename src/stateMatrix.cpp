@@ -13,22 +13,19 @@ const int stateMatrix::tamanoVectorIO = 10;
 stateMatrix::stateMatrix() : stateValue() {
     // otrosVector.resize(tamanoVector,0);
 }
-stateMatrix::stateMatrix(state stateValue) {
-    setStateValue(stateValue);  
+stateMatrix::stateMatrix(state stateValue)
+    : stateValue(stateValue) {
     QsValue.getQsVector().resize(stateValue.getDensityLinks().size(), 0);
     pedestrianMassStateValue.getPedestrianMassStateVector().resize(stateValue.getDensityLinks().size(), 0);
 }
-stateMatrix::stateMatrix(state stateValue, std::vector<double> QVector, std::vector<int> otrosVector) {
-    setStateValue(stateValue);
+stateMatrix::stateMatrix(state stateValue, std::vector<double> QVector, std::vector<int> otrosVector)
+    :stateValue(stateValue) {
     setOtrosVector(otrosVector);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // setters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void stateMatrix::setStateValue(state stateValue) {
-    (*this).stateValue = stateValue;  
-}
 void stateMatrix::setQsValue(Qs QsValue) {
     (*this).QsValue = QsValue;
 }
@@ -39,14 +36,14 @@ void stateMatrix::setPedestrianMassState(pedestrianMassState pedestrianMassState
     (*this).pedestrianMassStateValue = pedestrianMassStateValue;
 }
 void stateMatrix::setActionValue(action actionValue) {
-    (*this).stateValue = stateValue;
+    (*this).actionValue = actionValue;
 }
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getter
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-state& stateMatrix::getStateValue() {
+const state& stateMatrix::getStateValue() const {
     return stateValue;
 }
 Qs &stateMatrix::getQsValue() {
