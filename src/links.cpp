@@ -113,6 +113,7 @@ void links::calcularDensityLevelLinks() {
 void links::contarPedestriansInSublink() {
     if(tiempo::get()->verificarPedestrianCountPeriod()){
         // recorre todas las calles
+            #pragma omp parallel for num_threads(8)
         for (auto it = dbLinkTotal.begin(); it != dbLinkTotal.end(); ++it) {
             // recorre las personas que estan en una calle
             for (auto p :  it->get()->getPedestriansLink()) {
