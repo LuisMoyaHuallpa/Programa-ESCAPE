@@ -96,7 +96,7 @@ const int pedestrian::getIdPedestrian() const {
 const int pedestrian::getEdad() const{
     return edad;
 }
-const int pedestrian::getGender() {
+const int pedestrian::getGender() const {
     return gender;
 }
 const int pedestrian::getHHType() const{
@@ -108,25 +108,25 @@ const int pedestrian::getHHId() const{
 vector2D pedestrian::getPosition() {
     return position;
 }
-const node* pedestrian::getNodeArranque() {
+const node* pedestrian::getNodeArranque() const {
     return nodeArranque;
 }
 node* pedestrian::getNodeInicio() const{
     return nodeInicio;
 }
-node* pedestrian::getNodeFinal() {
+node* pedestrian::getNodeFinal() const {
     return nodeFinal;  
 }
-node* pedestrian::getNodeInicioAnterior() {
+node* pedestrian::getNodeInicioAnterior() const {
     return nodeInicioAnterior;  
 }
-link* pedestrian::getLinkActual() {
+link* pedestrian::getLinkActual() const {
     return linkActual;
 }
-link* pedestrian::getLinkPasado() {
+link* pedestrian::getLinkPasado() const {
     return linkPasado;
 }
-vector2D pedestrian::getDireccionPedestrian() {
+vector2D pedestrian::getDireccionPedestrian() const {
     return direccionPedestrian;
 }
 vector2DVelocidad& pedestrian::getVelocidad() {
@@ -141,10 +141,10 @@ stateMatrix& pedestrian::getStateMatrixPedestrian() {
 stateMatrix& pedestrian::getStateMatrixPedestrianAnterior() {
     return stateMatrixPedestrianAnterior;
 }
-bool pedestrian::getEvacuado() {
+bool pedestrian::getEvacuado() const {
     return evacuado;
 }
-int pedestrian::getReward() {
+int pedestrian::getReward() const {
     return reward;  
 }
 
@@ -484,7 +484,7 @@ void pedestrian::modelamientoPedestrian() {
         }
     }
 }
-void pedestrian::mostrarMovimientoPedestrian(){
+void pedestrian::mostrarMovimientoPedestrian() const {
     /* muestra la interseccion de partida y final de una calle, cuando
         la persona.*/
     std::cout << idPedestrian << ' ';

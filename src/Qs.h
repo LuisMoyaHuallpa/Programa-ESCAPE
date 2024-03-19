@@ -30,8 +30,8 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    void mostrarQs();
-    void imprimirQs(std::fstream& file);
+    void mostrarQs() const;
+    void imprimirQs(std::fstream& file) const;
 };
 #endif
     

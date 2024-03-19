@@ -180,7 +180,7 @@ void tiempo::mostrarIResultadosSimulacion() {
     std::cout << "Duración en segundos: " << durationSeconds.count() << " s" << std::endl;
     std::cout << std::endl;
 }
-void tiempo::mostrarTiempo() {
+void tiempo::mostrarTiempo() const {
     // Mostrar en terminal tiempo actual.
     std::cout << "Time = " << valorTiempo << std::endl;
 }

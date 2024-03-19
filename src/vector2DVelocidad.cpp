@@ -38,7 +38,7 @@ void vector2DVelocidad::setMagnitud(int magnitud){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-vector2D vector2DVelocidad::getDireccion() {
+vector2D vector2DVelocidad::getDireccion() const {
     return direccion; 
 }
 double vector2DVelocidad::getMagnitud() const{

@@ -103,12 +103,12 @@ bool node::verificarCambioState(state stateAnterior, state stateActual) {
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // mostrar
-void node::mostrarNode() {
-    // Muestra en el terminal datos del nodo:
+void node::mostrarNode() const {
+    /* Muestra en el terminal datos del nodo:
     // IdNode
     // x y
-    // idLinkConnections
-    std::cout << "Node: " << getIdNode() << std::endl;
+    // idLinkConnections*/
+    std::cout << "Node: " << idNode << std::endl;
     std::cout << "x: " << coordenada.getX() << " ";
     std::cout << "y: " << coordenada.getY() << std::endl;
     std::cout << "linkConnections: ";
@@ -117,7 +117,7 @@ void node::mostrarNode() {
     }
     std::cout << std::endl;
 }
-void node::mostrarQTable() {
+void node::mostrarQTable() const {
     // Muestra en el terminal datos de la tabla de stateMatrix:
     // IdNode
     // x y
@@ -128,7 +128,7 @@ void node::mostrarQTable() {
         std::cout << std::endl;
     }
 }
-void node::imprimirQTable(std::fstream& file) {
+void node::imprimirQTable(std::fstream& file) const {
    // Impresion de sim.csv
     for (auto it = stateMatrixTable.begin(); it != stateMatrixTable.end(); ++it) {
         // Imprimir id del nodo o intersección

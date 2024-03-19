@@ -24,13 +24,13 @@ std::vector<int>& pedestrianMassState::getPedestrianMassStateVector() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void pedestrianMassState::mostrarPedestrianMassStateVector() {
+void pedestrianMassState::mostrarPedestrianMassStateVector() const {
     for (int i = 0; i < pedestrianMassStateVector.size(); i++) {
         std::cout << pedestrianMassStateVector.at(i) << ",";
     }
 }
 
-void pedestrianMassState::imprimirPedestrianMassStateVector(std::fstream &file) {
+void pedestrianMassState::imprimirPedestrianMassStateVector(std::fstream &file) const {
     for (int i = 0; i < 10; i++) {
         if (i < pedestrianMassStateVector.size()) {
             file << pedestrianMassStateVector.at(i) << ',';

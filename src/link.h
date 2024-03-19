@@ -69,16 +69,16 @@ public:
     // getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     const int getIdLink() const;
-    const node* getNode1();
-    const node* getNode2();
+    const node* getNode1() const;
+    const node* getNode2() const;
     const int getLength() const;
     const int getWidth() const;
     const vector2D getOrientacionLink() const;
     std::vector<pedestrian*>& getPedestriansLink();
     std::vector<int>& getPedestriansInSublink();
     std::vector<double>& getDensityInSublink();
-    int getDensityLevel();
-    double getAnchoDivisiones();
+    int getDensityLevel() const;
+    double getAnchoDivisiones() const;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
@@ -87,9 +87,9 @@ public:
     void calcularAnchoDivisiones();
     void calcularDensity();
     void calcularDensityLevel();
-    void mostrarLink();
-    void mostrarSubLink();
-    void imprimirLink(std::fstream& file);
+    void mostrarLink() const;
+    void mostrarSubLink() const;
+    void imprimirLink(std::fstream& file) const;
 };
 #endif
 

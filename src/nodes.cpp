@@ -96,7 +96,7 @@ void nodes::leerNodes(std::string fileName) {
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // mostrar
-void nodes::mostrarNodes() {
+void nodes::mostrarNodes() const {
     // Muestra en el terminal todos los nodos y sus datos.
     for (int i = 0; i < dbNodeTotal.size(); i++) {
         dbNodeTotal.at(i)->mostrarNode();
@@ -108,7 +108,7 @@ void nodes::mostrarNodes() {
         // }
     }
 }
-void nodes::mostrardbNodeTotal() {
+void nodes::mostrardbNodeTotal() const {
     for (int i = 0; i < dbNodeTotal.size(); i++) {
         dbNodeTotal.at(i)->mostrarNode();
         dbNodeTotal.at(i)->mostrarQTable();

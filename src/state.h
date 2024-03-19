@@ -34,9 +34,8 @@ public:
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     bool operator==(state stateObject);
-    void mostrarState();
-    void imprimirState(std::fstream& file);
-
+    void mostrarState() const;
+    void imprimirState(std::fstream& file) const;
 };
 
 #endif

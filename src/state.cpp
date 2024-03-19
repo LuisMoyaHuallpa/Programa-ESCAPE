@@ -40,15 +40,15 @@ bool state::operator==(state stateObject) {
     // Si llegamos aquí, todos los elementos de densityLinks son iguales
     return true;
 }
-void state::mostrarState() {
+void state::mostrarState() const {
     for (int i = 0; i < densityLinks.size(); i++) {
-        std::cout << getDensityLinks().at(i) << ',';
+        std::cout << densityLinks.at(i) << ',';
     }
 }
-void state::imprimirState(std::fstream& file) {
+void state::imprimirState(std::fstream& file) const {
     for (int i = 0; i < stateMatrix::tamanoVectorIO; i++) {
         if (i < densityLinks.size()) {
-            file << getDensityLinks().at(i) << ',';
+            file << densityLinks.at(i) << ',';
         } else {
             file << "0,";
         }

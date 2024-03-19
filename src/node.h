@@ -72,9 +72,9 @@ public:
     void buscarStateMatrix(stateMatrix stateMatrixBuscando, bool& verificarStateMatrix, int& iStateMatrixTable);
     // void crearStateMatrix();
     bool verificarCambioState(state stateAnterior, state stateActual);
-    void mostrarNode();
-    void mostrarQTable();
-    void imprimirQTable(std::fstream& file);
+    void mostrarNode() const;
+    void mostrarQTable() const;
+    void imprimirQTable(std::fstream& file) const;
 
 };
 #endif

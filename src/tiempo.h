@@ -87,7 +87,7 @@ public:
     void extractINumberSimulation();
     void calcularRandomChoiceRate();
     bool running();
-    void mostrarTiempo();
+    void mostrarTiempo() const;
     void mostrarIResultadosSimulacion();
     void crearCarpetaTiempo();
     bool verificarGraphicPrintout(); 

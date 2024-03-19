@@ -60,8 +60,8 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void leerNodes(std::string fileName);
     void usarlink();
-    void mostrarNodes();
-    void mostrardbNodeTotal();
+    void mostrarNodes() const;
+    void mostrardbNodeTotal() const;
     // void imprimirNodes(std::fstream& file);
     // void imprimirCantPedestrianEvacuted(std::string folderName);
     

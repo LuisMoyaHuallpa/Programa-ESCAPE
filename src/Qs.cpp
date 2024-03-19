@@ -24,12 +24,12 @@ std::vector<double>& Qs::getQsVector() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void Qs::mostrarQs() {
+void Qs::mostrarQs() const{
     for (int i = 0; i < QsVector.size(); i++) {
         std::cout << QsVector.at(i) << ",";
     }
 }
-void Qs::imprimirQs(std::fstream &file) {
+void Qs::imprimirQs(std::fstream &file) const {
     for (int i = 0; i < stateMatrix::tamanoVectorIO; i++) {
         if (i < QsVector.size()) {
             file << QsVector.at(i) << ',';

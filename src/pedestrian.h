@@ -110,18 +110,18 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     const int getIdPedestrian() const;
     const int getEdad() const;
-    const int getGender();
+    const int getGender() const;
     const int getHHType() const;
     const int getHHId() const;
     vector2D getPosition();
-    const node* getNodeArranque();
+    const node* getNodeArranque() const;
     node* getNodeInicio() const;
-    node* getNodeFinal();
-    node* getNodeInicioAnterior();
+    node* getNodeFinal() const;
+    node* getNodeInicioAnterior() const;
     // vector2D getOrientacionLinkPasado();
-    link* getLinkActual();
-    link* getLinkPasado();
-    vector2D getDireccionPedestrian();
+    link* getLinkActual() const;
+    link* getLinkPasado() const;
+    vector2D getDireccionPedestrian() const;
     vector2DVelocidad& getVelocidad();
     int getTiempoInicial() const;
     stateMatrix& getStateMatrixPedestrian();
@@ -131,8 +131,8 @@ public:
     // bool getEmpezoCaminar();
     // bool getPrimerTiempo();
     // bool getSaltoLink();
-    bool getEvacuado();
-    int getReward();
+    bool getEvacuado() const;
+    int getReward() const;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
@@ -176,7 +176,7 @@ public:
     // void stateMatrixtoTableAtNode();
     // void crearqState(node* nodeActual);
     void modelamientoPedestrian();
-    void mostrarMovimientoPedestrian();
+    void mostrarMovimientoPedestrian() const;
     void imprimirPedestrianPosition(std::fstream& file) const;
     void imprimirPedestrianVelocity(std::fstream& file) const;
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

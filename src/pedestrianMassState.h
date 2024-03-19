@@ -32,8 +32,8 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    void mostrarPedestrianMassStateVector();
-    void imprimirPedestrianMassStateVector(std::fstream& file);
+    void mostrarPedestrianMassStateVector() const;
+    void imprimirPedestrianMassStateVector(std::fstream& file) const;
     
 };
 #endif

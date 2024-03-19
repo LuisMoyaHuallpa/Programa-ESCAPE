@@ -20,22 +20,28 @@ void action::setILinkConnection(int iLinkConnection) {
     (*this).iLinkConnection = iLinkConnection;
 }
 
-int action::getIdLink() {
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// getters
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+int action::getIdLink() const {
     return idLink;
 }
-int action::getILinkConnection() {
+int action::getILinkConnection() const {
     return iLinkConnection;
 }
 
-bool action::operator==(action stateObject) {
-    if (getIdLink() == stateObject.getIdLink()) {
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// metodos
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+bool action::operator==(action state2) {
+    if (idLink == state2.getIdLink()) {
         return true;
     }
     return false;
 }
-void action::mostrarAction() {
-    std::cout << getILinkConnection()<< " ";
-    std::cout << getIdLink()<< " ";
+void action::mostrarAction() const {
+    std::cout << iLinkConnection<< " ";
+    std::cout << idLink<< " ";
 }
 void action::imprimirAction(std::fstream& file) {
     // file << get 

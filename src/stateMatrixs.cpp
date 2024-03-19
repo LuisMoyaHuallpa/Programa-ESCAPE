@@ -231,7 +231,7 @@ void stateMatrixs::leerDbStateMatrixs() {
         file.close(); 
     }
 }
-void stateMatrixs::mostrarDbStateMatrixs(){
+void stateMatrixs::mostrarDbStateMatrixs() const {
     // Mostrar todos los stateMatrix dentro de dbStateMatrixs.
     for (int i = 0; i < dbStateMatrixs.size(); i++) {
         dbStateMatrixs[i].mostrarStateMatrix();

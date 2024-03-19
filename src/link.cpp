@@ -47,10 +47,10 @@ void link::setAnchoDivisiones(double anchoDivisiones) {
 const int link::getIdLink() const {
     return idLink;  
 }
-const node* link::getNode1() {
+const node* link::getNode1() const {
     return node1;
 }
-const node* link::getNode2() {
+const node* link::getNode2() const {
     return node2;
 }
 const int link::getLength() const{
@@ -71,10 +71,10 @@ std::vector<int>& link::getPedestriansInSublink() {
 std::vector<double>& link::getDensityInSublink() {
     return densityInSublink;
 }
-int link::getDensityLevel() {
+int link::getDensityLevel() const {
     return densityLevel;
 }
-double link::getAnchoDivisiones() {
+double link::getAnchoDivisiones() const {
     return anchoDivisiones;
 }
 
@@ -127,9 +127,9 @@ void link::calcularDensityLevel() {
     }
 }
 
-void link::mostrarLink(){
+void link::mostrarLink() const{
     std::cout << "link: ";
-    std::cout << getIdLink() << " ";
+    std::cout << idLink << " ";
     std::cout << "nodes: ";
     std::cout << node1->getIdNode() << " ";
     std::cout << node2->getIdNode() << " ";
@@ -139,18 +139,18 @@ void link::mostrarLink(){
     }
     std::cout << std::endl;
 }
-void link::imprimirLink(std::fstream& file) {
+void link::mostrarSubLink() const {
+    std::cout << idLink << "  ";
+    for (int i = 0; i < pedestriansInSublink.size(); i++) {
+        std::cout << pedestriansInSublink.at(i) << " ";
+    }
+    std::cout << std::endl;
+}
+void link::imprimirLink(std::fstream& file) const {
     file << std::fixed << std::setprecision(2);
     file << node1->getCoordenada().getX() << " ";
     file << node1->getCoordenada().getY() << " ";
     file << node2->getCoordenada().getX() << " ";
     file << node2->getCoordenada().getY() << " ";
     file << std::endl;
-}
-void link::mostrarSubLink() {
-    std::cout << getIdLink() << "  ";
-    for (int i = 0; i < pedestriansInSublink.size(); i++) {
-        std::cout << pedestriansInSublink.at(i) << " ";
-    }
-    std::cout << std::endl;
 }

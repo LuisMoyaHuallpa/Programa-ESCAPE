@@ -92,10 +92,10 @@ bool stateMatrix::operator==(stateMatrix stateMatrix2) {
     //     nodeAGuardar->addqQTable(qAGuardar);
     // }
 // }
-void stateMatrix::mostrarStateMatrix() {
+void stateMatrix::mostrarStateMatrix() const {
     /* muestra en la terminal cada linea del stateMatrix. */
     // state value
-    getStateValue().mostrarState();
+    stateValue.mostrarState();
     /* imprime 0 en donde no hay state debido a que siempre imprime 10 elementos state. */
     // for (int i = 0; i < tamanoVector - getStateValue().getDensityLinks().size(); i++) {
     //     std::cout << "0,";
@@ -103,16 +103,16 @@ void stateMatrix::mostrarStateMatrix() {
     std::cout << "action: ";
     actionValue.mostrarAction();
     std::cout << "iTable: ";
-    std::cout << getIStateMatrixTable();
+    std::cout << iStateMatrixTable;
     std::cout << "Qs: ";
-    getQsValue().mostrarQs();
+    QsValue.mostrarQs();
     std::cout << "pedestrianMassState: ";
     pedestrianMassStateValue.mostrarPedestrianMassStateVector();
     std::cout << std::endl;
 
 
 }
-void stateMatrix::imprimirStateMatrix(std::fstream& file){
+void stateMatrix::imprimirStateMatrix(std::fstream& file) const {
    // Imprimir una fila del elemento stateMatrix.
     // !-----------------------------------------------------------------------
     // Imprimir todos los elementos de state y se completa con 0 para llegar a
