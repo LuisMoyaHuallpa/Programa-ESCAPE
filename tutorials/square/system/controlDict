@@ -14,7 +14,7 @@ graphicPrintoutPeriod 1;
 
 listingPrintoutPeriod 1;
 
-computationContinued  	no;
+computationContinued  	yes;
 
 previousComputationFile	sim_000006000.csv;
 

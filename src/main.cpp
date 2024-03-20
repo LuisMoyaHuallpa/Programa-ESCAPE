@@ -24,8 +24,10 @@ int main() {
     stateMatrixs::get()->leerDbStateMatrixs();
     auto stop = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
+    auto duration_s = std::chrono::duration_cast<std::chrono::seconds>(stop - start);
     std::cout << duration.count() << std::endl;
     std::cout << "Duración lectura: " << duration.count() << " ms" << std::endl;
+    std::cout << "Duración lectura: " << duration_s.count() << " s" << std::endl;
     // nodes::get()->mostrarNodes();
     // segun el número de simulaciones
     while (tiempo::get()->getINumberSimulation() <= tiempo::get()->getEndNumberSimulation()) {
