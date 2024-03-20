@@ -172,10 +172,11 @@ void stateMatrixs::leerDbStateMatrixs() {
             // Guarda la variable idNode
             std::getline(iss, idNode_str, ',');
             idNode = std::stoi(idNode_str);
+            node* nodeLeido = nodes::get()->getDbNodeTotal().at(idNode).get();
             // !-----------------------------------------------------------------------
             // Guarda los elementos de state
             for (int i = 0; i < stateMatrix::tamanoVectorIO; ++i) {
-                if (i < nodes::get()->getDbNodeTotal().at(idNode)->getLinkConnection().size()) {
+                if (i < nodeLeido->getLinkConnection().size()) {
                     std::getline(iss, s_str, ',');
                     s = std::stoi(s_str);
                     stateLeido.getDensityLinks().push_back(s);
@@ -188,7 +189,7 @@ void stateMatrixs::leerDbStateMatrixs() {
             // !-----------------------------------------------------------------------
             // Elementos de Q
             for (int i = 0; i < stateMatrix::getTamanoVector(); ++i) {
-                if (i < nodes::get()->getDbNodeTotal().at(idNode)->getLinkConnection().size()) {
+                if (i < nodeLeido->getLinkConnection().size()) {
                     std::getline(iss, Q_str, ',');
                     Q = std::stod(Q_str);
                     QsLeido.getQsVector().push_back(Q);
@@ -226,7 +227,7 @@ void stateMatrixs::leerDbStateMatrixs() {
             }
             // !-----------------------------------------------------------------------
             // Grabar datos de la fila del stateMatrix en en Qtable del nodo numero id.
-            nodes::get()->getDbNodeTotal().at(idNode)->getStateMatrixTable().push_back(stateMatrixLeido);
+            nodeLeido->getStateMatrixTable().push_back(stateMatrixLeido);
         }
         file.close(); 
     }
