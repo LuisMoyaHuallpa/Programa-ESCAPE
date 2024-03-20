@@ -1,6 +1,8 @@
 * Sarsa
 
-[[https://youtu.be/0RpVIt6iqHw]]
+[![]([[https://i.ibb.co/2NKqY4G/Screenshot-from-2024-03-20-20-11-13.png]])]([[https://www.youtube.com/watch?v=4ONxDzZuprM]])
+
+[![](https://i.ibb.co/WgS6PYB/Capture-d-e-cran-2018-12-14-a-11-27-01.png)](https://www.youtube.com/watch?v=cVf7qm_ZDK0)
 
 * Installation
 
@@ -10,3 +12,4 @@
   make
   source bashrc
 #+end_src
+
