@@ -3,5 +3,6 @@
 /src/#*
 !.gitignore
 !makefile
+!figure
 !bashrc
 !readme.org
