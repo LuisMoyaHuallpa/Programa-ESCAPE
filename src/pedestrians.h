@@ -46,6 +46,7 @@ public:
     void tiempoInicioDistribution();
     void contarPedestriansInSublink();
     void reiniciarPedestriansNodeArranque();
+    void reiniciarConteoPedestrians();
     void modelamientoPedestrians();
     void mostrarDbPedestrianTotal();
     void imprimirPedestrians();

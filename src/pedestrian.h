@@ -21,6 +21,7 @@
 #include "sarsa.h"
 // #include "subLink.h"
 #include "stateMatrix.h"
+#include "subLink.h"
 #include "vector2D.h"
 #include "vector2DVelocidad.h"
 #include "node.h"

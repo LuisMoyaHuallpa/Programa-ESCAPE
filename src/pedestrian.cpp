@@ -1,7 +1,9 @@
 #include "pedestrian.h"
 #include "nodeEvacution.h"
 #include "stateMatrix.h"
+#include "subLink.h"
 #include "tiempo.h"
+#include <cstdio>
 #include <map>
 #include <utility>
 #include <vector>
@@ -160,22 +162,24 @@ double pedestrian::calcularIDoubleSublink() {
     // distancia de la persona al nodeInicio de la persona
     double index_x = position.getX() - nodeInicio->getCoordenada().getX();
     double index_y = position.getY() - nodeInicio->getCoordenada().getY();
-    double index_hipo = std::sqrt(std::pow(index_x,2) + pow(index_y, 2)) / static_cast<double>(linkActual->getAnchoDivisiones());
+    double index_hipo = std::sqrt(std::pow(index_x,2) + pow(index_y, 2)) / static_cast<double>(linkActual->getAnchoSubdivisiones());
     // if (direccionPedestrian.getX()<0) {
     //     index_hipo = link::numberDivisiones-1-index_hipo;
     // }
     return index_hipo;
 }
 void pedestrian::contarPedestrianInSublink() {
-  /* Cada persona tiene una posicion por lo tanto sabe donde agregar el conteo,
-      esto significa que no cuenta en todo las calles, solo en las calles que hay
-      personas */
+    /* Cada persona tiene una posicion por lo tanto sabe donde agregar el conteo,
+        esto significa que no cuenta en todo las calles, solo en las calles que
+        hay personas.*/
     double index_d = calcularIDoubleSublink();
     int index = std::floor(index_d);
     // verifica si la persona esta en intersecciones, al inicio o final
     if (!(index == 0 or index == link::numberDivisiones)) {
         // convierto index_d a int debido a que quiero los index del vector sublink, y contar
-        linkActual->getPedestriansInSublink().at(index)++;
+        // cuenta la cantidad de personas en la calle
+        // ubica las personas en las subdivisiones
+        linkActual->getSublink().at(index).getPedestriansInSublink().push_back(this);
     }
 }
 void pedestrian::eleccionGeneralLinkActual() {
@@ -315,6 +319,10 @@ void pedestrian::cambioCalle() {
         // busca y elimina esta persona en la calle pasada, porque esta a punto de estar en una calle nueva
         std::vector<pedestrian*>& pedestrianLink = linkPasado->getPedestriansLink();
         pedestrianLink.erase(std::remove(pedestrianLink.begin(), pedestrianLink.end(), this), pedestrianLink.end());
+        // busca y elimina esta persona en la calle pasada, porque esta a punto de estar en una calle nueva
+        // std::vector<pedestrian*>& pedestriansInSublink = subDivisionPasada->getPedestriansInSublink();
+        // pedestriansInSublink.erase(std::remove(pedestriansInSublink.begin(), pedestriansInSublink.end(), this),pedestriansInSublink.end());
+
         // guarda el stateMatrix para calculos del algoritmo sarsa.
         stateMatrixPasado = stateMatrixActual;
         // ahora la interseccion final es la interseccion inicial.

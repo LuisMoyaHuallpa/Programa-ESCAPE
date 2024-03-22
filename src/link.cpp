@@ -1,6 +1,8 @@
 #include "link.h"
 #include "pedestrian.h"
+#include "subLink.h"
 #include "vector2D.h"
+#include <algorithm>
 #include <vector>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -13,32 +15,17 @@ int link::numberDivisiones = 10;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 link::link(int idLink, node *node1, node *node2, int length, int width)
     : idLink(idLink), node1(node1), node2(node2), length(length), width(width),
-      orientacionLink(calcularOrientacionLink()){
-    // calcula la orientacion de la calle segun el node 1 y 2.
-    // calcularOrientacionLink();
-    setDensityLevel(0);
-    calcularAnchoDivisiones();
-    pedestriansInSublink.resize(link::numberDivisiones, 0);
-    densityInSublink.resize(link::numberDivisiones, 0);
+      orientacionLink(calcularOrientacionLink()),
+      anchoSubdivision(calcularAnchoDivisiones()),
+      densityLevel(0) {
+    subdivisiones.resize(link::numberDivisiones, subLink(this));
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // setters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void link::setPedestriansLink(std::vector<pedestrian*> pedestriansLink) {
-    (*this).pedestriansLink = pedestriansLink;
-}
-void link::setPedestriansInSublink(std::vector<int> pedestriansInSublink) {
-    (*this).pedestriansInSublink = pedestriansInSublink;
-}
-void link::setDensityInSublink(std::vector<double> densityInSublink) {
-    (*this).densityInSublink = densityInSublink;
-}
 void link::setDensityLevel(int densityLevel) {
     (*this).densityLevel = densityLevel;
-}
-void link::setAnchoDivisiones(double anchoDivisiones) {
-    (*this).anchoDivisiones = anchoDivisiones;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -62,20 +49,17 @@ const int link::getWidth() const{
 const vector2D link::getOrientacionLink() const {
     return orientacionLink;
 }
-std::vector<pedestrian*>& link::getPedestriansLink() {
-    return pedestriansLink;
-}
-std::vector<int>& link::getPedestriansInSublink() {
-    return pedestriansInSublink;
-}
-std::vector<double>& link::getDensityInSublink() {
-    return densityInSublink;
-}
 int* link::getDensityLevel() {
     return &densityLevel;
 }
-double link::getAnchoDivisiones() {
-    return anchoDivisiones;
+std::vector<pedestrian*>& link::getPedestriansLink() {
+    return pedestriansLink;
+}
+std::vector<subLink>& link::getSublink() {
+    return subdivisiones;  
+}
+const double link::getAnchoSubdivisiones() const {
+    return anchoSubdivision;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -93,50 +77,64 @@ vector2D link::calcularOrientacionLink() {
     // orientacionLink.setY(std::abs(y / magnitud));
     return {std::abs(x / magnitud), std::abs(y / magnitud)};
 }
-void link::calcularAnchoDivisiones() {
+double link::calcularAnchoDivisiones() {
     /* Calcula el ancho de divisiones de la calle segun el numero de divisiones preestablecidas*/
     double ancho_x = node1->getCoordenada().getX() - node2->getCoordenada().getX();
     double ancho_y = node1->getCoordenada().getY() - node2->getCoordenada().getY();
     double ancho = std::sqrt(pow(ancho_x, 2) + pow(ancho_y, 2)) / static_cast<double>(link::numberDivisiones);
-    anchoDivisiones = ancho;
+    return ancho;
 }
 void link::calcularDensity() {
     /* calculo de la densidad en cada sublink de la calle*/
-    for (int i = 0; i < pedestriansInSublink.size(); i++) {
-        densityInSublink.at(i) = pedestriansInSublink.at(i) / (anchoDivisiones * width);
+    for (auto it = subdivisiones.begin(); it != subdivisiones.end(); ++it) {
+        // subdivion es it
+        // calculo de densidad en subdivisiones
+        it->calcularDensidadSubdivision();
+        // recorre todas las personas en la subdivion
+        // j es una persona
+        for (auto j : it->getPedestriansInSublink()) {
+            // actualizacion de velocidad
+            j->getVelocidad().actualizarVelocidad(it->getDensidadSublink());
+        }
     }
 }
 void link::calcularDensityLevel() {
-    /* calcula el nivel de densidad de la calle */
-    double densidadMayorSubLink = 0.0;
     // Encontrar el sublink con mayor densidad de la calle
-    for (int i = 0; i < densityInSublink.size(); i++) {
-        if (densityInSublink.at(i) > densidadMayorSubLink) {
-            densidadMayorSubLink = densityInSublink.at(i);
-        }
-    }
+    auto max_iter = std::max_element(subdivisiones.begin(), subdivisiones.end(),
+    [](const subLink& a, const subLink& b) {
+        return a.getDensidadSublink() < b.getDensidadSublink();
+    });
     // elecion del nivel de densidad segun rangos preestablecidos
-    if(densidadMayorSubLink <= 0.5){
+    if(max_iter->getDensidadSublink() <= 0.5){
         densityLevel = 0;
     }  
-    else if (densidadMayorSubLink <= 3.0) {
+    else if (max_iter->getDensidadSublink() <= 3.0) {
         densityLevel = 1;
     }
     else {
         densityLevel = 2;
     }
 }
-
+void link::mostrarPedestriansLink() const {
+    std::cout << "pedestrianLink: ";
+    for (int i = 0; i < pedestriansLink.size(); i++) {
+        std::cout << pedestriansLink.at(i)->getIdPedestrian() << " ";
+    }
+}
+void link::mostrarSubdivisiones() const {
+    std::cout << "subdivisiones: ";
+    for (int i = 0; i < subdivisiones.size(); i++) {
+        subdivisiones.at(i).mostrarPedestriansInSublink();
+    }
+}
 void link::mostrarLink(){
     std::cout << "link: ";
     std::cout << getIdLink() << " ";
     std::cout << "nodes: ";
     std::cout << node1->getIdNode() << " ";
     std::cout << node2->getIdNode() << " ";
-    std::cout << "pedestrianLink: ";
-    for (int i = 0; i < pedestriansLink.size(); i++) {
-        std::cout << pedestriansLink.at(i)->getIdPedestrian() << " ";
-    }
+    mostrarPedestriansLink();
+    mostrarSubdivisiones();
     std::cout << std::endl;
 }
 void link::imprimirLink(std::fstream& file) {
@@ -146,11 +144,4 @@ void link::imprimirLink(std::fstream& file) {
     file << node2->getCoordenada().getX() << " ";
     file << node2->getCoordenada().getY() << " ";
     file << std::endl;
-}
-void link::mostrarSubLink() {
-    std::cout << getIdLink() << "  ";
-    for (int i = 0; i < pedestriansInSublink.size(); i++) {
-        std::cout << pedestriansInSublink.at(i) << " ";
-    }
-    std::cout << std::endl;
 }

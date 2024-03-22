@@ -1,5 +1,6 @@
 #include "links.h"
 #include "dictionary.h"
+#include "pedestrians.h"
 #include "tiempo.h"
 #include <vector>
 #include "pedestrian.h"
@@ -135,7 +136,14 @@ void links::resetSublinks() {
     // no hacerlo si estas en la ultima simulaciones, debido a que ya las personas se movieron y no
     // necesitaran esta información
     for (auto it = dbLinkTotal.begin(); it != dbLinkTotal.end(); ++it) {
-        it->get()->getPedestriansInSublink().assign(link::numberDivisiones, 0);
+        // reinicia 
+        // it->get()->getPedestriansInSublink().assign(link::numberDivisiones, 0);
+        // recorre cada sublink y lo reincia
+        for (auto y = it->get()->getSublink().begin(); y != it->get()->getSublink().end(); ++y) {
+            if (!y->getPedestriansInSublink().empty()) {
+                y->getPedestriansInSublink().clear();
+            }
+        }
     }
 }
 void links::resetPedestriansLink() {
@@ -152,7 +160,7 @@ void links::mostrarLinks(){
 }
 void links::mostrarSublink() {
     for (int i = 0; i < dbLinkTotal.size(); i++) {
-        dbLinkTotal.at(i)->mostrarSubLink();
+        dbLinkTotal.at(i)->mostrarSubdivisiones();
     }
 }
 void links::imprimirMeshLinks() {
