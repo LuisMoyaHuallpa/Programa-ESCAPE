@@ -13,24 +13,21 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "vector2D.h"
 
+class link;
+class pedestrian;
 
 class subLink  {
 
 private:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // idSubLink                 |-->| 
-    // puntoFinal                |-->|
-    // cantidadPedestrian        |-->| 
-    // densidad                  |-->| 
-    // pedestrianIdsInSubLink    |-->| 
+    // idSubLink                 |-->| ID DEL SUBLINK 
+    // pedestrianIdsInSubLink    |-->| PERSONAS EN SUBLINK
+    // densidad                  |-->| DENSIDAD EN EL SUBLINK
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    int idSubLink;
-    vector2D puntoFinal;
-    int cantidadPedestrian;
-    double densidad;
-
-    std::vector<int> pedestriansInSubLink;
-    double anchoDivisiones;
+    int idSublink;
+    const link* calle;
+    std::vector<pedestrian*> pedestriansInSublink;
+    double densidadSublink;
     
 public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -41,38 +38,34 @@ public:
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     subLink();
+    subLink(const link* calle);
     
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // setters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    void setIdSubLink(int idSubLink);
-    void setPuntoFinal(vector2D puntoFinal);
-    void setCantidadPedestrian(int cantidadPedestrian);
-    void setDensidad(double densidad);
-
-    void setPedestriansInSubLink(std::vector<int> pedestriansInSubLink);
+    void setIdSublink(int idSublink);
+    void setDensidadSublink(double densidadSublink);
+    void setPedestriansInSublink(std::vector<pedestrian*> pedestriansInSublink);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    int getIdSubLink();
-    vector2D getPuntoFinal();
-    int getCantidadPedestrian();
-    double getDensidad();
-
-    std::vector<int> getPedestriansInSubLink();
+    int getIdSublink() const;
+    std::vector<pedestrian*>& getPedestriansInSublink();
+    double getDensidadSublink() const;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // void calcularCantidadPedestrian();
+    void calcularDensidadSubdivision();
     void calcularDensidad(int length, int width);
-    double calcularAnchoDivisiones();
+    double calcularAnchosSubdivisiones();
     void calcular();
     bool verificarPedestrianId(int idPedestrian);
     void agregarPedestrianId(int idPedestrian);
     void quitarPedestrianId(int idPedestrian);
-    void mostrarSubLink();
+    void mostrarPedestriansInSublink() const;
     
 };
 #endif

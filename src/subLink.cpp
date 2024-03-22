@@ -1,66 +1,56 @@
 #include "subLink.h"
+#include "dictionary.h"
 #include "link.h"
+// #include "pedestrian.h"
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-int subLink::numberDivisiones = 10;
+int subLink::numberDivisiones = std::stoi(dictionary::get()->lookup("numberDivisiones"));
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 subLink::subLink() {
-    (*this).cantidadPedestrian = 0;
-    (*this).densidad = 0;
-    // calcularDensidad();
 }
-// subLink::subLink(link* parenLink) {
-//     (*this).parentLink = parenLink; 
-//     (*this).cantidadPedestrian = 0;
-//     (*this).densidad = 0;
-//     // calcularDensidad();
-// }
+subLink::subLink(const link* calle)
+    : calle(calle) {
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // setters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void subLink::setIdSubLink(int idSubLink) {
-    (*this).idSubLink = idSubLink;
+void subLink::setIdSublink(int idSublink) {
+    (*this).idSublink = idSublink;
 }
-void subLink::setPuntoFinal(vector2D puntoFinal) {
-    (*this).puntoFinal = puntoFinal; 
+void subLink::setPedestriansInSublink(std::vector<pedestrian*> pedestriansInSublink) {
+    (*this).pedestriansInSublink = pedestriansInSublink;
 }
-void subLink::setCantidadPedestrian(int cantidadPedestrian) {
-    (*this).cantidadPedestrian = cantidadPedestrian;
-}
-void subLink::setDensidad(double densidad) {
-    (*this).densidad = densidad;
-}
-void subLink::setPedestriansInSubLink(std::vector<int> pedestriansInSubLink) {
-    (*this).pedestriansInSubLink = pedestriansInSubLink;
+void subLink::setDensidadSublink(double densidadSublink) {
+    (*this).densidadSublink = densidadSublink;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-int subLink::getIdSubLink() {
-    return idSubLink;  
+int subLink::getIdSublink() const {
+    return idSublink;  
 }
-vector2D subLink::getPuntoFinal() {
-    return puntoFinal;
+std::vector<pedestrian*>& subLink::getPedestriansInSublink() {
+    return pedestriansInSublink;
 }
-int subLink::getCantidadPedestrian() {
-    return cantidadPedestrian;
+double subLink::getDensidadSublink() const {
+    return densidadSublink;
 }
-double subLink::getDensidad() {
-    return densidad;
-}
-std::vector<int> subLink::getPedestriansInSubLink() {
-    return pedestriansInSubLink;
-}
+
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void subLink::calcularDensidadSubdivision() {
+    /* calcula la densidad de la subdivision*/
+    densidadSublink = pedestriansInSublink.size() / (calle->getAnchoSubdivisiones() * calle->getWidth()); 
+}
 // void subLink::calcularCantidadPedestrian() {
 //     cantidadPedestrian = pedestriansIdsInSubLink.size();
 // }
@@ -105,8 +95,6 @@ std::vector<int> subLink::getPedestriansInSubLink() {
 //         }
 //     }
 // }
-// void subLink::mostrarSubLink() {
-//     calcularCantidadPedestrian();
-//     std::cout << cantidadPedestrian << " ";
-//     // std::cout << densidad << " ";
-// }
+void subLink::mostrarPedestriansInSublink() const {
+    std::cout << pedestriansInSublink.size() << " ";
+}

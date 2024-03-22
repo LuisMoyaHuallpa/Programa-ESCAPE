@@ -137,6 +137,12 @@ void pedestrians::reiniciarPedestriansNodeArranque() {
         dbPedestrianTotal.at(i).setNodeInicio(const_cast<node*>(dbPedestrianTotal.at(i).getNodeArranque()));
     }
 }
+void pedestrians::reiniciarConteoPedestrians() {
+    //  
+    for (auto it = dbPedestrianTotal.begin(); it != dbPedestrianTotal.end(); ++it) {
+        // it->modelamientoPedestrian();
+    }
+}
 void pedestrians::modelamientoPedestrians() {
     //  
     for (auto it = dbPedestrianTotal.begin(); it != dbPedestrianTotal.end(); ++it) {
