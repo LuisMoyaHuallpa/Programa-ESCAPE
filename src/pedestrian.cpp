@@ -175,7 +175,7 @@ void pedestrian::contarPedestrianInSublink() {
     double index_d = calcularIDoubleSublink();
     int index = std::floor(index_d);
     // verifica si la persona esta en intersecciones, al inicio o final
-    if (!(index == 0 or index == link::numberDivisiones)) {
+    if (!(index == 0 or index == link::numberLinkDivision)) {
         // convierto index_d a int debido a que quiero los index del vector sublink, y contar
         // cuenta la cantidad de personas en la calle
         // ubica las personas en las subdivisiones

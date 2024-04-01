@@ -30,4 +30,5 @@ readPedestrianMassState no;
 
 addNumberSimulation 10;
 
+numberLinkDivision 3;
 

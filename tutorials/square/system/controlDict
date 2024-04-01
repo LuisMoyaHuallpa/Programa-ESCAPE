@@ -28,5 +28,5 @@ stopSimulationAt          addNumberSimulation;
 
 addNumberSimulation 3;
 
-numberDivisiones 3;
+numberLinkDivision 3;
 

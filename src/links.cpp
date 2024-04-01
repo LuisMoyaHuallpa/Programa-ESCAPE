@@ -137,7 +137,7 @@ void links::resetSublinks() {
     // necesitaran esta información
     for (auto it = dbLinkTotal.begin(); it != dbLinkTotal.end(); ++it) {
         // reinicia 
-        // it->get()->getPedestriansInSublink().assign(link::numberDivisiones, 0);
+        // it->get()->getPedestriansInSublink().assign(link::numberLinkDivision, 0);
         // recorre cada sublink y lo reincia
         for (auto y = it->get()->getSublink().begin(); y != it->get()->getSublink().end(); ++y) {
             if (!y->getPedestriansInSublink().empty()) {

@@ -26,16 +26,17 @@ class link{
     
 private:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // idLink           |-->| ID DE LA CALLE
-    // idNode1          |-->| INTERSECCION DE LA CALLE  
-    // idNode2          |-->| LA OTRA INTERSECCION DE LA CALLE 
-    // length           |-->| LARGO DE LA CALLE
-    // width            |-->| ANCHO DE LA CALLE
-    // orientacionLink  |-->| ANGULO QUE FORMA LA HORIZONTAL CON LA CALLE
-    // densityLevel     |-->| NIVEL DE DENSIDAD DE LA CALLE
-    // pedestriansLink  |-->| PERSONAS EN LA CALLE
-    // subdivisiones    |-->| SUBDIVISIONES DE LA CALLE
-    // anchoSubdivision |-->| ANCHO DE UNA SUBDIVISION DE LA CALLE
+    // idLink            |-->| ID DE LA CALLE
+    // idNode1           |-->| INTERSECCION DE LA CALLE  
+    // idNode2           |-->| LA OTRA INTERSECCION DE LA CALLE 
+    // length            |-->| LARGO DE LA CALLE
+    // width             |-->| ANCHO DE LA CALLE
+    // orientacionLink   |-->| ANGULO QUE FORMA LA HORIZONTAL CON LA CALLE
+    // densityLevel      |-->| NIVEL DE DENSIDAD DE LA CALLE
+    // pedestriansLink   |-->| PERSONAS EN LA CALLE
+    // subdivisiones     |-->| SUBDIVISIONES DE LA CALLE
+    // anchoSubdivision  |-->| ANCHO DE UNA SUBDIVISION DE LA CALLE
+    // numberLinkDivision|-->| NUMERO DE DIVISIONES O SUBLINK DE UNA CALLE
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     const int idLink;
     const node* node1;
@@ -52,7 +53,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static member
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    static const int numberDivisiones;
+    static const int numberLinkDivision;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // constructor

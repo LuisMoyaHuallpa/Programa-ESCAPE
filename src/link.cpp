@@ -8,7 +8,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-const int link::numberDivisiones = std::stoi(dictionary::get()->lookup("numberDivisiones"));
+const int link::numberLinkDivision = std::stoi(dictionary::get()->lookup("numberLinkDivision"));
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -19,7 +19,7 @@ link::link(int idLink, node *node1, node *node2, int length, int width)
       orientacionLink(calcularOrientacionLink()),
       anchoSubdivision(calcularAnchoDivisiones()),
       densityLevel(0) {
-    subdivisiones.resize(link::numberDivisiones, subLink(this));
+    subdivisiones.resize(link::numberLinkDivision, subLink(this));
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -82,7 +82,7 @@ double link::calcularAnchoDivisiones() {
     /* Calcula el ancho de divisiones de la calle segun el numero de divisiones preestablecidas*/
     double ancho_x = node1->getCoordenada().getX() - node2->getCoordenada().getX();
     double ancho_y = node1->getCoordenada().getY() - node2->getCoordenada().getY();
-    double ancho = std::sqrt(pow(ancho_x, 2) + pow(ancho_y, 2)) / static_cast<double>(link::numberDivisiones);
+    double ancho = std::sqrt(pow(ancho_x, 2) + pow(ancho_y, 2)) / static_cast<double>(link::numberLinkDivision);
     return ancho;
 }
 void link::calcularDensity() {
