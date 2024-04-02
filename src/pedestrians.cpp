@@ -146,7 +146,7 @@ void pedestrians::reiniciarConteoPedestrians() {
 void pedestrians::modelamientoPedestrians() {
     //  
     for (auto it = dbPedestrianTotal.begin(); it != dbPedestrianTotal.end(); ++it) {
-        it->modelamientoPedestrian();
+        it->modelamientoPedestrian(&sarsaAlgorithm1);
     }
 }
 void pedestrians::mostrarDbPedestrianTotal() {

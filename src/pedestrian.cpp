@@ -28,7 +28,7 @@ pedestrian::pedestrian(int edad, int gender, int hhType, int hhId,node* nodeArra
     : idPedestrian(contador++), edad(edad), gender(gender), hhType(hhType), hhId(hhId),
       nodeArranque(nodeArranque), nodeInicio(nullptr), nodeFinal(nullptr), nodeInicioAnterior(nullptr),
       direccionPedestrian(), tiempoInicial(0),
-      velocidad(), stateMatrixActual(nullptr), stateMatrixPasado(nullptr), sarsaAlgorithm() {
+      velocidad(), stateMatrixActual(nullptr), stateMatrixPasado(nullptr) {
     setNodeInicio(nodeArranque);
     setEvacuado(false);
     setReward(0);
@@ -309,7 +309,7 @@ int pedestrian::calcularSignoNumero(double numero) {
         return -1;
     }
 }
-void pedestrian::cambioCalle() {
+void pedestrian::cambioCalle(sarsa* sarsaAlgorithm1) {
     /* se cambia de calle cuando se termina de recorre la calle actual*/
     if (verificarEndLink()) {
         // guarda la interseccion actual antes que sea cambiada, por tanto es la interseccion anterior
@@ -336,7 +336,7 @@ void pedestrian::cambioCalle() {
         // guarda infomacion de stateMatrix de la persona en una tabla en nodo.
         // stateMatrixtoTableAtNode();
         // algoritmo sarsa, actualiza en nodoAnterior
-        algoritmoSarsa();
+        algoritmoSarsa(sarsaAlgorithm1);
         // direccion de la persona en la calle.
         calcularDireccionPedestrian();
         // envio informacion de direccion al vector de velocidad.
@@ -374,21 +374,21 @@ void pedestrian::verificarPedestrianEvacuation(){
         // dbPedestrianTotal.erase(it);
     }
 }
-void pedestrian::algoritmoSarsa() {
+void pedestrian::algoritmoSarsa(sarsa* sarsaAlgorithm1) {
     /* nodoInicioAnterior es la interseccion inicial de la calle anterior o justo
         antes que cambia a la nueva calle
         y nodoInicia es la intersecion incial actual empezando en la nueva calle*/
     // R
-    sarsaAlgorithm.setR(reward);
+    sarsaAlgorithm1->setR(reward);
     // QPrevious
     double QPrevious = stateMatrixPasado->getQsValue().getQsVector().at(stateMatrixPasado->getActionValue().getILinkConnection());
-    sarsaAlgorithm.setQPrevious(QPrevious);
+    sarsaAlgorithm1->setQPrevious(QPrevious);
     // QCurrent
     double QCurrent = stateMatrixActual->getQsValue().getQsVector().at(stateMatrixActual->getActionValue().getILinkConnection()); 
-    sarsaAlgorithm.setQCurrent(QCurrent);
+    sarsaAlgorithm1->setQCurrent(QCurrent);
     // calcular Q
-    sarsaAlgorithm.sarsaActualizarQ();
-    stateMatrixPasado->getQsValue().getQsVector().at(stateMatrixPasado->getActionValue().getILinkConnection()) = sarsaAlgorithm.getQPrevious();
+    sarsaAlgorithm1->sarsaActualizarQ();
+    stateMatrixPasado->getQsValue().getQsVector().at(stateMatrixPasado->getActionValue().getILinkConnection()) = sarsaAlgorithm1->getQPrevious();
     // reinica el reward de la persona
     setReward(0);
 }
@@ -473,7 +473,7 @@ void pedestrian::calcularLevelDensityAtNode() {
 //         stateMatrixPedestrian.setIStateMatrixTable(nodeInicio->getStateMatrixTable().size()-1);
 //     }
 // }
-void pedestrian::modelamientoPedestrian() {
+void pedestrian::modelamientoPedestrian(sarsa* sarsaAlgorithm1) {
     // personas que aun no estan evacuadas
     if (!evacuado) {
         if (tiempo::get()->getValorTiempo() == tiempoInicial) {
@@ -495,7 +495,7 @@ void pedestrian::modelamientoPedestrian() {
             // calculo del reward
             calcularReward();
             // verifica el termino de la calle y actualiza a una nueva.
-            cambioCalle();
+            cambioCalle(sarsaAlgorithm1);
         }
     }
 }
