@@ -11,6 +11,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+sarsa pedestrian::formulaSarsa;
 int pedestrian::contador = 1;
 const int pedestrian::surviveReward = 100000;
 const int pedestrian::deadReward = -1000; 
@@ -28,7 +29,8 @@ pedestrian::pedestrian(int edad, int gender, int hhType, int hhId,node* nodeArra
     : idPedestrian(contador++), edad(edad), gender(gender), hhType(hhType), hhId(hhId),
       nodeArranque(nodeArranque), nodeInicio(nullptr), nodeFinal(nullptr), nodeInicioAnterior(nullptr),
       direccionPedestrian(), tiempoInicial(0),
-      velocidad(), stateMatrixActual(nullptr), stateMatrixPasado(nullptr) {
+      velocidad(), stateMatrixActual(nullptr), stateMatrixPasado(nullptr),
+      QPrevious(nullptr), QCurrent(nullptr) {
     setNodeInicio(nodeArranque);
     setEvacuado(false);
     setReward(0);
@@ -217,8 +219,10 @@ void pedestrian::eleccionRandomLinkActual() {
     // agrega persona a la calle
     linkActual->getPedestriansLink().push_back(this);
     // enviando informacion de action al stateMatrix
-    stateMatrixActual->getActionValue().setILinkConnection(numero_aleatorio);
-    stateMatrixActual->getActionValue().setIdLink(linkActual->getIdLink());
+    // stateMatrixActual->getActionValue().setILinkConnection(numero_aleatorio);
+    // stateMatrixActual->getActionValue().setIdLink(linkActual->getIdLink());
+    // damos la direcion de Qcurrent
+    QCurrent = &stateMatrixActual->getQsValue().getQsVector().at(numero_aleatorio);
     // contando persona que experimenta state y action
     // stateMatrixActual->getPedestrianMassState().getPedestrianMassStateVector().at(numero_aleatorio)++;
     // sabiendo la calle defino el nodo final.
@@ -243,8 +247,10 @@ void pedestrian::eleccionSarsa() {
     // agrega persona a la calle
     linkActual->getPedestriansLink().push_back(this);
     // enviando informacion de action al stateMatrix
-    stateMatrixActual->getActionValue().setILinkConnection(iQmenor);
-    stateMatrixActual->getActionValue().setIdLink(linkActual->getIdLink());
+    // stateMatrixActual->getActionValue().setILinkConnection(iQmenor);
+    // stateMatrixActual->getActionValue().setIdLink(linkActual->getIdLink());
+    // damos la direcion de Qcurrent
+    QCurrent = &stateMatrixActual->getQsValue().getQsVector().at(iQmenor);
     // contando persona que experimenta state y action
     // stateMatrixActual->getPedestrianMassState().getPedestrianMassStateVector().at(iQmenor)++;
     // sabiendo la calle defino el nodo final.
@@ -309,7 +315,7 @@ int pedestrian::calcularSignoNumero(double numero) {
         return -1;
     }
 }
-void pedestrian::cambioCalle(sarsa* sarsaAlgorithm1) {
+void pedestrian::cambioCalle() {
     /* se cambia de calle cuando se termina de recorre la calle actual*/
     if (verificarEndLink()) {
         // guarda la interseccion actual antes que sea cambiada, por tanto es la interseccion anterior
@@ -325,6 +331,8 @@ void pedestrian::cambioCalle(sarsa* sarsaAlgorithm1) {
 
         // guarda el stateMatrix para calculos del algoritmo sarsa.
         stateMatrixPasado = stateMatrixActual;
+        // guarda QPrevious
+        QPrevious = QCurrent;
         // ahora la interseccion final es la interseccion inicial.
         setNodeInicio(nodeFinal);
         // correcion de la posicion cuando se llega cerca al nodo.
@@ -336,7 +344,7 @@ void pedestrian::cambioCalle(sarsa* sarsaAlgorithm1) {
         // guarda infomacion de stateMatrix de la persona en una tabla en nodo.
         // stateMatrixtoTableAtNode();
         // algoritmo sarsa, actualiza en nodoAnterior
-        algoritmoSarsa(sarsaAlgorithm1);
+        algoritmoSarsa();
         // direccion de la persona en la calle.
         calcularDireccionPedestrian();
         // envio informacion de direccion al vector de velocidad.
@@ -374,21 +382,27 @@ void pedestrian::verificarPedestrianEvacuation(){
         // dbPedestrianTotal.erase(it);
     }
 }
-void pedestrian::algoritmoSarsa(sarsa* sarsaAlgorithm1) {
+void pedestrian::algoritmoSarsa() {
     /* nodoInicioAnterior es la interseccion inicial de la calle anterior o justo
         antes que cambia a la nueva calle
         y nodoInicia es la intersecion incial actual empezando en la nueva calle*/
     // R
-    sarsaAlgorithm1->setR(reward);
+    // sarsaAlgorithm1->setR(reward);
+    formulaSarsa.setR(reward);
     // QPrevious
-    double QPrevious = stateMatrixPasado->getQsValue().getQsVector().at(stateMatrixPasado->getActionValue().getILinkConnection());
-    sarsaAlgorithm1->setQPrevious(QPrevious);
+    // double QPrevious = stateMatrixPasado->getQsValue().getQsVector().at(stateMatrixPasado->getActionValue().getILinkConnection());
+    // double QPrevious1 = *QPrevious;
+    // sarsaAlgorithm1->setQPrevious(QPrevious);
+    formulaSarsa.setQPrevious(QPrevious);
     // QCurrent
-    double QCurrent = stateMatrixActual->getQsValue().getQsVector().at(stateMatrixActual->getActionValue().getILinkConnection()); 
-    sarsaAlgorithm1->setQCurrent(QCurrent);
+    // double QCurrent = stateMatrixActual->getQsValue().getQsVector().at(stateMatrixActual->getActionValue().getILinkConnection()); 
+    // double QCurrent1 = *QCurrent;
+    // sarsaAlgorithm1->setQCurrent(QCurrent);
+    formulaSarsa.setQCurrent(QCurrent);
     // calcular Q
-    sarsaAlgorithm1->sarsaActualizarQ();
-    stateMatrixPasado->getQsValue().getQsVector().at(stateMatrixPasado->getActionValue().getILinkConnection()) = sarsaAlgorithm1->getQPrevious();
+    formulaSarsa.sarsaActualizarQ();
+    // sarsaAlgorithm1->sarsaActualizarQ();
+    // stateMatrixPasado->getQsValue().getQsVector().at(stateMatrixPasado->getActionValue().getILinkConnection()) = sarsaAlgorithm1->getQPrevious();
     // reinica el reward de la persona
     setReward(0);
 }
@@ -473,7 +487,7 @@ void pedestrian::calcularLevelDensityAtNode() {
 //         stateMatrixPedestrian.setIStateMatrixTable(nodeInicio->getStateMatrixTable().size()-1);
 //     }
 // }
-void pedestrian::modelamientoPedestrian(sarsa* sarsaAlgorithm1) {
+void pedestrian::modelamientoPedestrian() {
     // personas que aun no estan evacuadas
     if (!evacuado) {
         if (tiempo::get()->getValorTiempo() == tiempoInicial) {
@@ -495,7 +509,7 @@ void pedestrian::modelamientoPedestrian(sarsa* sarsaAlgorithm1) {
             // calculo del reward
             calcularReward();
             // verifica el termino de la calle y actualiza a una nueva.
-            cambioCalle(sarsaAlgorithm1);
+            cambioCalle();
         }
     }
 }

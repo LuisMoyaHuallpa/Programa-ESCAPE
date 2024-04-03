@@ -29,7 +29,7 @@ private:
     Qs QsValue;
     std::vector<int> otrosVector;
     pedestrianMassState pedestrianMassStateValue;
-    action actionValue;
+    // action actionValue;
 
 
 public:
@@ -55,7 +55,7 @@ public:
     void setQsValue(Qs QsValue);
     void setOtrosVector(std::vector<int> otrosVector);
     void setPedestrianMassState(pedestrianMassState pedestrianMassStateValue);
-    void setActionValue(action actionValue);
+    // void setActionValue(action actionValue);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getter
@@ -64,7 +64,7 @@ public:
     Qs& getQsValue();
     std::vector<int>& getotrosVector();
     pedestrianMassState& getPedestrianMassState();
-    action& getActionValue();
+    // action& getActionValue();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static getter

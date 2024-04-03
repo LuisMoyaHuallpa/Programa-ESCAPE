@@ -71,12 +71,15 @@ private:
     stateMatrix* stateMatrixPasado;
     bool evacuado;
     int reward;
-    // sarsa sarsaAlgorithm;
+    // sarsa sarsaAlgorithmo;
+    double* QPrevious;
+    double* QCurrent;
 
 public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static member
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    static sarsa formulaSarsa;
     static int contador;
     const static int surviveReward;
     const static int deadReward;
@@ -143,7 +146,7 @@ public:
     double calcularIDoubleSublink();
     void contarPedestrianInSublink();
     void calcularDensityInSublink();
-    void cambioCalle(sarsa* sarsaAlgorithm1);
+    void cambioCalle();
     void eleccionGeneralLinkActual();
     void eleccionRandomLinkActual();
     void eleccionSarsa();
@@ -161,13 +164,13 @@ public:
     int calcularSignoNumero(double numero);
     void calcularReward();
     void verificarPedestrianEvacuation();
-    void algoritmoSarsa(sarsa* sarsaAlgorithm1);
+    void algoritmoSarsa();
     // std::vector<stateActionQ>::iterator agregarObtenerqLista(node* nodeDeBusqueda,stateActionQ qBuscando);
     // voidbuscarQ(bool verificarQExistente, stateActionQ* qElemento);
     void calcularLevelDensityAtNode();
     // void stateMatrixtoTableAtNode();
     // void crearqState(node* nodeActual);
-    void modelamientoPedestrian(sarsa* sarsaAlgorithm1);
+    void modelamientoPedestrian();
     void mostrarMovimientoPedestrian();
     void imprimirPedestrianPosition(std::fstream& file) const;
     void imprimirPedestrianVelocity(std::fstream& file) const;
