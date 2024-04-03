@@ -222,7 +222,8 @@ void pedestrian::eleccionRandomLinkActual() {
     // stateMatrixActual->getActionValue().setILinkConnection(numero_aleatorio);
     // stateMatrixActual->getActionValue().setIdLink(linkActual->getIdLink());
     // damos la direcion de Qcurrent
-    QCurrent = &stateMatrixActual->getQsValue().getQsVector().at(numero_aleatorio);
+    // QCurrent = &stateMatrixActual->getQsValue().getQsVector().at(numero_aleatorio);
+    formulaSarsa.setQCurrent(&stateMatrixActual->getQsValue().getQsVector().at(numero_aleatorio));
     // contando persona que experimenta state y action
     // stateMatrixActual->getPedestrianMassState().getPedestrianMassStateVector().at(numero_aleatorio)++;
     // sabiendo la calle defino el nodo final.
@@ -250,7 +251,7 @@ void pedestrian::eleccionSarsa() {
     // stateMatrixActual->getActionValue().setILinkConnection(iQmenor);
     // stateMatrixActual->getActionValue().setIdLink(linkActual->getIdLink());
     // damos la direcion de Qcurrent
-    QCurrent = &stateMatrixActual->getQsValue().getQsVector().at(iQmenor);
+    formulaSarsa.setQCurrent(&stateMatrixActual->getQsValue().getQsVector().at(iQmenor));
     // contando persona que experimenta state y action
     // stateMatrixActual->getPedestrianMassState().getPedestrianMassStateVector().at(iQmenor)++;
     // sabiendo la calle defino el nodo final.
@@ -332,7 +333,7 @@ void pedestrian::cambioCalle() {
         // guarda el stateMatrix para calculos del algoritmo sarsa.
         stateMatrixPasado = stateMatrixActual;
         // guarda QPrevious
-        QPrevious = QCurrent;
+        QPrevious = formulaSarsa.getQCurrent();
         // ahora la interseccion final es la interseccion inicial.
         setNodeInicio(nodeFinal);
         // correcion de la posicion cuando se llega cerca al nodo.
@@ -388,7 +389,7 @@ void pedestrian::algoritmoSarsa() {
         y nodoInicia es la intersecion incial actual empezando en la nueva calle*/
     // R
     // sarsaAlgorithm1->setR(reward);
-    formulaSarsa.setR(reward);
+    formulaSarsa.setR(&reward);
     // QPrevious
     // double QPrevious = stateMatrixPasado->getQsValue().getQsVector().at(stateMatrixPasado->getActionValue().getILinkConnection());
     // double QPrevious1 = *QPrevious;
@@ -398,7 +399,7 @@ void pedestrian::algoritmoSarsa() {
     // double QCurrent = stateMatrixActual->getQsValue().getQsVector().at(stateMatrixActual->getActionValue().getILinkConnection()); 
     // double QCurrent1 = *QCurrent;
     // sarsaAlgorithm1->setQCurrent(QCurrent);
-    formulaSarsa.setQCurrent(QCurrent);
+    // formulaSarsa.setQCurrent(QCurrent);
     // calcular Q
     formulaSarsa.sarsaActualizarQ();
     // sarsaAlgorithm1->sarsaActualizarQ();

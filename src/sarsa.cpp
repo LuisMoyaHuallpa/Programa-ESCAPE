@@ -11,15 +11,7 @@ const double sarsa::gamma = 0.9;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-sarsa::sarsa() {
-    setQCurrent(0);
-    setQPrevious(0);
-    setR(0);
-}
-sarsa::sarsa(double* QCurrent, double* QPrevious, double r){
-    setQCurrent(QCurrent);
-    setQPrevious(QPrevious);
-    setR(r);
+sarsa::sarsa() : QCurrent(nullptr), QPrevious(nullptr), r(nullptr){
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -31,26 +23,23 @@ void sarsa::setQCurrent(double* QCurrent) {
 void sarsa::setQPrevious(double* QPrevious) {
     (*this).QPrevious = QPrevious;
 }
-void sarsa::setR(int r) {
+void sarsa::setR(int* r) {
     (*this).r = r;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-double* sarsa::getQCurrent() {
+double* &sarsa::getQCurrent() {
     return QCurrent;
 }
-double* sarsa::getQPrevious() {
+double* &sarsa::getQPrevious() {
     return QPrevious;
 }
-double sarsa::getR() {
+int* sarsa::getR() {
     return r;  
 }
 
 void sarsa::sarsaActualizarQ() {
-    *QPrevious += alpha * (r + gamma * *QCurrent - *QPrevious); 
+    *QPrevious += alpha * (*r + gamma * *QCurrent - *QPrevious); 
 }
-// void sarsa::sarsaActualizarQ(double *QPrevious, double *QCurrent, int r) {
-//     QPrevious += alpha * (r + gamma * QCurrent - QPrevious); 
-// }
