@@ -68,12 +68,10 @@ private:
     vector2DVelocidad velocidad;
     const int tiempoInicial;
     stateMatrix* stateMatrixActual;
-    stateMatrix* stateMatrixPasado;
+    // stateMatrix* stateMatrixPas;
     bool evacuado;
     int reward;
     // sarsa sarsaAlgorithmo;
-    double* QPrevious;
-    double* QCurrent;
 
 public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

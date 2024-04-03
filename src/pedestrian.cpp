@@ -4,6 +4,7 @@
 #include "subLink.h"
 #include "tiempo.h"
 #include <cstdio>
+#include <iostream>
 #include <map>
 #include <utility>
 #include <vector>
@@ -29,8 +30,7 @@ pedestrian::pedestrian(int edad, int gender, int hhType, int hhId,node* nodeArra
     : idPedestrian(contador++), edad(edad), gender(gender), hhType(hhType), hhId(hhId),
       nodeArranque(nodeArranque), nodeInicio(nullptr), nodeFinal(nullptr), nodeInicioAnterior(nullptr),
       direccionPedestrian(), tiempoInicial(0),
-      velocidad(), stateMatrixActual(nullptr), stateMatrixPasado(nullptr),
-      QPrevious(nullptr), QCurrent(nullptr) {
+      velocidad(), stateMatrixActual(nullptr) {
     setNodeInicio(nodeArranque);
     setEvacuado(false);
     setReward(0);
@@ -331,9 +331,9 @@ void pedestrian::cambioCalle() {
         // pedestriansInSublink.erase(std::remove(pedestriansInSublink.begin(), pedestriansInSublink.end(), this),pedestriansInSublink.end());
 
         // guarda el stateMatrix para calculos del algoritmo sarsa.
-        stateMatrixPasado = stateMatrixActual;
+        // stateMatrixPasado = stateMatrixActual;
         // guarda QPrevious
-        QPrevious = formulaSarsa.getQCurrent();
+        formulaSarsa.setQPrevious(formulaSarsa.getQCurrent());
         // ahora la interseccion final es la interseccion inicial.
         setNodeInicio(nodeFinal);
         // correcion de la posicion cuando se llega cerca al nodo.
@@ -394,18 +394,24 @@ void pedestrian::algoritmoSarsa() {
     // double QPrevious = stateMatrixPasado->getQsValue().getQsVector().at(stateMatrixPasado->getActionValue().getILinkConnection());
     // double QPrevious1 = *QPrevious;
     // sarsaAlgorithm1->setQPrevious(QPrevious);
-    formulaSarsa.setQPrevious(QPrevious);
+    // formulaSarsa.setQPrevious(QPrevious);
     // QCurrent
     // double QCurrent = stateMatrixActual->getQsValue().getQsVector().at(stateMatrixActual->getActionValue().getILinkConnection()); 
     // double QCurrent1 = *QCurrent;
     // sarsaAlgorithm1->setQCurrent(QCurrent);
     // formulaSarsa.setQCurrent(QCurrent);
     // calcular Q
+
+    // std::cout << std::endl;
+    // std::cout << *formulaSarsa.getQPrevious() << std::endl;
     formulaSarsa.sarsaActualizarQ();
+    // std::cout << *formulaSarsa.getQPrevious() << std::endl;
+    // std::cout << std::endl;
+
     // sarsaAlgorithm1->sarsaActualizarQ();
     // stateMatrixPasado->getQsValue().getQsVector().at(stateMatrixPasado->getActionValue().getILinkConnection()) = sarsaAlgorithm1->getQPrevious();
     // reinica el reward de la persona
-    setReward(0);
+    reward = 0;
 }
 void pedestrian::calcularLevelDensityAtNode() {
     /* cuando una persona llega a una interseccion debe saber los estados de las

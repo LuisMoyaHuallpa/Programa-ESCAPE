@@ -1,4 +1,5 @@
 #include "sarsa.h"
+#include "iostream"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -41,5 +42,13 @@ int* sarsa::getR() {
 }
 
 void sarsa::sarsaActualizarQ() {
+    std::cout << "actualiza" << std::endl;
+    std::cout << "r:" << *r << std::endl;
+    std::cout << "qp:" << *QPrevious << std::endl;
+    std::cout << "qc:" << *QCurrent << std::endl;
+    double q1 = alpha * (*r + gamma * *QCurrent - *QPrevious); 
+    *QPrevious = q1 + *QPrevious;
     *QPrevious += alpha * (*r + gamma * *QCurrent - *QPrevious); 
+    std::cout << "q1:" << q1 << std::endl;
+    std::cout << "qp:" << *QPrevious << std::endl;
 }
