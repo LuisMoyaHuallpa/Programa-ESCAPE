@@ -29,7 +29,8 @@ pedestrian::pedestrian(int edad, int gender, int hhType, int hhId,node* nodeArra
     : idPedestrian(contador++), edad(edad), gender(gender), hhType(hhType), hhId(hhId),
       nodeArranque(nodeArranque), nodeInicio(nullptr), nodeFinal(nullptr), nodeInicioAnterior(nullptr),
       direccionPedestrian(), tiempoInicial(0),
-      velocidad(), stateMatrixActual(nullptr), stateMatrixPasado(nullptr) {
+      QCurrent(nullptr), QPrevious(nullptr),
+      velocidad() {
     setNodeInicio(nodeArranque);
     setEvacuado(false);
     setReward(0);
@@ -218,8 +219,10 @@ void pedestrian::eleccionRandomLinkActual() {
     // agrega persona a la calle
     linkActual->getPedestriansLink().push_back(this);
     // enviando informacion de action al stateMatrix
-    stateMatrixActual->getActionValue().setILinkConnection(numero_aleatorio);
-    stateMatrixActual->getActionValue().setIdLink(linkActual->getIdLink());
+    // stateMatrixActual->getActionValue().setILinkConnection(numero_aleatorio);
+    // stateMatrixActual->getActionValue().setIdLink(linkActual->getIdLink());
+    // puntero al Qcurrent
+    QCurrent = &QsActual->at(numero_aleatorio); 
     // contando persona que experimenta state y action
     // stateMatrixActual->getPedestrianMassState().getPedestrianMassStateVector().at(numero_aleatorio)++;
     // sabiendo la calle defino el nodo final.
@@ -227,11 +230,11 @@ void pedestrian::eleccionRandomLinkActual() {
 }
 void pedestrian::eleccionSarsa() {
     // guarda el vector Q 
-    std::vector<double>* QVector = &stateMatrixActual->getQsValue().getQsVector();
+    // std::vector<double>* QVector = &stateMatrixActual->getQsValue().getQsVector();
     // busca el elemento menor
-    auto it = std::max_element(QVector->begin(), QVector->end());
+    auto it = std::max_element(QsActual->begin(), QsActual->end());
     // encuentra el indice del elemento
-    size_t iQmenor = std::distance(QVector->begin(), it);
+    size_t iQmenor = std::distance(QsActual->begin(), it);
 
     // // empieza con valores del primer elemento de QsVector
     // double Qmenor = stateMatrixActual->getQsValue().getQsVector().at(0);
@@ -250,8 +253,10 @@ void pedestrian::eleccionSarsa() {
     // agrega persona a la calle
     linkActual->getPedestriansLink().push_back(this);
     // enviando informacion de action al stateMatrix
-    stateMatrixActual->getActionValue().setILinkConnection(iQmenor);
-    stateMatrixActual->getActionValue().setIdLink(linkActual->getIdLink());
+    // stateMatrixActual->getActionValue().setILinkConnection(iQmenor);
+    // stateMatrixActual->getActionValue().setIdLink(linkActual->getIdLink());
+    // puntero al Qcurrent
+    QCurrent = &QsActual->at(iQmenor); 
     // contando persona que experimenta state y action
     // stateMatrixActual->getPedestrianMassState().getPedestrianMassStateVector().at(iQmenor)++;
     // sabiendo la calle defino el nodo final.
@@ -329,7 +334,8 @@ void pedestrian::cambioCalle() {
         // pedestriansInSublink.erase(std::remove(pedestriansInSublink.begin(), pedestriansInSublink.end(), this),pedestriansInSublink.end());
 
         // guarda el stateMatrix para calculos del algoritmo sarsa.
-        stateMatrixPasado = stateMatrixActual;
+        // stateMatrixPasado = stateMatrixActual;
+        QPrevious = QCurrent;
         // ahora la interseccion final es la interseccion inicial.
         setNodeInicio(nodeFinal);
         // correcion de la posicion cuando se llega cerca al nodo.
@@ -396,15 +402,15 @@ void pedestrian::algoritmoSarsa() {
     sarsaAlgorithm.setR(&reward);
     // QPrevious
     // double QPrevious = stateMatrixPasado->getQsValue().getQsVector().at(stateMatrixPasado->getActionValue().getILinkConnection());
-    sarsaAlgorithm.setQPrevious(&stateMatrixPasado->getQsValue().getQsVector().at(stateMatrixPasado->getActionValue().getILinkConnection()));
+    sarsaAlgorithm.setQPrevious(QPrevious);
     // QCurrent
-    double QCurrent = stateMatrixActual->getQsValue().getQsVector().at(stateMatrixActual->getActionValue().getILinkConnection()); 
-    sarsaAlgorithm.setQCurrent(&stateMatrixActual->getQsValue().getQsVector().at(stateMatrixActual->getActionValue().getILinkConnection()));
+    // double QCurrent = stateMatrixActual->getQsValue().getQsVector().at(stateMatrixActual->getActionValue().getILinkConnection()); 
+    sarsaAlgorithm.setQCurrent(QCurrent);
     // calcular Q
     sarsaAlgorithm.sarsaActualizarQ();
     // stateMatrixPasado->getQsValue().getQsVector().at(stateMatrixPasado->getActionValue().getILinkConnection()) = sarsaAlgorithm.getQPrevious();
     // reinica el reward de la persona
-    setReward(0);
+    reward = 0;
 }
 void pedestrian::calcularLevelDensityAtNode() {
     /* cuando una persona llega a una interseccion debe saber los estados de las
@@ -448,14 +454,18 @@ void pedestrian::calcularLevelDensityAtNode() {
     // si encuentra un stateMatrix con el estado experimenta en el nodo
     if (stateMatrixTableMap.find(convertedVector) != stateMatrixTableMap.end()) {
         // guardo el stateMatrix encontraro en la variable de stateMatrixActual, del estado y accion actual
-        stateMatrixActual = stateMatrixTableMap.at(convertedVector);
+        // stateMatrixActual = stateMatrixTableMap.at(convertedVector);
+        // guarda el vector Qs actual
+        QsActual = &stateMatrixTableMap.at(convertedVector)->getQsValue().getQsVector();
     }
     // no encuentro el estado, por tanto lo añado en tabla de estados del nodo
     else {
         // creo el stateMatrix
         stateMatrix* stateMatrixNuevo = new stateMatrix(convertedVector);
         // guardo el stateMatrix creado en la variable de stateMatrixActual, del estado y accion actual
-        stateMatrixActual = stateMatrixNuevo;
+        // stateMatrixActual = stateMatrixNuevo;
+        // guarda el vector Qs actual
+        QsActual = &stateMatrixNuevo->getQsValue().getQsVector();
         // guardo en el stateMatrix en la tabla de estados del nodo
         // stateMatrixTableMap.insert(std::make_pair(convertedVector, stateMatrixNuevo));
         nodeInicio->getStateMatrixTableMap().emplace(convertedVector, stateMatrixNuevo);

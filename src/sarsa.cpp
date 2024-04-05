@@ -47,5 +47,5 @@ int* sarsa::getR() {
 }
 
 void sarsa::sarsaActualizarQ() {
-    *QPrevious += alpha * (*r + gamma * *QCurrent - *QPrevious); 
+    *QPrevious += alpha * (static_cast<double>(*r) + gamma * *QCurrent - *QPrevious); 
 }

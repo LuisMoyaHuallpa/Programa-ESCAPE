@@ -35,9 +35,9 @@ void stateMatrix::setOtrosVector(std::vector<int> otrosVector) {
 void stateMatrix::setPedestrianMassState(pedestrianMassState pedestrianMassStateValue) {
     (*this).pedestrianMassStateValue = pedestrianMassStateValue;
 }
-void stateMatrix::setActionValue(action actionValue) {
-    (*this).actionValue = actionValue;
-}
+// void stateMatrix::setActionValue(action actionValue) {
+//     (*this).actionValue = actionValue;
+// }
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -55,9 +55,9 @@ std::vector<int>& stateMatrix::getotrosVector() {
 pedestrianMassState &stateMatrix::getPedestrianMassState() {
     return pedestrianMassStateValue;  
 }
-action& stateMatrix::getActionValue() {
-    return actionValue;
-}
+// action& stateMatrix::getActionValue() {
+//     return actionValue;
+// }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static getter
@@ -99,8 +99,8 @@ void stateMatrix::mostrarStateMatrix() const {
     // for (int i = 0; i < tamanoVector - getStateValue().getDensityLinks().size(); i++) {
     //     std::cout << "0,";
     // }
-    std::cout << "action: ";
-    actionValue.mostrarAction();
+    // std::cout << "action: ";
+    // actionValue.mostrarAction();
     std::cout << "Qs: ";
     QsValue.mostrarQs();
     std::cout << "pedestrianMassState: ";

@@ -67,11 +67,14 @@ private:
     vector2D direccionPedestrian;
     vector2DVelocidad velocidad;
     const int tiempoInicial;
-    stateMatrix* stateMatrixActual;
-    stateMatrix* stateMatrixPasado;
+    // stateMatrix* stateMatrixActual;
+    // stateMatrix* stateMatrixPasado;
     bool evacuado;
     int reward;
     // sarsa sarsaAlgorithm;
+    std::vector<double>* QsActual;
+    double* QCurrent;
+    double* QPrevious;
 
 public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
