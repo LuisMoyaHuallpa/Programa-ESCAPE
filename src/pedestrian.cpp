@@ -225,17 +225,25 @@ void pedestrian::eleccionRandomLinkActual() {
     calcularNodeFinal();
 }
 void pedestrian::eleccionSarsa() {
-    // empieza con valores del primer elemento de QsVector
-    double Qmenor = stateMatrixActual->getQsValue().getQsVector().at(0);
-    // valor de inicio para comparar con los del vector Qs
-    int iQmenor = 0;
-    // me devuele el menor Q
-    for (int i = 0; i < stateMatrixActual->getQsValue().getQsVector().size(); i++) {
-        if (stateMatrixActual->getQsValue().getQsVector().at(i) > Qmenor) {
-            Qmenor= stateMatrixActual->getQsValue().getQsVector().at(i);
-            iQmenor = i;
-        }
-    }
+    // guarda el vector Q 
+    std::vector<double> QVector = stateMatrixActual->getQsValue().getQsVector();
+    // busca el elemento menor
+    auto it = std::max_element(QVector.begin(), QVector.end());
+    // encuentra el indice del elemento
+    size_t iQmenor = std::distance(QVector.begin(), it);
+
+    // // empieza con valores del primer elemento de QsVector
+    // double Qmenor = stateMatrixActual->getQsValue().getQsVector().at(0);
+    // // valor de inicio para comparar con los del vector Qs
+
+    // int iQmenor = 0;
+    // // me devuele el menor Q
+    // for (int i = 0; i < stateMatrixActual->getQsValue().getQsVector().size(); i++) {
+    //     if (stateMatrixActual->getQsValue().getQsVector().at(i) > Qmenor) {
+    //         Qmenor= stateMatrixActual->getQsValue().getQsVector().at(i);
+    //         iQmenor = i;
+    //     }
+    // }
     // eleccion de la calle nueva, parte principal de la funcion
     setLinkActual(nodeInicio->getLinkConnection().at(iQmenor));
     // agrega persona a la calle
