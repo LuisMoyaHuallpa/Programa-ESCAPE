@@ -223,8 +223,6 @@ void pedestrian::eleccionRandomLinkActual() {
     // stateMatrixActual->getPedestrianMassState().getPedestrianMassStateVector().at(numero_aleatorio)++;
     // sabiendo la calle defino el nodo final.
     calcularNodeFinal();
-    // verificar si el nodo final es un nodo de evacucion.
-    verificarPedestrianEvacuation();
 }
 void pedestrian::eleccionSarsa() {
     // empieza con valores del primer elemento de QsVector
@@ -249,8 +247,6 @@ void pedestrian::eleccionSarsa() {
     // stateMatrixActual->getPedestrianMassState().getPedestrianMassStateVector().at(iQmenor)++;
     // sabiendo la calle defino el nodo final.
     calcularNodeFinal();
-    // verificar si el nodo final es un nodo de evacucion.
-    verificarPedestrianEvacuation();
 }
 // void pedestrian::eleccionDosCallesContinuas() {
 //     // linkActual es la calle a punto de cambiar
@@ -331,6 +327,11 @@ void pedestrian::cambioCalle() {
         setPosition({nodeInicio->getCoordenada().getX(), nodeInicio->getCoordenada().getY()});
         // calculo del stateMatrix para obtener datos de state.
         calcularLevelDensityAtNode();
+
+        // verificar si el nodo final es un nodo de evacucion.
+        verificarPedestrianEvacuation();
+        // calculo del reward
+        calcularReward();
         // eleccionde de la calle
         eleccionGeneralLinkActual();
         // guarda infomacion de stateMatrix de la persona en una tabla en nodo.
@@ -343,6 +344,10 @@ void pedestrian::cambioCalle() {
         getVelocidad().setDireccion(getDireccionPedestrian());
         // falta mejor para que ajuste tambien esta velcoida
         // stateMatrixActual->mostrarStateMatrix();
+    }
+    else {
+        // calculo del reward
+        calcularReward();
     }
 }
 void pedestrian::calcularDireccionPedestrian() {
@@ -492,8 +497,6 @@ void pedestrian::modelamientoPedestrian() {
         }
         if (tiempo::get()->getValorTiempo() > tiempoInicial) {
             caminar();
-            // calculo del reward
-            calcularReward();
             // verifica el termino de la calle y actualiza a una nueva.
             cambioCalle();
         }
