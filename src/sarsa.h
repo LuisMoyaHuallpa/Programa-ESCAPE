@@ -17,9 +17,9 @@ private:
     // QPrevious    |-->| Q DE LA INTERSECCION DONDE PASO ANTERIORMENTE LA PERSONA
     // r            |-->| REWARD DE LA PERSONA DURANTE EL PASO DE LA CALLE
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    double QCurrent;
-    double QPrevious;
-    int r;
+    double* QCurrent;
+    double* QPrevious;
+    int* r;
     
 public: 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -33,21 +33,21 @@ public:
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     sarsa();
-    sarsa(double QCurrent, double QPrevious, double r);
+    // sarsa(double QCurrent, double QPrevious, double r);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // setters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    void setQCurrent(double QCurrent);
-    void setQPrevious(double QPrevious);
-    void setR(int r);
+    void setQCurrent(double* QCurrent);
+    void setQPrevious(double* QPrevious);
+    void setR(int* r);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    double getQCurrent();
-    double getQPrevious();
-    double getR();
+    double* getQCurrent();
+    double* getQPrevious();
+    int* getR();
     
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos

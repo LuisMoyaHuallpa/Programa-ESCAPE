@@ -11,6 +11,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+sarsa pedestrian::sarsaAlgorithm;
 int pedestrian::contador = 1;
 const int pedestrian::surviveReward = 100000;
 const int pedestrian::deadReward = -1000; 
@@ -28,7 +29,7 @@ pedestrian::pedestrian(int edad, int gender, int hhType, int hhId,node* nodeArra
     : idPedestrian(contador++), edad(edad), gender(gender), hhType(hhType), hhId(hhId),
       nodeArranque(nodeArranque), nodeInicio(nullptr), nodeFinal(nullptr), nodeInicioAnterior(nullptr),
       direccionPedestrian(), tiempoInicial(0),
-      velocidad(), stateMatrixActual(nullptr), stateMatrixPasado(nullptr), sarsaAlgorithm() {
+      velocidad(), stateMatrixActual(nullptr), stateMatrixPasado(nullptr) {
     setNodeInicio(nodeArranque);
     setEvacuado(false);
     setReward(0);
@@ -226,11 +227,11 @@ void pedestrian::eleccionRandomLinkActual() {
 }
 void pedestrian::eleccionSarsa() {
     // guarda el vector Q 
-    std::vector<double> QVector = stateMatrixActual->getQsValue().getQsVector();
+    std::vector<double>* QVector = &stateMatrixActual->getQsValue().getQsVector();
     // busca el elemento menor
-    auto it = std::max_element(QVector.begin(), QVector.end());
+    auto it = std::max_element(QVector->begin(), QVector->end());
     // encuentra el indice del elemento
-    size_t iQmenor = std::distance(QVector.begin(), it);
+    size_t iQmenor = std::distance(QVector->begin(), it);
 
     // // empieza con valores del primer elemento de QsVector
     // double Qmenor = stateMatrixActual->getQsValue().getQsVector().at(0);
@@ -392,16 +393,16 @@ void pedestrian::algoritmoSarsa() {
         antes que cambia a la nueva calle
         y nodoInicia es la intersecion incial actual empezando en la nueva calle*/
     // R
-    sarsaAlgorithm.setR(reward);
+    sarsaAlgorithm.setR(&reward);
     // QPrevious
-    double QPrevious = stateMatrixPasado->getQsValue().getQsVector().at(stateMatrixPasado->getActionValue().getILinkConnection());
-    sarsaAlgorithm.setQPrevious(QPrevious);
+    // double QPrevious = stateMatrixPasado->getQsValue().getQsVector().at(stateMatrixPasado->getActionValue().getILinkConnection());
+    sarsaAlgorithm.setQPrevious(&stateMatrixPasado->getQsValue().getQsVector().at(stateMatrixPasado->getActionValue().getILinkConnection()));
     // QCurrent
     double QCurrent = stateMatrixActual->getQsValue().getQsVector().at(stateMatrixActual->getActionValue().getILinkConnection()); 
-    sarsaAlgorithm.setQCurrent(QCurrent);
+    sarsaAlgorithm.setQCurrent(&stateMatrixActual->getQsValue().getQsVector().at(stateMatrixActual->getActionValue().getILinkConnection()));
     // calcular Q
     sarsaAlgorithm.sarsaActualizarQ();
-    stateMatrixPasado->getQsValue().getQsVector().at(stateMatrixPasado->getActionValue().getILinkConnection()) = sarsaAlgorithm.getQPrevious();
+    // stateMatrixPasado->getQsValue().getQsVector().at(stateMatrixPasado->getActionValue().getILinkConnection()) = sarsaAlgorithm.getQPrevious();
     // reinica el reward de la persona
     setReward(0);
 }

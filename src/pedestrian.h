@@ -71,12 +71,13 @@ private:
     stateMatrix* stateMatrixPasado;
     bool evacuado;
     int reward;
-    sarsa sarsaAlgorithm;
+    // sarsa sarsaAlgorithm;
 
 public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static member
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    static sarsa sarsaAlgorithm;
     static int contador;
     const static int surviveReward;
     const static int deadReward;
