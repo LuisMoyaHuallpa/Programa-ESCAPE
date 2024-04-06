@@ -1,7 +1,7 @@
 /*
-!/src/
-/src/#*
 !.gitignore
+!/src/
+!/tutorials/
 !makefile
 !figure
 !bashrc

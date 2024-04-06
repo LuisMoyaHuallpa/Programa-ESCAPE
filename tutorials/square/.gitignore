@@ -1,0 +1,10 @@
+/*
+!.gitignore
+!nodes.csv
+!links.csv
+!population.csv
+!population2.csv
+!Allclean
+!/system/
+!/stateMatrices/
+!/postprocessing/
