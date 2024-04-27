@@ -29,13 +29,13 @@ private:
     // idNode            |-->| ID DE LA INTERSECCION
     // coordX            |-->| COORDENADA X DEL NODO 
     // coordY            |-->| COORDENADA Y DEL NODO
-    // idLinkConnection  |-->| 
-    // stateMatrixTable  |-->| 
+    // linkConnection    |-->| PUNTERO A LAS CALLES CONECTADAS A LA INTERSECCION
+    // stateMatrixTable  |-->| MAP Y TABLA DE STATEMATRIX DE LA INTERSECCION
+    // densityLevelNode  |-->| PUNTERO A LA DENSIDAD DE LA CALLES CONECTADAS
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     const int idNode;
     const vector2D coordenada;
     const std::vector<link*> linkConnection;
-    // std::vector<stateMatrix> stateMatrixTable;
     std::map<std::vector<int>, stateMatrix*> stateMatrixTableMap;
     std::vector<int*> densityLevelNode;
 
@@ -50,16 +50,8 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // virtual ~node() {}
 
-    // virtual ~node();
     virtual std::string getNodeType();
     
-
-
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // setters
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // void setStateMatrixTable(std::vector<stateMatrix> stateMatrixTable);
-    // void setRewardCode(int rewardCode);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getters
@@ -67,16 +59,13 @@ public:
     const int getIdNode() const;
     const vector2D getCoordenada() const;
     const std::vector<link*>& getLinkConnection();
-    // std::vector<stateMatrix>& getStateMatrixTable();
     std::map<std::vector<int>, stateMatrix*>& getStateMatrixTableMap();
     std::vector<int*>& getDensityLevelNode();
-    // int getRewardCode() const;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    void buscarStateMatrix(stateMatrix stateMatrixBuscando, bool& verificarStateMatrix, int& iStateMatrixTable);
-    // void crearStateMatrix();
+    // void buscarStateMatrix(stateMatrix stateMatrixBuscando, bool& verificarStateMatrix, int& iStateMatrixTable);
     bool verificarCambioState(state stateAnterior, state stateActual);
     void mostrarNode();
     void mostrarQTable();
