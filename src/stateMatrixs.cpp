@@ -15,7 +15,7 @@ stateMatrixs* stateMatrixs::stateMatrixsInstance = nullptr;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 stateMatrixs::stateMatrixs() {
     // setINumeroSimulacion(1);
-    leerDbStateMatrixs();
+    // leerDbStateMatrixs();
     // Lectura de la ultima simulacion.
     // leerDbStateMatrixs(simulationFile + dictionary::controlDict["previousComputationFile"]); 
 }
@@ -188,6 +188,8 @@ void stateMatrixs::leerDbStateMatrixs() {
             }
             // creacion de un stateMatrixLeido
             stateMatrix* stateMatrixLeido = new stateMatrix(stateLeido);
+            // stateMatrixLeido->mostrarStateMatrix();
+            // std::cout <<  std::endl;
             // !-----------------------------------------------------------------------
             // Elementos de Q
             for (int i = 0; i < stateMatrix::getTamanoVector(); ++i) {
