@@ -13,12 +13,12 @@ const int stateMatrix::tamanoVectorIO = 10;
 stateMatrix::stateMatrix() : stateValue() {
     // otrosVector.resize(tamanoVector,0);
 }
-stateMatrix::stateMatrix(state stateValue)
+stateMatrix::stateMatrix(state* stateValue)
     : stateValue(stateValue) {
-    QsValue.getQsVector().resize(stateValue.getDensityLinks().size(), 0);
-    pedestrianMassStateValue.getPedestrianMassStateVector().resize(stateValue.getDensityLinks().size(), 0);
+    QsValue.getQsVector().resize(stateValue->getDensityLinks().size(), 0);
+    pedestrianMassStateValue.getPedestrianMassStateVector().resize(stateValue->getDensityLinks().size(), 0);
 }
-stateMatrix::stateMatrix(state stateValue, std::vector<double> QVector, std::vector<int> otrosVector)
+stateMatrix::stateMatrix(state* stateValue, std::vector<double> QVector, std::vector<int> otrosVector)
     :stateValue(stateValue) {
     setOtrosVector(otrosVector);
 }
@@ -43,7 +43,7 @@ void stateMatrix::setPedestrianMassState(pedestrianMassState pedestrianMassState
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getter
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-const state& stateMatrix::getStateValue() const {
+const state* stateMatrix::getStateValue() const {
     return stateValue;
 }
 Qs &stateMatrix::getQsValue() {
@@ -72,7 +72,7 @@ int stateMatrix::getTamanoVector() {
 bool stateMatrix::operator==(stateMatrix stateMatrix2) {
     /* compara si dos stateMatrix son iguales */
     // primero compara si el tamaño de los states son iguales
-    if (stateValue.getDensityLinks().size() == stateMatrix2.getStateValue().getDensityLinks().size()) {
+    if (stateValue->getDensityLinks().size() == stateMatrix2.getStateValue()->getDensityLinks().size()) {
         // la comparacion es con el state, el state es como id del stateMatrix en un mismo nodo
         if (stateValue == stateMatrix2.getStateValue()) {
             return true;
@@ -94,7 +94,7 @@ bool stateMatrix::operator==(stateMatrix stateMatrix2) {
 void stateMatrix::mostrarStateMatrix() {
     /* muestra en la terminal cada linea del stateMatrix. */
     // state value
-    getStateValue().mostrarState();
+    getStateValue()->mostrarState();
     /* imprime 0 en donde no hay state debido a que siempre imprime 10 elementos state. */
     // for (int i = 0; i < tamanoVector - getStateValue().getDensityLinks().size(); i++) {
     //     std::cout << "0,";
@@ -114,7 +114,7 @@ void stateMatrix::imprimirStateMatrix(std::fstream& file){
     // !-----------------------------------------------------------------------
     // Imprimir todos los elementos de state y se completa con 0 para llegar a
     // 10 elementos.
-    stateValue.imprimirState(file);
+    stateValue->imprimirState(file);
     // !-----------------------------------------------------------------------
     // Imprimir todos los elementos de Q y se completa con 0 para llegar a
     // 10 elementos.

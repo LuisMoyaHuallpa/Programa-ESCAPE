@@ -159,7 +159,7 @@ void stateMatrixs::leerDbStateMatrixs() {
         std::string Q_str;
         std::string o1_str, o2_str, o3_str, o4_str, o5_str, o6_str, o7_str, o8_str, o9_str, o10_str; 
         // stateMatrix stateMatrixLeido;
-        state stateLeido;
+        // state stateLeido;
         Qs QsLeido;
         // Recorre todas las line del archivo.
         while (std::getline(file, line)) {
@@ -175,11 +175,12 @@ void stateMatrixs::leerDbStateMatrixs() {
             idNode = std::stoi(idNode_str);
             // !-----------------------------------------------------------------------
             // Guarda los elementos de state
+            state* stateLeido = new state;
             for (int i = 0; i < stateMatrix::tamanoVectorIO; ++i) {
                 if (i < nodes::get()->getDbNodeTotal().at(idNode)->getLinkConnection().size()) {
                     std::getline(iss, s_str, ',');
                     s = std::stoi(s_str);
-                    const_cast<std::vector<int>&>(stateLeido.getDensityLinks()).push_back(s);
+                    const_cast<std::vector<int>&>(stateLeido->getDensityLinks()).push_back(s);
                 } 
                 else {
                     std::getline(iss, p0, ',');
@@ -187,6 +188,8 @@ void stateMatrixs::leerDbStateMatrixs() {
             }
             // creacion de un stateMatrixLeido
             stateMatrix* stateMatrixLeido = new stateMatrix(stateLeido);
+            stateLeido->mostrarState();
+            std::cout << std::endl;
             // !-----------------------------------------------------------------------
             // Elementos de Q
             for (int i = 0; i < stateMatrix::getTamanoVector(); ++i) {
@@ -230,7 +233,9 @@ void stateMatrixs::leerDbStateMatrixs() {
             // Grabar datos de la fila del stateMatrix en en Qtable del nodo numero id.
             // falta
             // nodes::get()->getDbNodeTotal().at(idNode)->getStateMatrixTable().push_back(stateMatrixLeido);
-            nodes::get()->getDbNodeTotal().at(idNode)->getStateMatrixTableMap().emplace(stateMatrixLeido->getStateValue().getDensityLinks(),stateMatrixLeido);
+            nodes::get()->getDbNodeTotal().at(idNode)->getStateMatrixTableMap().emplace(stateMatrixLeido->getStateValue()->getDensityLinks(),stateMatrixLeido);
+            // stateMatrixLeido->mostrarStateMatrix();
+            // std::cout << std::endl;
         }
 
         file.close(); 

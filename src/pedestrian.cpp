@@ -472,7 +472,8 @@ void pedestrian::calcularLevelDensityAtNode() {
     // no encuentro el estado, por tanto lo añado en tabla de estados del nodo
     else {
         // creo el stateMatrix
-        stateMatrix* stateMatrixNuevo = new stateMatrix(convertedVector);
+        state* stateNuevo = new state(convertedVector);
+        stateMatrix* stateMatrixNuevo = new stateMatrix(stateNuevo);
         // guardo el stateMatrix creado en la variable de stateMatrixActual, del estado y accion actual
         // stateMatrixActual = stateMatrixNuevo;
         // guarda el vector Qs actual

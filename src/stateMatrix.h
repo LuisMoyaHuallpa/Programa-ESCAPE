@@ -25,7 +25,7 @@ private:
     // QsValue        |-->| VECTOR DE Q
     // tamanoVectorIO |-->| CANTIDAD DE ELEMENTOS PARA EL VECTOR DE ESTADO Y Q
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    const state stateValue;
+    const state* stateValue;
     Qs QsValue;
     std::vector<int> otrosVector;
     pedestrianMassState pedestrianMassStateValue;
@@ -42,8 +42,8 @@ public:
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     stateMatrix();
-    stateMatrix(state stateValue);
-    stateMatrix(state stateValue, std::vector<double> QVector, std::vector<int> otrosValue);
+    stateMatrix(state* stateValue);
+    stateMatrix(state* stateValue, std::vector<double> QVector, std::vector<int> otrosValue);
 
     // void leerStateMatrix(std::string filename);
     // void imprimirStateMatrix();
@@ -60,7 +60,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getter
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    const state& getStateValue() const;
+    const state* getStateValue() const;
     Qs& getQsValue();
     std::vector<int>& getotrosVector();
     pedestrianMassState& getPedestrianMassState();
