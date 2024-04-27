@@ -27,6 +27,7 @@ private:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     const std::string nameDictionary = "controlDict";
     const std::string systemCarpet = "system/";
+    // cambiar string a variant
     const std::map<std::string, std::string> controlDictDefault = {
         {"nodesFile", "nodes.csv"},
         {"linksFile", "links.csv"},

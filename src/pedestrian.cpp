@@ -448,9 +448,20 @@ void pedestrian::calcularLevelDensityAtNode() {
 
     // alternativa
     std::map<std::vector<int>, stateMatrix*> stateMatrixTableMap = nodeInicio->getStateMatrixTableMap();
-    std::vector<int*> a= nodeInicio->getDensityLevelNode();
-    std::vector<int> convertedVector(a.size());
-    std::transform(a.begin(), a.end(), convertedVector.begin(), [](int* ptr) { return *ptr; });
+    std::vector<int*> densityLevels = nodeInicio->getDensityLevelNode();
+    
+    // Usar un bucle for para copiar los valores de los punteros a enteros
+    std::vector<int> convertedVector;
+    // Reservar memoria para evitar reallocaciones
+    convertedVector.reserve(densityLevels.size());
+    for (int* ptr : densityLevels) {
+        if (ptr) {
+            convertedVector.push_back(*ptr);
+        }
+    }
+    // std::vector<int*> a= nodeInicio->getDensityLevelNode();
+    // std::vector<int> convertedVector(a.size());
+    // std::transform(a.begin(), a.end(), convertedVector.begin(), [](int* ptr) { return *ptr; });
     // si encuentra un stateMatrix con el estado experimenta en el nodo
     if (stateMatrixTableMap.find(convertedVector) != stateMatrixTableMap.end()) {
         // guardo el stateMatrix encontraro en la variable de stateMatrixActual, del estado y accion actual
