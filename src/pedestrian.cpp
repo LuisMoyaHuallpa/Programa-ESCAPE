@@ -4,6 +4,7 @@
 #include "subLink.h"
 #include "tiempo.h"
 #include <cstdio>
+#include <iostream>
 #include <map>
 #include <utility>
 #include <vector>
@@ -249,6 +250,7 @@ void pedestrian::eleccionSarsa() {
     //     }
     // }
     // eleccion de la calle nueva, parte principal de la funcion
+    std::cout << iQmenor << std::endl;
     setLinkActual(nodeInicio->getLinkConnection().at(iQmenor));
     // agrega persona a la calle
     linkActual->getPedestriansLink().push_back(this);

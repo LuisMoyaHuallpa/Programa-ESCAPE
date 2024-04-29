@@ -15,7 +15,7 @@ stateMatrixs* stateMatrixs::stateMatrixsInstance = nullptr;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 stateMatrixs::stateMatrixs() {
     // setINumeroSimulacion(1);
-    leerDbStateMatrixs();
+    // leerDbStateMatrixs();
     // Lectura de la ultima simulacion.
     // leerDbStateMatrixs(simulationFile + dictionary::controlDict["previousComputationFile"]); 
 }
@@ -169,6 +169,7 @@ void stateMatrixs::leerDbStateMatrixs() {
             }
             // !-----------------------------------------------------------------------
             // Guardar cada line en la variable line  
+            // std::cout << line;
             std::istringstream iss(line);
             // Guarda la variable idNode
             std::getline(iss, idNode_str, ',');
@@ -186,9 +187,13 @@ void stateMatrixs::leerDbStateMatrixs() {
                     std::getline(iss, p0, ',');
                 }
             }
+            std::cout << nodes::get()->getDbNodeTotal().at(idNode)->getLinkConnection().size();
+            std::cout << std::endl;
+            stateLeido->mostrarState();
+            std::cout << std::endl;
             // creacion de un stateMatrixLeido
             stateMatrix* stateMatrixLeido = new stateMatrix(stateLeido);
-            stateLeido->mostrarState();
+            // stateLeido->mostrarState();
             std::cout << std::endl;
             // !-----------------------------------------------------------------------
             // Elementos de Q
