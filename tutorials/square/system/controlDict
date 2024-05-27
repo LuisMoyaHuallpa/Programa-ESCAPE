@@ -2,7 +2,7 @@ nodesFile        nodes.csv;
 
 linksFile        links.csv;
 
-populationsFile  population.csv;
+populationsFile  population2.csv;
 
 stopAt          endTime;
 
@@ -14,7 +14,7 @@ graphicPrintoutPeriod 1;
 
 listingPrintoutPeriod 1;
 
-computationContinued  	yes;
+computationContinued  	no;
 
 previousComputationFile	sim_000006000.csv;
 
@@ -26,7 +26,7 @@ readPedestrianMassState no;
 
 stopSimulationAt          addNumberSimulation;
 
-addNumberSimulation 3;
+addNumberSimulation 5000;
 
-numberLinkDivision 3;
+numberLinkDivision 4;
 

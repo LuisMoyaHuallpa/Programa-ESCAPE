@@ -145,9 +145,16 @@ void tiempo::extractINumberSimulation() {
 void tiempo::calcularRandomChoiceRate() {
     int k = iNumberSimulation;
     int N = endNumberSimulation;
-    double gleeFactor = 4.0 / double(N);
-    // el -1 es para empezar el numero de simulaciones en 0
-    randomChoiceRate = 1.0 / (gleeFactor * double(k - 1) + 1.0);
+    // formula para random choice
+    if (!(tiempo::get()->getINumberSimulation() == tiempo::get()->getEndNumberSimulation())) {
+        double gleeFactor = 4.0 / double(N);
+        // el -1 es para empezar el numero de simulaciones en 0
+        randomChoiceRate = 1.0 / (gleeFactor * double(k - 1) + 1.0);
+    }
+    // para la ultima simulacion
+    else {
+        randomChoiceRate = 0;
+    }
 }
 bool tiempo::running() {
     // verificar que tiempo sea el menor a tiempo total de la evacuacion

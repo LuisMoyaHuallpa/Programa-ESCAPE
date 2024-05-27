@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import os
 from matplotlib.animation import FuncAnimation
 from screeninfo import get_monitors
+from progressbar import ProgressBar
+
 
 pathMeshLink = "../mesh/poliLinks"
 x1_values = []
@@ -29,6 +31,8 @@ carpetas_numericas = [elemento
                                                     elemento))
                       and elemento.isdigit()]
 carpetas_numericas_ordenadas = sorted(carpetas_numericas, key=int)
+bar = ProgressBar(maxval=len(carpetas_numericas_ordenadas)).start()
+
 width = 12
 height = 5
 # tamaño de figura
@@ -94,8 +98,10 @@ def actualizar(i):
     # else:
     #     ax.set_xlim(xlim_auto)
     #     ax.set_ylim(ylim_auto)
+    bar.update(i + 1)
 
 
 ani = FuncAnimation(fig, actualizar, len(carpetas_numericas_ordenadas)-1,
                     interval=100, repeat_delay=900)
 ani.save('animation.mp4')
+bar.finish()
