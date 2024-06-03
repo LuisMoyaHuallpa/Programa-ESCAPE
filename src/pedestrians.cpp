@@ -164,10 +164,12 @@ void pedestrians::imprimirPedestrians(){
             tiempo::get()->crearCarpetaTiempo();
             // impresion de datos
             std::string folderName = std::to_string(tiempo::get()->getValorTiempo());
-            std::fstream file1, file2, file3;
+            std::fstream file1, file2, file3, file4;
             file1.open(folderName + "/xy", std::ios::out);
             file2.open(folderName + "/U", std::ios::out);
             file3.open(folderName + "/cantPedestrianEvacuated", std::ios::out);
+            file4.open("transientNumberEvacuated.csv", std::ios::app);
+            nodeEvacuation::imprimirTrasientNumberEvacuated(file4);
             if (file1.is_open()) {
                 for (auto it = dbPedestrianTotal.begin(); it != dbPedestrianTotal.end(); ++it) {
                     if (tiempo::get()->getValorTiempo() >= it->getTiempoInicial()) {

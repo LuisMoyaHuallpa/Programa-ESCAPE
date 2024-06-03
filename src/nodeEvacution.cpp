@@ -1,4 +1,5 @@
 #include "nodeEvacution.h"
+#include "tiempo.h"
 #include "vector2D.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -26,6 +27,11 @@ void nodeEvacuation::sumarPersonaEvacuada() {
     personasEvacuadas++;
 }
 void nodeEvacuation::imprimirNodeEvacuation(std::fstream& file) {
+    file << getPersonasEvacuadas();
+    file << std::endl;
+}
+void nodeEvacuation::imprimirTrasientNumberEvacuated(std::fstream& file) {
+    file << tiempo::get()->getValorTiempo() << " ";
     file << getPersonasEvacuadas();
     file << std::endl;
 }

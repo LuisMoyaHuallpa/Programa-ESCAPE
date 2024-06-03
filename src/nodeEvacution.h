@@ -33,6 +33,7 @@ public:
     int static getPersonasEvacuadas();
     void static sumarPersonaEvacuada();
     void static imprimirNodeEvacuation(std::fstream& file);
+    void static imprimirTrasientNumberEvacuated(std::fstream& file);
 };
 
 #endif
