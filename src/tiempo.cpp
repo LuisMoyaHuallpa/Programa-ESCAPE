@@ -2,6 +2,7 @@
 #include "dictionary.h"
 #include "nodeEvacution.h"
 #include "pedestrians.h"
+#include <chrono>
 #include <cstdlib>
 #include <string>
 
@@ -100,36 +101,47 @@ void tiempo::aumentarINumberSimulation() {
 }
 void tiempo::inicializarNumberSimulation() {
     /* Inicializar las variables de NumberSimulation*/
-    // si lee archivos de estados pasados, si
-    if (dictionary::get()->lookupDefault("computationContinued") == "yes") {
-        if (dictionary::get()->lookup("stopSimulationAt") == "endNumberSimulation") {
-            extractINumberSimulation();
-            endNumberSimulation = std::stoi(dictionary::get()->lookup("endNumberSimulation"));
-            startNumberSimulation = startNumberSimulation + 1;
-            iNumberSimulation = startNumberSimulation;
+    // Para proceso de calibracion
+    if(dictionary::get()->lookupDefault("sarsaProcesses")=="calibration"){
+        // si lee archivos de estados pasados, si
+        if (dictionary::get()->lookupDefault("computationContinued") == "yes") {
+            if (dictionary::get()->lookup("stopSimulationAt") == "endNumberSimulation") {
+                extractINumberSimulation();
+                endNumberSimulation = std::stoi(dictionary::get()->lookup("endNumberSimulation"));
+                startNumberSimulation = startNumberSimulation + 1;
+                iNumberSimulation = startNumberSimulation;
+            }
+            else if (dictionary::get()->lookup("stopSimulationAt") == "addNumberSimulation") {
+                extractINumberSimulation();
+                endNumberSimulation = startNumberSimulation  + std::stoi(dictionary::get()->lookup("addNumberSimulation"));
+                startNumberSimulation = startNumberSimulation + 1;
+                iNumberSimulation = startNumberSimulation;
+            }
         }
-        else if (dictionary::get()->lookup("stopSimulationAt") == "addNumberSimulation") {
-            extractINumberSimulation();
-            endNumberSimulation = startNumberSimulation  + std::stoi(dictionary::get()->lookup("addNumberSimulation"));
-            startNumberSimulation = startNumberSimulation + 1;
-            iNumberSimulation = startNumberSimulation;
+        // si no lee estados pasados
+        else {
+            // inicia el la simulacion 1
+            startNumberSimulation = 1;
+            iNumberSimulation = 1;
+            if (dictionary::get()->lookupDefault("stopSimulationAt") == "endNumberSimulation") {
+                endNumberSimulation = std::stoi(dictionary::get()->lookup("endNumberSimulation"));
+            }
+            else{
+                endNumberSimulation = std::stoi(dictionary::get()->lookup("addNumberSimulation"));
+            }
         }
+        // iniciar el timer tiempo real de simulacion
+        startTimeSimulation = std::chrono::high_resolution_clock::now();
     }
-    // si no lee estados pasados
+    // Para proceso ya entrenado
     else {
-        // inicia el la simulacion 1
+        // iniciar el timer tiempo real de simulacion
+        startTimeSimulation = std::chrono::high_resolution_clock::now();
         startNumberSimulation = 1;
         iNumberSimulation = 1;
-        if (dictionary::get()->lookupDefault("stopSimulationAt") == "endNumberSimulation") {
-            endNumberSimulation = std::stoi(dictionary::get()->lookup("endNumberSimulation"));
-        }
-        else{
-            endNumberSimulation = std::stoi(dictionary::get()->lookup("addNumberSimulation"));
-        }
+        // solo 1 simulacion
+        endNumberSimulation = 1;
     }
-    // iniciar el timer tiempo real de simulacion
-    startTimeSimulation = std::chrono::high_resolution_clock::now();
-
 }
 void tiempo::extractINumberSimulation() {
     /* Extrar el numero de simulacion actual segun el archivo sim de estados
@@ -146,7 +158,7 @@ void tiempo::calcularRandomChoiceRate() {
     int k = iNumberSimulation;
     int N = endNumberSimulation;
     // formula para random choice
-    if (!(tiempo::get()->getINumberSimulation() == tiempo::get()->getEndNumberSimulation())) {
+    if (dictionary::get()->lookup("sarsaProcesses") == "calibration") {
         double gleeFactor = 4.0 / double(N);
         // el -1 es para empezar el numero de simulaciones en 0
         randomChoiceRate = 1.0 / (gleeFactor * double(k - 1) + 1.0);
@@ -180,11 +192,13 @@ void tiempo::mostrarIResultadosSimulacion() {
     endTimeSimulation = std::chrono::high_resolution_clock::now();
     auto duration = endTimeSimulation - startTimeSimulation;
     // Calcula la duración en milisegundos
-    auto durationMilliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(duration);
-    std::cout << "Duración en milisegundos: " << durationMilliseconds.count() << " ms" << std::endl;
+    // auto durationMilliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(duration);
+    // std::cout << "Duración en milisegundos: " << durationMilliseconds.count() << " ms" << std::endl;
     // Calcula la duración en segundos
     auto durationSeconds = std::chrono::duration_cast<std::chrono::seconds>(duration);
-    std::cout << "Duración en segundos: " << durationSeconds.count() << " s" << std::endl;
+    auto durationMinutes = std::chrono::duration_cast<std::chrono::minutes>(duration);
+    std::cout << "Duración: " << durationMinutes.count() << " min";
+    std::cout << " / " << durationSeconds.count() << " s" << std::endl;
     std::cout << std::endl;
 }
 void tiempo::mostrarTiempo() const {

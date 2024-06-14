@@ -156,8 +156,8 @@ void pedestrians::mostrarDbPedestrianTotal() {
 }
 void pedestrians::imprimirPedestrians(){
     /* imprimir datos de posicion, cantidad de evacuados y velocidad.*/
-    // imprimir solo en la ultima simulacion
-    if (tiempo::get()->getINumberSimulation() == tiempo::get()->getEndNumberSimulation() ) {
+    // Cuando el modelo ya esta entrenado
+    if (dictionary::get()->lookup("sarsaProcesses") == "trained") {
         // imprime segun el valor de graphicPrintoutPeriod del controlDict
         if (tiempo::get()->verificarGraphicPrintout()) {
             //crea la carpeta de tiempo

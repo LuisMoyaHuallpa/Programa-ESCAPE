@@ -18,14 +18,10 @@ int main() {
     // imprimi malla de calles.
     links::get()->imprimirMeshLinks();
 
-    auto start = std::chrono::high_resolution_clock::now();
     // Lectura de simulaciones pasadas.
     // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
     stateMatrixs::get()->leerDbStateMatrixs();
-    auto stop = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::seconds>(stop - start);
-    std::cout << duration.count() << std::endl;
-    std::cout << "Duración lectura: " << duration.count() << " s" << std::endl;
+    // nodes::get()->mostrardbNodeTotal();
     // nodes::get()->mostrarNodes();
     // segun el número de simulaciones
     while (tiempo::get()->getINumberSimulation() <= tiempo::get()->getEndNumberSimulation()) {

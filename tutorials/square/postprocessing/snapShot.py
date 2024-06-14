@@ -90,7 +90,7 @@ for i in carpetas_numericas_ordenadas:
     ax.set_xlim(xlim_auto)
     ax.set_ylim(ylim_auto)
     ax.axis('off')
-    plt.savefig("snapShot/" + i)
+    plt.savefig("snapshot/" + i)
     plt.close(fig)
     bar.update(carpetas_numericas_ordenadas.index(i) + 1)
 bar.finish()

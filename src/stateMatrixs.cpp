@@ -4,6 +4,7 @@
 #include "pedestrian.h"
 #include "stateMatrix.h"
 #include "tiempo.h"
+#include <chrono>
 #include <vector>
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -125,6 +126,8 @@ void stateMatrixs::leerDbStateMatrixs() {
     // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
     // if (dictionary::controlDict["computationContinued"] == "yes") {
     if (dictionary::get()->lookupDefault("computationContinued") == "yes") {
+        /* Empieza el timing*/
+        auto start = std::chrono::high_resolution_clock::now();
         /* Lectura de datos de una simulación pasada.*/
         std::fstream file;
         file.open(simulationFile + dictionary::get()->lookup("previousComputationFile"), std::ios::in);
@@ -188,7 +191,6 @@ void stateMatrixs::leerDbStateMatrixs() {
             }
             // creacion de un stateMatrixLeido
             stateMatrix* stateMatrixLeido = new stateMatrix(stateLeido);
-            // stateMatrixLeido->mostrarStateMatrix();
             // std::cout <<  std::endl;
             // !-----------------------------------------------------------------------
             // Elementos de Q
@@ -203,6 +205,9 @@ void stateMatrixs::leerDbStateMatrixs() {
                 }
             }
             stateMatrixLeido->setQsValue(QsLeido);
+            // QsLeido.mostrarQs();
+            // std::cout << std::endl;
+
             // !-----------------------------------------------------------------------
             // Falta definir
             // Elementos de o
@@ -233,11 +238,21 @@ void stateMatrixs::leerDbStateMatrixs() {
             // Grabar datos de la fila del stateMatrix en en Qtable del nodo numero id.
             // falta
             // nodes::get()->getDbNodeTotal().at(idNode)->getStateMatrixTable().push_back(stateMatrixLeido);
+
+            // stateMatrixLeido->mostrarStateMatrix();
             nodes::get()->getDbNodeTotal().at(idNode)->getStateMatrixTableMap().emplace(stateMatrixLeido->getStateValue().getDensityLinks(),stateMatrixLeido);
         }
 
         file.close(); 
+        // Termina el timing
+        auto stop = std::chrono::high_resolution_clock::now();
+        auto duration = stop - start;
+        auto durationSeconds = std::chrono::duration_cast<std::chrono::seconds>(duration);
+        auto durationMinutes = std::chrono::duration_cast<std::chrono::minutes>(duration);
+        std::cout << "Duración Lectura: " << durationMinutes.count() << " min";
+        std::cout << " / " << durationSeconds.count() << " s" << std::endl;
     }
+
 }
 void stateMatrixs::mostrarDbStateMatrixs() const {
     // Mostrar todos los stateMatrix dentro de dbStateMatrixs.
