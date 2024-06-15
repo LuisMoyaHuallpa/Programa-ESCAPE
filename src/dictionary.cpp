@@ -28,7 +28,7 @@ dictionary::dictionary(std::string nameDictionary) {
 std::string dictionary::getNameDictionary() {
     return nameDictionary;
 }
-const std::map<std::string, std::string> dictionary::getControlDict() {
+std::map<std::string, std::string>& dictionary::getControlDict() {
     return controlDict;
 }
 

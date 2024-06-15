@@ -102,9 +102,9 @@ void stateMatrix::mostrarStateMatrix() const {
     // std::cout << "action: ";
     // actionValue.mostrarAction();
     std::cout << "Qs: ";
-    QsValue.mostrarQs();
-    std::cout << "pedestrianMassState: ";
-    pedestrianMassStateValue.mostrarPedestrianMassStateVector();
+    getQsValue().mostrarQs();
+    // std::cout << "pedestrianMassState: ";
+    // pedestrianMassStateValue.mostrarPedestrianMassStateVector();
     std::cout << std::endl;
 
 

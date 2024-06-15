@@ -134,7 +134,7 @@ void tiempo::inicializarNumberSimulation() {
         startTimeSimulation = std::chrono::high_resolution_clock::now();
     }
     // Para proceso ya entrenado
-    else {
+    else if (dictionary::get()->lookupDefault("sarsaProcesses")=="trained"){
         // iniciar el timer tiempo real de simulacion
         startTimeSimulation = std::chrono::high_resolution_clock::now();
         startNumberSimulation = 1;

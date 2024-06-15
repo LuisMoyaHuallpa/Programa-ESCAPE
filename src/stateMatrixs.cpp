@@ -125,6 +125,9 @@ void stateMatrixs::agregarStateMatrix(stateMatrix stateMatrixElement) {
 void stateMatrixs::leerDbStateMatrixs() {
     // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
     // if (dictionary::controlDict["computationContinued"] == "yes") {
+    if (dictionary::get()->lookupDefault("sarsaProcesses")=="trained") {
+        dictionary::get()->getControlDict()["computationContinued"] = "yes";
+    }
     if (dictionary::get()->lookupDefault("computationContinued") == "yes") {
         /* Empieza el timing*/
         auto start = std::chrono::high_resolution_clock::now();
@@ -179,6 +182,7 @@ void stateMatrixs::leerDbStateMatrixs() {
             node* nodeLeido = nodes::get()->getDbNodeTotal().at(idNode).get();
             // !-----------------------------------------------------------------------
             // Guarda los elementos de state
+            const_cast<std::vector<int>&>(stateLeido.getDensityLinks()).clear();
             for (int i = 0; i < stateMatrix::tamanoVectorIO; ++i) {
                 if (i < nodeLeido->getLinkConnection().size()) {
                     std::getline(iss, s_str, ',');
@@ -194,6 +198,7 @@ void stateMatrixs::leerDbStateMatrixs() {
             // std::cout <<  std::endl;
             // !-----------------------------------------------------------------------
             // Elementos de Q
+            QsLeido.getQsVector().clear();
             for (int i = 0; i < stateMatrix::getTamanoVector(); ++i) {
                 if (i < nodeLeido->getLinkConnection().size()) {
                     std::getline(iss, Q_str, ',');
@@ -239,7 +244,7 @@ void stateMatrixs::leerDbStateMatrixs() {
             // falta
             // nodes::get()->getDbNodeTotal().at(idNode)->getStateMatrixTable().push_back(stateMatrixLeido);
 
-            // stateMatrixLeido->mostrarStateMatrix();
+            // std::cout << std::endl;
             nodes::get()->getDbNodeTotal().at(idNode)->getStateMatrixTableMap().emplace(stateMatrixLeido->getStateValue().getDensityLinks(),stateMatrixLeido);
         }
 

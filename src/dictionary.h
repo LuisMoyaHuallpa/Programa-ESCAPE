@@ -37,7 +37,7 @@ private:
         {"computationContinued", "no"},
         {"readPedestriansMassState", "no"},
         {"transientNumberEvacuted", "no"},
-        {"sarsaProcesses", "none"},
+        {"sarsaProcesses", "calibration"},
         {"stopSimulationAt", "endNumberSimulation"}
     };
     std::map<std::string, std::string> controlDict;
@@ -58,7 +58,7 @@ public:
     // getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     std::string getNameDictionary();
-    const std::map<std::string, std::string> getControlDict();
+    std::map<std::string, std::string>& getControlDict();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static getters
