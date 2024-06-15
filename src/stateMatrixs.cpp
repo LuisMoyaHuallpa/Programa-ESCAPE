@@ -134,10 +134,11 @@ void stateMatrixs::leerDbStateMatrixs() {
         /* Lectura de datos de una simulación pasada.*/
         std::fstream file;
         file.open(simulationFile + dictionary::get()->lookup("previousComputationFile"), std::ios::in);
-        // if (file.fail()) {
-        //     std::cout << "Error al abrir el archivo: " <<  << std::endl;
-        //     exit(1);
-        // }
+        // Si no existe el archivo
+        if (file.fail()) {
+            std::cout << "Error al abrir el archivo: "<< dictionary::get()->lookup("previousComputationFile") << std::endl;
+            exit(1);
+        }
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         // iLinkConnection          |-->| POSICION EN EL ARREGLO linkConection
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

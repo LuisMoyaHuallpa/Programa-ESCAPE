@@ -157,14 +157,13 @@ void tiempo::extractINumberSimulation() {
 void tiempo::calcularRandomChoiceRate() {
     int k = iNumberSimulation;
     int N = endNumberSimulation;
-    // formula para random choice
     if (dictionary::get()->lookup("sarsaProcesses") == "calibration") {
+        // formula para random choice
         double gleeFactor = 4.0 / double(N);
         // el -1 es para empezar el numero de simulaciones en 0
         randomChoiceRate = 1.0 / (gleeFactor * double(k - 1) + 1.0);
     }
-    // para la ultima simulacion
-    else {
+    else if(dictionary::get()->lookup("sarsaProcesses") == "trained") {
         randomChoiceRate = 0;
     }
 }
