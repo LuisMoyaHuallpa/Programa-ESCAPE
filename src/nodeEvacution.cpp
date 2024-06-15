@@ -30,7 +30,7 @@ void nodeEvacuation::imprimirNodeEvacuation(std::fstream& file) {
     file << getPersonasEvacuadas();
     file << std::endl;
 }
-void nodeEvacuation::imprimirTrasientNumberEvacuated(std::fstream& file) {
+void nodeEvacuation::imprimirEvacuatedCount(std::fstream& file) {
     file << tiempo::get()->getValorTiempo() << " ";
     file << getPersonasEvacuadas();
     file << std::endl;

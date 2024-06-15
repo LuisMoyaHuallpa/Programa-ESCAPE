@@ -14,23 +14,25 @@ endTime         800;
 
 deltaT          1;
 
+computationContinued  	no;
+
+previousComputationFile	calibrated.csv;
+
+# stopSimulationAt          endNumberSimulation;
+
+stopSimulationAt          addNumberSimulation;
+
+# endNumberSimulation 6003;
+
+addNumberSimulation 100;
+
+readPedestrianMassState no;
+
+numberLinkDivision 10;
+
 graphicPrintoutPeriod 1;
 
 listingPrintoutPeriod 1;
 
-computationContinued  	no;
 
-previousComputationFile	sim_000006000.csv;
-
-# stopSimulationAt          endNumberSimulation;
-
-# endNumberSimulation 6003;
-
-readPedestrianMassState no;
-
-stopSimulationAt          addNumberSimulation;
-
-addNumberSimulation 50;
-
-numberLinkDivision 10;
 

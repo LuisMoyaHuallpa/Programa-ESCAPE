@@ -36,7 +36,7 @@ private:
         {"pedestrianCountPeriod", "1"},
         {"computationContinued", "no"},
         {"readPedestriansMassState", "no"},
-        {"transientNumberEvacuted", "no"},
+        {"evacuatedCount", "no"},
         {"sarsaProcesses", "calibration"},
         {"stopSimulationAt", "endNumberSimulation"}
     };

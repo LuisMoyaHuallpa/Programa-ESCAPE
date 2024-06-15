@@ -4,7 +4,7 @@
 directory="$(dirname "$0")"
 
 # Nombre del archivo que deseas conservar
-file_to_keep="sim_000006000.csv"
+file_to_keep="calibrated.csv"
 
 # Encuentra todos los archivos CSV en el directorio
 files_to_delete=$(find "$directory" -type f -name "*.csv" ! -name "$file_to_keep")

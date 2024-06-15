@@ -129,8 +129,8 @@ void stateMatrixs::leerDbStateMatrixs() {
         dictionary::get()->getControlDict()["computationContinued"] = "yes";
     }
     if (dictionary::get()->lookupDefault("computationContinued") == "yes") {
-        /* Empieza el timing*/
-        auto start = std::chrono::high_resolution_clock::now();
+        // /* Empieza el timing*/
+        // auto start = std::chrono::high_resolution_clock::now();
         /* Lectura de datos de una simulación pasada.*/
         std::fstream file;
         file.open(simulationFile + dictionary::get()->lookup("previousComputationFile"), std::ios::in);
@@ -250,13 +250,13 @@ void stateMatrixs::leerDbStateMatrixs() {
         }
 
         file.close(); 
-        // Termina el timing
-        auto stop = std::chrono::high_resolution_clock::now();
-        auto duration = stop - start;
-        auto durationSeconds = std::chrono::duration_cast<std::chrono::seconds>(duration);
-        auto durationMinutes = std::chrono::duration_cast<std::chrono::minutes>(duration);
-        std::cout << "Duración Lectura: " << durationMinutes.count() << " min";
-        std::cout << " / " << durationSeconds.count() << " s" << std::endl;
+        // // Termina el timing
+        // auto stop = std::chrono::high_resolution_clock::now();
+        // auto duration = stop - start;
+        // auto durationSeconds = std::chrono::duration_cast<std::chrono::seconds>(duration);
+        // auto durationMinutes = std::chrono::duration_cast<std::chrono::minutes>(duration);
+        // std::cout << "Duración Lectura: " << durationMinutes.count() << " min";
+        // std::cout << " / " << durationSeconds.count() << " s" << std::endl;
     }
 
 }

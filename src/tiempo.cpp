@@ -5,8 +5,10 @@
 #include <chrono>
 #include <cstdlib>
 #include <string>
+#include <filesystem>
 
 int tiempo::deltaTiempo = 1;
+std::string tiempo::filenameData = "data/";
 
 tiempo* tiempo::tiempoInstance = nullptr;
 
@@ -74,6 +76,10 @@ tiempo* tiempo::get() {
         tiempoInstance =  new tiempo();
     }
     return tiempoInstance;
+}
+
+std::string tiempo::getFilenameData() {
+    return filenameData;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -205,9 +211,11 @@ void tiempo::mostrarTiempo() const {
     std::cout << "Time = " << valorTiempo << std::endl;
 }
 void tiempo::crearCarpetaTiempo() {
+    std::string folderData = "data/";
     std::string folderName = std::to_string(getValorTiempo());
+    std::string path = folderData + folderName;
     // crear carpeta de los tiempos en segundos para almacenar informacion
-    mkdir(folderName.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+    mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 }
 bool tiempo::verificarGraphicPrintout() {
     if (getValorTiempo() % getGraphicPrintoutPeriod() == 0) {
