@@ -10,6 +10,7 @@
 int tiempo::deltaTiempo = 1;
 std::string tiempo::filenameData = "data/";
 
+
 tiempo* tiempo::tiempoInstance = nullptr;
 
 
@@ -45,6 +46,9 @@ void tiempo::setEndNumberSimulation(int endNumberSimulation) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 int tiempo::getValorTiempo() const {
     return valorTiempo;
+}
+const int tiempo::getEndTime() const {
+    return endTime;
 }
 const int tiempo::getDeltaT() const {
     return deltaT;  

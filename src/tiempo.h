@@ -65,6 +65,7 @@ public:
     // getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     int getValorTiempo() const;
+    const int getEndTime() const;
     const int getDeltaT() const;
     const int getGraphicPrintoutPeriod() const;
     int getStartNumberSimulation() const;

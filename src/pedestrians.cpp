@@ -170,8 +170,7 @@ void pedestrians::imprimirPedestrians(){
             file1.open(path + "/xy", std::ios::out);
             file2.open(path + "/U", std::ios::out);
             file3.open(path + "/cantPedestrianEvacuated", std::ios::out);
-            file4.open(foldernameData + "evacuatedCount.csv", std::ios::out);
-            nodeEvacuation::imprimirEvacuatedCount(file4);
+            nodeEvacuation::imprimirEvacuatedCount(io::get()->getFileEvacuatedCount());
             if (file1.is_open()) {
                 for (auto it = dbPedestrianTotal.begin(); it != dbPedestrianTotal.end(); ++it) {
                     if (tiempo::get()->getValorTiempo() >= it->getTiempoInicial()) {
