@@ -136,7 +136,7 @@ public:
     // bool getEmpezoCaminar();
     // bool getPrimerTiempo();
     // bool getSaltoLink();
-    bool getEvacuado() const;
+    bool getEvacuado();
     int getReward() const;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

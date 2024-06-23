@@ -138,14 +138,7 @@ void link::mostrarLink(){
     mostrarSubdivisiones();
     std::cout << std::endl;
 }
-void link::mostrarSubLink() const {
-    std::cout << idLink << "  ";
-    for (int i = 0; i < pedestriansInSublink.size(); i++) {
-        std::cout << pedestriansInSublink.at(i) << " ";
-    }
-    std::cout << std::endl;
-}
-void link::imprimirLink(std::fstream& file) const {
+void link::imprimirLink(std::fstream& file) {
     file << std::fixed << std::setprecision(2);
     file << node1->getCoordenada().getX() << " ";
     file << node1->getCoordenada().getY() << " ";

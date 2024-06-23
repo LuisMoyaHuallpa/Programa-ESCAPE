@@ -59,7 +59,7 @@ public:
     std::string fileNameSalida();
     void agregarStateMatrix(stateMatrix stateMatrixElement);
     void leerDbStateMatrixs();
-    void mostrarDbStateMatrixs() const;
+    void mostrarDbStateMatrixs();
     void imprimirDbStateMatrixs();
 
 };

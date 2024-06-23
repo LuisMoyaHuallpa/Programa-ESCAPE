@@ -260,7 +260,7 @@ void stateMatrixs::leerDbStateMatrixs() {
     }
 
 }
-void stateMatrixs::mostrarDbStateMatrixs() const {
+void stateMatrixs::mostrarDbStateMatrixs() {
     // Mostrar todos los stateMatrix dentro de dbStateMatrixs.
     for (int i = 0; i < dbStateMatrixs.size(); i++) {
         dbStateMatrixs[i].mostrarStateMatrix();

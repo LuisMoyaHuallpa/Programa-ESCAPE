@@ -91,7 +91,7 @@ bool stateMatrix::operator==(stateMatrix stateMatrix2) {
     //     nodeAGuardar->addqQTable(qAGuardar);
     // }
 // }
-void stateMatrix::mostrarStateMatrix() const {
+void stateMatrix::mostrarStateMatrix() {
     /* muestra en la terminal cada linea del stateMatrix. */
     // state value
     stateValue.mostrarState();
@@ -109,7 +109,7 @@ void stateMatrix::mostrarStateMatrix() const {
 
 
 }
-void stateMatrix::imprimirStateMatrix(std::fstream& file) const {
+void stateMatrix::imprimirStateMatrix(std::fstream& file) {
    // Imprimir una fila del elemento stateMatrix.
     // !-----------------------------------------------------------------------
     // Imprimir todos los elementos de state y se completa con 0 para llegar a
