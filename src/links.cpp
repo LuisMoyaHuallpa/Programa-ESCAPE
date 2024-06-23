@@ -118,7 +118,7 @@ void links::calcularDensityLevelLinks() {
 }
 void links::contarPedestriansInSublink() {
     // solo es necesario en calibration, no cuando es trained
-    if (dictionary::get()->lookup("sarsaProcesses") == "calibration") {
+    // if (dictionary::get()->lookup("sarsaProcesses") == "calibration") {
     /* calcula el nivel de densidad en las calles*/
         if(tiempo::get()->verificarPedestrianCountPeriod()){
             // recorre todas las calles
@@ -132,7 +132,7 @@ void links::contarPedestriansInSublink() {
                 it->get()->calcularDensityLevel();
             }
         }
-    }
+    // }
 }
 void links::resetSublinks() {
     /* reinicia valores de conteo de sublink*/
