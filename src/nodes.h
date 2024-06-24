@@ -11,7 +11,6 @@ Punto de interseccion de calles.
 #include <memory>
 #include <vector>
 #include <iostream>
-
 #include <sstream>
 #include <fstream>
 #include <string>
@@ -35,6 +34,9 @@ private:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     std::string fileName;
     std::vector<std::shared_ptr<node>> dbNodeTotal;
+    std::vector<nodeEvacuation*> dbNodeEvacuation;
+
+
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // constructor
@@ -49,6 +51,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     std::string getFileName();
     std::vector<std::shared_ptr<node>> getDbNodeTotal();
+    std::vector<nodeEvacuation*> getDbNodeEvacuation();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static getters

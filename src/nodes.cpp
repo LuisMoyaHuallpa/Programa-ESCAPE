@@ -1,4 +1,6 @@
 #include "nodes.h"
+#include "nodeEvacution.h"
+#include <vector>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -24,6 +26,9 @@ std::string nodes::getFileName() {
 }
 std::vector<std::shared_ptr<node>> nodes::getDbNodeTotal() {
     return dbNodeTotal;
+}
+std::vector<nodeEvacuation *> nodes::getDbNodeEvacuation() {
+    return dbNodeEvacuation;
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static getters
@@ -90,6 +95,8 @@ void nodes::leerNodes(std::string fileName) {
             std::unique_ptr<nodeEvacuation> nodoEvacuationNuevo = std::make_unique<nodeEvacuation>(n, vector2D(x, y));
             // nodeEvacuation nodoEvacuationNuevo= nodeEvacuation(n, x, y);
             dbNodeTotal.push_back(std::move(nodoEvacuationNuevo));
+            // crear un array de nodos de evacuacion
+            dbNodeEvacuation.push_back(dynamic_cast<nodeEvacuation*>(dbNodeTotal.back().get()));
         }
     }
     file.close(); 

@@ -5,7 +5,9 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-int nodeEvacuation::personasEvacuadas=0;
+int nodeEvacuation::totalPersonasEvacuadas=0;
+int nodeEvacuation::maxPersonasEvacuadas=1000;
+
 std::string nodeEvacuation::getNodeType() {
     return "nodeEvacuation";
 }
@@ -15,24 +17,35 @@ std::string nodeEvacuation::getNodeType() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 nodeEvacuation::nodeEvacuation(int id, vector2D coordenada)
     : node(id, coordenada) {
+    personasEvacuadas = 0;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static metods
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-int nodeEvacuation::getPersonasEvacuadas() {
-    return personasEvacuadas;
+int nodeEvacuation::getTotalPersonasEvacuadas() {
+    return totalPersonasEvacuadas;
 }    
-void nodeEvacuation::sumarPersonaEvacuada() {
-    personasEvacuadas++;
+void nodeEvacuation::sumarTotalPersonasEvacuadas() {
+    totalPersonasEvacuadas++;
 }
 void nodeEvacuation::imprimirNodeEvacuation(std::fstream& file) {
-    file << getPersonasEvacuadas();
+    file << totalPersonasEvacuadas;
     file << std::endl;
 }
-void nodeEvacuation::imprimirEvacuatedCount(std::fstream& file) {
-    file << tiempo::get()->getValorTiempo() << " ";
-    file << getPersonasEvacuadas();
+void nodeEvacuation::imprimirTotalPersonasEvacuadas(std::fstream& file) {
+    file << tiempo::get()->getValorTiempo() << ",";
+    file << totalPersonasEvacuadas;
     file << std::endl;
 }
 
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// metodos
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void nodeEvacuation::sumarPersonasEvacuadas() {
+    personasEvacuadas++;
+}
+void nodeEvacuation::imprimirPersonasEvacuadas(std::fstream& file) {
+    file << personasEvacuadas;
+}

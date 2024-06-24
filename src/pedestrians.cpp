@@ -156,30 +156,27 @@ void pedestrians::mostrarDbPedestrianTotal() {
 }
 void pedestrians::imprimirPedestrians(){
     /* imprimir datos de posicion, cantidad de evacuados y velocidad.*/
-    // Cuando el modelo ya esta entrenado
-    if (dictionary::get()->lookup("sarsaProcesses") == "trained") {
-        // imprime segun el valor de graphicPrintoutPeriod del controlDict
-        if (tiempo::get()->verificarGraphicPrintout()) {
-            //crea la carpeta de tiempo
-            tiempo::get()->crearCarpetaTiempo();
-            // impresion de datos
-            std::string foldernameData = tiempo::get()->getFilenameData();
-            std::string foldernameTiempo = std::to_string(tiempo::get()->getValorTiempo());
-            std::string path = foldernameData + foldernameTiempo;
-            std::fstream file1, file2, file3, file4;
-            file1.open(path + "/xy", std::ios::out);
-            file2.open(path + "/U", std::ios::out);
-            file3.open(path + "/cantPedestrianEvacuated", std::ios::out);
-            nodeEvacuation::imprimirEvacuatedCount(io::get()->getFileEvacuatedCount());
-            if (file1.is_open()) {
-                for (auto it = dbPedestrianTotal.begin(); it != dbPedestrianTotal.end(); ++it) {
-                    if (tiempo::get()->getValorTiempo() >= it->getTiempoInicial()) {
-                        it->imprimirPedestrianPosition(file1);
-                        it->imprimirPedestrianVelocity(file2);
-                    }
+    // imprime segun el valor de graphicPrintoutPeriod del controlDict
+    if (tiempo::get()->verificarGraphicPrintout()) {
+        //crea la carpeta de tiempo
+        tiempo::get()->crearCarpetaTiempo();
+        // impresion de datos
+        std::string foldernameData = tiempo::get()->getFilenameData();
+        std::string foldernameTiempo = std::to_string(tiempo::get()->getValorTiempo());
+        std::string path = foldernameData + foldernameTiempo;
+        std::fstream file1, file2, file3, file4;
+        file1.open(path + "/xy", std::ios::out);
+        file2.open(path + "/U", std::ios::out);
+        file3.open(path + "/cantPedestrianEvacuated", std::ios::out);
+        // nodeEvacuation::imprimirEvacuatedCount(io::get()->getFileEvacuatedCount());
+        if (file1.is_open()) {
+            for (auto it = dbPedestrianTotal.begin(); it != dbPedestrianTotal.end(); ++it) {
+                if (tiempo::get()->getValorTiempo() >= it->getTiempoInicial()) {
+                    it->imprimirPedestrianPosition(file1);
+                    it->imprimirPedestrianVelocity(file2);
                 }
-                nodeEvacuation::imprimirNodeEvacuation(file3);
             }
+            nodeEvacuation::imprimirNodeEvacuation(file3);
         }
     }
 }

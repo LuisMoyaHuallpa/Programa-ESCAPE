@@ -32,11 +32,13 @@ private:
         {"nodesFile", "nodes.csv"},
         {"linksFile", "links.csv"},
         {"populationsFile", "population.csv"},
+        {"graphicPrintout", "yes"},
         {"graphicPrintoutPeriod", "1"},
         {"pedestrianCountPeriod", "1"},
         {"computationContinued", "no"},
         {"readPedestriansMassState", "no"},
-        {"evacuatedCount", "no"},
+        {"evacuatedCount", "yes"},
+        {"totalEvacuatedCount", "yes"},
         {"sarsaProcesses", "calibration"},
         {"stopSimulationAt", "endNumberSimulation"}
     };

@@ -11,6 +11,7 @@
 #include "pedestrians.h"
 #include "dictionary.h"
 #include "chrono"
+#include "io.h"
 
 int main() {
     // leer controlDict
@@ -37,6 +38,8 @@ int main() {
             pedestrians::get()->modelamientoPedestrians();
             // imprimir datos para postprocesamiento.
             pedestrians::get()->imprimirPedestrians();
+            // io 
+            io::get()->imprimirOutput();
             // pone en 0 los elementos valores sublink            
             links::get()->resetSublinks();
             // pedestrians::get()->reset();
