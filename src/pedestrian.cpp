@@ -386,11 +386,14 @@ void pedestrian::verificarPedestrianEvacuation(){
     /* verifica si el nodoInicio a la cual la persona esta caminado es un nodo de
         evacuacion. Esto cuando cambia de calle y entra a la funcion cambioCalle*/
     if (nodeInicio->getNodeType() == "nodeEvacuation") {
-        evacuado= true;
-        // cuenta las personas evacuadas en cada punto de evacuacion
-        dynamic_cast<nodeEvacuation*>(nodeInicio)->sumarPersonasEvacuadas();
-        // cuenta el total de personas evacuadas
-        nodeEvacuation::sumarTotalPersonasEvacuadas();
+        // si no esta lleno el nodo
+        if (!dynamic_cast<nodeEvacuation*>(nodeInicio)->getLleno()) {
+            evacuado= true;
+            // cuenta las personas evacuadas en cada punto de evacuacion
+            dynamic_cast<nodeEvacuation*>(nodeInicio)->sumarPersonasEvacuadas();
+            // cuenta el total de personas evacuadas
+            nodeEvacuation::sumarTotalPersonasEvacuadas();
+        }
         // eliminar la persona evacuada
         // auto& dbPedestrianTotal = pedestrians::get()->getDbPedestrianTotal();
         // auto it = std::find(dbPedestrianTotal.begin(), dbPedestrianTotal.end(), *this);

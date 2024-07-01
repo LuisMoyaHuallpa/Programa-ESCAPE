@@ -11,6 +11,7 @@ class nodeEvacuation: public node {
     
 private:
     int personasEvacuadas;
+    bool lleno;
 
 public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -37,10 +38,18 @@ public:
     void static imprimirNodeEvacuation(std::fstream& file);
     void static imprimirTotalPersonasEvacuadas(std::fstream& file);
 
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // getters
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    bool getLleno();
+
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void sumarPersonasEvacuadas();
+    void reiniciar();
+    void verificarLLeno();
     void imprimirPersonasEvacuadas(std::fstream& file);
 };
 

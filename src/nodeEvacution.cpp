@@ -18,6 +18,7 @@ std::string nodeEvacuation::getNodeType() {
 nodeEvacuation::nodeEvacuation(int id, vector2D coordenada)
     : node(id, coordenada) {
     personasEvacuadas = 0;
+    lleno = false;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -39,12 +40,28 @@ void nodeEvacuation::imprimirTotalPersonasEvacuadas(std::fstream& file) {
     file << std::endl;
 }
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// getters
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+bool nodeEvacuation::getLleno() {
+    return lleno;
+};
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void nodeEvacuation::sumarPersonasEvacuadas() {
     personasEvacuadas++;
+    verificarLLeno();
+}
+void nodeEvacuation::reiniciar() {
+    personasEvacuadas =0;
+    lleno = false;
+}
+void nodeEvacuation::verificarLLeno() {
+    if (personasEvacuadas==maxPersonasEvacuadas) {
+        lleno = true;
+    }
 }
 void nodeEvacuation::imprimirPersonasEvacuadas(std::fstream& file) {
     file << personasEvacuadas;

@@ -1,6 +1,7 @@
 #include "tiempo.h"
 #include "dictionary.h"
 #include "nodeEvacution.h"
+#include "nodes.h"
 #include "pedestrians.h"
 #include <chrono>
 #include <cstdlib>
@@ -104,6 +105,7 @@ void tiempo::aumentarINumberSimulation() {
     nodeEvacuation::totalPersonasEvacuadas = 0;
     // regresar a las personas al nodo de arranque
     pedestrians::get()->reiniciarPedestriansNodeArranque();
+    nodes::get()->reiniciarNodesEvacuations();
     // reinicia la lista de personas en calles
     links::get()->resetPedestriansLink();
     // reinicar el timer de una simulacion 

@@ -101,6 +101,14 @@ void nodes::leerNodes(std::string fileName) {
     }
     file.close(); 
 }
+
+
+void nodes::reiniciarNodesEvacuations() {
+    for (int i = 0; i < dbNodeEvacuation.size(); i++) {
+        dbNodeEvacuation.at(i)->reiniciar();
+
+    }
+}
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // mostrar
 void nodes::mostrarNodes() const {
