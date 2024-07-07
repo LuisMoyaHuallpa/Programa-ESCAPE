@@ -97,6 +97,7 @@ void nodes::leerNodes(std::string fileName) {
             dbNodeTotal.push_back(std::move(nodoEvacuationNuevo));
             // crear un array de nodos de evacuacion
             dbNodeEvacuation.push_back(dynamic_cast<nodeEvacuation*>(dbNodeTotal.back().get()));
+            std::cout << dbNodeEvacuation.back()->getIdNode() << std::endl;
         }
     }
     file.close(); 

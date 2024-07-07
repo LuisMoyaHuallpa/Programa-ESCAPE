@@ -2,6 +2,7 @@
 #include "nodeEvacution.h"
 #include "nodes.h"
 #include "pedestrians.h"
+#include "tiempo.h"
 #include <fstream>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -17,10 +18,12 @@ std::fstream io::filePersonasEvacuadasNodeEvacuation;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 io::io() {
     filenameData = "data/";
-    if (dictionary::get()->lookup("totalEvacuatedCount") == "yes") {
+    // crea directorios
+    crearCarpetasOutput();
+    if (dictionary::get()->lookupDefault("totalEvacuatedCount") == "yes") {
         fileTotalPersonasEvacuadas.open(filenameData + "totalEvacuatedCount.csv", std::ios::out);
     }
-    if (dictionary::get()->lookup("evacuatedCount") == "yes") {
+    if (dictionary::get()->lookupDefault("evacuatedCount") == "yes") {
         filePersonasEvacuadasNodeEvacuation.open(filenameData + "evacuatedCount.csv", std::ios::out);
     }
 }
@@ -49,6 +52,11 @@ std::fstream& io::getFileEvacuatedCount() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metods
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void io::crearCarpetasOutput() {
+    // crear carpeta data
+    mkdir(filenameData.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+
+}
 void io::imprimirOutput() {
     if (dictionary::get()->lookup("sarsaProcesses") == "trained") {
         if (tiempo::get()->verificarGraphicPrintout()) {
@@ -62,6 +70,19 @@ void io::imprimirOutput() {
             }
             // imprime personas evacuadas por node evacuacion
             if (dictionary::get()->lookupDefault("evacuatedCount") == "yes") {
+                // impresion de id de nodos
+                if (tiempo::get()->getValorTiempo() == 1) {
+                    filePersonasEvacuadasNodeEvacuation << "id,";
+                    for (int i = 0; i < nodes::get()->getDbNodeEvacuation().size(); i++) {
+                        filePersonasEvacuadasNodeEvacuation << nodes::get()->getDbNodeEvacuation().at(i)->getIdNode();
+                        if (i < nodes::get()->getDbNodeEvacuation().size() - 1) {
+                            filePersonasEvacuadasNodeEvacuation << ",";
+                        }
+                }
+                filePersonasEvacuadasNodeEvacuation << std::endl;
+   
+                }
+                // impresion de personas evacuadas por nodo de evacuacion
                 filePersonasEvacuadasNodeEvacuation << tiempo::get()->getValorTiempo() << ",";
                 for (int i = 0; i < nodes::get()->getDbNodeEvacuation().size(); i++) {
                     nodes::get()->getDbNodeEvacuation().at(i)->imprimirPersonasEvacuadas(filePersonasEvacuadasNodeEvacuation);
