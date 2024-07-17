@@ -58,11 +58,12 @@ void nodes::leerNodes(std::string fileName) {
     // idNode          |-->| IDNODE
     // x               |-->| POSICION X
     // y               |-->| POSICION Y
-    // e               |-->| NODE DE EVACUACION, SI ES 1
+    // e               |-->| NODE DE EVACUACION, SI ES 1, SI ES 2 LIMITADO
     // r               |-->| 
+    // m               |-->| MAXIMO DE PERSONAS EVACUADAS
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    int n, x, y, e, r;
-    std::string n_str, y_str, x_str, e_str, r_str;
+    int n, x, y, e, r, m;
+    std::string n_str, y_str, x_str, e_str, r_str, m_str;
     // Guarda todo la informacion de una solo linea. 
     std::string line;
     // Recorre todas las lineas del archivo.
@@ -74,31 +75,41 @@ void nodes::leerNodes(std::string fileName) {
         // Guardar cada line en la variable line  
         std::istringstream iss(line);
         // Guardar cada valor en las variables.
+
         std::getline(iss, n_str, ',');
-        std::getline(iss, x_str, ',');
-        std::getline(iss, y_str, ',');
-        std::getline(iss, e_str, ',');
-        std::getline(iss, r_str, '\n');
-        // Cambiar de str a int
         n = std::stoi(n_str);
+        std::getline(iss, x_str, ',');
         x = std::stoi(x_str);
+        std::getline(iss, y_str, ',');
         y = std::stoi(y_str);
+        std::getline(iss, e_str, ',');
         e = std::stoi(e_str);
-        r = std::stoi(r_str);
-        // Creacion de cada persona en la data base.
-        if (e == 0) {
+        if (e==0) {
             std::unique_ptr<node> nodoNuevo = std::make_unique<node>(n, vector2D(x, y));
             // node nodoNuevo1 = node(n, x, y);
             nodes::dbNodeTotal.push_back(std::move(nodoNuevo));
         }
-        else {
+        else if (e==1) {
             std::unique_ptr<nodeEvacuation> nodoEvacuationNuevo = std::make_unique<nodeEvacuation>(n, vector2D(x, y));
             // nodeEvacuation nodoEvacuationNuevo= nodeEvacuation(n, x, y);
             dbNodeTotal.push_back(std::move(nodoEvacuationNuevo));
             // crear un array de nodos de evacuacion
             dbNodeEvacuation.push_back(dynamic_cast<nodeEvacuation*>(dbNodeTotal.back().get()));
-            std::cout << dbNodeEvacuation.back()->getIdNode() << std::endl;
         }
+        else if (e==2) {
+            std::unique_ptr<nodeEvacuation> nodoEvacuationNuevo = std::make_unique<nodeEvacuation>(n, vector2D(x, y));
+            // nodeEvacuation nodoEvacuationNuevo= nodeEvacuation(n, x, y);
+            dbNodeTotal.push_back(std::move(nodoEvacuationNuevo));
+            // crear un array de nodos de evacuacion
+            dbNodeEvacuation.push_back(dynamic_cast<nodeEvacuation*>(dbNodeTotal.back().get()));
+            std::getline(iss, m_str, ',');
+            m = std::stoi(m_str);
+            dbNodeEvacuation.back()->setMaxPersonasEvacuadas(m);
+        }
+        std::getline(iss, r_str, '\n');
+        r = std::stoi(r_str);
+        // Cambiar de str a int
+        // Creacion de cada persona en la data base.
     }
     file.close(); 
 }

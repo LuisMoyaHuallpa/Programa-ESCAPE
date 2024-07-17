@@ -22,6 +22,8 @@ private:
     static io* ioInstance;
 
     std::string filenameData;
+    std::string filenamePostprocessing;
+    std::string filenameSnapshot;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // constructor

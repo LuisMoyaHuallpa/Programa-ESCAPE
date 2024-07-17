@@ -4,9 +4,9 @@ linksFile        links.csv;
 
 populationsFile  population2.csv;
 
-# sarsaProcesses calibration;
+sarsaProcesses calibration;
 
-sarsaProcesses trained;
+#sarsaProcesses trained;
 
 stopAt          endTime;
 
@@ -24,7 +24,7 @@ stopSimulationAt          addNumberSimulation;
 
 # endNumberSimulation 6003;
 
-addNumberSimulation 100;
+addNumberSimulation 10;
 
 readPedestrianMassState no;
 
@@ -33,6 +33,10 @@ numberLinkDivision 10;
 graphicPrintoutPeriod 1;
 
 listingPrintoutPeriod 1;
+
+evacuatedCount yes;
+
+totalEvacuatedCount yes;
 
 
 

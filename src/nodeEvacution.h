@@ -12,13 +12,14 @@ class nodeEvacuation: public node {
 private:
     int personasEvacuadas;
     bool lleno;
+    int maxPersonasEvacuadas;
 
 public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static member
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     static int totalPersonasEvacuadas;
-    static int maxPersonasEvacuadas;
+    static int maxPersonasEvacuadasGlobal;
 
     std::string getNodeType() override;
      
@@ -38,11 +39,16 @@ public:
     void static imprimirNodeEvacuation(std::fstream& file);
     void static imprimirTotalPersonasEvacuadas(std::fstream& file);
 
-
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // setters
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    void setMaxPersonasEvacuadas(int maxPersonasEvacuadas);
+    
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     bool getLleno();
+    int getMaxPersonasEvacuadas();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos

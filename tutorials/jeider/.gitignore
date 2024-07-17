@@ -1,6 +1,7 @@
 /*
 !.gitignore
 !nodes.csv
+!nodesLimitated.csv
 !links.csv
 !population.csv
 !Allclean

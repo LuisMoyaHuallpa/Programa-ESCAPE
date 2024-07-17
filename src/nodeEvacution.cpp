@@ -6,7 +6,7 @@
 // static member
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 int nodeEvacuation::totalPersonasEvacuadas=0;
-int nodeEvacuation::maxPersonasEvacuadas=1000;
+int nodeEvacuation::maxPersonasEvacuadasGlobal=1000;
 
 std::string nodeEvacuation::getNodeType() {
     return "nodeEvacuation";
@@ -18,6 +18,7 @@ std::string nodeEvacuation::getNodeType() {
 nodeEvacuation::nodeEvacuation(int id, vector2D coordenada)
     : node(id, coordenada) {
     personasEvacuadas = 0;
+    maxPersonasEvacuadas = -1;
     lleno = false;
 }
 
@@ -41,11 +42,21 @@ void nodeEvacuation::imprimirTotalPersonasEvacuadas(std::fstream& file) {
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// setters
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void nodeEvacuation::setMaxPersonasEvacuadas(int maxPersonasEvacuadas) {
+    (*this).maxPersonasEvacuadas = maxPersonasEvacuadas;
+}
+ 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 bool nodeEvacuation::getLleno() {
     return lleno;
-};
+}
+int nodeEvacuation::getMaxPersonasEvacuadas() {
+    return maxPersonasEvacuadas;    
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos

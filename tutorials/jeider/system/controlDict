@@ -1,4 +1,4 @@
-nodesFile        nodes.csv;
+nodesFile        nodesLimitated.csv;
 
 linksFile        links.csv;
 
@@ -13,6 +13,8 @@ stopAt          endTime;
 endTime         800;
 
 deltaT          1;
+
+graphicPrintout no;
 
 graphicPrintoutPeriod 10;
 
@@ -30,7 +32,7 @@ readPedestrianMassState no;
 
 # endNumberSimulation 7001;
 
-addNumberSimulation 10000;
+addNumberSimulation 7000;
 
 numberLinkDivision 10;
 

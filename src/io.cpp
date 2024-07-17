@@ -18,6 +18,9 @@ std::fstream io::filePersonasEvacuadasNodeEvacuation;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 io::io() {
     filenameData = "data/";
+    filenamePostprocessing = "postprocessing/";
+    filenameSnapshot = "snapshot/";
+
     // crea directorios
     crearCarpetasOutput();
     if (dictionary::get()->lookupDefault("totalEvacuatedCount") == "yes") {
