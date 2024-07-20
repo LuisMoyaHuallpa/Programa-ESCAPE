@@ -125,10 +125,10 @@ void stateMatrixs::agregarStateMatrix(stateMatrix stateMatrixElement) {
 void stateMatrixs::leerDbStateMatrixs() {
     // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
     // if (dictionary::controlDict["computationContinued"] == "yes") {
-    if (dictionary::get()->lookupDefault("sarsaProcesses")=="trained") {
+    if (std::get<std::string>(dictionary::get()->lookupDefault("sarsaProcesses")) == "trained") {
         dictionary::get()->getControlDict()["computationContinued"] = "yes";
     }
-    if (dictionary::get()->lookupDefault("computationContinued") == "yes") {
+    if (std::get<std::string>(dictionary::get()->lookupDefault("computationContinued")) == "yes") {
         // /* Empieza el timing*/
         // auto start = std::chrono::high_resolution_clock::now();
         /* Lectura de datos de una simulación pasada.*/
@@ -228,7 +228,7 @@ void stateMatrixs::leerDbStateMatrixs() {
             std::getline(iss, o9_str, ',');
             std::getline(iss, o10_str, '\n');
             // Elementos de o
-            if (dictionary::get()->lookupDefault("readPedestrianMassState") == "yes") {
+            if (std::get<std::string>(dictionary::get()->lookupDefault("readPedestrianMassState")) == "yes") {
                 o1 = std::stoi(o1_str);
                 o2 = std::stoi(o2_str);
                 o3 = std::stoi(o3_str);

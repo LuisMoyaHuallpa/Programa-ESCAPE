@@ -15,7 +15,8 @@ links* links::linksInstance = nullptr;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 links::links() {
     // (*this).fileName = dictionary::controlDict["linksFile"];
-    (*this).fileName = dictionary::get()->lookupDefault("linksFile");
+    (*this).fileName = std::get<std::string>(dictionary::get()->lookupDefault("linksFile"));
+    std::cout << fileName << std::endl;
     leerLinks(fileName);
 }
 

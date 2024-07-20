@@ -4,12 +4,12 @@ BIN_DIR = bin
 all: $(BIN_DIR)/sarsa
 
 $(BIN_DIR)/sarsa: $(SOURCES) | $(BIN_DIR)
-	g++ $^ -o $@
+	g++ -std=c++17 $^ -o $@
 
 node:
 	g++ src/main.cpp src/nodes.cpp src/node.cpp src/link.cpp src/links.cpp src/stateMatrixs.cpp src/stateMatrix.cpp src/stateActionQ.cpp src/action.cpp src/state.cpp src/subLink.cpp src/vector2D.cpp src/nodeEvacution.cpp src/tiempo.cpp -o bin/sarsa
 debug:
-	g++ -g $(SOURCES) -o bin/sarsa
+	g++ -std=c++17 -g $(SOURCES) -o bin/sarsa
 
 profile:
 	g++ -pg -g $(SOURCES) -o bin/sarsa

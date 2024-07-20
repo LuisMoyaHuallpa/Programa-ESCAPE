@@ -11,7 +11,7 @@ nodes* nodes::nodesInstance = nullptr;
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 nodes::nodes() {
-    (*this).fileName = dictionary::get()->lookupDefault("nodesFile");
+    (*this).fileName = std::get<std::string>(dictionary::get()->lookupDefault("nodesFile"));
     leerNodes(fileName);
 }
 nodes::nodes(std::string fileName) {

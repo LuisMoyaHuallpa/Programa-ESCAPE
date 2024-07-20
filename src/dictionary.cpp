@@ -97,7 +97,7 @@ std::string dictionary::lookup(std::string keyword) {
     }
     return 0; 
 }
-std::string dictionary::lookupDefault(std::string keyword) {
+std::variant<std::string, int> dictionary::lookupDefault(std::string keyword) {
     /* busca la keyword y devuelve su respuesta*/
     auto it = controlDict.find(keyword);
     // si no lo encuentra

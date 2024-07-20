@@ -11,6 +11,7 @@
 #include "iostream"
 #include <sstream>
 #include <map>
+#include <variant>
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // header propios
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -28,13 +29,13 @@ private:
     const std::string nameDictionary = "controlDict";
     const std::string systemCarpet = "system/";
     // cambiar string a variant
-    const std::map<std::string, std::string> controlDictDefault = {
+    const std::map<std::string, std::variant<std::string, int>> controlDictDefault = {
         {"nodesFile", "nodes.csv"},
         {"linksFile", "links.csv"},
         {"populationsFile", "population.csv"},
         {"graphicPrintout", "yes"},
-        {"graphicPrintoutPeriod", "1"},
-        {"pedestrianCountPeriod", "1"},
+        {"graphicPrintoutPeriod", 1},
+        {"pedestrianCountPeriod", 1},
         {"computationContinued", "no"},
         {"readPedestriansMassState", "no"},
         {"evacuatedCount", "yes"},
@@ -72,7 +73,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void leerDictionary();
     std::string lookup(std::string keyword);
-    std::string lookupDefault(std::string keyword);
+    std::variant<std::string, int> lookupDefault(std::string keyword);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static metods

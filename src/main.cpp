@@ -17,8 +17,8 @@ int main() {
     // leer controlDict
     // dictionary controDict("controlDict");
     // imprimi malla de calles.
+    dictionary::get()->mostrarControlDict();
     links::get()->imprimirMeshLinks();
-
     // Lectura de simulaciones pasadas.
     // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
     stateMatrixs::get()->leerDbStateMatrixs();

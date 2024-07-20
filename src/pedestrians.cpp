@@ -12,7 +12,7 @@ pedestrians* pedestrians::pedestriansInstance = nullptr;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 pedestrians::pedestrians() {
     // creacion de data de personas
-    leerPedestrians(dictionary::get()->lookupDefault("populationsFile"));
+    leerPedestrians(std::get<std::string>(dictionary::get()->lookupDefault("populationsFile")));
     // tiempo de inicio segun la distribucion rayleigh
     tiempoInicioDistribution();
 }

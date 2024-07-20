@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <string>
 #include <filesystem>
+#include <variant>
 
 int tiempo::deltaTiempo = 1;
 std::string tiempo::filenameData = "data/";
@@ -20,10 +21,35 @@ tiempo* tiempo::tiempoInstance = nullptr;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 tiempo::tiempo()
     : deltaT(1), endTime(std::stoi(dictionary::get()->lookup("endTime"))),
-      graphicPrintoutPeriod(std::stoi(dictionary::get()->lookupDefault("graphicPrintoutPeriod"))),
-      pedestrianCountPeriod(std::stoi(dictionary::get()->lookupDefault("pedestrianCountPeriod"))){
+      // graphicPrintoutPeriod(std::get<int>(dictionary::get()->lookupDefault("graphicPrintoutPeriod"))),
+      graphicPrintoutPeriod(
+          []() -> int {
+            auto variant =
+                dictionary::get()->lookupDefault("graphicPrintoutPeriod");
+            if (std::holds_alternative<int>(variant)) {
+              return std::get<int>(variant);
+            } else {
+              std::cerr << "Error: graphicPrintoutPeriod no es del tipo esperado (int)." << std::endl;
+              return 0;  // Valor predeterminado en caso de error
+            }
+          }()),
+      pedestrianCountPeriod(
+          []() -> int {
+            auto variant =
+                dictionary::get()->lookupDefault("pedestrianCountPeriod");
+            if (std::holds_alternative<int>(variant)) {
+              return std::get<int>(variant);
+            } else {
+              std::cerr << "Error: pedestrianCountPeriod no es del tipo esperado (int)." << std::endl;
+              return 0;  // Valor predeterminado en caso de error
+            }
+          }()) // Llama a la lambda para inicializar pedestrianCountPeriod
+      // pedestrianCountPeriod(std::get<int>(dictionary::get()->lookupDefault("pedestrianCountPeriod")))
+      {
     (*this).valorTiempo = 0;
+    auto graphicPrintoutPeriodVariant = dictionary::get()->lookupDefault("graphicPrintoutPeriod");
     inicializarNumberSimulation();
+    std::cout << graphicPrintoutPeriod;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -114,9 +140,9 @@ void tiempo::aumentarINumberSimulation() {
 void tiempo::inicializarNumberSimulation() {
     /* Inicializar las variables de NumberSimulation*/
     // Para proceso de calibracion
-    if(dictionary::get()->lookupDefault("sarsaProcesses")=="calibration"){
+    if(std::get<std::string>(dictionary::get()->lookupDefault("sarsaProcesses")) == "calibration"){
         // si lee archivos de estados pasados, si
-        if (dictionary::get()->lookupDefault("computationContinued") == "yes") {
+        if (std::get<std::string>(dictionary::get()->lookupDefault("computationContinued")) == "yes") {
             if (dictionary::get()->lookup("stopSimulationAt") == "endNumberSimulation") {
                 extractINumberSimulation();
                 endNumberSimulation = std::stoi(dictionary::get()->lookup("endNumberSimulation"));
@@ -135,7 +161,7 @@ void tiempo::inicializarNumberSimulation() {
             // inicia el la simulacion 1
             startNumberSimulation = 1;
             iNumberSimulation = 1;
-            if (dictionary::get()->lookupDefault("stopSimulationAt") == "endNumberSimulation") {
+            if (std::get<std::string>(dictionary::get()->lookupDefault("stopSimulationAt")) == "endNumberSimulation") {
                 endNumberSimulation = std::stoi(dictionary::get()->lookup("endNumberSimulation"));
             }
             else{
@@ -146,7 +172,7 @@ void tiempo::inicializarNumberSimulation() {
         startTimeSimulation = std::chrono::high_resolution_clock::now();
     }
     // Para proceso ya entrenado
-    else if (dictionary::get()->lookupDefault("sarsaProcesses")=="trained"){
+    else if (std::get<std::string>(dictionary::get()->lookupDefault("sarsaProcesses")) == "trained"){
         // iniciar el timer tiempo real de simulacion
         startTimeSimulation = std::chrono::high_resolution_clock::now();
         startNumberSimulation = 1;

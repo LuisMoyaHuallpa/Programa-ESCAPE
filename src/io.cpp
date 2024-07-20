@@ -23,10 +23,10 @@ io::io() {
 
     // crea directorios
     crearCarpetasOutput();
-    if (dictionary::get()->lookupDefault("totalEvacuatedCount") == "yes") {
+    if (std::get<std::string>(dictionary::get()->lookupDefault("totalEvacuatedCount")) == "yes") {
         fileTotalPersonasEvacuadas.open(filenameData + "totalEvacuatedCount.csv", std::ios::out);
     }
-    if (dictionary::get()->lookupDefault("evacuatedCount") == "yes") {
+    if (std::get<std::string>(dictionary::get()->lookupDefault("evacuatedCount")) == "yes") {
         filePersonasEvacuadasNodeEvacuation.open(filenameData + "evacuatedCount.csv", std::ios::out);
     }
 }
@@ -64,15 +64,15 @@ void io::imprimirOutput() {
     if (dictionary::get()->lookup("sarsaProcesses") == "trained") {
         if (tiempo::get()->verificarGraphicPrintout()) {
             // imprimir datos de personas: posicion y velocidad
-            if (dictionary::get()->lookupDefault("graphicPrintout") == "yes") {
+            if (std::get<std::string>(dictionary::get()->lookupDefault("graphicPrintout")) == "yes") {
                 pedestrians::get()->imprimirPedestrians();
             }
             // imprime personas totales evacuadas
-            if (dictionary::get()->lookupDefault("totalEvacuatedCount") == "yes") {
+            if (std::get<std::string>(dictionary::get()->lookupDefault("totalEvacuatedCount")) == "yes") {
                 nodeEvacuation::imprimirTotalPersonasEvacuadas(fileTotalPersonasEvacuadas);
             }
             // imprime personas evacuadas por node evacuacion
-            if (dictionary::get()->lookupDefault("evacuatedCount") == "yes") {
+            if (std::get<std::string>(dictionary::get()->lookupDefault("evacuatedCount")) == "yes") {
                 // impresion de id de nodos
                 if (tiempo::get()->getValorTiempo() == 1) {
                     filePersonasEvacuadasNodeEvacuation << "id,";
