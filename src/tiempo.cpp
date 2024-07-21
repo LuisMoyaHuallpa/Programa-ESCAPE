@@ -20,31 +20,31 @@ tiempo* tiempo::tiempoInstance = nullptr;
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 tiempo::tiempo()
-    : deltaT(1), endTime(std::stoi(dictionary::get()->lookup("endTime"))),
-      // graphicPrintoutPeriod(std::get<int>(dictionary::get()->lookupDefault("graphicPrintoutPeriod"))),
-      graphicPrintoutPeriod(
-          []() -> int {
-            auto variant =
-                dictionary::get()->lookupDefault("graphicPrintoutPeriod");
-            if (std::holds_alternative<int>(variant)) {
-              return std::get<int>(variant);
-            } else {
-              std::cerr << "Error: graphicPrintoutPeriod no es del tipo esperado (int)." << std::endl;
-              return 0;  // Valor predeterminado en caso de error
-            }
-          }()),
-      pedestrianCountPeriod(
-          []() -> int {
-            auto variant =
-                dictionary::get()->lookupDefault("pedestrianCountPeriod");
-            if (std::holds_alternative<int>(variant)) {
-              return std::get<int>(variant);
-            } else {
-              std::cerr << "Error: pedestrianCountPeriod no es del tipo esperado (int)." << std::endl;
-              return 0;  // Valor predeterminado en caso de error
-            }
-          }()) // Llama a la lambda para inicializar pedestrianCountPeriod
-      // pedestrianCountPeriod(std::get<int>(dictionary::get()->lookupDefault("pedestrianCountPeriod")))
+    : deltaT(1), endTime(std::get<int>(dictionary::get()->lookup("endTime"))),
+      graphicPrintoutPeriod(std::get<int>(dictionary::get()->lookupDefault("graphicPrintoutPeriod"))),
+      // graphicPrintoutPeriod(
+      //     []() -> int {
+      //       auto variant =
+      //           dictionary::get()->lookupDefault("graphicPrintoutPeriod");
+      //       if (std::holds_alternative<int>(variant)) {
+      //           return std::get<int>(variant);
+      //       }
+      //       else {
+      //           return std::stoi(std::get<std::string>(variant));
+      //       }
+      //     }()),
+      // pedestrianCountPeriod(
+      //     []() -> int {
+      //       auto variant =
+      //           dictionary::get()->lookupDefault("pedestrianCountPeriod");
+      //       if (std::holds_alternative<int>(variant)) {
+      //         return std::get<int>(variant);
+      //       } else {
+      //         std::cerr << "Error: pedestrianCountPeriod no es del tipo esperado (int)." << std::endl;
+      //         return 0;  // Valor predeterminado en caso de error
+      //       }
+      //     }()) // Llama a la lambda para inicializar pedestrianCountPeriod
+      pedestrianCountPeriod(std::get<int>(dictionary::get()->lookupDefault("pedestrianCountPeriod")))
       {
     (*this).valorTiempo = 0;
     auto graphicPrintoutPeriodVariant = dictionary::get()->lookupDefault("graphicPrintoutPeriod");
@@ -142,16 +142,16 @@ void tiempo::inicializarNumberSimulation() {
     // Para proceso de calibracion
     if(std::get<std::string>(dictionary::get()->lookupDefault("sarsaProcesses")) == "calibration"){
         // si lee archivos de estados pasados, si
-        if (std::get<std::string>(dictionary::get()->lookupDefault("computationContinued")) == "yes") {
-            if (dictionary::get()->lookup("stopSimulationAt") == "endNumberSimulation") {
+        if (std::get<bool>(dictionary::get()->lookupDefault("computationContinued")) == true) {
+            if (std::get<std::string>(dictionary::get()->lookup("stopSimulationAt")) == "endNumberSimulation") {
                 extractINumberSimulation();
-                endNumberSimulation = std::stoi(dictionary::get()->lookup("endNumberSimulation"));
+                endNumberSimulation = std::get<int>(dictionary::get()->lookup("endNumberSimulation"));
                 startNumberSimulation = startNumberSimulation + 1;
                 iNumberSimulation = startNumberSimulation;
             }
-            else if (dictionary::get()->lookup("stopSimulationAt") == "addNumberSimulation") {
+            else if (std::get<std::string>(dictionary::get()->lookup("stopSimulationAt")) == "addNumberSimulation") {
                 extractINumberSimulation();
-                endNumberSimulation = startNumberSimulation  + std::stoi(dictionary::get()->lookup("addNumberSimulation"));
+                endNumberSimulation = startNumberSimulation  + std::get<int>(dictionary::get()->lookup("addNumberSimulation"));
                 startNumberSimulation = startNumberSimulation + 1;
                 iNumberSimulation = startNumberSimulation;
             }
@@ -162,10 +162,10 @@ void tiempo::inicializarNumberSimulation() {
             startNumberSimulation = 1;
             iNumberSimulation = 1;
             if (std::get<std::string>(dictionary::get()->lookupDefault("stopSimulationAt")) == "endNumberSimulation") {
-                endNumberSimulation = std::stoi(dictionary::get()->lookup("endNumberSimulation"));
+                endNumberSimulation = std::get<int>(dictionary::get()->lookup("endNumberSimulation"));
             }
             else{
-                endNumberSimulation = std::stoi(dictionary::get()->lookup("addNumberSimulation"));
+                endNumberSimulation = std::get<int>(dictionary::get()->lookup("addNumberSimulation"));
             }
         }
         // iniciar el timer tiempo real de simulacion
@@ -185,7 +185,7 @@ void tiempo::extractINumberSimulation() {
     /* Extrar el numero de simulacion actual segun el archivo sim de estados
         anteriores del control de la variable previousComputation*/
     if (dictionary::get()->getControlDict().find("previousComputationFile") != dictionary::get()->getControlDict().end()) {
-        std::string lastFile_str = dictionary::get()->lookup("previousComputationFile");   
+        std::string lastFile_str = std::get<std::string>(dictionary::get()->lookup("previousComputationFile"));
         // busca el primer numero del 1-9 del nombre del archivo de estados
         size_t posicion = lastFile_str.find_first_of("123456789");
         int iLastFile = std::stoi(lastFile_str.substr(posicion));
@@ -195,13 +195,13 @@ void tiempo::extractINumberSimulation() {
 void tiempo::calcularRandomChoiceRate() {
     int k = iNumberSimulation;
     int N = endNumberSimulation;
-    if (dictionary::get()->lookup("sarsaProcesses") == "calibration") {
+    if (std::get<std::string>(dictionary::get()->lookup("sarsaProcesses")) == "calibration") {
         // formula para random choice
         double gleeFactor = 4.0 / double(N);
         // el -1 es para empezar el numero de simulaciones en 0
         randomChoiceRate = 1.0 / (gleeFactor * double(k - 1) + 1.0);
     }
-    else if(dictionary::get()->lookup("sarsaProcesses") == "trained") {
+    else if(std::get<std::string>(dictionary::get()->lookup("sarsaProcesses")) == "trained") {
         randomChoiceRate = 0;
     }
 }
@@ -265,4 +265,3 @@ bool tiempo::verificarPedestrianCountPeriod() {
         return false;
     }
 }
-

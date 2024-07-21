@@ -1,4 +1,5 @@
 #include "dictionary.h"
+#include <algorithm>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -28,7 +29,7 @@ dictionary::dictionary(std::string nameDictionary) {
 std::string dictionary::getNameDictionary() {
     return nameDictionary;
 }
-std::map<std::string, std::string>& dictionary::getControlDict() {
+std::map<std::string, std::variant<std::string, int, bool>>& dictionary::getControlDict() {
     return controlDict;
 }
 
@@ -78,12 +79,31 @@ void dictionary::leerDictionary() {
         iss >> keyword_str;
         std::getline(iss >> std::ws, value_str, ';');
         // guarda los valores en un dictionario
-        controlDict[keyword_str] = value_str;
+        // busca el tipo de valor del elemento
+        auto it = typeControlDict.find(keyword_str);
+        if (it != typeControlDict.end()) {
+            std::string type = it->second;
+            if (type == "string") {
+                controlDict[keyword_str] = value_str;
+            }
+            else if (type == "int") {
+                controlDict[keyword_str] = std::stoi(value_str);
+                std::cout << value_str;
+            }
+            else if (type == "bool") {
+                if (value_str == "yes") {
+                    controlDict[keyword_str] = true;
+                }
+                else {
+                    controlDict[keyword_str] = false;
+                }
+            }
+
+        }
     }
     file.close(); 
 }
-
-std::string dictionary::lookup(std::string keyword) {
+std::variant<std::string, int, bool> dictionary::lookup(std::string keyword) {
     /* busca la keyword y devuelve su respuesta*/
     auto it = controlDict.find(keyword);
     // si no lo encuentra
@@ -97,7 +117,7 @@ std::string dictionary::lookup(std::string keyword) {
     }
     return 0; 
 }
-std::variant<std::string, int> dictionary::lookupDefault(std::string keyword) {
+std::variant<std::string, int, bool> dictionary::lookupDefault(std::string keyword) {
     /* busca la keyword y devuelve su respuesta*/
     auto it = controlDict.find(keyword);
     // si no lo encuentra
@@ -108,6 +128,28 @@ std::variant<std::string, int> dictionary::lookupDefault(std::string keyword) {
         return controlDictDefault.at(keyword);
     }
 }
+std::variant<std::string, int, bool> dictionary::convertToType(const std::string& key, const std::string& value) {
+    auto it = typeControlDict.find(key);
+    if (it != typeControlDict.end()) {
+        const std::string& type = it->second;
+        if (type == "string") {
+            return value;
+        } else if (type == "int") {
+            try {
+                return std::stoi(value);
+            } catch (const std::invalid_argument&) {
+                throw std::runtime_error("Invalid integer value for key: " + key);
+            }
+        } else if (type == "bool") {
+            std::string lowerValue = value;
+            std::transform(lowerValue.begin(), lowerValue.end(), lowerValue.begin(), ::tolower);
+            if (lowerValue == "true") return true;
+            if (lowerValue == "false") return false;
+            throw std::runtime_error("Invalid boolean value for key: " + key);
+        }
+    }
+    throw std::runtime_error("Unknown type for key: " + key);
+}
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static metods
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -115,7 +157,10 @@ std::variant<std::string, int> dictionary::lookupDefault(std::string keyword) {
 void dictionary::mostrarControlDict() {
     std::cout << "Contents of controlDict:" << std::endl;
     for (const auto& entry : controlDict) {
-        std::cout << entry.first << ": " << entry.second << std::endl;
+        std::cout << entry.first << ": ";
+        std::visit([](auto&& value) { std::cout << value; }, entry.second);
+        std::cout << std::endl;
+        // std::cout << entry.first << ": " << entry.second << std::endl;
     }
 }
-    
+

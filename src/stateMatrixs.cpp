@@ -109,7 +109,7 @@ std::string stateMatrixs::crearFilenameSalida(int numeroSimulacion) {
     return simulationFile +preName + filenameStream.str() + typeFile;
 }
 std::string stateMatrixs::fileNameSalida() {
-    std::string lastFile_str = dictionary::get()->lookup("previousComputationFile");   
+    std::string lastFile_str = std::get<std::string>(dictionary::get()->lookup("previousComputationFile"));
     size_t posicion = lastFile_str.find_first_of("123456789");
     int iLastFile = std::stoi(lastFile_str.substr(posicion));
     std::string preName = "sim_";
@@ -128,15 +128,15 @@ void stateMatrixs::leerDbStateMatrixs() {
     if (std::get<std::string>(dictionary::get()->lookupDefault("sarsaProcesses")) == "trained") {
         dictionary::get()->getControlDict()["computationContinued"] = "yes";
     }
-    if (std::get<std::string>(dictionary::get()->lookupDefault("computationContinued")) == "yes") {
+    if (std::get<bool>(dictionary::get()->lookupDefault("computationContinued")) == true) {
         // /* Empieza el timing*/
         // auto start = std::chrono::high_resolution_clock::now();
         /* Lectura de datos de una simulación pasada.*/
         std::fstream file;
-        file.open(simulationFile + dictionary::get()->lookup("previousComputationFile"), std::ios::in);
+        file.open(simulationFile + std::get<std::string>(dictionary::get()->lookup("previousComputationFile")), std::ios::in);
         // Si no existe el archivo
         if (file.fail()) {
-            std::cout << "Error al abrir el archivo: "<< dictionary::get()->lookup("previousComputationFile") << std::endl;
+            std::cout << "Error al abrir el archivo: "<< std::get<std::string>(dictionary::get()->lookup("previousComputationFile")) << std::endl;
             exit(1);
         }
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -228,7 +228,7 @@ void stateMatrixs::leerDbStateMatrixs() {
             std::getline(iss, o9_str, ',');
             std::getline(iss, o10_str, '\n');
             // Elementos de o
-            if (std::get<std::string>(dictionary::get()->lookupDefault("readPedestrianMassState")) == "yes") {
+            if (std::get<bool>(dictionary::get()->lookupDefault("readPedestrianMassState")) == true) {
                 o1 = std::stoi(o1_str);
                 o2 = std::stoi(o2_str);
                 o3 = std::stoi(o3_str);

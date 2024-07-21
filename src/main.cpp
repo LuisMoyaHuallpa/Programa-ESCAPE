@@ -23,7 +23,6 @@ int main() {
     // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
     stateMatrixs::get()->leerDbStateMatrixs();
     // nodes::get()->mostrardbNodeTotal();
-    // nodes::get()->mostrarNodes();
     // segun el número de simulaciones
     while (tiempo::get()->getINumberSimulation() <= tiempo::get()->getEndNumberSimulation()) {
         // loop para una evacuacion
@@ -54,4 +53,3 @@ int main() {
         tiempo::get()->aumentarINumberSimulation();
     }
 }
-

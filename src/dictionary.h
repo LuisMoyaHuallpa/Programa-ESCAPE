@@ -12,6 +12,7 @@
 #include <sstream>
 #include <map>
 #include <variant>
+#include <algorithm>
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // header propios
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -28,22 +29,50 @@ private:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     const std::string nameDictionary = "controlDict";
     const std::string systemCarpet = "system/";
-    // cambiar string a variant
-    const std::map<std::string, std::variant<std::string, int>> controlDictDefault = {
+    enum class sarsaProcessesOptions{
+        calibration,
+        trained
+    };
+    std::map<std::string, std::variant<std::string, int, bool>> controlDict;
+    const std::map<std::string, std::variant<std::string, int, bool>> controlDictDefault = {
         {"nodesFile", "nodes.csv"},
         {"linksFile", "links.csv"},
         {"populationsFile", "population.csv"},
-        {"graphicPrintout", "yes"},
+        {"stopAt", "endTime"},
+        {"graphicPrintout", true},
         {"graphicPrintoutPeriod", 1},
         {"pedestrianCountPeriod", 1},
-        {"computationContinued", "no"},
-        {"readPedestriansMassState", "no"},
-        {"evacuatedCount", "yes"},
-        {"totalEvacuatedCount", "yes"},
+        {"computationContinued", false},
+        {"readPedestriansMassState", false},
+        {"numberLinkDivision", 10},
+        {"evacuatedCount", true},
+        {"totalEvacuatedCount", true},
         {"sarsaProcesses", "calibration"},
         {"stopSimulationAt", "endNumberSimulation"}
     };
-    std::map<std::string, std::string> controlDict;
+    const std::map<std::string, std::string> typeControlDict = {
+        {"nodesFile", "string"},
+        {"linksFile", "string"},
+        {"populationsFile", "string"},
+        {"sarsaProcesses", "string"},
+        {"stopAt", "string"},
+        {"stopSimulationAt", "string"},
+        {"startTime", "int"},
+        {"endTime", "int"},
+        {"deltaT", "int"},
+        {"addNumberSimulation", "int"},
+        {"graphicPrintout", "bool"},
+        {"graphicPrintoutPeriod", "int"},
+        {"pedestrianCountPeriod", "int"},
+        {"computationContinued", "bool"},
+        {"previousComputationFile", "string"},
+        {"readPedestriansMassState", "bool"},
+        {"numberLinkDivision", "int"},
+        {"evacuatedCount", "bool"},
+        {"totalEvacuatedCount", "bool"},
+        {"stoSimulationAt", "string"}
+    };
+
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // constructor
@@ -52,6 +81,7 @@ private:
     dictionary(std::string nameDictionary);
 
 public:
+
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // setters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -61,7 +91,7 @@ public:
     // getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     std::string getNameDictionary();
-    std::map<std::string, std::string>& getControlDict();
+    std::map<std::string, std::variant<std::string, int, bool>>& getControlDict();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static getters
@@ -72,8 +102,10 @@ public:
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void leerDictionary();
-    std::string lookup(std::string keyword);
-    std::variant<std::string, int> lookupDefault(std::string keyword);
+    std::variant<std::string, int, bool> lookup(std::string keyword);
+    std::variant<std::string, int, bool> lookupDefault(std::string keyword);
+    std::variant<std::string, int, bool> convertToType(const std::string& key, const std::string& value);
+
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static metods
