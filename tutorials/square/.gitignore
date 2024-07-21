@@ -1,11 +1,11 @@
 /*
 !.gitignore
 !nodes.csv
+!nodesLimited.csv
 !links.csv
-!population.csv
-!population2.csv
+!populationAtPoint.csv
+!populationRandom.csv
 !Allclean
 !/system/
 !/stateMatrices/
 !/postprocessing/
-!/data/

@@ -1,12 +1,12 @@
-nodesFile        nodes.csv;
+nodesFile        nodesLimited.csv;
 
 linksFile        links.csv;
 
-populationsFile  population2.csv;
+populationsFile  populationAtPoint.csv;
 
 sarsaProcesses calibration;
 
-#sarsaProcesses trained;
+# sarsaProcesses trained;
 
 stopAt          endTime;
 
@@ -16,7 +16,7 @@ deltaT          1;
 
 computationContinued  	no;
 
-previousComputationFile	calibrated.csv;
+previousComputationFile	calibrated1.csv;
 
 # stopSimulationAt          endNumberSimulation;
 
@@ -24,7 +24,7 @@ stopSimulationAt          addNumberSimulation;
 
 # endNumberSimulation 6003;
 
-addNumberSimulation 10;
+addNumberSimulation 2000;
 
 readPedestrianMassState no;
 
