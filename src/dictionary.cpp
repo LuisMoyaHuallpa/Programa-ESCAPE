@@ -80,23 +80,8 @@ void dictionary::leerDictionary() {
         std::getline(iss >> std::ws, value_str, ';');
         // guarda los valores en un dictionario
         // busca el tipo de valor del elemento
-        auto it = typeControlDict.find(keyword_str);
-        if (it != typeControlDict.end()) {
-            std::string type = it->second;
-            if (type == "string") {
-                controlDict[keyword_str] = value_str;
-            }
-            else if (type == "int") {
-                controlDict[keyword_str] = std::stoi(value_str);
-            }
-            else if (type == "bool") {
-                if (value_str=="yes" or value_str=="true" or value_str=="si") {
-                    controlDict[keyword_str] = true;
-                }
-                else if (value_str == "no" or value_str == "false") {
-                    controlDict[keyword_str] = false;
-                }
-            }
+        if (verificarOptions(keyword_str, value_str)) {
+            verificarType(keyword_str, value_str);
         }
     }
     file.close(); 
@@ -126,27 +111,52 @@ std::variant<std::string, int, bool> dictionary::lookupDefault(std::string keywo
         return controlDictDefault.at(keyword);
     }
 }
-std::variant<std::string, int, bool> dictionary::convertToType(const std::string& key, const std::string& value) {
-    auto it = typeControlDict.find(key);
-    if (it != typeControlDict.end()) {
-        const std::string& type = it->second;
-        if (type == "string") {
-            return value;
-        } else if (type == "int") {
-            try {
-                return std::stoi(value);
-            } catch (const std::invalid_argument&) {
-                throw std::runtime_error("Invalid integer value for key: " + key);
-            }
-        } else if (type == "bool") {
-            std::string lowerValue = value;
-            std::transform(lowerValue.begin(), lowerValue.end(), lowerValue.begin(), ::tolower);
-            if (lowerValue == "true") return true;
-            if (lowerValue == "false") return false;
-            throw std::runtime_error("Invalid boolean value for key: " + key);
+bool dictionary::verificarOptions(std::string keyword, std::string value) const {
+    // busca si existe el keyword dentro de controlDictOptions
+    auto it = controlDictOptions.find(keyword);
+    if (it != controlDictOptions.end()) {
+        const auto& options = it->second;
+        if (!(std::find(options.begin(), options.end(), value) != options.end())) {
+            std::cout << "El keyword "<< keyword << " no tiene un valor válido." << std::endl;
+            std::cout << "Los valores posibles: ";
+            for (const auto& option : options) {
+                std::cout << option << " ";
+            }       
+            std::cout << std::endl;
+            return false;
         }
     }
-    throw std::runtime_error("Unknown type for key: " + key);
+    return true;
+}
+bool dictionary::verificarType(std::string keyword, std::string value)  {
+    // busca en el typeControlDict el keyword solicitado y lo guarda en it
+    std::map<std::string, std::string>::const_iterator it = typeControlDict.find(keyword);
+    if (it != typeControlDict.end()) {
+        std::string type = it->second;
+        if (type == "string") {
+            controlDict[keyword] = value;
+            return true;
+        }
+        else if (type == "int") {
+            controlDict[keyword] = std::stoi(value);
+            return true;
+        }
+        else if (type == "bool") {
+            if (value=="yes" or value=="true" or value=="si") {
+                controlDict[keyword] = true;
+                return true;
+            }
+            else if (value == "no" or value == "false") {
+                controlDict[keyword] = false;
+                return true;
+            }
+            else {
+                std::cout << "El keyword "<< keyword << " no tiene un valor invalido." << std::endl;
+                return false;    
+            }
+        }
+    }
+    return false;
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static metods

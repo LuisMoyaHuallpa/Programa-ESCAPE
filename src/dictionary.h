@@ -13,6 +13,7 @@
 #include <map>
 #include <variant>
 #include <algorithm>
+#include <vector>
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // header propios
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -29,10 +30,6 @@ private:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     const std::string nameDictionary = "controlDict";
     const std::string systemCarpet = "system/";
-    enum class sarsaProcessesOptions{
-        calibration,
-        trained
-    };
     std::map<std::string, std::variant<std::string, int, bool>> controlDict;
     const std::map<std::string, std::variant<std::string, int, bool>> controlDictDefault = {
         {"nodesFile", "nodes.csv"},
@@ -72,6 +69,10 @@ private:
         {"totalEvacuatedCount", "bool"},
         {"stoSimulationAt", "string"}
     };
+    std::map<std::string, std::vector<std::string>> controlDictOptions = {
+        {"sarsaProcesses", {"calibration", "trained"}}
+    };
+
 
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -104,7 +105,8 @@ public:
     void leerDictionary();
     std::variant<std::string, int, bool> lookup(std::string keyword);
     std::variant<std::string, int, bool> lookupDefault(std::string keyword);
-    std::variant<std::string, int, bool> convertToType(const std::string& key, const std::string& value);
+    bool verificarOptions(std::string keyword, std::string value) const;
+    bool verificarType(std::string keyword, std::string value);
 
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
