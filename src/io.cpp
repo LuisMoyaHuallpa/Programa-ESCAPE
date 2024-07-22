@@ -1,9 +1,5 @@
 #include "io.h"
-#include "nodeEvacution.h"
-#include "nodes.h"
 #include "pedestrians.h"
-#include "tiempo.h"
-#include <fstream>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -17,22 +13,15 @@ std::fstream io::filePersonasEvacuadasNodeEvacuation;
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 io::io() {
-    filenameData = "data/";
-    filenamePostprocessing = "postprocessing/";
-    filenameSnapshot = "snapshot/";
-
     // crea directorios
     crearCarpetasOutput();
     if (std::get<bool>(dictionary::get()->lookupDefault("totalEvacuatedCount")) == true) {
-        fileTotalPersonasEvacuadas.open(filenameData + "totalEvacuatedCount.csv", std::ios::out);
+        fileTotalPersonasEvacuadas.open(filenameData + filenameTotalEvacuatedCount, std::ios::out);
     }
     if (std::get<bool>(dictionary::get()->lookupDefault("evacuatedCount")) == true) {
-        filePersonasEvacuadasNodeEvacuation.open(filenameData + "evacuatedCount.csv", std::ios::out);
+        filePersonasEvacuadasNodeEvacuation.open(filenameData + filenameEvacuatedCount, std::ios::out);
     }
 }
-
-
-
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static getters

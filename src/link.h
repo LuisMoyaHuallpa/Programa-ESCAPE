@@ -93,4 +93,3 @@ public:
     void imprimirLink(std::fstream& file);
 };
 #endif
-

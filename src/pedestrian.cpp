@@ -517,7 +517,8 @@ void pedestrian::calcularLevelDensityAtNode() {
 void pedestrian::modelamientoPedestrian() {
     // personas que aun no estan evacuadas
     if (!evacuado) {
-        if (tiempo::get()->getValorTiempo() == tiempoInicial) {
+        int tiempoActual = tiempo::get()->getValorTiempo();
+        if (tiempoActual == tiempoInicial) {
             // set la posicion de inicio del pedestrian
             setPosition({nodeInicio->getCoordenada().getX(), nodeInicio->getCoordenada().getY()});
             // calculo del stateMatrix para obtener datos de state.
@@ -531,7 +532,7 @@ void pedestrian::modelamientoPedestrian() {
             // envio informacion de direccion al vector de velocidad.
             velocidad.setDireccion(getDireccionPedestrian());
         }
-        if (tiempo::get()->getValorTiempo() > tiempoInicial) {
+        if (tiempoActual > tiempoInicial) {
             caminar();
             // verifica el termino de la calle y actualiza a una nueva.
             cambioCalle();

@@ -14,6 +14,7 @@
 #include "dictionary.h"
 #include "tiempo.h"
 #include "nodes.h"
+
 class io {
 private:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -21,9 +22,15 @@ private:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     static io* ioInstance;
 
-    std::string filenameData;
-    std::string filenamePostprocessing;
-    std::string filenameSnapshot;
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // const
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    const std::string filenameData = "data/";
+    const std::string filenamePostprocessing = "postprocessing/";
+    const std::string filenameSnapshot = "snapshot/";
+    const std::string filenameTotalEvacuatedCount = "totalEvacuatedCount.csv";
+    const std::string filenameEvacuatedCount = "evacuatedCount.csv";
+
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // constructor

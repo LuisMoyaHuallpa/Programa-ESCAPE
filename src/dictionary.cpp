@@ -88,17 +88,15 @@ void dictionary::leerDictionary() {
             }
             else if (type == "int") {
                 controlDict[keyword_str] = std::stoi(value_str);
-                std::cout << value_str;
             }
             else if (type == "bool") {
-                if (value_str == "yes") {
+                if (value_str=="yes" or value_str=="true" or value_str=="si") {
                     controlDict[keyword_str] = true;
                 }
-                else {
+                else if (value_str == "no" or value_str == "false") {
                     controlDict[keyword_str] = false;
                 }
             }
-
         }
     }
     file.close(); 

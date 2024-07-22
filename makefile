@@ -12,7 +12,7 @@ debug:
 	g++ -std=c++17 -g $(SOURCES) -o bin/sarsa
 
 profile:
-	g++ -pg -g $(SOURCES) -o bin/sarsa
+	g++ -std=c++17 -pg -g $(SOURCES) -o bin/sarsa
 
 
 # Regla para crear la carpeta bin si no existe
