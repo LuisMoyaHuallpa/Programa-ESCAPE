@@ -5,15 +5,21 @@ import os
 from matplotlib.animation import FuncAnimation
 from screeninfo import get_monitors
 from progressbar import ProgressBar
+from os import path
 
+#files
+ruta_absoluta = path.abspath(__file__)
+directory_main = path.dirname(path.dirname(ruta_absoluta))
+directory_mesh = path.join(directory_main, "mesh/poliLinks")
+directory_data = path.join(directory_main, "data/")
+directory_export = path.join(directory_main, "postprocessing/snapshot/")
 
-pathMeshLink = "../mesh/poliLinks"
 x1_values = []
 x2_values = []
 y1_values = []
 y2_values = []
 
-with open(pathMeshLink, 'r') as csv_file:
+with open(directory_mesh, 'r') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=' ')
 
     for row in csv_reader:
@@ -22,12 +28,11 @@ with open(pathMeshLink, 'r') as csv_file:
         x2_values.append(float(row[2]))
         y2_values.append(float(row[3]))
 
-directorio_principal = '../data/'
-elementos = os.listdir(directorio_principal)
+elementos = os.listdir(directory_data)
 carpetas_numericas = [elemento
                       for elemento
                       in elementos
-                      if os.path.isdir(os.path.join(directorio_principal,
+                      if os.path.isdir(os.path.join(directory_data,
                                                     elemento))
                       and elemento.isdigit()]
 carpetas_numericas_ordenadas = sorted(carpetas_numericas, key=int)
@@ -48,9 +53,9 @@ i_inicial = int(carpetas_numericas_ordenadas[0])
 def actualizar(i):
     """Loop each timestep."""
     ax.clear()
-    fileName = directorio_principal + carpetas_numericas_ordenadas[i] + "/xy"
-    fileName2 = directorio_principal + carpetas_numericas_ordenadas[i] + "/U"
-    fileName3 = directorio_principal + carpetas_numericas_ordenadas[i] + "/cantPedestrianEvacuated"
+    fileName = directory_data + carpetas_numericas_ordenadas[i] + "/xy"
+    fileName2 = directory_data + carpetas_numericas_ordenadas[i] + "/U"
+    fileName3 = directory_data + carpetas_numericas_ordenadas[i] + "/cantPedestrianEvacuated"
     x_values = []
     y_values = []
     magnitud = []
@@ -103,5 +108,5 @@ def actualizar(i):
 
 ani = FuncAnimation(fig, actualizar, len(carpetas_numericas_ordenadas)-1,
                     interval=100, repeat_delay=900)
-ani.save('animation.mp4')
+ani.save(directory_export + 'animation.mp4')
 bar.finish()
