@@ -51,10 +51,10 @@ void nodeEvacuation::setMaxPersonasEvacuadas(int maxPersonasEvacuadas) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-bool nodeEvacuation::getLleno() {
+const bool nodeEvacuation::getLleno() const{
     return lleno;
 }
-int nodeEvacuation::getMaxPersonasEvacuadas() {
+const int nodeEvacuation::getMaxPersonasEvacuadas() const{
     return maxPersonasEvacuadas;    
 }
 

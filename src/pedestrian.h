@@ -101,11 +101,6 @@ public:
     void setDireccionPedestrian(vector2D direccionPedestrian);
     void setVelocidad(vector2DVelocidad velocidad);
     void setTiempoInicial(int tiempoInicial);
-    // void setOrientacionLinkPasado(vector2D orientacionLinkPasado);
-    // void setTiempoFinal(int tiempoFinal);
-    // void setEmpezoCaminar(bool empezoCaminar);
-    // void setPrimerTiempo(bool primerTiempo);
-    // void setSaltoLink(bool saltoLink);
     void setEvacuado(bool evacuado);
     void setReward(int reward);
 
@@ -117,29 +112,23 @@ public:
     const int getGender() const;
     const int getHHType() const;
     const int getHHId() const;
-    vector2D getPosition();
+    const vector2D getPosition() const;
     const node* getNodeArranque() const;
-    node* getNodeInicio() const;
-    node* getNodeFinal() const;
-    node* getNodeInicioAnterior() const;
-    // vector2D getOrientacionLinkPasado();
-    link* getLinkActual() const;
-    link* getLinkPasado() const;
+    const node* getNodeInicio() const;
+    const node* getNodeFinal() const;
+    const node* getNodeInicioAnterior() const;
+    const link* getLinkActual() const;
+    const link* getLinkPasado() const;
     vector2D getDireccionPedestrian() const;
     vector2DVelocidad& getVelocidad();
-    int getTiempoInicial() const;
-    // stateActionQ* getqStateAction();
-    // int getTiempoFinal();
-    // bool getEmpezoCaminar();
-    // bool getPrimerTiempo();
-    // bool getSaltoLink();
-    bool getEvacuado();
-    int getReward() const;
+    const int getTiempoInicial() const;
+    const bool getEvacuado() const;
+    const int getReward() const;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    bool operator==(pedestrian pedestrian2);
+    bool operator==(const pedestrian& pedestrian2) const;
     void caminar();
     double calcularIDoubleSublink();
     void contarPedestrianInSublink();
