@@ -56,7 +56,7 @@ public:
     void sumarPersonasEvacuadas();
     void reiniciar();
     void verificarLLeno();
-    void imprimirPersonasEvacuadas(std::fstream& file);
+    void imprimirPersonasEvacuadas(std::fstream* file);
 };
 
 #endif

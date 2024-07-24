@@ -74,6 +74,6 @@ void nodeEvacuation::verificarLLeno() {
         lleno = true;
     }
 }
-void nodeEvacuation::imprimirPersonasEvacuadas(std::fstream& file) {
-    file << personasEvacuadas;
+void nodeEvacuation::imprimirPersonasEvacuadas(std::fstream* file) {
+    *file << personasEvacuadas;
 }
