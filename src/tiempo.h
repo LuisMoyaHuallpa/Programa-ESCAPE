@@ -92,8 +92,7 @@ public:
     bool running();
     void mostrarTiempo() const;
     void mostrarIResultadosSimulacion();
-    void crearCarpetaTiempo();
-    bool verificarGraphicPrintout(); 
+    bool verificarGraphicPrintoutPeriod() const; 
     bool verificarPedestrianCountPeriod(); 
     
 };

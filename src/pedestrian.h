@@ -18,6 +18,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // header propios
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#include "io.h"
 #include "sarsa.h"
 // #include "subLink.h"
 #include "stateMatrix.h"
@@ -159,8 +160,8 @@ public:
     // void crearqState(node* nodeActual);
     void modelamientoPedestrian();
     void mostrarMovimientoPedestrian() const;
-    void imprimirPedestrianPosition(std::fstream& file) const;
-    void imprimirPedestrianVelocity(std::fstream& file) const;
+    void imprimirPedestrianPosition(fileIO* file) const;
+    void imprimirPedestrianVelocity(fileIO* file) const;
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static metods
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

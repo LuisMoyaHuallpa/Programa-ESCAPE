@@ -1,11 +1,74 @@
 #include "io.h"
+#include "nodeEvacution.h"
 #include "pedestrians.h"
-
+#include "tiempo.h"
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//                                  dirIO
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// constructor
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+dirIO::dirIO(const std::string& dirName) :
+    dirName(dirName),
+    dirNamePwd(dirName + '/'),
+    directory(nullptr)
+{
+    if (!verificarDirExists()) {
+        crearDir();
+    }
+}
+dirIO::dirIO(const std::string& dirName, const dirIO* directory) :
+    dirName(dirName),
+    dirNamePwd(directory->getDirNamePwd() + dirName + '/'),
+    directory(directory)
+{
+    if (!verificarDirExists()) {
+        crearDir();
+    }
+}
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// getters
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+const std::string dirIO::getDirName() const {
+    return dirName;
+}
+const std::string dirIO::getDirNamePwd() const {
+    return dirNamePwd;
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// methods
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void dirIO::crearDir() {
+    // permisos del directorio S_ para ejecutar, leer y escribir
+    if (directory == nullptr) {
+        mkdir(dirName.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+    }
+    else {
+        std::string dir = directory->dirNamePwd + dirName.c_str();
+        mkdir(dir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+    }
+}
+bool dirIO::verificarDirExists() const{
+    struct stat info;
+    if (stat(dirName.c_str(), &info) != 0) {
+        // No se pudo acceder al directorio (puede que no exista)
+        return false;
+    } else if (info.st_mode & S_IFDIR) {
+        // Existe y es un directorio
+        return true;
+    } else {
+        // Existe pero no es un directorio
+        return false;
+    }
+}
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //                                fileIO
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -14,16 +77,32 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 fileIO::fileIO(const std::string& fileName) :
     fileName(fileName),
-    fileNameCsv(fileName + ".csv")
+    fileNameCsv(fileName + ".csv"),
+    fileNamePwd(fileName),
+    directory(nullptr)
+{
+    crearFile();
+    std::cout << "creo:" + fileName << std::endl;
+}
+
+fileIO::fileIO(const std::string& fileName,const dirIO* directory) :
+    fileName(fileName),
+    fileNameCsv(fileName + ".csv"),
+    fileNamePwd(directory->getDirNamePwd() + fileName),
+    directory(directory)
 {
     crearFile();
 }
+
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const std::string fileIO::getFileName() const {
     return fileName;
+}
+const std::string fileIO::getFileNamePwd() const {
+    return fileNamePwd;
 }
 std::fstream& fileIO::getFileFstream() {
     return fileFstream; 
@@ -33,46 +112,14 @@ std::fstream& fileIO::getFileFstream() {
 // methods
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void fileIO::crearFile() {
-    if (std::get<bool>(dictionary::get()->lookupDefault(fileName)) == true) {
-        fileFstream.open(io::directoryData.getDirName() + fileName, std::ios::out);
-    }
+    
+    fileFstream.open(fileNamePwd, std::ios::out);
 }
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// dirIO
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// constructor
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-dirIO::dirIO(const std::string& dirName) :
-    dirName(dirName),
-    dirNamePwd(dirName + '/')
-{
-    crearDir();
-}
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// getters
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-const std::string dirIO::getDirName() const {
-    return dirName;
-}
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// methods
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void dirIO::crearDir() {
-    mkdir(dirName.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// io
+//                                io
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -80,21 +127,17 @@ void dirIO::crearDir() {
 // static member
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 io* io::ioInstance = nullptr;
-// std::fstream io::fileTotalPersonasEvacuadas;
-// std::fstream io::filePersonasEvacuadasNodeEvacuation;
 
 dirIO io::directoryData("data");
 dirIO io::directoryPostprocessing("postprocessing");
-dirIO io::directorySnapshot("snapshot");
-fileIO io::fileTotalEvacuatedCount("totalEvacuatedCount");
-fileIO io::fileEvacuatedCount("evacuatedCount");
+dirIO io::directorySnapshot("snapshot", &directoryPostprocessing);
+fileIO io::fileTotalEvacuatedCount("totalEvacuatedCount", &directoryData);
+fileIO io::fileEvacuatedCount("evacuatedCount", &directoryData);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 io::io() {
-    // crea directorios
-    crearCarpetasOutput();
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -118,46 +161,25 @@ io* io::get() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metods
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void io::crearCarpetasOutput() {
-    // crear carpeta data
-    mkdir(directoryData.getDirName().c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-
+dirIO* io::crearCarpetaTiempo() {
+    /* Crea carpetas de cada tiempo de evacuacion*/
+    dirIO* dirTime = new dirIO(std::to_string(tiempo::get()->getValorTiempo()), &directoryData);
+    // crear carpeta de los tiempos en segundos para almacenar informacion
+    mkdir(dirTime->getDirNamePwd().c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+    return dirTime;
 }
 void io::imprimirOutput() {
     if (std::get<std::string>(dictionary::get()->lookup("sarsaProcesses")) == "trained") {
-        if (tiempo::get()->verificarGraphicPrintout()) {
+        if (tiempo::get()->verificarGraphicPrintoutPeriod()) {
             // imprimir datos de personas: posicion y velocidad
-            if (std::get<bool>(dictionary::get()->lookupDefault("graphicPrintout")) == true) {
-                pedestrians::get()->imprimirPedestrians();
-            }
+            dirIO* dirTiempo = crearCarpetaTiempo();
+            pedestrians::get()->imprimirPedestrians(dirTiempo);
+            nodeEvacuation::imprimirVariableTotalPersonasEvacuadas(dirTiempo);
+            // imprimir total personas evacuadas
             // imprime personas totales evacuadas
-            if (std::get<bool>(dictionary::get()->lookupDefault("totalEvacuatedCount")) == true) {
-                nodeEvacuation::imprimirTotalPersonasEvacuadas(fileTotalEvacuatedCount.getFileFstream());
-            }
+            nodeEvacuation::imprimirTotalPersonasEvacuadas(&fileTotalEvacuatedCount);
             // imprime personas evacuadas por node evacuacion
-            // if (std::get<bool>(dictionary::get()->lookupDefault("evacuatedCount")) == true) {
-            //     // impresion de id de nodos
-            //     if (tiempo::get()->getValorTiempo() == 1) {
-            //         filePersonasEvacuadasNodeEvacuation << "id,";
-            //         for (int i = 0; i < nodes::get()->getDbNodeEvacuation().size(); i++) {
-            //             filePersonasEvacuadasNodeEvacuation << nodes::get()->getDbNodeEvacuation().at(i)->getIdNode();
-            //             if (i < nodes::get()->getDbNodeEvacuation().size() - 1) {
-            //                 filePersonasEvacuadasNodeEvacuation << ",";
-            //             }
-            //     }
-            //     filePersonasEvacuadasNodeEvacuation << std::endl;
-   
-            //     }
-            //     // impresion de personas evacuadas por nodo de evacuacion
-            //     filePersonasEvacuadasNodeEvacuation << tiempo::get()->getValorTiempo() << ",";
-            //     for (int i = 0; i < nodes::get()->getDbNodeEvacuation().size(); i++) {
-            //         nodes::get()->getDbNodeEvacuation().at(i)->imprimirPersonasEvacuadas(filePersonasEvacuadasNodeEvacuation);
-            //         if (i < nodes::get()->getDbNodeEvacuation().size() - 1) {
-            //             filePersonasEvacuadasNodeEvacuation << ",";
-            //         }
-            //     }
-            //     filePersonasEvacuadasNodeEvacuation << std::endl;
-            // }
+            nodeEvacuation::imprimirNodeEvacuation(&fileEvacuatedCount);
         }
     }
 }

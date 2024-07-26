@@ -34,8 +34,6 @@ int main() {
             links::get()->contarPedestriansInSublink();
             // modelamiento de pedestrian.
             pedestrians::get()->modelamientoPedestrians();
-            // imprimir datos para postprocesamiento.
-            pedestrians::get()->imprimirPedestrians();
             // io 
             io::get()->imprimirOutput();
             // pone en 0 los elementos valores sublink            

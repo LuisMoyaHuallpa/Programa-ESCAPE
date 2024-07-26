@@ -242,20 +242,8 @@ void tiempo::mostrarTiempo() const {
     // Mostrar en terminal tiempo actual.
     std::cout << "Time = " << valorTiempo << std::endl;
 }
-void tiempo::crearCarpetaTiempo() {
-    std::string folderData = "data/";
-    std::string folderName = std::to_string(getValorTiempo());
-    std::string path = folderData + folderName;
-    // crear carpeta de los tiempos en segundos para almacenar informacion
-    mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-}
-bool tiempo::verificarGraphicPrintout() {
-    if (getValorTiempo() % getGraphicPrintoutPeriod() == 0) {
-        return true;
-    }
-    else {
-        return false;
-    }
+bool tiempo::verificarGraphicPrintoutPeriod() const {
+    return (getValorTiempo() % getGraphicPrintoutPeriod() == 0);
 }
 bool tiempo::verificarPedestrianCountPeriod() {
     if (getValorTiempo() % getPedestrianCountPeriod() == 0) {

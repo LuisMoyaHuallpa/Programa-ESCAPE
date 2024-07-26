@@ -6,6 +6,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "node.h"
 #include "vector2D.h"
+#include "io.h"
 
 class nodeEvacuation: public node {
     
@@ -36,8 +37,9 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     int static getTotalPersonasEvacuadas();
     void static sumarTotalPersonasEvacuadas();
-    void static imprimirNodeEvacuation(std::fstream& file);
-    void static imprimirTotalPersonasEvacuadas(std::fstream& file);
+    void static imprimirNodeEvacuation(fileIO* file);
+    void static imprimirTotalPersonasEvacuadas(fileIO* file);
+    void static imprimirVariableTotalPersonasEvacuadas(dirIO* dirTime);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // setters
@@ -49,6 +51,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     const bool getLleno() const;
     const int getMaxPersonasEvacuadas() const;
+    const int getPersonasEvacuadas() const;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos

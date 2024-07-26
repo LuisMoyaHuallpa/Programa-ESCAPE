@@ -1,4 +1,5 @@
 #include "pedestrian.h"
+#include "io.h"
 #include "nodeEvacution.h"
 #include "stateMatrix.h"
 #include "subLink.h"
@@ -510,16 +511,16 @@ void pedestrian::mostrarMovimientoPedestrian() const {
     // std::cout << std::setw(5) << getReward() << ' ';
     std::cout << std::endl;
 }
-void pedestrian::imprimirPedestrianPosition(std::fstream& file) const {
+void pedestrian::imprimirPedestrianPosition(fileIO* file) const {
     // if (getEvacuado()) {
     // decimales para guardar en archivos.
-    file << std::fixed << std::setprecision(2);
-    file << position.getX() << " ";
-    file << position.getY() << " ";
-    file << std::endl;
+    file->getFileFstream() << std::fixed << std::setprecision(2);
+    file->getFileFstream() << position.getX() << " ";
+    file->getFileFstream() << position.getY() << " ";
+    file->getFileFstream() << std::endl;
     // }
 }
-void pedestrian::imprimirPedestrianVelocity(std::fstream& file) const {
-    file << velocidad.getMagnitud() << " ";
-    file << std::endl;
+void pedestrian::imprimirPedestrianVelocity(fileIO* file) const{
+    file->getFileFstream() << velocidad.getMagnitud() << " ";
+    file->getFileFstream() << std::endl;
 }
