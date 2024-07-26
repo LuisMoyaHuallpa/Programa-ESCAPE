@@ -197,6 +197,7 @@ void tiempo::calcularRandomChoiceRate() {
     int N = endNumberSimulation;
     if (std::get<std::string>(dictionary::get()->lookup("sarsaProcesses")) == "calibration") {
         // formula para random choice
+        // es numero 9 o 4?
         double gleeFactor = 4.0 / double(N);
         // el -1 es para empezar el numero de simulaciones en 0
         randomChoiceRate = 1.0 / (gleeFactor * double(k - 1) + 1.0);

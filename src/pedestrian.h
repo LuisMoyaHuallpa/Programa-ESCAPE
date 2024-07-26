@@ -58,8 +58,9 @@ private:
     const int gender;
     const int hhType;
     const int hhId;
-    vector2D position;
     const node* nodeArranque;
+    const int tiempoInicial;
+    vector2D position;
     node* nodeInicio;
     node* nodeFinal;
     node* nodeInicioAnterior;
@@ -67,7 +68,6 @@ private:
     link* linkPasado;
     vector2D direccionPedestrian;
     vector2DVelocidad velocidad;
-    const int tiempoInicial;
     bool evacuado;
     int reward;
     std::vector<double>* QsActual;
