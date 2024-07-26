@@ -74,11 +74,9 @@ void nodeEvacuation::imprimirTotalPersonasEvacuadas(fileIO* file) {
         file->getFileFstream() << std::endl;
     }
 }
-void nodeEvacuation::imprimirVariableTotalPersonasEvacuadas(dirIO* directory) {
+void nodeEvacuation::imprimirVariableTotalPersonasEvacuadas(fileIO* file) {
     // impresion de tiempo y personas evacuadas
-    fileIO cantPedestrianEvacuated("cantPedestrianEvacuated", directory);
-    cantPedestrianEvacuated.getFileFstream() << totalPersonasEvacuadas;
-    cantPedestrianEvacuated.getFileFstream().close();
+    file->getFileFstream() << totalPersonasEvacuadas;
 }
 
 

@@ -50,7 +50,7 @@ public:
     void reiniciarConteoPedestrians();
     void modelamientoPedestrians();
     void mostrarDbPedestrianTotal();
-    void imprimirPedestrians(dirIO* dirTime);
+    void imprimirPedestrians(fileIO* file1, fileIO* file2);
 };
 
 #endif

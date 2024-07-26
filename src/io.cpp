@@ -22,8 +22,8 @@ dirIO::dirIO(const std::string& dirName) :
 }
 dirIO::dirIO(const std::string& dirName, const dirIO* directory) :
     dirName(dirName),
-    dirNamePwd(directory->getDirNamePwd() + dirName + '/'),
-    directory(directory)
+    directory(directory),
+    dirNamePwd(directory->getDirNamePwd() + dirName + '/')
 {
     if (!verificarDirExists()) {
         crearDir();
@@ -82,14 +82,13 @@ fileIO::fileIO(const std::string& fileName) :
     directory(nullptr)
 {
     crearFile();
-    std::cout << "creo:" + fileName << std::endl;
 }
 
 fileIO::fileIO(const std::string& fileName,const dirIO* directory) :
     fileName(fileName),
     fileNameCsv(fileName + ".csv"),
-    fileNamePwd(directory->getDirNamePwd() + fileName),
-    directory(directory)
+    directory(directory),
+    fileNamePwd(directory->getDirNamePwd() + fileName)
 {
     crearFile();
 }
@@ -171,11 +170,18 @@ dirIO* io::crearCarpetaTiempo() {
 void io::imprimirOutput() {
     if (std::get<std::string>(dictionary::get()->lookup("sarsaProcesses")) == "trained") {
         if (tiempo::get()->verificarGraphicPrintoutPeriod()) {
-            // imprimir datos de personas: posicion y velocidad
+            // crear carpetas de tiempo
             dirIO* dirTiempo = crearCarpetaTiempo();
-            pedestrians::get()->imprimirPedestrians(dirTiempo);
-            nodeEvacuation::imprimirVariableTotalPersonasEvacuadas(dirTiempo);
-            // imprimir total personas evacuadas
+            // imprimir datos de personas: posicion y velocidad
+            fileIO xy("xy", dirTiempo);
+            fileIO U("U", dirTiempo);
+            pedestrians::get()->imprimirPedestrians(&xy, &U);
+            // imprimir datos de personas: cantidad de personas evacuadas
+            fileIO cantPedestrianEvacuated("cantPedestrianEvacuated", dirTiempo);
+            nodeEvacuation::imprimirVariableTotalPersonasEvacuadas(&cantPedestrianEvacuated);
+            delete dirTiempo;
+            dirTiempo = nullptr; 
+            // archivos de tablas de exportacion
             // imprime personas totales evacuadas
             nodeEvacuation::imprimirTotalPersonasEvacuadas(&fileTotalEvacuatedCount);
             // imprime personas evacuadas por node evacuacion

@@ -39,7 +39,7 @@ public:
     void static sumarTotalPersonasEvacuadas();
     void static imprimirNodeEvacuation(fileIO* file);
     void static imprimirTotalPersonasEvacuadas(fileIO* file);
-    void static imprimirVariableTotalPersonasEvacuadas(dirIO* dirTime);
+    void static imprimirVariableTotalPersonasEvacuadas(fileIO* file);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // setters

@@ -156,17 +156,15 @@ void pedestrians::mostrarDbPedestrianTotal() {
         dbPedestrianTotal.at(i).mostrarMovimientoPedestrian();
     }
 }
-void pedestrians::imprimirPedestrians(dirIO* dirTime){
+void pedestrians::imprimirPedestrians(fileIO* file1, fileIO* file2){
     /* imprimir datos de posicion, cantidad de evacuados y velocidad.*/
     // si la opcion esta activa lo va imprimir, por default esta activa
     if (std::get<bool>(dictionary::get()->lookupDefault("graphicPrintout")) == true) {
         // impresion de variables
-        fileIO* xy = new fileIO("xy", dirTime);
-        fileIO* U = new fileIO("U", dirTime);
         for (auto it = dbPedestrianTotal.begin(); it != dbPedestrianTotal.end(); ++it) {
             if (tiempo::get()->getValorTiempo() >= it->getTiempoInicial()) {
-                it->imprimirPedestrianPosition(xy);
-                it->imprimirPedestrianVelocity(U);
+                it->imprimirPedestrianPosition(file1);
+                it->imprimirPedestrianVelocity(file2);
             }
         }
     }
