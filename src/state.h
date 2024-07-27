@@ -11,6 +11,9 @@
 class state {
 
 private:
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // densityLinks    |-->|  DENSIDAD DE LAS CALLES VECINAS A UNA INTERSECCION
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     const std::vector<int> densityLinks;
 
 public:
@@ -32,7 +35,8 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    bool operator==(const state state2) const;
+    bool operator==(const state& state2) const;
+    bool operator<(const state& state2) const;
     void mostrarState() const;
     void imprimirState(std::fstream& file) const;
 

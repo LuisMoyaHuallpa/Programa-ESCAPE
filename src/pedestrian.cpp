@@ -27,15 +27,13 @@ const int pedestrian::stepReward = -1;
 //     (*this).hhType = 0;
 //     (*this).hhId = 0;
 // }
-pedestrian::pedestrian(int edad, int gender, int hhType, int hhId,node* nodeArranque)
+pedestrian::pedestrian(const int edad, const int gender, const int hhType, const int hhId, const node* nodeArranque)
     : idPedestrian(contador++), edad(edad), gender(gender), hhType(hhType), hhId(hhId),
       nodeArranque(nodeArranque), nodeInicio(nullptr), nodeFinal(nullptr), nodeInicioAnterior(nullptr),
-      direccionPedestrian(), tiempoInicial(0),
+      direccionPedestrian(), tiempoInicial(0), evacuado(false), reward(0),
       QCurrent(nullptr), QPrevious(nullptr),
       velocidad() {
-    setNodeInicio(nodeArranque);
-    setEvacuado(false);
-    setReward(0);
+    nodeInicio = const_cast<node*>(nodeArranque);
     verificarPedestrianEvacuation();
 }
 
@@ -183,26 +181,26 @@ void pedestrian::contarPedestrianInSublink() {
         linkActual->getSublink().at(index).getPedestriansInSublink().push_back(this);
     }
 }
-void pedestrian::eleccionGeneralLinkActual() {
+void pedestrian::eleccionGeneralLink() {
    // Configurar el generador de números aleatorios
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_real_distribution<double> dis(0.0, 1.0);
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    static std::uniform_real_distribution<double> dis(0.0, 1.0);
     // Generar un número aleatorio en el rango [0.0, 1.0)
-    double randomNumber = dis(gen);
+    const double randomNumber = dis(gen);
     // compara el numero aletorio con optima choice rate
     // este ultimo debe ir descendiendo cuando halla mas simulaciones
     // a mayor simulaciones mas uso de la elecion sarsa
     switch (randomNumber <= tiempo::get()->getRandomChoiceRate() ? 1 : 2) {
         case 1:
-            eleccionRandomLinkActual();
+            eleccionRandomLink();
             break;
         case 2:
-            eleccionSarsa();
+            eleccionSarsaLink();
             break;
     }
 }
-void pedestrian::eleccionRandomLinkActual() {
+void pedestrian::eleccionRandomLink() {
     /* La persona esta en una interseccion y tiene multiples opciones para elegir una calle.
         segun aletoriedad se decide cual sera la calle a tomar y se guardará en linkActual.*/
     // Algoritmo Motor Mersenne Twister
@@ -225,37 +223,19 @@ void pedestrian::eleccionRandomLinkActual() {
     // sabiendo la calle defino el nodo final.
     calcularNodeFinal();
 }
-void pedestrian::eleccionSarsa() {
-    // guarda el vector Q 
-    // std::vector<double>* QVector = &stateMatrixActual->getQsValue().getQsVector();
-    // busca el elemento menor
+void pedestrian::eleccionSarsaLink() {
+    // busca el elemento mayor de Qs Actual
     auto it = std::max_element(QsActual->begin(), QsActual->end());
     // encuentra el indice del elemento
     size_t iQmenor = std::distance(QsActual->begin(), it);
-
-    // // empieza con valores del primer elemento de QsVector
-    // double Qmenor = stateMatrixActual->getQsValue().getQsVector().at(0);
-    // // valor de inicio para comparar con los del vector Qs
-
-    // int iQmenor = 0;
-    // // me devuele el menor Q
-    // for (int i = 0; i < stateMatrixActual->getQsValue().getQsVector().size(); i++) {
-    //     if (stateMatrixActual->getQsValue().getQsVector().at(i) > Qmenor) {
-    //         Qmenor= stateMatrixActual->getQsValue().getQsVector().at(i);
-    //         iQmenor = i;
-    //     }
-    // }
     // eleccion de la calle nueva, parte principal de la funcion
     setLinkActual(nodeInicio->getLinkConnection().at(iQmenor));
     // agrega persona a la calle
     linkActual->getPedestriansLink().push_back(this);
     // enviando informacion de action al stateMatrix
-    // stateMatrixActual->getActionValue().setILinkConnection(iQmenor);
-    // stateMatrixActual->getActionValue().setIdLink(linkActual->getIdLink());
     // puntero al Qcurrent
     QCurrent = &QsActual->at(iQmenor); 
     // contando persona que experimenta state y action
-    // stateMatrixActual->getPedestrianMassState().getPedestrianMassStateVector().at(iQmenor)++;
     // sabiendo la calle defino el nodo final.
     calcularNodeFinal();
 }
@@ -345,7 +325,7 @@ void pedestrian::cambioCalle() {
         // calculo del reward
         calcularReward();
         // eleccionde de la calle
-        eleccionGeneralLinkActual();
+        eleccionGeneralLink();
         // guarda infomacion de stateMatrix de la persona en una tabla en nodo.
         // stateMatrixtoTableAtNode();
         // algoritmo sarsa, actualiza en nodoAnterior
@@ -417,7 +397,7 @@ void pedestrian::algoritmoSarsa() {
 }
 void pedestrian::calcularLevelDensityAtNode() {
     // obtengo en puntero de stateMatrix del nodo inicial
-    std::map<std::vector<int>, stateMatrix*>* stateMatrixTableMap = &(nodeInicio->getStateMatrixTableMap());
+    std::map<state, stateMatrix*>* stateMatrixTableMap = &(nodeInicio->getStateMatrixTableMap());
     const std::vector<int*> densityLevels = nodeInicio->getDensityLevelNode();
    
     // Usar un bucle for para copiar los valores de los punteros a enteros
@@ -477,7 +457,7 @@ void pedestrian::modelamientoPedestrian() {
             // calculo del stateMatrix para obtener datos de state.
             calcularLevelDensityAtNode();
             // eleccionde de la calle
-            eleccionRandomLinkActual();
+            eleccionRandomLink();
             // guarda infomacion de stateMatrix de la persona en una tabla en nodo.
             // stateMatrixtoTableAtNode();
             // direccion de la persona en la calle.
@@ -495,21 +475,26 @@ void pedestrian::modelamientoPedestrian() {
 void pedestrian::mostrarMovimientoPedestrian() const {
     /* muestra la interseccion de partida y final de una calle, cuando
         la persona.*/
-    std::cout << idPedestrian << ' ';
-    std::cout << std::setw(6) << nodeInicio->getIdNode() << ' ';
-    std::cout << "start: ";
-    // decimales para imprecion
-    std::cout << std::fixed << std::setprecision(2);
-    std::cout << std::setw(5) << nodeInicio->getCoordenada().getX() << ' ';
-    std::cout << std::setw(5) << nodeInicio->getCoordenada().getY() << ' ';
-    std::cout << "now: ";
-    std::cout << std::setw(5) << position.getX() << " ";
-    std::cout << std::setw(5) << position.getY() << " ";
-    std::cout << "end: ";
-    std::cout << std::setw(5) << nodeFinal->getCoordenada().getX() << ' ';
-    std::cout << std::setw(5) << nodeFinal->getCoordenada().getY() << ' ';
-    // std::cout << std::setw(5) << getReward() << ' ';
-    std::cout << std::endl;
+    if (tiempo::get()->getValorTiempo() > tiempoInicial) {
+        std::cout << idPedestrian << ' ';
+        std::cout << std::setw(6) << nodeInicio->getIdNode() << ' ';
+        std::cout << "start: ";
+        // decimales para imprecion
+        std::cout << std::fixed << std::setprecision(2);
+        std::cout << std::setw(5) << nodeInicio->getCoordenada().getX() << ' ';
+        std::cout << std::setw(5) << nodeInicio->getCoordenada().getY() << ' ';
+        std::cout << "now: ";
+        std::cout << std::setw(5) << position.getX() << " ";
+        std::cout << std::setw(5) << position.getY() << " ";
+        std::cout << "end: ";
+        
+        std::cout << std::setw(5) << nodeFinal->getCoordenada().getX() << ' ';
+        std::cout << std::setw(5) << nodeFinal->getCoordenada().getY() << ' ';
+        // std::cout << std::setw(5) << getReward() << ' ';
+        std::cout << std::endl;
+        std::cout << *QCurrent;
+        std::cout << std::endl;
+    }
 }
 void pedestrian::imprimirPedestrianPosition(fileIO* file) const {
     // if (getEvacuado()) {

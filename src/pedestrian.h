@@ -40,16 +40,15 @@ private:
     // hhId                |-->| 
     // position            |-->| POSICION DE LA PERSONA
     // nodeArranque        |-->| INTERSECCION DE INICIO AL INICIAR SIMULACION  
+    // tiempoInicial       |-->| TIEMPO DE INICIO PARA QUE LA PERSONA EMPIEZE A CAMINAR 
+    // position            |-->| POSICION DE LA PERSONA 
     // nodeInicio          |-->| INTERSECCION DE UNA CALLE 
     // nodeFinal           |-->| OTRA INTERSECCION DE LA MISMA CALLE
     // nodeInicioAnterior  |-->| INTERSECCION INICIAL DE LA CALLE ANTERIOR
     // linkActual          |-->| CALLE POR DONDE ESTA ACTUALMENTE LA PERSONA 
     // linkPasado          |-->| CALLE ANTERIOR POR DONDE PASO
-    // direccionPedestrian |-->| CALLE ANTERIOR POR DONDE PASO
+    // direccionPedestrian |-->| DIRECCION DE LA PERSONA
     // velocidad           |-->| VELOCIDAD DE LA PERSONA
-    // tiempoInicial       |-->| TIEMPO DE INICIO PARA QUE LA PERSONA EMPIEZE A CAMINAR 
-    // stateMatrixActual   |-->| ESTADO Y ACCION ACTUAL QUE EXPERIMENTO LA PERSONA 
-    // stateMatrixPasado   |-->| ESTADO Y ACCION PASADO QUE EXPERIMENTO LA PERSONA 
     // evacuado            |-->| LA PERSONA QUE LLEGO A UN PUNTO DE EVACUACION
     // retorno             |-->| PODRIA COMO LA GANANCIA TOTAL 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -88,7 +87,7 @@ public:
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // pedestrian();
-    pedestrian(int edad, int gender, int hhType, int hhId, node* nodeArranque);
+    pedestrian(const int edad, const int gender, const int hhType, const int hhId, const node* nodeArranque);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // setters
@@ -135,9 +134,9 @@ public:
     void contarPedestrianInSublink();
     void calcularDensityInSublink();
     void cambioCalle();
-    void eleccionGeneralLinkActual();
-    void eleccionRandomLinkActual();
-    void eleccionSarsa();
+    void eleccionGeneralLink();
+    void eleccionRandomLink();
+    void eleccionSarsaLink();
     void eleccionDosCallesContinuas();
     // int iEleccionRandomLinkActual();
     // void updateLinkActual(int iLinkConnection);

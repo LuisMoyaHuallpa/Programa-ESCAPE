@@ -1,12 +1,13 @@
 #include "node.h"
 #include "link.h"
+#include "state.h"
 #include "stateMatrix.h"
 #include <vector>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-node::node(int idNode, vector2D coordenada) :
+node::node(const int idNode, const vector2D coordenada) :
     idNode(idNode), coordenada(coordenada){
 }
 
@@ -47,7 +48,7 @@ const std::vector<link*>& node::getLinkConnection() {
 // std::vector<stateMatrix>& node::getStateMatrixTable() {
 //     return stateMatrixTable;
 // }
-std::map<std::vector<int>, stateMatrix*>& node::getStateMatrixTableMap() {
+std::map<state, stateMatrix*>& node::getStateMatrixTableMap() {
     return stateMatrixTableMap;  
 }
 std::vector<int*>& node::getDensityLevelNode() {

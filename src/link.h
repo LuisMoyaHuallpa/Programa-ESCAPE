@@ -32,10 +32,10 @@ private:
     // length            |-->| LARGO DE LA CALLE
     // width             |-->| ANCHO DE LA CALLE
     // orientacionLink   |-->| ANGULO QUE FORMA LA HORIZONTAL CON LA CALLE
+    // anchoSubdivision  |-->| ANCHO DE UNA SUBDIVISION DE LA CALLE
     // densityLevel      |-->| NIVEL DE DENSIDAD DE LA CALLE
     // pedestriansLink   |-->| PERSONAS EN LA CALLE
     // subdivisiones     |-->| SUBDIVISIONES DE LA CALLE
-    // anchoSubdivision  |-->| ANCHO DE UNA SUBDIVISION DE LA CALLE
     // numberLinkDivision|-->| NUMERO DE DIVISIONES O SUBLINK DE UNA CALLE
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     const int idLink;
@@ -44,10 +44,10 @@ private:
     const int length;
     const int width;
     const vector2D orientacionLink;
+    const double anchoSubdivision;
     int densityLevel;
     std::vector<pedestrian*> pedestriansLink;
     std::vector<subLink> subdivisiones;
-    const double anchoSubdivision;
     
 public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -63,8 +63,8 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // setters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    void setPedestriansLink(std::vector<pedestrian*> pedestriansLink);
     void setDensityLevel(int densityLevel);
+    void setPedestriansLink(std::vector<pedestrian*> pedestriansLink);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getters
@@ -75,16 +75,16 @@ public:
     const int getLength() const;
     const int getWidth() const;
     const vector2D getOrientacionLink() const;
+    const double getAnchoSubdivisiones() const;
     int* getDensityLevel();
     std::vector<pedestrian*>& getPedestriansLink();
     std::vector<subLink>& getSublink();
-    const double getAnchoSubdivisiones() const;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    vector2D calcularOrientacionLink();
-    double calcularAnchoDivisiones();
+    const vector2D calcularOrientacionLink() const;
+    const double calcularAnchoDivisiones() const;
     void calcularDensity();
     void calcularDensityLevel();
     void mostrarPedestriansLink() const;

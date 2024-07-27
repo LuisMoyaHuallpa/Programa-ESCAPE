@@ -66,23 +66,22 @@ const double link::getAnchoSubdivisiones() const {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-vector2D link::calcularOrientacionLink() {
+const vector2D link::calcularOrientacionLink() const{
     /* deberia esta calcular orientacion pero necesita acceder a dbLink
         por ello se calculara la direccione en pedestrian*/
-    double x = node2->getCoordenada().getX() - node1->getCoordenada().getX();
-    double y = node2->getCoordenada().getY() - node1->getCoordenada().getY();
+    /* calcula la direccion de la calle con los nodos inicial y final*/
+    const double x = node2->getCoordenada().getX() - node1->getCoordenada().getX();
+    const double y = node2->getCoordenada().getY() - node1->getCoordenada().getY();
     // Calcula la magnitud del vector de dirección
-    double magnitud = std::sqrt(std::pow(x, 2) + std::pow(y, 2));
+    const double magnitud = std::sqrt(std::pow(x, 2) + std::pow(y, 2));
     // Normaliza el vector de dirección (divide cada e por la magnitud)
-    // orientacionLink.setX(std::abs(x / magnitud));
-    // orientacionLink.setY(std::abs(y / magnitud));
     return {std::abs(x / magnitud), std::abs(y / magnitud)};
 }
-double link::calcularAnchoDivisiones() {
+const double link::calcularAnchoDivisiones() const{
     /* Calcula el ancho de divisiones de la calle segun el numero de divisiones preestablecidas*/
-    double ancho_x = node1->getCoordenada().getX() - node2->getCoordenada().getX();
-    double ancho_y = node1->getCoordenada().getY() - node2->getCoordenada().getY();
-    double ancho = std::sqrt(pow(ancho_x, 2) + pow(ancho_y, 2)) / static_cast<double>(link::numberLinkDivision);
+    const double ancho_x = node1->getCoordenada().getX() - node2->getCoordenada().getX();
+    const double ancho_y = node1->getCoordenada().getY() - node2->getCoordenada().getY();
+    const double ancho = std::sqrt(ancho_x * ancho_x + ancho_y * ancho_y) / static_cast<double>(link::numberLinkDivision);
     return ancho;
 }
 void link::calcularDensity() {

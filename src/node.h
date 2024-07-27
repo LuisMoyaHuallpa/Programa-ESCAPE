@@ -12,6 +12,7 @@ Punto de interseccion de calles.
 #include <iostream>
 #include <ostream>
 #include <vector>
+#include "state.h"
 #include "unordered_map"
 #include "map"
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -36,7 +37,7 @@ private:
     const int idNode;
     const vector2D coordenada;
     const std::vector<link*> linkConnection;
-    std::map<std::vector<int>, stateMatrix*> stateMatrixTableMap;
+    std::map<state, stateMatrix*> stateMatrixTableMap;
     std::vector<int*> densityLevelNode;
 
 public:
@@ -59,7 +60,7 @@ public:
     const int getIdNode() const;
     const vector2D getCoordenada() const;
     const std::vector<link*>& getLinkConnection();
-    std::map<std::vector<int>, stateMatrix*>& getStateMatrixTableMap();
+    std::map<state, stateMatrix*>& getStateMatrixTableMap();
     std::vector<int*>& getDensityLevelNode();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
