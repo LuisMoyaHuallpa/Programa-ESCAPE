@@ -1,5 +1,5 @@
 #include "stateMatrix.h"
-#include "pedestrianMassState.h"
+#include "stateMatrixs.h"
 #include <vector>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -43,21 +43,18 @@ void stateMatrix::setPedestrianMassState(pedestrianMassState pedestrianMassState
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getter
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-const state& stateMatrix::getStateValue() const {
-    return stateValue;
+const int stateMatrix::getId() const {
+    return id;
 }
-Qs &stateMatrix::getQsValue() {
-    return QsValue;
+const node* stateMatrix::getNodeId() const {
+    return nodo;
 }
-std::vector<int>& stateMatrix::getotrosVector() {
-    return otrosVector;
+const std::vector<int> stateMatrix::getState() const {
+    return state;    
 }
-pedestrianMassState &stateMatrix::getPedestrianMassState() {
-    return pedestrianMassStateValue;  
+std::vector<Q> &stateMatrix::getQs() {
+    return Qs;
 }
-// action& stateMatrix::getActionValue() {
-//     return actionValue;
-// }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static getter
@@ -80,17 +77,25 @@ bool stateMatrix::operator==(stateMatrix stateMatrix2) {
     }
     return false;
 }
-// struct stateM {
-//     si
-// }
+stateMatrix *stateMatrix::buscarStateMatrix(std::vector<int> state) const {
+}
 
-// void stateMatrix::enviarDataNode(node* nodeAGuardar) {
-    // Envia los datos leidos del csv al QTable de cada nodo.
-    // for (int i = 0; i < stateValue.getDensityLinks().size(); i++) {
-    //     stateActionQ qAGuardar(stateValue, nodeAGuardar->getLinkConnection().at(i)->getIdLink(),QVector[i]);
-    //     nodeAGuardar->addqQTable(qAGuardar);
-    // }
-// }
+stateMatrix* stateMatrix::creacionObtencionStateMatrix(
+    const node nodo&,
+    const std::vector<stateMatrix*>& stateMatrixExperimentados,
+    const std::vector<int>& stateObservado)
+{
+    // loop para buscar cada lista de stateMatrix
+    for (stateMatrix* stateMatrixExperimentado : stateMatrixExperimentados) {
+        // si stateMatrixExperiemntado es igual al stateObservado entonces si existe ese stateMatrix
+        if (stateMatrixExperimentado->getState() == stateObservado) {
+            return stateMatrixExperimentado; 
+        }
+    }
+    std::vector<stateMatrix>& dbStateMatrix = stateMatrixs::get()->getDbStateMatrixs();
+    dbStateMatrix.emplace_back(nodo, stateObservado);
+    return &dbStateMatrix.back();
+}
 void stateMatrix::mostrarStateMatrix() {
     /* muestra en la terminal cada linea del stateMatrix. */
     // state value

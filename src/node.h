@@ -37,8 +37,7 @@ private:
     const int idNode;
     const vector2D coordenada;
     const std::vector<link*> linkConnection;
-    std::map<state, stateMatrix*> stateMatrixTableMap;
-    std::vector<int*> densityLevelNode;
+    std::vector<stateMatrix*> stateMatrixExperimentos;
 
 public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -59,15 +58,15 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     const int getIdNode() const;
     const vector2D getCoordenada() const;
-    const std::vector<link*>& getLinkConnection();
-    std::map<state, stateMatrix*>& getStateMatrixTableMap();
-    std::vector<int*>& getDensityLevelNode();
+    const std::vector<link*> getLinkConnection() const;
+    std::vector<stateMatrix*>& getStateMatrixExperimentados();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // void buscarStateMatrix(stateMatrix stateMatrixBuscando, bool& verificarStateMatrix, int& iStateMatrixTable);
     bool verificarCambioState(state stateAnterior, state stateActual);
+    std::vector<int> stateObservado() const;
     void mostrarNode() const;
     void mostrarQTable() const;
     void imprimirQTable(std::fstream& file) const;

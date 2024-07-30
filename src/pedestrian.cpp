@@ -156,6 +156,18 @@ void pedestrian::caminar() {
     /* formula de desplazamiento*/
     position += velocidad * tiempo::get()->getDeltaT();
 }
+std::vector<int> pedestrian::observarStateObservado() const {
+    // observo el nivel de densidad de mi calles conectadas
+    std::vector<int> stateObservado;
+    const std::vector<link*> calleConectadas = nodeInicio->getLinkConnection();
+    for (link* calle : calleConectadas) {
+        stateObservado.push_back(calle->getDensityLevel());
+    }
+    return stateObservado;
+}
+stateMatrix *pedestrian::creacionObtencionStateMatrix() {
+    
+}
 double pedestrian::calcularIDoubleSublink() {
     /* Calcula la ubicacion de la persona en el array del subLink*/
     // distancia de la persona al nodeInicio de la persona
@@ -318,7 +330,7 @@ void pedestrian::cambioCalle() {
         // correcion de la posicion cuando se llega cerca al nodo.
         setPosition({nodeInicio->getCoordenada().getX(), nodeInicio->getCoordenada().getY()});
         // calculo del stateMatrix para obtener datos de state.
-        calcularLevelDensityAtNode();
+        observarDensityLevel();
 
         // verificar si el nodo final es un nodo de evacucion.
         verificarPedestrianEvacuation();
@@ -395,7 +407,21 @@ void pedestrian::algoritmoSarsa() {
     // reinica el reward de la persona
     reward = 0;
 }
-void pedestrian::calcularLevelDensityAtNode() {
+stateMatrix *pedestrian::creacionObtencionStateMatrix(const std::vector<int> stateObservado) {
+        
+}
+void pedestrian::observarDensityLevel() {
+    // observo el nivel de densidad de mi calles conectadas
+    const std::vector<int> stateObservado = nodeInicio->stateObservado();
+    // buscar si existe el stateMatrix
+    
+    // reviso si esta
+    const std::vector<stateMatrix*> stateExperimentados=nodeInicio->getStateMatrixExperimentados();
+    for (stateMatrix* stateExperimentado : stateExperimentados) {
+        if (stateExperimentado->getState() == stateObservado) {
+            
+        }
+    }
     // obtengo en puntero de stateMatrix del nodo inicial
     std::map<state, stateMatrix*>* stateMatrixTableMap = &(nodeInicio->getStateMatrixTableMap());
     const std::vector<int*> densityLevels = nodeInicio->getDensityLevelNode();
@@ -455,7 +481,7 @@ void pedestrian::modelamientoPedestrian() {
             // set la posicion de inicio del pedestrian
             setPosition({nodeInicio->getCoordenada().getX(), nodeInicio->getCoordenada().getY()});
             // calculo del stateMatrix para obtener datos de state.
-            calcularLevelDensityAtNode();
+            observarDensityLevel();
             // eleccionde de la calle
             eleccionRandomLink();
             // guarda infomacion de stateMatrix de la persona en una tabla en nodo.

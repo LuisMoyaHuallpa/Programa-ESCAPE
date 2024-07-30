@@ -1,8 +1,9 @@
 #include "node.h"
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// extras
 #include "link.h"
-#include "state.h"
-#include "stateMatrix.h"
 #include <vector>
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
@@ -39,21 +40,13 @@ const int node::getIdNode() const{
 const vector2D node::getCoordenada() const{
     return coordenada;
 }
-// std::vector<int>& node::getIdLinkConnection() {
-//     return idLinkConnection;  
-// }
-const std::vector<link*>& node::getLinkConnection() {
+const std::vector<link*> node::getLinkConnection() const {
     return linkConnection;  
 }
-// std::vector<stateMatrix>& node::getStateMatrixTable() {
-//     return stateMatrixTable;
-// }
-std::map<state, stateMatrix*>& node::getStateMatrixTableMap() {
-    return stateMatrixTableMap;  
+std::vector<stateMatrix*>& node::getStateMatrixExperimentados() {
+    return stateMatrixExperimentos;
 }
-std::vector<int*>& node::getDensityLevelNode() {
-    return densityLevelNode;
-}
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -108,6 +101,17 @@ bool node::verificarCambioState(state stateAnterior, state stateActual) {
         return true;
     }
     return false;  
+}
+std::vector<int> node::stateObservado() const {
+    // vector de estado
+    std::vector<int> stateObservado;
+    // Reserva espacio en el vector
+    stateObservado.reserve(linkConnection.size());
+    // asignacion de estados
+    for (link* calle : linkConnection) {
+        stateObservado.push_back(calle->getDensityLevel());
+    }
+    return stateObservado;
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // mostrar

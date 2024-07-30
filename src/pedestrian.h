@@ -62,13 +62,14 @@ private:
     vector2D position;
     node* nodeInicio;
     node* nodeFinal;
-    node* nodeInicioAnterior;
-    link* linkActual;
-    link* linkPasado;
     vector2D direccionPedestrian;
     vector2DVelocidad velocidad;
     bool evacuado;
     int reward;
+
+    node* nodeInicioAnterior;
+    link* linkActual;
+    link* linkPasado;
     std::vector<double>* QsActual;
     double* QCurrent;
     double* QPrevious;
@@ -130,6 +131,8 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     bool operator==(const pedestrian& pedestrian2) const;
     void caminar();
+    std::vector<int> observarStateObservado() const;
+    stateMatrix* creacionObtencionStateMatrix(const std::vector<int> stateObservado);
     double calcularIDoubleSublink();
     void contarPedestrianInSublink();
     void calcularDensityInSublink();
@@ -154,7 +157,7 @@ public:
     void algoritmoSarsa();
     // std::vector<stateActionQ>::iterator agregarObtenerqLista(node* nodeDeBusqueda,stateActionQ qBuscando);
     // voidbuscarQ(bool verificarQExistente, stateActionQ* qElemento);
-    void calcularLevelDensityAtNode();
+    void observarDensityLevel();
     // void stateMatrixtoTableAtNode();
     // void crearqState(node* nodeActual);
     void modelamientoPedestrian();

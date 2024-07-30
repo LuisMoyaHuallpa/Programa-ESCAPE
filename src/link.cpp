@@ -1,9 +1,5 @@
 #include "link.h"
 #include "pedestrian.h"
-#include "subLink.h"
-#include "vector2D.h"
-#include <algorithm>
-#include <vector>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -50,9 +46,10 @@ const int link::getWidth() const{
 const vector2D link::getOrientacionLink() const {
     return orientacionLink;
 }
-int* link::getDensityLevel() {
-    return &densityLevel;
+int& link::getDensityLevel() {
+    return densityLevel;
 }
+
 std::vector<pedestrian*>& link::getPedestriansLink() {
     return pedestriansLink;
 }

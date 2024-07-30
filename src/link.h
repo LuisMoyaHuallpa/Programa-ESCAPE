@@ -76,7 +76,8 @@ public:
     const int getWidth() const;
     const vector2D getOrientacionLink() const;
     const double getAnchoSubdivisiones() const;
-    int* getDensityLevel();
+    int& getDensityLevel();
+    
     std::vector<pedestrian*>& getPedestriansLink();
     std::vector<subLink>& getSublink();
 
