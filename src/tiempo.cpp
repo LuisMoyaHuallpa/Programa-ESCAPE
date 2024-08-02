@@ -1,13 +1,7 @@
 #include "tiempo.h"
-#include "dictionary.h"
-#include "nodeEvacution.h"
 #include "nodes.h"
+#include "links.h"
 #include "pedestrians.h"
-#include <chrono>
-#include <cstdlib>
-#include <string>
-#include <filesystem>
-#include <variant>
 
 int tiempo::deltaTiempo = 1;
 std::string tiempo::filenameData = "data/";

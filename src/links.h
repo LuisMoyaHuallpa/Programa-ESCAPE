@@ -18,7 +18,7 @@
 // header propios
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "link.h"
-#include "nodes.h"
+#include "node.h"
 
 class links {
 
@@ -60,7 +60,7 @@ public:
     void contarPedestriansInSublink();
     void resetSublinks();
     void resetPedestriansLink();
-    void mostrarLinks();
+    void mostrarDbLinksTotal();
     void mostrarSublink();
     void imprimirMeshLinks();
     // void creacionLinkConnections();

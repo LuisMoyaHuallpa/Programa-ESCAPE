@@ -2,6 +2,7 @@
 #define vector2D_h
 
 #include "iostream"
+#include "math.h"
 
 class vector2D{
 
@@ -33,6 +34,7 @@ public:
     vector2D operator*(const vector2D& vector2) const;
     vector2D operator*(double scalar);
     vector2D operator+=(vector2D vector2);
+    double distanciaA(const vector2D& coordenada2) const;
     void mostrarVector() const;
 };
 #endif

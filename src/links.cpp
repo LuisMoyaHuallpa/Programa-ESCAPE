@@ -98,16 +98,9 @@ void links::leerLinks(std::string fileName){
         node* node2 =nodes::get()->getDbNodeTotal().at(idNode2).get();
         std::unique_ptr<link> linkNuevo = std::make_unique<link>(idLink, node1, node2, lengthLink, widthLink);
         dbLinkTotal.push_back(std::move(linkNuevo));
-        // node1->getIdLinkConnection().push_back(idLink);
-        // node2->getIdLinkConnection().push_back(idLink);
-        // node1->getLinkConnection().push_back(dbLinkTotal.back().get());
-        const_cast<std::vector<link*>&>(node1->getLinkConnection()).push_back(dbLinkTotal.back().get());
-        const_cast<std::vector<link*>&>(node2->getLinkConnection()).push_back(dbLinkTotal.back().get());
-        // Obtener la dirección de memoria de getDensityLevel() y almacenarla en el vector
-        // int densityLevelValue = dbLinkTotal.back().get()->getDensityLevel();
-        // node1->getDensityLevelNode().push_back(&densityLevelValue);
-        node1->getDensityLevelNode().push_back(dbLinkTotal.back().get()->getDensityLevel());
-        node2->getDensityLevelNode().push_back(dbLinkTotal.back().get()->getDensityLevel());
+        // añadir link en cada nodo
+        node1->addLink(dbLinkTotal.back().get());
+        node2->addLink(dbLinkTotal.back().get());
     }
     file.close(); 
 }
@@ -125,7 +118,7 @@ void links::contarPedestriansInSublink() {
             // recorre todas las calles
             for (auto it = dbLinkTotal.begin(); it != dbLinkTotal.end(); ++it) {
                 // recorre las personas que estan en una calle
-                for (auto p :  it->get()->getPedestriansLink()) {
+                for (auto p :  it->get()->getPedestriansLinkPtr()) {
                     p->contarPedestrianInSublink();
                 }
                 // calcula el nivel de densidad de todas las calles con los datos anterios
@@ -153,10 +146,10 @@ void links::resetSublinks() {
 void links::resetPedestriansLink() {
     /* reinicia los valores de los pedestriansLink*/  
     for (auto it = dbLinkTotal.begin(); it != dbLinkTotal.end(); ++it) {
-        it->get()->getPedestriansLink().clear();
+        it->get()->getPedestriansLinkPtr().clear();
     }
 }
-void links::mostrarLinks(){
+void links::mostrarDbLinksTotal(){
     for (int i = 0; i < dbLinkTotal.size(); i++) {
         dbLinkTotal.at(i)->mostrarLink();
         // dbLinkTotal.at(i).mostrarSubLinks();

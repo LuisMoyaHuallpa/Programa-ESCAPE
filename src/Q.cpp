@@ -17,25 +17,23 @@ Q::Q() {
 double& Q::getValor() {
     return valor;    
 }
-const link* Q::getCalle() const {
-    return calle;
+const link* Q::getCallePtr() const {
+    return callePtr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void Qs::mostrarQs() const{
-    for (int i = 0; i < QsVector.size(); i++) {
-        std::cout << QsVector.at(i) << ",";
-    }
+void Q::mostrarQs() const{
+        std::cout << valor << ",";
 }
-void Qs::imprimirQs(std::fstream &file) const {
-    for (int i = 0; i < stateMatrix::tamanoVectorIO; i++) {
-        if (i < QsVector.size()) {
-            file << QsVector.at(i) << ',';
-        } else {
-            file << "0,";
-        }
-    }  
-}
+// void Q::imprimirQs(std::fstream &file) const {
+//     for (int i = 0; i < stateMatrix::tamanoVectorIO; i++) {
+//         if (i < QsVector.size()) {
+//             file << QsVector.at(i) << ',';
+//         } else {
+//             file << "0,";
+//         }
+//     }  
+// }
 

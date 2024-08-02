@@ -20,10 +20,10 @@ Una calle.
 #include "vector"
 #include "nodes.h"
 #include "dictionary.h"
+#include "pedestrian.h"
 
-class pedestrian;
+
 class link{
-    
 private:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // idLink            |-->| ID DE LA CALLE
@@ -39,14 +39,14 @@ private:
     // numberLinkDivision|-->| NUMERO DE DIVISIONES O SUBLINK DE UNA CALLE
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     const int idLink;
-    const node* node1;
-    const node* node2;
+    const node* node1Ptr;
+    const node* node2Ptr;
     const int length;
     const int width;
     const vector2D orientacionLink;
     const double anchoSubdivision;
     int densityLevel;
-    std::vector<pedestrian*> pedestriansLink;
+    std::vector<pedestrian*> pedestriansLinkPtr;
     std::vector<subLink> subdivisiones;
     
 public:
@@ -58,7 +58,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    link(int idLink, node* node1, node* node2, int length, int width);
+    link(int idLink, node* node1Ptr, node* node2Ptr, int length, int width);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // setters
@@ -70,15 +70,15 @@ public:
     // getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     const int getIdLink() const;
-    const node* getNode1() const;
-    const node* getNode2() const;
+    const node* getNode1Ptr() const;
+    const node* getNode2Ptr() const;
     const int getLength() const;
     const int getWidth() const;
     const vector2D getOrientacionLink() const;
     const double getAnchoSubdivisiones() const;
     int& getDensityLevel();
     
-    std::vector<pedestrian*>& getPedestriansLink();
+    std::vector<pedestrian*>& getPedestriansLinkPtr();
     std::vector<subLink>& getSublink();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

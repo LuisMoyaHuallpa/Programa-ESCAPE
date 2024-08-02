@@ -1,8 +1,4 @@
 #include "pedestrians.h"
-#include "dictionary.h"
-#include "io.h"
-#include "tiempo.h"
-#include <iostream>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -123,7 +119,7 @@ void pedestrians::contarPedestriansInSublink() {
         solo donde hay personas*/ 
     if (tiempo::get()->verificarPedestrianCountPeriod()) {
         for (auto it = dbPedestrianTotal.begin(); it != dbPedestrianTotal.end(); ++it) {
-            if (!it->getEvacuado()and
+            if (it->getEstado()== evacuando and
             tiempo::get()->getValorTiempo() > it->getTiempoInicial()) {
                 it->contarPedestrianInSublink(); 
             }
@@ -135,7 +131,7 @@ void pedestrians::contarPedestriansInSublink() {
 void pedestrians::reiniciarPedestriansNodeArranque() {
     // regresa a la persona a su posicion de salida inicial antes de empezar la evacuacion
     for (int i = 0; i < dbPedestrianTotal.size(); i++) {
-        dbPedestrianTotal.at(i).setEvacuado(false);
+        // dbPedestrianTotal.at(i).setEvacuado(false);
         dbPedestrianTotal.at(i).setNodeInicio(const_cast<node*>(dbPedestrianTotal.at(i).getNodeArranque()));
     }
 }

@@ -7,21 +7,21 @@
 #include "nodes.h"
 #include "links.h"
 #include "stateMatrixs.h"
-#include "pedestrian.h"
 #include "pedestrians.h"
-#include "dictionary.h"
-#include "chrono"
-#include "io.h"
+// #include "dictionary.h"
+// #include "io.h"
 
 int main() {
     // leer controlDict
     // dictionary controDict("controlDict");
     // imprimi malla de calles.
     links::get()->imprimirMeshLinks();
+
+    nodes::get()->mostrardbNodeTotal();
+    links::get()->mostrarDbLinksTotal();
     // Lectura de simulaciones pasadas.
     // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
-    stateMatrixs::get()->leerDbStateMatrixs();
-    // nodes::get()->mostrardbNodeTotal();
+    // stateMatrixs::get()->leerDbStateMatrixs();
     // segun el número de simulaciones
     while (tiempo::get()->getINumberSimulation() <= tiempo::get()->getEndNumberSimulation()) {
         // loop para una evacuacion
@@ -45,7 +45,7 @@ int main() {
         // nodes::get()->mostrarNodes();
         // links::get()->mostrarLinks();
         // Imprimir estados al terminar la simulación
-        stateMatrixs::get()->imprimirDbStateMatrixs();
+        // stateMatrixs::get()->imprimirDbStateMatrixs();
         // mostrar resultados simulation
         tiempo::get()->mostrarIResultadosSimulacion();
         // aumentar el numero de simulacion y reiniciar valores

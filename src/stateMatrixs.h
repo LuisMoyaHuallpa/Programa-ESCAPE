@@ -11,18 +11,18 @@
 // header propios
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "nodes.h"
+#include "Q.h"
 #include "stateMatrix.h"
 #include "dictionary.h"
 #include "pedestrian.h"
 
 class stateMatrixs {
 private:
+    std::vector<stateMatrix> dbStateMatrixs;
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static member
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     static stateMatrixs* stateMatrixsInstance;
-
-    std::vector<stateMatrix> dbStateMatrixs;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // constructor
@@ -44,7 +44,6 @@ public:
     // getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     std::vector<stateMatrix>& getDbStateMatrixs();
-
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -61,7 +60,7 @@ public:
     void agregarStateMatrix(stateMatrix stateMatrixElement);
     void leerDbStateMatrixs();
     void mostrarDbStateMatrixs();
-    void imprimirDbStateMatrixs();
+    // void imprimirDbStateMatrixs();
 
 };
 

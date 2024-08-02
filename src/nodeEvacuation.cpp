@@ -1,8 +1,10 @@
-#include "nodeEvacution.h"
-#include "io.h"
-#include "tiempo.h"
-#include "vector2D.h"
+#include "nodeEvacuation.h"
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// extra 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "nodes.h"
+#include "subLink.h"
+#include "pedestrian.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -17,13 +19,56 @@ std::string nodeEvacuation::getNodeType() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-nodeEvacuation::nodeEvacuation(int id, vector2D coordenada)
-    : node(id, coordenada) {
-    personasEvacuadas = 0;
-    maxPersonasEvacuadas = -1;
-    lleno = false;
+nodeEvacuation::nodeEvacuation(const int id, const vector2D coordenada)
+    : node(id, coordenada),
+      maxPersonasEvacuadas(-1),
+      lleno(false)
+{
+}
+nodeEvacuation::nodeEvacuation(const int id, const vector2D coordenada, const int maxPersonasEvacuadas)
+    : node(id, coordenada),
+      maxPersonasEvacuadas(maxPersonasEvacuadas),
+      lleno(false)
+{
 }
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// setters
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// getters
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+const int nodeEvacuation::getMaxPersonasEvacuadas() const{
+    return maxPersonasEvacuadas;    
+}
+std::vector<pedestrian*> nodeEvacuation::getPersonasEvacuadasPtr() const{
+    return personasEvacuadasPtr;    
+}
+bool nodeEvacuation::getLleno() const{
+    return lleno;
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// metodos
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void nodeEvacuation::reiniciar() {
+    personasEvacuadasPtr.clear();
+    lleno = false;
+}
+bool nodeEvacuation::verificarLLeno() const {
+    /* verifica si el nodo de evacuacion esta lleno*/
+    // compara el tamaño de la lista de personas evacuadas con la cantidad
+    // maxima de personas evacuadas en el nodo de evacuacion
+    return personasEvacuadasPtr.size() == maxPersonasEvacuadas;
+
+}
+estadoPedestrian nodeEvacuation::verificarNodoEvacuation() const {
+    /* verifica si el nodo es un node de evacuacion */
+    return evacuado;
+}
+void nodeEvacuation::imprimirPersonasEvacuadas(std::fstream* file) {
+    *file << personasEvacuadasPtr.size();
+}
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static metods
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -55,7 +100,7 @@ void nodeEvacuation::imprimirNodeEvacuation(fileIO* file) {
         file->getFileFstream() << tiempo::get()->getValorTiempo() << ",";
         for (int i = 0; i < nodes::get()->getDbNodeEvacuation().size(); i++) {
             // imprime la cantidad de personas evacuadas por nodo
-            file->getFileFstream() << nodes::get()->getDbNodeEvacuation().at(i)->getPersonasEvacuadas();
+            file->getFileFstream() << nodes::get()->getDbNodeEvacuation().at(i)->getPersonasEvacuadasPtr().size();
             // imprime , hasta antes de la ultima
             if (i < nodes::get()->getDbNodeEvacuation().size() - 1) {
                 file->getFileFstream() << ",";
@@ -77,45 +122,4 @@ void nodeEvacuation::imprimirTotalPersonasEvacuadas(fileIO* file) {
 void nodeEvacuation::imprimirVariableTotalPersonasEvacuadas(fileIO* file) {
     // impresion de tiempo y personas evacuadas
     file->getFileFstream() << totalPersonasEvacuadas;
-}
-
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// setters
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void nodeEvacuation::setMaxPersonasEvacuadas(int maxPersonasEvacuadas) {
-    (*this).maxPersonasEvacuadas = maxPersonasEvacuadas;
-}
- 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// getters
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-const bool nodeEvacuation::getLleno() const{
-    return lleno;
-}
-const int nodeEvacuation::getMaxPersonasEvacuadas() const{
-    return maxPersonasEvacuadas;    
-}
-const int nodeEvacuation::getPersonasEvacuadas() const{
-    return personasEvacuadas;    
-}
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// metodos
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void nodeEvacuation::sumarPersonasEvacuadas() {
-    personasEvacuadas++;
-    verificarLLeno();
-}
-void nodeEvacuation::reiniciar() {
-    personasEvacuadas =0;
-    lleno = false;
-}
-void nodeEvacuation::verificarLLeno() {
-    if (personasEvacuadas==maxPersonasEvacuadas) {
-        lleno = true;
-    }
-}
-void nodeEvacuation::imprimirPersonasEvacuadas(std::fstream* file) {
-    *file << personasEvacuadas;
 }

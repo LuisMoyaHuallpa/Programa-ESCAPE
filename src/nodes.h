@@ -19,7 +19,7 @@ Punto de interseccion de calles.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "node.h"
 #include "vector2D.h"
-#include "nodeEvacution.h"
+#include "nodeEvacuation.h"
 #include "dictionary.h"
 
 class nodes{
@@ -64,7 +64,7 @@ public:
     void leerNodes(std::string fileName);
     void usarlink();
     void reiniciarNodesEvacuations();
-    void mostrarNodes() const;
+    // void mostrarNodes() const;
     void mostrardbNodeTotal() const;
     // void imprimirNodes(std::fstream& file);
     // void imprimirCantPedestrianEvacuted(std::string folderName);

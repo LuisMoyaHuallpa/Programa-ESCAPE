@@ -14,7 +14,9 @@ Una fila de archivo de entrada o salida.
 #include "pedestrianMassState.h"
 #include "Q.h"
 
+// forward declaration
 class node;
+
 class stateMatrix {
 private:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -24,7 +26,7 @@ private:
     // Qs        |-->| Q DE LOS LINK EN UN STATE EXPERIMENTADO
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     const int id;
-    const node* nodo;
+    const node* nodoPtr;
     const std::vector<int> state;
     std::vector<Q> Qs;
     
@@ -38,24 +40,17 @@ public:
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     stateMatrix();
-    stateMatrix(const node* node, const std::vector<int> state);
-    // stateMatrix(state stateValue);
-    // stateMatrix(state stateValue, std::vector<double> QVector, std::vector<int> otrosValue);
-    // void leerStateMatrix(std::string filename);
-    // void imprimirStateMatrix();
+    stateMatrix(const node* nodePtr, const std::vector<int> state);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // setters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    // void setOtrosVector(std::vector<int> otrosVector);
-    // void setPedestrianMassState(pedestrianMassState pedestrianMassStateValue);
-
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getter
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     const int getId() const;
-    const node* getNodeId() const;
+    const node* getNodePtr() const;
     const std::vector<int> getState() const;
     std::vector<Q>& getQs();
 
@@ -69,12 +64,16 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     bool operator==(stateMatrix stateMatrix2);
     stateMatrix* buscarStateMatrix(std::vector<int> state) const;
-    stateMatrix* creacionObtencionStateMatrix(
-        const node& nodo,
-        const std::vector<stateMatrix*>& stateMatrixExperimentados ,
-        const std::vector<int>& stateObservado);
-    void mostrarStateMatrix();
+    Q* buscarQ(link* callePtr);
+    void mostrarStateMatrix() const;
     void imprimirStateMatrix(std::fstream& file);
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // static metodos
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    static stateMatrix* creacionObtencionStateMatrix(
+        node* nodo,
+        const std::vector<int>& stateObservado);
 
 };
 #endif

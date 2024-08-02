@@ -1,6 +1,4 @@
 #include "nodes.h"
-#include "nodeEvacution.h"
-#include <vector>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -96,15 +94,15 @@ void nodes::leerNodes(std::string fileName) {
             // crear un array de nodos de evacuacion
             dbNodeEvacuation.push_back(dynamic_cast<nodeEvacuation*>(dbNodeTotal.back().get()));
         }
+        // nodo evacuacion limitado
         else if (e==2) {
-            std::unique_ptr<nodeEvacuation> nodoEvacuationNuevo = std::make_unique<nodeEvacuation>(n, vector2D(x, y));
-            // nodeEvacuation nodoEvacuationNuevo= nodeEvacuation(n, x, y);
+            // lectura de maxima cantidad de personas evacuadas en ese nodo
+            std::getline(iss, m_str, ',');
+            m = std::stoi(m_str);
+            std::unique_ptr<nodeEvacuation> nodoEvacuationNuevo = std::make_unique<nodeEvacuation>(n, vector2D(x, y), m);
             dbNodeTotal.push_back(std::move(nodoEvacuationNuevo));
             // crear un array de nodos de evacuacion
             dbNodeEvacuation.push_back(dynamic_cast<nodeEvacuation*>(dbNodeTotal.back().get()));
-            std::getline(iss, m_str, ',');
-            m = std::stoi(m_str);
-            dbNodeEvacuation.back()->setMaxPersonasEvacuadas(m);
         }
         std::getline(iss, r_str, '\n');
         r = std::stoi(r_str);
@@ -123,22 +121,22 @@ void nodes::reiniciarNodesEvacuations() {
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // mostrar
-void nodes::mostrarNodes() const {
-    // Muestra en el terminal todos los nodos y sus datos.
-    for (int i = 0; i < dbNodeTotal.size(); i++) {
-        dbNodeTotal.at(i)->mostrarNode();
-        dbNodeTotal.at(i)->mostrarQTable();
-        // const node* baseNode = dbNode.at(i);
-        // const nodeEvacuation* evacuationNode = dynamic_cast<const nodeEvacuation*>(baseNode);
-        // if (evacuationNode) {
-        //     std::cout << "nodeEvacuation: " << evacuationNode->getIdNode() << ", X: " << evacuationNode->getCoordX() << ", Y: " << evacuationNode->getCoordY() << std::endl;
-        // }
-    }
-}
+// void nodes::mostrarNodes() const {
+//     // Muestra en el terminal todos los nodos y sus datos.
+//     for (int i = 0; i < dbNodeTotal.size(); i++) {
+//         dbNodeTotal.at(i)->mostrarNode();
+//         dbNodeTotal.at(i)->mostrarQTable();
+//         // const node* baseNode = dbNode.at(i);
+//         // const nodeEvacuation* evacuationNode = dynamic_cast<const nodeEvacuation*>(baseNode);
+//         // if (evacuationNode) {
+//         //     std::cout << "nodeEvacuation: " << evacuationNode->getIdNode() << ", X: " << evacuationNode->getCoordX() << ", Y: " << evacuationNode->getCoordY() << std::endl;
+//         // }
+//     }
+// }
 void nodes::mostrardbNodeTotal() const {
     for (int i = 0; i < dbNodeTotal.size(); i++) {
         dbNodeTotal.at(i)->mostrarNode();
-        dbNodeTotal.at(i)->mostrarQTable();
+        // dbNodeTotal.at(i)->mostrarQTable();
     }
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -151,7 +149,7 @@ void nodes::mostrardbNodeTotal() const {
 //     file3.open(folderName + "/cantPedestrianEvacuated",std::ios::out);
 //     for (int i = 0; i < dbNode.size(); i++) {
 //         // const node* baseNode = dbNode.at(i);
-//         // const nodeEvacuation* evacuationNode = dynamic_cast<const nodeEvacuation*>(baseNode);
+
 //         // if (evacuationNode) {
 //         //     file3 << evacuationNode->getPersonasEvacudas();
 //         // }

@@ -62,6 +62,12 @@ vector2D vector2D::operator+=(vector2D vector2) {
     Y += vector2.getY();
     return *this;
 }
+double vector2D::distanciaA(const vector2D &coordenada2) const {
+    /* distancia entre dos coordenadas*/
+    double dx = X - coordenada2.getX();
+    double dy = Y - coordenada2.getY();
+    return std::sqrt(dx * dx + dy * dy);
+}
 void vector2D::mostrarVector() const {
     /* Muestra en el terminal en formato vector*/
     std::cout << "(" << std::setprecision(3) << X << ",";

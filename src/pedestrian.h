@@ -25,13 +25,14 @@
 #include "subLink.h"
 #include "vector2D.h"
 #include "vector2DVelocidad.h"
-#include "node.h"
-#include "links.h"
 #include "tiempo.h"
-#include "nodeEvacution.h"
+
+class node;
+class link;
+enum estadoPedestrian { pasivo, evacuando, evacuado, muerto };
 
 class pedestrian {
-private:
+public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // idPedestrian        |-->| ID DE LA INTERSECCION
     // edad                |-->| COORDENADA X DEL NODO 
@@ -51,7 +52,16 @@ private:
     // velocidad           |-->| VELOCIDAD DE LA PERSONA
     // evacuado            |-->| LA PERSONA QUE LLEGO A UN PUNTO DE EVACUACION
     // retorno             |-->| PODRIA COMO LA GANANCIA TOTAL 
+    // tiempoProximaInterseccion |-->| TIEMPO DE PROXIMA LLEGADA A UN NODO
+
+    // stateMatrixCurrent  |-->| PUNTERO A STATEMATRIX EXPERIMENTANDO 
+    // stateMatrixPrevious |-->| PUNTERO A STATEMATRIX EXPERIMENTANDO ANTERIORMENTE
+    // QCurrent            |-->| PUNTERO A QCURRENTE 
+    // QPrevious           |-->| PUNTERO A QPREVIOUS 
+    // linkCurrent         |-->| PUNTERO A CALLE ACTUAL
+    // linkPrevious         |-->| PUNTERO A CALLE PASADA 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+private:
     const int idPedestrian;
     const int edad;
     const int gender;
@@ -64,17 +74,22 @@ private:
     node* nodeFinal;
     vector2D direccionPedestrian;
     vector2DVelocidad velocidad;
-    bool evacuado;
+    estadoPedestrian estado;
     int reward;
+    int tiempoProximaInterseccion;
 
+    stateMatrix* stateMatrixCurrent;
+    stateMatrix* stateMatrixPrevious;
+    Q* QCurrent;
+    Q* QPrevious;
+    link* linkCurrent;
+    link* linkPrevious;
+    
     node* nodeInicioAnterior;
-    link* linkActual;
-    link* linkPasado;
     std::vector<double>* QsActual;
-    double* QCurrent;
-    double* QPrevious;
 
 public:
+
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static member
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -102,7 +117,6 @@ public:
     void setDireccionPedestrian(vector2D direccionPedestrian);
     void setVelocidad(vector2DVelocidad velocidad);
     void setTiempoInicial(int tiempoInicial);
-    void setEvacuado(bool evacuado);
     void setReward(int reward);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -113,54 +127,48 @@ public:
     const int getGender() const;
     const int getHHType() const;
     const int getHHId() const;
-    const vector2D getPosition() const;
     const node* getNodeArranque() const;
-    const node* getNodeInicio() const;
-    const node* getNodeFinal() const;
-    const node* getNodeInicioAnterior() const;
-    const link* getLinkActual() const;
-    const link* getLinkPasado() const;
-    vector2D getDireccionPedestrian() const;
-    vector2DVelocidad& getVelocidad();
     const int getTiempoInicial() const;
-    const bool getEvacuado() const;
-    const int getReward() const;
+    vector2D getPosition() const;
+    node* getNodeInicio() const;
+    node* getNodeFinal() const;
+    vector2D getDireccionPedestrian() const;
+    vector2DVelocidad getVelocidad() const;
+    estadoPedestrian& getEstado();
+    int getReward() const;
+
+    stateMatrix* getStateMatrixCurrent() const;
+    stateMatrix* getStateMatrixPrevious() const;
+    double* getQCurrent() const;
+    double* getQPrevious() const;
+    link* getLinkCurrent() const;
+    link* getLinkPrevious() const;
+
+    const node* getNodeInicioAnterior() const;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     bool operator==(const pedestrian& pedestrian2) const;
+    void modelamientoPedestrian();
     void caminar();
     std::vector<int> observarStateObservado() const;
-    stateMatrix* creacionObtencionStateMatrix(const std::vector<int> stateObservado);
+    link* eleccionGeneralLink() const;
+    link* eleccionRandomLink() const;
+    link* eleccionSarsaLink() const;
+    bool verificarNodoLLeno() const;
     double calcularIDoubleSublink();
+    int calcularReward() const;
+    int calcularTiempoDesplazamiento() const;
     void contarPedestrianInSublink();
     void calcularDensityInSublink();
-    void cambioCalle();
-    void eleccionGeneralLink();
-    void eleccionRandomLink();
-    void eleccionSarsaLink();
     void eleccionDosCallesContinuas();
-    // int iEleccionRandomLinkActual();
-    // void updateLinkActual(int iLinkConnection);
-    // void updateStateAction(int iLinkConnection);
-    // void updateParametrosPeaton();
-    // void eleccionProbalistica();
     bool verificarEndLink();
-    // bool verificarEndLink1();
-    void calcularNodeFinal();
     void calcularDireccionPedestrian();
     vector2D calcularSignoDireccion();
     int calcularSignoNumero(double numero);
-    void calcularReward();
-    void verificarPedestrianEvacuation();
     void algoritmoSarsa();
     // std::vector<stateActionQ>::iterator agregarObtenerqLista(node* nodeDeBusqueda,stateActionQ qBuscando);
-    // voidbuscarQ(bool verificarQExistente, stateActionQ* qElemento);
-    void observarDensityLevel();
-    // void stateMatrixtoTableAtNode();
-    // void crearqState(node* nodeActual);
-    void modelamientoPedestrian();
     void mostrarMovimientoPedestrian() const;
     void imprimirPedestrianPosition(fileIO* file) const;
     void imprimirPedestrianVelocity(fileIO* file) const;
@@ -168,6 +176,5 @@ public:
     // static metods
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static double calcularOptimalChoiceRate();
-    
 };
 #endif

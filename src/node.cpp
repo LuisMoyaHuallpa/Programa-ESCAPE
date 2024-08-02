@@ -2,6 +2,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // extras
 #include "link.h"
+#include "pedestrian.h"
 #include <vector>
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -40,16 +41,29 @@ const int node::getIdNode() const{
 const vector2D node::getCoordenada() const{
     return coordenada;
 }
-const std::vector<link*> node::getLinkConnection() const {
-    return linkConnection;  
+const std::vector<link*> node::getLinkConnectionsPtr() const {
+    return linkConnectionsPtr;  
 }
-std::vector<stateMatrix*>& node::getStateMatrixExperimentados() {
-    return stateMatrixExperimentos;
+std::vector<stateMatrix*>& node::getStateMatrixExperimentadosPtr() {
+    return stateMatrixsExperimentosPtr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+const node* node::buscarNodoFinal(link *callePtr) const {
+    /* busqueda del node final segun la calle que se encuentre
+        cada calle tiene un nodo de inicio y final dependiendo
+        si esta de ida o vuelta delvolvera el nodo final esto seria ida */
+    // Si el nodo donde estoy es el nodo 1 de la calle entonce nodo final es el nodo 2
+    if(callePtr->getNode1Ptr() == this){
+        return callePtr->getNode2Ptr();
+    }
+    // Si el nodo donde estoy es el nodo 2 de la calle entonce nodo final es el nodo 1
+    else {
+        return callePtr->getNode1Ptr();    
+    }
+}
 // void node::buscarStateMatrix(stateMatrix stateMatrixBuscando, bool& verificarStateMatrix, int& iStateMatrixTable) {
 //     /* recorre la tabla de stateMatrix en busqueda del elemento stateMatrixBuscando  */
 //     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -102,16 +116,26 @@ bool node::verificarCambioState(state stateAnterior, state stateActual) {
     }
     return false;  
 }
+estadoPedestrian node::verificarNodoEvacuation() const {
+    return evacuando;    
+}
 std::vector<int> node::stateObservado() const {
     // vector de estado
     std::vector<int> stateObservado;
     // Reserva espacio en el vector
-    stateObservado.reserve(linkConnection.size());
+    stateObservado.reserve(linkConnectionsPtr.size());
     // asignacion de estados
-    for (link* calle : linkConnection) {
+    for (link* calle : linkConnectionsPtr) {
         stateObservado.push_back(calle->getDensityLevel());
     }
     return stateObservado;
+}
+double node::distanciaA(const node* nodo2) const {
+    /* calcula la distancia entre dos nodos*/
+    return coordenada.distanciaA(nodo2->getCoordenada());
+}
+void node::addLink(link *calle) {
+    linkConnectionsPtr.push_back(calle);
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // mostrar
@@ -124,36 +148,36 @@ void node::mostrarNode() const {
     std::cout << "x: " << coordenada.getX() << " ";
     std::cout << "y: " << coordenada.getY() << std::endl;
     std::cout << "linkConnections: ";
-    for (int i = 0; i < linkConnection.size(); i++) {
-        std::cout << linkConnection.at(i)->getIdLink() << " "; 
+    for (int i = 0; i < linkConnectionsPtr.size(); i++) {
+        std::cout << linkConnectionsPtr.at(i)->getIdLink() << " "; 
     }
     std::cout << std::endl;
 }
-void node::mostrarQTable() const {
-    // Muestra en el terminal datos de la tabla de stateMatrix:
-    // IdNode
-    // x y
-    // std::cout << "# q:" << stateMatrixTable.size() << std::endl;
-    std::cout << "# q:" << stateMatrixTableMap.size() << std::endl;
-    // for (int i = 0; i < stateMatrixTableMap.size(); i++) {
-    for (auto& s : stateMatrixTableMap) {
-        s.second->mostrarStateMatrix(); 
-        std::cout << std::endl;
-    }
-}
-void node::imprimirQTable(std::fstream& file) const {
-   // Impresion de sim.csv
-    // for (auto it = stateMatrixTable.begin(); it != stateMatrixTable.end(); ++it) {
-    //     // Imprimir id del nodo o intersección
-    //     file << idNode << ",";
-    //     it->imprimirStateMatrix(file);
-    // }
-    //alternativa
-    for (auto& s : stateMatrixTableMap) {
-        // Imprimir id del nodo o intersección
-        file << idNode << ",";
-        s.second->imprimirStateMatrix(file);
-    }
-}
+// void node::mostrarQTable() const {
+//     // Muestra en el terminal datos de la tabla de stateMatrix:
+//     // IdNode
+//     // x y
+//     // std::cout << "# q:" << stateMatrixTable.size() << std::endl;
+//     std::cout << "# q:" << stateMatrixTableMap.size() << std::endl;
+//     // for (int i = 0; i < stateMatrixTableMap.size(); i++) {
+//     for (auto& s : stateMatrixTableMap) {
+//         s.second->mostrarStateMatrix(); 
+//         std::cout << std::endl;
+//     }
+// }
+// void node::imprimirQTable(std::fstream& file) const {
+//    // Impresion de sim.csv
+//     // for (auto it = stateMatrixTable.begin(); it != stateMatrixTable.end(); ++it) {
+//     //     // Imprimir id del nodo o intersección
+//     //     file << idNode << ",";
+//     //     it->imprimirStateMatrix(file);
+//     // }
+//     //alternativa
+//     for (auto& s : stateMatrixTableMap) {
+//         // Imprimir id del nodo o intersección
+//         file << idNode << ",";
+//         s.second->imprimirStateMatrix(file);
+//     }
+// }
 
 

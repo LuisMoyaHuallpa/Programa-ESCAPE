@@ -11,7 +11,7 @@ const int link::numberLinkDivision = std::get<int>(dictionary::get()->lookup("nu
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 link::link(int idLink, node *node1, node *node2, int length, int width)
-    : idLink(idLink), node1(node1), node2(node2), length(length), width(width),
+    : idLink(idLink), node1Ptr(node1), node2Ptr(node2), length(length), width(width),
       orientacionLink(calcularOrientacionLink()),
       anchoSubdivision(calcularAnchoDivisiones()),
       densityLevel(0) {
@@ -31,11 +31,11 @@ void link::setDensityLevel(int densityLevel) {
 const int link::getIdLink() const {
     return idLink;  
 }
-const node* link::getNode1() const {
-    return node1;
+const node* link::getNode1Ptr() const {
+    return node1Ptr;
 }
-const node* link::getNode2() const {
-    return node2;
+const node* link::getNode2Ptr() const {
+    return node2Ptr;
 }
 const int link::getLength() const{
     return length;
@@ -50,8 +50,8 @@ int& link::getDensityLevel() {
     return densityLevel;
 }
 
-std::vector<pedestrian*>& link::getPedestriansLink() {
-    return pedestriansLink;
+std::vector<pedestrian*>& link::getPedestriansLinkPtr() {
+    return pedestriansLinkPtr;
 }
 std::vector<subLink>& link::getSublink() {
     return subdivisiones;  
@@ -67,8 +67,8 @@ const vector2D link::calcularOrientacionLink() const{
     /* deberia esta calcular orientacion pero necesita acceder a dbLink
         por ello se calculara la direccione en pedestrian*/
     /* calcula la direccion de la calle con los nodos inicial y final*/
-    const double x = node2->getCoordenada().getX() - node1->getCoordenada().getX();
-    const double y = node2->getCoordenada().getY() - node1->getCoordenada().getY();
+    const double x = node2Ptr->getCoordenada().getX() - node1Ptr->getCoordenada().getX();
+    const double y = node2Ptr->getCoordenada().getY() - node1Ptr->getCoordenada().getY();
     // Calcula la magnitud del vector de dirección
     const double magnitud = std::sqrt(std::pow(x, 2) + std::pow(y, 2));
     // Normaliza el vector de dirección (divide cada e por la magnitud)
@@ -76,8 +76,8 @@ const vector2D link::calcularOrientacionLink() const{
 }
 const double link::calcularAnchoDivisiones() const{
     /* Calcula el ancho de divisiones de la calle segun el numero de divisiones preestablecidas*/
-    const double ancho_x = node1->getCoordenada().getX() - node2->getCoordenada().getX();
-    const double ancho_y = node1->getCoordenada().getY() - node2->getCoordenada().getY();
+    const double ancho_x = node1Ptr->getCoordenada().getX() - node2Ptr->getCoordenada().getX();
+    const double ancho_y = node1Ptr->getCoordenada().getY() - node2Ptr->getCoordenada().getY();
     const double ancho = std::sqrt(ancho_x * ancho_x + ancho_y * ancho_y) / static_cast<double>(link::numberLinkDivision);
     return ancho;
 }
@@ -114,8 +114,8 @@ void link::calcularDensityLevel() {
 }
 void link::mostrarPedestriansLink() const {
     std::cout << "pedestrianLink: ";
-    for (int i = 0; i < pedestriansLink.size(); i++) {
-        std::cout << pedestriansLink.at(i)->getIdPedestrian() << " ";
+    for (int i = 0; i < pedestriansLinkPtr.size(); i++) {
+        std::cout << pedestriansLinkPtr.at(i)->getIdPedestrian() << " ";
     }
 }
 void link::mostrarSubdivisiones() const {
@@ -128,17 +128,17 @@ void link::mostrarLink(){
     std::cout << "link: ";
     std::cout << idLink << " ";
     std::cout << "nodes: ";
-    std::cout << node1->getIdNode() << " ";
-    std::cout << node2->getIdNode() << " ";
+    std::cout << node1Ptr->getIdNode() << " ";
+    std::cout << node2Ptr->getIdNode() << " ";
     mostrarPedestriansLink();
     mostrarSubdivisiones();
     std::cout << std::endl;
 }
 void link::imprimirLink(std::fstream& file) {
     file << std::fixed << std::setprecision(2);
-    file << node1->getCoordenada().getX() << " ";
-    file << node1->getCoordenada().getY() << " ";
-    file << node2->getCoordenada().getX() << " ";
-    file << node2->getCoordenada().getY() << " ";
+    file << node1Ptr->getCoordenada().getX() << " ";
+    file << node1Ptr->getCoordenada().getY() << " ";
+    file << node2Ptr->getCoordenada().getX() << " ";
+    file << node2Ptr->getCoordenada().getY() << " ";
     file << std::endl;
 }
