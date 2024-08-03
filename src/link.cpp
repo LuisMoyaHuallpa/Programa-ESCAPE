@@ -124,7 +124,7 @@ void link::mostrarSubdivisiones() const {
         subdivisiones.at(i).mostrarPedestriansInSublink();
     }
 }
-void link::mostrarLink(){
+void link::mostrarLink() const {
     std::cout << "link: ";
     std::cout << idLink << " ";
     std::cout << "nodes: ";

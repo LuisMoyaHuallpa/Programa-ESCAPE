@@ -90,7 +90,7 @@ public:
     void calcularDensityLevel();
     void mostrarPedestriansLink() const;
     void mostrarSubdivisiones() const;
-    void mostrarLink();
+    void mostrarLink() const;
     void imprimirLink(std::fstream& file);
 };
 #endif

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include "pedestrian.h"
 #include "tiempo.h"
 #include "nodes.h"
 #include "links.h"
@@ -16,9 +17,6 @@ int main() {
     // dictionary controDict("controlDict");
     // imprimi malla de calles.
     links::get()->imprimirMeshLinks();
-
-    nodes::get()->mostrardbNodeTotal();
-    links::get()->mostrarDbLinksTotal();
     // Lectura de simulaciones pasadas.
     // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
     // stateMatrixs::get()->leerDbStateMatrixs();
@@ -35,7 +33,7 @@ int main() {
             // modelamiento de pedestrian.
             pedestrians::get()->modelamientoPedestrians();
 
-            pedestrians::get()->mostrarDbPedestrianTotal();
+            pedestrians::get()->mostrarDbPedestrianMovimiento();
             // io 
             io::get()->imprimirOutput();
             // pone en 0 los elementos valores sublink            

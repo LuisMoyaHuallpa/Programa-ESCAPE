@@ -12,7 +12,10 @@ const double sarsa::gamma = 0.9;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-sarsa::sarsa() : QPrevious(nullptr), QCurrent(nullptr), r(nullptr) {
+sarsa::sarsa() :
+    QPrevious(nullptr),
+    QCurrent(nullptr),
+    r(nullptr) {
 }
 // sarsa::sarsa(double QCurrent, double QPrevious, double r){
 //     setQCurrent(QCurrent);

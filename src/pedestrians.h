@@ -51,7 +51,8 @@ public:
     void reiniciarPedestriansNodeArranque();
     void reiniciarConteoPedestrians();
     void modelamientoPedestrians();
-    void mostrarDbPedestrianTotal();
+    void mostrarDbPedestrianMovimiento();
+    void mostrarDbPedestrianTotal() const;
     void imprimirPedestrians(fileIO* file1, fileIO* file2);
 };
 

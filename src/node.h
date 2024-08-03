@@ -29,11 +29,10 @@ class link;
 class node {
 private:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // idNode            |-->| ID DE LA INTERSECCION
-    // coordenada        |-->| COORDENADA X Y DEL NODO
-    // linkConnection    |-->| PUNTERO A LAS CALLES CONECTADAS A LA INTERSECCION
-    // stateMatrixTable  |-->| MAP Y TABLA DE STATEMATRIX DE LA INTERSECCION
-    // densityLevelNode  |-->| PUNTERO A LA DENSIDAD DE LA CALLES CONECTADAS
+    // idNode                      |-->| ID DE LA INTERSECCION
+    // coordenada                  |-->| COORDENADA X Y DEL NODO
+    // linkConnectionPtr           |-->| PUNTERO A LAS CALLES CONECTADAS A LA INTERSECCION
+    // stateMatrixExperimentosPtr  |-->| MAP Y TABLA DE STATEMATRIX DE LA INTERSECCION
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     const int idNode;
     const vector2D coordenada;
@@ -65,12 +64,11 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // void buscarStateMatrix(stateMatrix stateMatrixBuscando, bool& verificarStateMatrix, int& iStateMatrixTable);
     const node* buscarNodoFinal(link* callePtr) const;
     bool verificarCambioState(state stateAnterior, state stateActual);
     estadoPedestrian verificarNodoEvacuation() const;
     std::vector<int> stateObservado() const;
-    double distanciaA(const node* nodo2) const;
+    double calcularDistanciaA(const node* nodo2) const;
     void addLink(link* calle);
     void mostrarNode() const;
     // void mostrarQTable() const;

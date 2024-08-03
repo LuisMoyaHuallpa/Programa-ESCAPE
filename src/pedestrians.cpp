@@ -147,9 +147,15 @@ void pedestrians::modelamientoPedestrians() {
         it->modelamientoPedestrian();
     }
 }
-void pedestrians::mostrarDbPedestrianTotal() {
+void pedestrians::mostrarDbPedestrianMovimiento() {
     for (int i = 0; i < dbPedestrianTotal.size(); i++) {
         dbPedestrianTotal.at(i).mostrarMovimientoPedestrian();
+    }
+}
+void pedestrians::mostrarDbPedestrianTotal() const {
+    for (int i = 0; i < dbPedestrianTotal.size(); i++) {
+        dbPedestrianTotal.at(i).mostrarPedestrian();
+        std::cout << std::endl;
     }
 }
 void pedestrians::imprimirPedestrians(fileIO* file1, fileIO* file2){

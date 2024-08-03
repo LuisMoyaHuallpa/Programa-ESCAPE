@@ -68,7 +68,7 @@ private:
     const int hhType;
     const int hhId;
     const node* nodeArranque;
-    const int tiempoInicial;
+    mutable int tiempoInicial;
     vector2D position;
     node* nodeInicio;
     node* nodeFinal;
@@ -84,8 +84,8 @@ private:
     Q* QPrevious;
     link* linkCurrent;
     link* linkPrevious;
-    
-    node* nodeInicioAnterior;
+    sarsa sarsaAlgorithm;
+
     std::vector<double>* QsActual;
 
 public:
@@ -93,7 +93,6 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static member
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    static sarsa sarsaAlgorithm;
     static int contador;
     const static int surviveReward;
     const static int deadReward;
@@ -102,7 +101,6 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // pedestrian();
     pedestrian(const int edad, const int gender, const int hhType, const int hhId, const node* nodeArranque);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -144,15 +142,12 @@ public:
     link* getLinkCurrent() const;
     link* getLinkPrevious() const;
 
-    const node* getNodeInicioAnterior() const;
-
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     bool operator==(const pedestrian& pedestrian2) const;
     void modelamientoPedestrian();
     void caminar();
-    std::vector<int> observarStateObservado() const;
     link* eleccionGeneralLink() const;
     link* eleccionRandomLink() const;
     link* eleccionSarsaLink() const;
@@ -170,6 +165,7 @@ public:
     void algoritmoSarsa();
     // std::vector<stateActionQ>::iterator agregarObtenerqLista(node* nodeDeBusqueda,stateActionQ qBuscando);
     void mostrarMovimientoPedestrian() const;
+    void mostrarPedestrian() const;
     void imprimirPedestrianPosition(fileIO* file) const;
     void imprimirPedestrianVelocity(fileIO* file) const;
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -130,7 +130,7 @@ std::vector<int> node::stateObservado() const {
     }
     return stateObservado;
 }
-double node::distanciaA(const node* nodo2) const {
+double node::calcularDistanciaA(const node* nodo2) const {
     /* calcula la distancia entre dos nodos*/
     return coordenada.distanciaA(nodo2->getCoordenada());
 }
