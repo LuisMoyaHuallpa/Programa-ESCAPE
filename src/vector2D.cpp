@@ -51,7 +51,7 @@ vector2D vector2D::operator*(const vector2D& vector2) const {
     double y = this->getY() * vector2.getY();
     return vector2D(x, y);
 }
-vector2D vector2D::operator*(double scalar) {
+vector2D vector2D::operator*(const double scalar) const {
     // operacion multipliacion de vector y scalar
     double x = this->getX() * scalar;
     double y = this->getY() * scalar;

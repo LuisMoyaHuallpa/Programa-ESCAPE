@@ -261,22 +261,22 @@ void stateMatrixs::agregarStateMatrix(stateMatrix stateMatrixElement) {
 //     }
 
 // }
-void stateMatrixs::mostrarDbStateMatrixs() {
+void stateMatrixs::mostrarDbStateMatrixs() const {
     // Mostrar todos los stateMatrix dentro de dbStateMatrixs.
     for (int i = 0; i < dbStateMatrixs.size(); i++) {
         dbStateMatrixs[i].mostrarStateMatrix();
     }
 }
-// void stateMatrixs::imprimirDbStateMatrixs(){
-//     // Crear el nombre del archivo de exportacion.
-//     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//     // file    |-->| ARCHIVO DE SALIDA, EL NOMBRE SE CREA CON crearFilenameSalida()
-//     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//     std::fstream file;
-//     file.open(creacionArchivoSalida(), std::ios::out);
-//     // Recorre todos los nodos
-//     for (const auto& it : nodes::get()->getDbNodeTotal()) {
-//         // imprimir los statesMatrix de las tablas de cada nodo 
-//         it->imprimirQTable(file);
-//     }
-// }
+void stateMatrixs::imprimirDbStateMatrixs() {
+    // Crear el nombre del archivo de exportacion.
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // file    |-->| ARCHIVO DE SALIDA, EL NOMBRE SE CREA CON crearFilenameSalida()
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    std::fstream file;
+    file.open(creacionArchivoSalida(), std::ios::out);
+    // Recorre todos los nodos
+    for (const auto& it : dbStateMatrixs) {
+        // imprimir los statesMatrix de las tablas de cada nodo 
+        it.imprimirStateMatrix(file);
+    }
+}

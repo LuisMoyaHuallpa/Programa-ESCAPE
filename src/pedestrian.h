@@ -24,7 +24,7 @@
 #include "stateMatrix.h"
 #include "subLink.h"
 #include "vector2D.h"
-#include "vector2DVelocidad.h"
+#include "velocidad.h"
 #include "tiempo.h"
 
 class node;
@@ -70,21 +70,20 @@ private:
     const node* nodeArranque;
     mutable int tiempoInicial;
     vector2D position;
-    node* nodeInicio;
-    node* nodeFinal;
+    node* nodeInicioPtr;
+    node* nodeFinalPtr;
     vector2D direccionPedestrian;
-    vector2DVelocidad velocidad;
+    velocidad velocidadPedestrian;
     estadoPedestrian estado;
     int reward;
     int tiempoProximaInterseccion;
 
-    stateMatrix* stateMatrixCurrent;
-    stateMatrix* stateMatrixPrevious;
-    Q* QCurrent;
-    Q* QPrevious;
-    link* linkCurrent;
-    link* linkPrevious;
-    sarsa sarsaAlgorithm;
+    stateMatrix* stateMatrixCurrentPtr;
+    stateMatrix* stateMatrixPreviousPtr;
+    Q* QCurrentPtr;
+    Q* QPreviousPtr;
+    link* linkCurrentPtr;
+    link* linkPreviousPtr;
 
     std::vector<double>* QsActual;
 
@@ -113,7 +112,7 @@ public:
     void setLinkActual(link* linkActual);
     void setLinkPasado(link* linkPasado);
     void setDireccionPedestrian(vector2D direccionPedestrian);
-    void setVelocidad(vector2DVelocidad velocidad);
+    void setVelocidad(velocidad velocidadPedestrian);
     void setTiempoInicial(int tiempoInicial);
     void setReward(int reward);
 
@@ -131,7 +130,7 @@ public:
     node* getNodeInicio() const;
     node* getNodeFinal() const;
     vector2D getDireccionPedestrian() const;
-    vector2DVelocidad getVelocidad() const;
+    velocidad getVelocidadPedestrian() const;
     estadoPedestrian& getEstado();
     int getReward() const;
 

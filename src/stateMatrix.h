@@ -65,8 +65,11 @@ public:
     bool operator==(stateMatrix stateMatrix2);
     stateMatrix* buscarStateMatrix(std::vector<int> state) const;
     Q* buscarQ(link* callePtr);
+    Q* buscarQMax();
     void mostrarStateMatrix() const;
-    void imprimirStateMatrix(std::fstream& file);
+    void imprimirState(std::fstream& file) const;
+    void imprimirQs(std::fstream& file) const;
+    void imprimirStateMatrix(std::fstream& file) const;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static metodos
@@ -74,6 +77,7 @@ public:
     static stateMatrix* creacionObtencionStateMatrix(
         node* nodo,
         const std::vector<int>& stateObservado);
+
 
 };
 #endif

@@ -91,7 +91,7 @@ void link::calcularDensity() {
         // j es una persona
         for (auto j : it->getPedestriansInSublink()) {
             // actualizacion de velocidad
-            j->getVelocidad().actualizarVelocidad(it->getDensidadSublink());
+            j->getVelocidadPedestrian().actualizarVelocidad(it->getDensidadSublink());
         }
     }
 }

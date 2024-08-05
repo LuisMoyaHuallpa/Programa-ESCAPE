@@ -7,6 +7,11 @@
 Q::Q() {
     
 }
+Q::Q(link *callePtr) :
+    callePtr(callePtr),
+    valor(0)
+{
+}
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // setters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -14,8 +19,11 @@ Q::Q() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getter
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-double& Q::getValor() {
-    return valor;    
+double* Q::getValor() {
+    return &valor;    
+}
+double Q::getValor() const {
+    return valor;
 }
 const link* Q::getCallePtr() const {
     return callePtr;

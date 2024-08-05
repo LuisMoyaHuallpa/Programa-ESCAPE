@@ -33,7 +33,7 @@ int main() {
             // modelamiento de pedestrian.
             pedestrians::get()->modelamientoPedestrians();
 
-            pedestrians::get()->mostrarDbPedestrianMovimiento();
+            // pedestrians::get()->mostrarDbPedestrianMovimiento();
             // io 
             io::get()->imprimirOutput();
             // pone en 0 los elementos valores sublink            
@@ -43,7 +43,7 @@ int main() {
         // nodes::get()->mostrarNodes();
         // links::get()->mostrarLinks();
         // Imprimir estados al terminar la simulación
-        // stateMatrixs::get()->imprimirDbStateMatrixs();
+        stateMatrixs::get()->imprimirDbStateMatrixs();
         // mostrar resultados simulation
         tiempo::get()->mostrarIResultadosSimulacion();
         // aumentar el numero de simulacion y reiniciar valores
