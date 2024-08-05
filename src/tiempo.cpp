@@ -200,20 +200,14 @@ void tiempo::calcularRandomChoiceRate() {
         randomChoiceRate = 0;
     }
 }
-bool tiempo::running() {
-    // verificar que tiempo sea el menor a tiempo total de la evacuacion
-    if (valorTiempo < (endTime - 0.5*deltaT)) {
-        // verifica que todas las personas hayan sido evacuadas
-        if (nodeEvacuation::totalPersonasEvacuadas == pedestrians::get()->getDbPedestrianTotal().size()) {
-            return false;
-        }
-        else {
-            return true;
-        }
-    }
-    else {
+bool tiempo::running() const {
+    /* contrala el tiempo de evacuacion*/
+    // Verificar si el tiempo actual es menor al tiempo total de la evacuación ajustado
+    if (valorTiempo >= (endTime - 0.5 * deltaT)) {
         return false;
     }
+    // Verificar si todas las personas han sido evacuadas
+    return !nodeEvacuation::verificarEvacuacionTotal();
 }
 void tiempo::mostrarIResultadosSimulacion() {
     // mostrar 

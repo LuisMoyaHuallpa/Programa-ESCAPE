@@ -3,6 +3,7 @@
 // extra 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "nodes.h"
+#include "pedestrians.h"
 #include "subLink.h"
 #include "pedestrian.h"
 
@@ -11,6 +12,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 int nodeEvacuation::totalPersonasEvacuadas=0;
 int nodeEvacuation::maxPersonasEvacuadasGlobal=1000;
+bool nodeEvacuation::evacuacionTotal=false;
 
 std::string nodeEvacuation::getNodeType() {
     return "nodeEvacuation";
@@ -48,6 +50,16 @@ std::vector<pedestrian*> nodeEvacuation::getPersonasEvacuadasPtr() const{
 bool nodeEvacuation::getLleno() const{
     return lleno;
 }
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// static getters
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+bool nodeEvacuation::verificarEvacuacionTotal() {
+    /* verifica si todas las personas fueron evacuadas */
+    const int totalPersonas = pedestrians::get()->getDbPedestrianTotal().size();
+    return totalPersonasEvacuadas == totalPersonas;
+}
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

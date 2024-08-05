@@ -31,6 +31,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     static int totalPersonasEvacuadas;
     static int maxPersonasEvacuadasGlobal;
+    static bool evacuacionTotal;
 
     std::string getNodeType() override;
 
@@ -56,6 +57,7 @@ public:
     // static getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     int static getTotalPersonasEvacuadas();
+    static bool verificarEvacuacionTotal();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
