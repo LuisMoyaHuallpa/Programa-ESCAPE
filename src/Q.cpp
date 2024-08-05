@@ -24,9 +24,9 @@ Q::Q(const double valor, const link *const callePtr)
 double* Q::getValor() {
     return &valor;    
 }
-// double Q::getValor() const {
-//     return valor;
-// }
+double Q::getValor() const {
+    return valor;
+}
 const link* Q::getCallePtr() const {
     return callePtr;
 }

@@ -124,10 +124,10 @@ void tiempo::aumentarINumberSimulation() {
     // reiniciar el conteo de personas Evacuadas
     nodeEvacuation::totalPersonasEvacuadas = 0;
     // regresar a las personas al nodo de arranque
-    pedestrians::get()->reiniciarPedestriansNodeArranque();
+    pedestrians::get()->reiniciarPedestrians();
     nodes::get()->reiniciarNodesEvacuations();
     // reinicia la lista de personas en calles
-    links::get()->resetPedestriansLink();
+    // links::get()->resetPedestriansLink();
     // reinicar el timer de una simulacion 
     startTimeSimulation = std::chrono::high_resolution_clock::now();
 }

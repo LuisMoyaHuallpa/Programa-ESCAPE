@@ -48,7 +48,7 @@ public:
     void leerPedestrians(std::string fileName);
     void tiempoInicioDistribution();
     // void contarPedestriansInSublink();
-    void reiniciarPedestriansNodeArranque();
+    void reiniciarPedestrians();
     void reiniciarConteoPedestrians();
     void modelamientoPedestrians();
     void mostrarDbPedestrianMovimiento();

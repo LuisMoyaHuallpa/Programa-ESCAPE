@@ -113,6 +113,7 @@ public:
     void setLinkPasado(link* linkPasado);
     void setDireccionPedestrian(vector2D direccionPedestrian);
     void setVelocidad(velocidad velocidadPedestrian);
+    void setEstado(estadoPedestrian estado);
     void setTiempoInicial(int tiempoInicial);
     void setReward(int reward);
 
@@ -161,7 +162,7 @@ public:
     void calcularDireccionPedestrian();
     vector2D calcularSignoDireccion();
     int calcularSignoNumero(double numero);
-    void algoritmoSarsa();
+    void reiniciar();
     // std::vector<stateActionQ>::iterator agregarObtenerqLista(node* nodeDeBusqueda,stateActionQ qBuscando);
     void mostrarMovimientoPedestrian() const;
     void mostrarPedestrian() const;

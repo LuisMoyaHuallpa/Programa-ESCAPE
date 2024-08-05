@@ -29,18 +29,22 @@ int main() {
             tiempo::get()->aumentarTiempo();
             // contador de personas un tiempo atras de la funcion modelamiento de caminar de personas
             // pedestrians::get()->contarPedestriansInSublink();
-            links::get()->contarPedestriansInSublink();
+            // links::get()->contarPedestriansInSublink();
             // modelamiento de pedestrian.
+
             pedestrians::get()->modelamientoPedestrians();
 
             // pedestrians::get()->mostrarDbPedestrianMovimiento();
             // io 
-            io::get()->imprimirOutput();
+
+            // io::get()->imprimirOutput();
             // pone en 0 los elementos valores sublink            
+
             links::get()->resetSublinks();
+
             // pedestrians::get()->reset();
         }
-        // nodes::get()->mostrarNodes();
+        // nodes::get()->mostrardbNodeTotal();
         // links::get()->mostrarLinks();
         // Imprimir estados al terminar la simulación
         stateMatrixs::get()->imprimirDbStateMatrixs();

@@ -90,13 +90,22 @@ Q* stateMatrix::buscarQ(link *callePtr) {
     return nullptr;
 }
 Q* stateMatrix::buscarQMax() {
+
     /* calcular el maximo Q del vector de Qs*/
+    // double qmax = 0;
+    // for (auto q : Qs) {
+    //     if (*(q.getValor())>qmax) {
+    //         qmax = *(q.getValor());
+    //         Q* ref = &q;
+    //     }
+    // }
+    // return ref;
    auto maxElementIt = std::max_element(Qs.begin(), Qs.end(),
-   [](Q& a, Q& b)
+   [](const Q& a, const Q& b)
        {
            return a.getValor() < b.getValor();
        });
-   return nullptr;
+   // return nullptr;
 }
 void stateMatrix::mostrarStateMatrix() const {
     /* muestra en la terminal cada linea del stateMatrix. */
@@ -129,7 +138,7 @@ void stateMatrix::imprimirQs(std::fstream &file) const {
     /* impresion de Q en un arreglo de 10 columnas*/
     for (int i = 0; i < stateMatrix::tamanoVectorIO; i++) {
         if (i < Qs.size()) {
-            file << 0 << ',';
+            file << Qs.at(i).getValor() << ',';
         } else {
             file << "0,";
         }
@@ -164,26 +173,15 @@ stateMatrix* stateMatrix::creacionObtencionStateMatrix(
     std::vector<stateMatrix*> stateMatrixExperimentados = nodo->getStateMatrixExperimentadosPtr();
     // loop para buscar cada lista de stateMatrix
     for (stateMatrix* stateMatrixExperimentado : stateMatrixExperimentados) {
-        // si stateMatrixExperiemntado es igual al stateObservado entonces si existe ese stateMatrix
+       // si stateMatrixExperiemntado es igual al stateObservado entonces si existe ese stateMatrix
         if (stateMatrixExperimentado->getState() == stateObservado) {
             return stateMatrixExperimentado; 
         }
     }
-    // // creacion del stateMatrix experimentado
-
+    // creacion del stateMatrix experimentado
     stateMatrix* nuevoStateMatrix = new stateMatrix(nodo, stateObservado);
     std::vector<stateMatrix*>& dbStateMatrix = stateMatrixs::get()->getDbStateMatrixs();
     dbStateMatrix.emplace_back(nuevoStateMatrix);
-    // dbStateMatrix->push_back(stateMatrix(nodo, stateObservado));
     stateMatrixExperimentados.push_back(nuevoStateMatrix);
     return nuevoStateMatrix;
-
-    // std::vector<stateMatrix>& dbStateMatrix = stateMatrixs::get()->getDbStateMatrixs();
-    // dbStateMatrix.emplace_back(nodo, stateObservado);
-    // stateMatrix* newStateMatrix = &dbStateMatrix.back();
-    // stateMatrixExperimentados.push_back(newStateMatrix);
-
-    // // nodo->setStateMatrixExperimentadosPtr(stateMatrixExperimentados); // Asumimos que existe esta función para actualizar el vector en el nodo
-
-    // return newStateMatrix;
 }

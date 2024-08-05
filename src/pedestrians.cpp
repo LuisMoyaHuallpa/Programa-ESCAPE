@@ -1,4 +1,5 @@
 #include "pedestrians.h"
+#include "pedestrian.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -128,11 +129,10 @@ void pedestrians::tiempoInicioDistribution() {
 //         links::get()->calcularDensityLevelLinks();
 //     }
 // }
-void pedestrians::reiniciarPedestriansNodeArranque() {
+void pedestrians::reiniciarPedestrians() {
     // regresa a la persona a su posicion de salida inicial antes de empezar la evacuacion
     for (int i = 0; i < dbPedestrianTotal.size(); i++) {
-        // dbPedestrianTotal.at(i).setEvacuado(false);
-        dbPedestrianTotal.at(i).setNodeInicio(const_cast<node*>(dbPedestrianTotal.at(i).getNodeArranque()));
+        dbPedestrianTotal.at(i).reiniciar();
     }
 }
 void pedestrians::reiniciarConteoPedestrians() {

@@ -127,7 +127,6 @@ std::vector<int> node::stateObservado() const {
     // asignacion de estados
     for (link* calle : linkConnectionsPtr) {
         stateObservado.push_back(calle->getDensityLevel());
-        std::cout << calle->getDensityLevel()<< " ";
     }
     return stateObservado;
 }

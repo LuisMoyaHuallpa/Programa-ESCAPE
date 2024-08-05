@@ -2,6 +2,7 @@
 
 #include "node.h"
 #include "link.h"
+#include "nodeEvacuation.h"
 #include "sarsa.h"
 #include "stateMatrix.h"
 #include "stateMatrixs.h"
@@ -77,6 +78,9 @@ void pedestrian::setTiempoInicial(int tiempoInicial) {
     // al iniciar el tiempo de proxima interseccion siempre es el tiempoInicial
     (*this).tiempoInicial = tiempoInicial;
     (*this).tiempoProximaInterseccion = tiempoInicial;
+}
+void pedestrian::setEstado(estadoPedestrian estado) {
+    (*this).estado = pasivo;
 }
 // void pedestrian::setOrientacionLinkPasado(vector2D orientacionLinkPasado) {
 //     (*this).orientacionLinkPasado = orientacionLinkPasado;
@@ -301,26 +305,10 @@ int pedestrian::calcularTiempoDesplazamiento() const {
     const double distancia = nodeFinalPtr->calcularDistanciaA(nodeInicioPtr);
     return distancia/velocidadPedestrian.getMagnitud();
 }
-void pedestrian::algoritmoSarsa() {
-    // /* nodoInicioAnterior es la interseccion inicial de la calle anterior o justo
-    //     antes que cambia a la nueva calle
-    //     y nodoInicia es la intersecion incial actual empezando en la nueva calle*/
-    // // R
-    // sarsaAlgorithm.setR(&reward);
-    // // QPrevious
-    // // double QPrevious = stateMatrixPasado->getQsValue().getQsVector().at(stateMatrixPasado->getActionValue().getILinkConnection());
-    // sarsaAlgorithm.setQPrevious(QPrevious);
-    // // QCurrent
-    // // double QCurrent = stateMatrixActual->getQsValue().getQsVector().at(stateMatrixActual->getActionValue().getILinkConnection()); 
-    // sarsaAlgorithm.setQCurrent(QCurrent);
-    // // calcular Q
-    // sarsaAlgorithm.sarsaActualizarQ();
-    // // stateMatrixPasado->getQsValue().getQsVector().at(stateMatrixPasado->getActionValue().getILinkConnection()) = sarsaAlgorithm.getQPrevious();
-    // // reinica el reward de la persona
-    // reward = 0;
-}
 void pedestrian::modelamientoPedestrian() {
+    if(!(estado == evacuado)){
     const int tiempoActual = tiempo::get()->getValorTiempo();
+    // std::cout << tiempoActual << std::endl;
     // cuando la persona esta en pasivo, cambia el estado a evacuado cuando llegue su tiempo de salida
     if (estado == pasivo && tiempoInicial == tiempoActual) {
         estado = evacuando;
@@ -331,6 +319,9 @@ void pedestrian::modelamientoPedestrian() {
         if(tiempoProximaInterseccion ==  tiempoActual){
             // verifico si estoy en un punto de evacuacion
             estado = nodeInicioPtr->verificarNodoEvacuation();
+            if (estado == evacuado) {
+                dynamic_cast<nodeEvacuation*>(nodeInicioPtr)->contabilizarPersona(this);
+            }
             // si no ha evacuado realizar lo siguiente
             if(estado == evacuando){
                 // si fuera un tiempo diferente al inicial, guardar lo presente en lo pasado
@@ -357,6 +348,7 @@ void pedestrian::modelamientoPedestrian() {
                 stateMatrixCurrentPtr = stateMatrix::creacionObtencionStateMatrix(nodeInicioPtr, stateObservado);
                 // eleccion de la calle
                 linkCurrentPtr = eleccionGeneralLink();
+
                 // agrego a la personas en la calle
                 linkCurrentPtr->agregarPedestrian(this);
                 // obtener nodo final
@@ -382,9 +374,19 @@ void pedestrian::modelamientoPedestrian() {
         // modelamiento cuando la persona esta dentro de la calle
         else {
             // camina la persona
-            caminar();    
+            if (estado == evacuando) {
+                caminar();    
+            }
         }
     }
+    }
+}
+void pedestrian::reiniciar() {
+    /* reiniciar valores para proxima simulacion*/
+    nodeInicioPtr = const_cast<node*>(nodeArranque);
+    estado = pasivo;
+    position = nodeInicioPtr->getCoordenada();
+    tiempoProximaInterseccion = tiempoInicial;
 }
 void pedestrian::mostrarMovimientoPedestrian() const {
     /* muestra la interseccion de partida y final de una calle, cuando

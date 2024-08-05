@@ -1,4 +1,5 @@
 #include "nodes.h"
+#include "nodeEvacuation.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -136,7 +137,6 @@ void nodes::reiniciarNodesEvacuations() {
 void nodes::mostrardbNodeTotal() const {
     for (int i = 0; i < dbNodeTotal.size(); i++) {
         dbNodeTotal.at(i)->mostrarNode();
-        // dbNodeTotal.at(i)->mostrarQTable();
     }
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

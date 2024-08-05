@@ -66,6 +66,10 @@ estadoPedestrian nodeEvacuation::verificarNodoEvacuation() const {
     /* verifica si el nodo es un node de evacuacion */
     return evacuado;
 }
+void nodeEvacuation::contabilizarPersona(pedestrian* const persona) {
+    personasEvacuadasPtr.push_back(persona);
+    totalPersonasEvacuadas++;
+}
 void nodeEvacuation::imprimirPersonasEvacuadas(std::fstream* file) {
     *file << personasEvacuadasPtr.size();
 }
