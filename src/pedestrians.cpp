@@ -114,20 +114,20 @@ void pedestrians::tiempoInicioDistribution() {
         }
     }
 }
-void pedestrians::contarPedestriansInSublink() {
-    /* cuenta la personas que no han sido evacuadas y hayan empezado a caminar
-        solo donde hay personas*/ 
-    if (tiempo::get()->verificarPedestrianCountPeriod()) {
-        for (auto it = dbPedestrianTotal.begin(); it != dbPedestrianTotal.end(); ++it) {
-            if (it->getEstado()== evacuando and
-            tiempo::get()->getValorTiempo() > it->getTiempoInicial()) {
-                it->contarPedestrianInSublink(); 
-            }
-        }
-        // calcula el nivel de densidad de todas las calles con los datos anterios
-        links::get()->calcularDensityLevelLinks();
-    }
-}
+// void pedestrians::contarPedestriansInSublink() {
+//     /* cuenta la personas que no han sido evacuadas y hayan empezado a caminar
+//         solo donde hay personas*/ 
+//     if (tiempo::get()->verificarPedestrianCountPeriod()) {
+//         for (auto it = dbPedestrianTotal.begin(); it != dbPedestrianTotal.end(); ++it) {
+//             if (it->getEstado()== evacuando and
+//             tiempo::get()->getValorTiempo() > it->getTiempoInicial()) {
+//                 it->contarPedestrianInSublink(); 
+//             }
+//         }
+//         // calcula el nivel de densidad de todas las calles con los datos anterios
+//         links::get()->calcularDensityLevelLinks();
+//     }
+// }
 void pedestrians::reiniciarPedestriansNodeArranque() {
     // regresa a la persona a su posicion de salida inicial antes de empezar la evacuacion
     for (int i = 0; i < dbPedestrianTotal.size(); i++) {

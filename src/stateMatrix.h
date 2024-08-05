@@ -26,7 +26,7 @@ private:
     // Qs        |-->| Q DE LOS LINK EN UN STATE EXPERIMENTADO
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     const int id;
-    const node* nodoPtr;
+    const node* const nodoPtr;
     const std::vector<int> state;
     std::vector<Q> Qs;
     
@@ -40,7 +40,8 @@ public:
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     stateMatrix();
-    stateMatrix(const node* nodePtr, const std::vector<int> state);
+    stateMatrix(const node* const nodePtr, const std::vector<int> state);
+    stateMatrix(const node* const nodePtr, const std::vector<int> state, std::vector<Q> Qs);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // setters
@@ -50,7 +51,7 @@ public:
     // getter
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     const int getId() const;
-    const node* getNodePtr() const;
+    const node* const getNodePtr() const;
     const std::vector<int> getState() const;
     std::vector<Q>& getQs();
 
@@ -75,8 +76,8 @@ public:
     // static metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     static stateMatrix* creacionObtencionStateMatrix(
-        node* nodo,
-        const std::vector<int>& stateObservado);
+        node* const nodo,
+        const std::vector<int> stateObservado);
 
 
 };

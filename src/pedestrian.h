@@ -151,7 +151,7 @@ public:
     link* eleccionRandomLink() const;
     link* eleccionSarsaLink() const;
     bool verificarNodoLLeno() const;
-    double calcularIDoubleSublink();
+    double calcularIdSublink();
     int calcularReward() const;
     int calcularTiempoDesplazamiento() const;
     void contarPedestrianInSublink();

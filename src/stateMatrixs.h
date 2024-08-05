@@ -18,7 +18,7 @@
 
 class stateMatrixs {
 private:
-    std::vector<stateMatrix> dbStateMatrixs;
+    std::vector<stateMatrix*> dbStateMatrixs;
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static member
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -43,7 +43,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    std::vector<stateMatrix>& getDbStateMatrixs();
+    std::vector<stateMatrix*>& getDbStateMatrixs();
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -52,15 +52,14 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // void enviarDataNode(stateMatrix stateMatrixElement);
-    std::string creacionArchivoSalida();
+    std::string creacionArchivoSalida() const;
     std::string encontrarUltimoFile();
     std::string crearFilenameSalida(int numeroSimulacion);
     std::string fileNameSalida();
     void agregarStateMatrix(stateMatrix stateMatrixElement);
     void leerDbStateMatrixs();
     void mostrarDbStateMatrixs() const;
-    void imprimirDbStateMatrixs();
+    void imprimirDbStateMatrixs() const;
 
 };
 

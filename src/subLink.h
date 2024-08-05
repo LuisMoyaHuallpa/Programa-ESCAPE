@@ -12,7 +12,6 @@
 // header propios
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "vector2D.h"
-
 class link;
 class pedestrian;
 
@@ -24,7 +23,6 @@ private:
     // pedestrianIdsInSubLink    |-->| PERSONAS EN SUBLINK
     // densidad                  |-->| DENSIDAD EN EL SUBLINK
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    int idSublink;
     const link* calle;
     std::vector<pedestrian*> pedestriansInSublink;
     double densidadSublink;
@@ -37,7 +35,7 @@ public:
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     subLink();
-    subLink(const link* calle);
+    subLink(const link* const calle);
     
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // setters
@@ -49,21 +47,15 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    int getIdSublink() const;
     std::vector<pedestrian*>& getPedestriansInSublink();
     double getDensidadSublink() const;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // void calcularCantidadPedestrian();
     void calcularDensidadSubdivision();
-    void calcularDensidad(int length, int width);
-    double calcularAnchosSubdivisiones();
-    void calcular();
-    bool verificarPedestrianId(int idPedestrian);
-    void agregarPedestrianId(int idPedestrian);
-    void quitarPedestrianId(int idPedestrian);
+    void agregarPedestrian(pedestrian* const persona);
+    void quitarPedestrian(pedestrian* const persona);
     void mostrarPedestriansInSublink() const;
     
 };

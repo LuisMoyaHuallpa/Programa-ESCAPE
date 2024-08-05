@@ -4,8 +4,10 @@
 // header propios
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "Q.h"
+#include "state.h"
 #include "stateMatrixs.h"
 #include <vector>
+#include "link.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -17,11 +19,12 @@ const int stateMatrix::tamanoVectorIO = 10;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 stateMatrix::stateMatrix()
     :
-    id(0)
+    id(0),
+    nodoPtr(nullptr)
 {
   
 }
-stateMatrix::stateMatrix(const node *node, const std::vector<int> state)
+stateMatrix::stateMatrix(const node* const node, const std::vector<int> state)
     :
     id(0),
     nodoPtr(node),
@@ -29,10 +32,12 @@ stateMatrix::stateMatrix(const node *node, const std::vector<int> state)
 {
     const std::vector<link*> linkConnectionsPtr = nodoPtr->getLinkConnectionsPtr();
     for (link* linkConnection : linkConnectionsPtr) {
-        Qs.push_back(Q(linkConnection));
+        Qs.emplace_back(linkConnection);
     } 
 }
-
+stateMatrix::stateMatrix(const node *const nodePtr, const std::vector<int> state, std::vector<Q> Qs)
+    : id(0), nodoPtr(nodePtr), state(state), Qs(Qs){
+}
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // setters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -43,7 +48,7 @@ stateMatrix::stateMatrix(const node *node, const std::vector<int> state)
 const int stateMatrix::getId() const {
     return id;
 }
-const node* stateMatrix::getNodePtr() const {
+const node* const stateMatrix::getNodePtr() const {
     return nodoPtr;
 }
 const std::vector<int> stateMatrix::getState() const {
@@ -96,14 +101,15 @@ Q* stateMatrix::buscarQMax() {
 void stateMatrix::mostrarStateMatrix() const {
     /* muestra en la terminal cada linea del stateMatrix. */
     // id del nodo
-    std::cout << nodoPtr->getIdNode();
+    std::cout << "id:" << nodoPtr->getIdNode() << " ";
     // state 
-    for (int value : state) {
+    std::cout << "s:";
+    for (const int &value : state) {
         std::cout << value << " ";
     }
     // Q
     std::cout << "Qs: ";
-    for(Q q : Qs){
+    for(const Q &q : Qs){
         q.mostrarQs(); 
     }
     // salto de linea
@@ -123,7 +129,7 @@ void stateMatrix::imprimirQs(std::fstream &file) const {
     /* impresion de Q en un arreglo de 10 columnas*/
     for (int i = 0; i < stateMatrix::tamanoVectorIO; i++) {
         if (i < Qs.size()) {
-            file << Qs.at(i).getValor() << ',';
+            file << 0 << ',';
         } else {
             file << "0,";
         }
@@ -149,8 +155,8 @@ void stateMatrix::imprimirStateMatrix(std::fstream& file) const {
 // static metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 stateMatrix* stateMatrix::creacionObtencionStateMatrix(
-    node* nodo,
-    const std::vector<int>& stateObservado)
+    node* const nodo,
+    const std::vector<int> stateObservado)
 {
     /* cuando una persona llega a un nodo, con lo observado busca en el nodo
         donde esta si el stateMatrixExperimentado se encuentra en caso contrario lo crea
@@ -163,8 +169,21 @@ stateMatrix* stateMatrix::creacionObtencionStateMatrix(
             return stateMatrixExperimentado; 
         }
     }
-    // creacion del stateMatrix experimentado
-    std::vector<stateMatrix>& dbStateMatrix = stateMatrixs::get()->getDbStateMatrixs();
-    dbStateMatrix.emplace_back(nodo, stateObservado);
-    return &dbStateMatrix.back();
+    // // creacion del stateMatrix experimentado
+
+    stateMatrix* nuevoStateMatrix = new stateMatrix(nodo, stateObservado);
+    std::vector<stateMatrix*>& dbStateMatrix = stateMatrixs::get()->getDbStateMatrixs();
+    dbStateMatrix.emplace_back(nuevoStateMatrix);
+    // dbStateMatrix->push_back(stateMatrix(nodo, stateObservado));
+    stateMatrixExperimentados.push_back(nuevoStateMatrix);
+    return nuevoStateMatrix;
+
+    // std::vector<stateMatrix>& dbStateMatrix = stateMatrixs::get()->getDbStateMatrixs();
+    // dbStateMatrix.emplace_back(nodo, stateObservado);
+    // stateMatrix* newStateMatrix = &dbStateMatrix.back();
+    // stateMatrixExperimentados.push_back(newStateMatrix);
+
+    // // nodo->setStateMatrixExperimentadosPtr(stateMatrixExperimentados); // Asumimos que existe esta función para actualizar el vector en el nodo
+
+    // return newStateMatrix;
 }

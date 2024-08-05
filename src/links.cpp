@@ -105,27 +105,20 @@ void links::leerLinks(std::string fileName){
 }
 void links::calcularDensityLevelLinks() {
     for (auto it = dbLinkTotal.begin(); it != dbLinkTotal.end(); ++it) {
-        it->get()->calcularDensity();
+        it->get()->calcularDensityGeneral();
         it->get()->calcularDensityLevel();
     }
 }
 void links::contarPedestriansInSublink() {
-    // solo es necesario en calibration, no cuando es trained
-    // if (dictionary::get()->lookup("sarsaProcesses") == "calibration") {
     /* calcula el nivel de densidad en las calles*/
-        if(tiempo::get()->verificarPedestrianCountPeriod()){
-            // recorre todas las calles
-            for (auto it = dbLinkTotal.begin(); it != dbLinkTotal.end(); ++it) {
-                // recorre las personas que estan en una calle
-                for (auto p :  it->get()->getPedestriansLinkPtr()) {
-                    p->contarPedestrianInSublink();
-                }
-                // calcula el nivel de densidad de todas las calles con los datos anterios
-                it->get()->calcularDensity();
-                it->get()->calcularDensityLevel();
-            }
+    if(tiempo::get()->verificarPedestrianCountPeriod()){
+        // recorre todas las calles
+        for (auto it = dbLinkTotal.begin(); it != dbLinkTotal.end(); ++it) {
+            // calcula el nivel de densidad de todas las calles con los datos anterios
+            it->get()->calcularDensityGeneral();
+            it->get()->calcularDensityLevel();
         }
-    // }
+    }
 }
 void links::resetSublinks() {
     /* reinicia valores de conteo de sublink*/

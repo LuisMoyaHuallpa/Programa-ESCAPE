@@ -1,4 +1,5 @@
 #include "stateMatrixs.h"
+#include "Q.h"
 #include "stateMatrix.h"
 #include <vector>
 
@@ -38,7 +39,7 @@ const std::string stateMatrixs::simulationFile = "stateMatrices/";
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-std::vector<stateMatrix> &stateMatrixs::getDbStateMatrixs() {
+std::vector<stateMatrix*> &stateMatrixs::getDbStateMatrixs() {
     return dbStateMatrixs;    
 }
 
@@ -57,7 +58,7 @@ stateMatrixs* stateMatrixs::get() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-std::string stateMatrixs::creacionArchivoSalida() {
+std::string stateMatrixs::creacionArchivoSalida() const {
     /* Crear el nombre del archivo de exportacion.*/
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // iFileInicio     |-->| ID DEL ARCHIVO DE inicio, 1
@@ -67,8 +68,8 @@ std::string stateMatrixs::creacionArchivoSalida() {
     // DE UNA VARIABLE PARA LUEGO GUARDARLO EN UN STRING
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // aumento del numero de simulacion
-    std::string preName = "sim_";
-    std::string typeFile = ".csv";
+    const std::string preName = "sim_";
+    const std::string typeFile = ".csv";
     std::ostringstream filenameStream;
     // Crea el archivo inicial con el siguiente formato sim_000000001.csv
     filenameStream << std::setw(9) << std::setfill('0') << tiempo::get()->getINumberSimulation() ;
@@ -117,157 +118,159 @@ std::string stateMatrixs::fileNameSalida() {
     filenameStream << std::setw(9) << std::setfill('0') << iLastFile ;
     return simulationFile + preName + filenameStream.str() + typeFile;
 }
-void stateMatrixs::agregarStateMatrix(stateMatrix stateMatrixElement) {
-    dbStateMatrixs.push_back(stateMatrixElement);
-}
-// void stateMatrixs::leerDbStateMatrixs() {
-//     // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
-//     // if (dictionary::controlDict["computationContinued"] == "yes") {
-//     if (std::get<std::string>(dictionary::get()->lookupDefault("sarsaProcesses")) == "trained") {
-//         dictionary::get()->getControlDict()["computationContinued"] = "yes";
-//     }
-//     if (std::get<bool>(dictionary::get()->lookupDefault("computationContinued")) == true) {
-//         // /* Empieza el timing*/
-//         // auto start = std::chrono::high_resolution_clock::now();
-//         /* Lectura de datos de una simulación pasada.*/
-//         std::fstream file;
-//         file.open(simulationFile + std::get<std::string>(dictionary::get()->lookup("previousComputationFile")), std::ios::in);
-//         // Si no existe el archivo
-//         if (file.fail()) {
-//             std::cout << "Error al abrir el archivo: "<< std::get<std::string>(dictionary::get()->lookup("previousComputationFile")) << std::endl;
-//             exit(1);
-//         }
-//         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//         // iLinkConnection          |-->| POSICION EN EL ARREGLO linkConection
-//         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//         // Actualizar la calle o linkActual, que es la calle por donde ira la persona. 
-
-//         // Guardar cada linea del archivo filname en la variable line.
-//         std::string line;
-//         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//         // id     |-->| ID DEL NODO O DE LA INTERSECCION
-//         // s      |-->| ESTADO DE UNA DE LAS CALLES EN linksConnection DE UN NODO
-//         // Q      |-->| Q DE LA CALLE 1 DE LOS linksConnection DEL NODO
-//         // o      |-->| OTRAS VARIABLES POR DEFINIR
-//         // p0     |-->| PALABRA EN 0, LEIDAS PERO GUARDADAS 
-//         // stateMatrixLeido |-->| CLASS SE CREA Y LUEGO SE DESTRUYE DENTRO DE ESTE
-//         // AMBITO
-//         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//         // id podria pasar unsigned short int
-//         int idNode;
-//         int s;
-//         double Q;
-//         int o1, o2, o3, o4, o5, o6, o7, o8, o9, o10;
-//         std::string p0;
-//         std::string idNode_str;
-//         std::string s_str;
-//         std::string Q_str;
-//         std::string o1_str, o2_str, o3_str, o4_str, o5_str, o6_str, o7_str, o8_str, o9_str, o10_str; 
-//         // stateMatrix stateMatrixLeido;
-//         // state stateLeido;
-//         std::vector<int> stateLeido;
-//         std::vector<Q> Qs;
-//         // Qs QsLeido;
-//         // Recorre todas las line del archivo.
-//         while (std::getline(file, line)) {
-//             // Si el archivo tiene comentarios con #, no leerlos.
-//             if (line[0] == '#') {
-//                 continue;
-//             }
-//             // !-----------------------------------------------------------------------
-//             // Guardar cada line en la variable line  
-//             std::istringstream iss(line);
-//             // Guarda la variable idNode
-//             std::getline(iss, idNode_str, ',');
-//             idNode = std::stoi(idNode_str);
-//             node* nodeLeido = nodes::get()->getDbNodeTotal().at(idNode).get();
-//             // !-----------------------------------------------------------------------
-//             // Guarda los elementos de state
-//             // const_cast<std::vector<int>&>(stateLeido.getDensityLinks()).clear();
-//             for (int i = 0; i < stateMatrix::tamanoVectorIO; ++i) {
-//                 if (i < nodeLeido->getLinkConnectionsPtr().size()) {
-//                     std::getline(iss, s_str, ',');
-//                     s = std::stoi(s_str);
-//                     stateLeido.push_back(s);
-//                 } 
-//                 else {
-//                     std::getline(iss, p0, ',');
-//                 }
-//             }
-//             // creacion de un stateMatrixLeido
-//             // stateMatrix stateMatrixLeido = stateMatrix(nodeLeido, stateLeido);
-//             dbStateMatrixs.push_back(stateMatrix(nodeLeido, stateLeido));
-//             // std::cout <<  std::endl;
-//             // !-----------------------------------------------------------------------
-//             // Elementos de Q
-//             QsLeido.getQsVector().clear();
-//             for (int i = 0; i < stateMatrix::getTamanoVector(); ++i) {
-//                 if (i < nodeLeido->getLinkConnectionsPtr().size()) {
-//                     std::getline(iss, Q_str, ',');
-//                     Q = std::stod(Q_str);
-//                     QsLeido.getQsVector().push_back(Q);
-//                 } 
-//                 else {
-//                     std::getline(iss, p0, ',');
-//                 }
-//             }
-//             stateMatrixLeido->setQsValue(QsLeido);
-//             // QsLeido.mostrarQs();
-//             // std::cout << std::endl;
-
-//             // !-----------------------------------------------------------------------
-//             // Falta definir
-//             // Elementos de o
-//             std::getline(iss, o1_str, ',');
-//             std::getline(iss, o2_str, ',');
-//             std::getline(iss, o3_str, ',');
-//             std::getline(iss, o4_str, ',');
-//             std::getline(iss, o5_str, ',');
-//             std::getline(iss, o6_str, ',');
-//             std::getline(iss, o7_str, ',');
-//             std::getline(iss, o8_str, ',');
-//             std::getline(iss, o9_str, ',');
-//             std::getline(iss, o10_str, '\n');
-//             // Elementos de o
-//             if (std::get<bool>(dictionary::get()->lookupDefault("readPedestrianMassState")) == true) {
-//                 o1 = std::stoi(o1_str);
-//                 o2 = std::stoi(o2_str);
-//                 o3 = std::stoi(o3_str);
-//                 o4 = std::stoi(o4_str);
-//                 o5 = std::stoi(o5_str);
-//                 o6 = std::stoi(o6_str);
-//                 o7 = std::stoi(o7_str);
-//                 o8 = std::stoi(o8_str);
-//                 o9 = std::stoi(o9_str);
-//                 o10 = std::stoi(o10_str);
-//             }
-//             // !-----------------------------------------------------------------------
-//             // Grabar datos de la fila del stateMatrix en en Qtable del nodo numero id.
-//             // falta
-//             // nodes::get()->getDbNodeTotal().at(idNode)->getStateMatrixTable().push_back(stateMatrixLeido);
-
-//             // std::cout << std::endl;
-//             nodes::get()->getDbNodeTotal().at(idNode)->getStateMatrixTableMap().emplace(stateMatrixLeido->getStateValue().getDensityLinks(),stateMatrixLeido);
-//         }
-
-//         file.close(); 
-//         // // Termina el timing
-//         // auto stop = std::chrono::high_resolution_clock::now();
-//         // auto duration = stop - start;
-//         // auto durationSeconds = std::chrono::duration_cast<std::chrono::seconds>(duration);
-//         // auto durationMinutes = std::chrono::duration_cast<std::chrono::minutes>(duration);
-//         // std::cout << "Duración Lectura: " << durationMinutes.count() << " min";
-//         // std::cout << " / " << durationSeconds.count() << " s" << std::endl;
-//     }
-
+// void stateMatrixs::agregarStateMatrix(stateMatrix stateMatrixElement) {
+//     dbStateMatrixs.push_back(stateMatrixElement);
 // }
+void stateMatrixs::leerDbStateMatrixs() {
+    // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
+    // if (dictionary::controlDict["computationContinued"] == "yes") {
+    if (std::get<std::string>(dictionary::get()->lookupDefault("sarsaProcesses")) == "trained") {
+        dictionary::get()->getControlDict()["computationContinued"] = "yes";
+    }
+    if (std::get<bool>(dictionary::get()->lookupDefault("computationContinued")) == true) {
+        // /* Empieza el timing*/
+        // auto start = std::chrono::high_resolution_clock::now();
+        /* Lectura de datos de una simulación pasada.*/
+        std::fstream file;
+        file.open(simulationFile + std::get<std::string>(dictionary::get()->lookup("previousComputationFile")), std::ios::in);
+        // Si no existe el archivo
+        if (file.fail()) {
+            std::cout << "Error al abrir el archivo: "<< std::get<std::string>(dictionary::get()->lookup("previousComputationFile")) << std::endl;
+            exit(1);
+        }
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // iLinkConnection          |-->| POSICION EN EL ARREGLO linkConection
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // Actualizar la calle o linkActual, que es la calle por donde ira la persona. 
+
+        // Guardar cada linea del archivo filname en la variable line.
+        std::string line;
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // id     |-->| ID DEL NODO O DE LA INTERSECCION
+        // s      |-->| ESTADO DE UNA DE LAS CALLES EN linksConnection DE UN NODO
+        // Q      |-->| Q DE LA CALLE 1 DE LOS linksConnection DEL NODO
+        // o      |-->| OTRAS VARIABLES POR DEFINIR
+        // p0     |-->| PALABRA EN 0, LEIDAS PERO GUARDADAS 
+        // stateMatrixLeido |-->| CLASS SE CREA Y LUEGO SE DESTRUYE DENTRO DE ESTE
+        // AMBITO
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // id podria pasar unsigned short int
+        int idNode;
+        int s;
+        double Qa;
+        int o1, o2, o3, o4, o5, o6, o7, o8, o9, o10;
+        std::string p0;
+        std::string idNode_str;
+        std::string s_str;
+        std::string Q_str;
+        std::string o1_str, o2_str, o3_str, o4_str, o5_str, o6_str, o7_str, o8_str, o9_str, o10_str; 
+        // stateMatrix stateMatrixLeido;
+        // state stateLeido;
+        std::vector<int> stateLeido;
+        std::vector<Q> QsLeido;
+        // Qs QsLeido;
+        // Recorre todas las line del archivo.
+        while (std::getline(file, line)) {
+            // Si el archivo tiene comentarios con #, no leerlos.
+            if (line[0] == '#') {
+                continue;
+            }
+            // !-----------------------------------------------------------------------
+            // Guardar cada line en la variable line  
+            std::istringstream iss(line);
+            // Guarda la variable idNode
+            std::getline(iss, idNode_str, ',');
+            idNode = std::stoi(idNode_str);
+            node* nodeLeido = nodes::get()->getDbNodeTotal().at(idNode).get();
+            // !-----------------------------------------------------------------------
+            // Guarda los elementos de state
+            // const_cast<std::vector<int>&>(stateLeido.getDensityLinks()).clear();
+            for (int i = 0; i < stateMatrix::tamanoVectorIO; ++i) {
+                if (i < nodeLeido->getLinkConnectionsPtr().size()) {
+                    std::getline(iss, s_str, ',');
+                    s = std::stoi(s_str);
+                    stateLeido.push_back(s);
+                } 
+                else {
+                    std::getline(iss, p0, ',');
+                }
+            }
+            // creacion de un stateMatrixLeido
+            // stateMatrix stateMatrixLeido = stateMatrix(nodeLeido, stateLeido);
+            // dbStateMatrixs.push_back(stateMatrix(nodeLeido, stateLeido));
+            // std::cout <<  std::endl;
+            // !-----------------------------------------------------------------------
+            // Elementos de Q
+            QsLeido.clear();
+            for (int i = 0; i < stateMatrix::getTamanoVector(); ++i) {
+                if (i < nodeLeido->getLinkConnectionsPtr().size()) {
+                    std::getline(iss, Q_str, ',');
+                    Qa = std::stod(Q_str);
+                    QsLeido.push_back(Q(Qa, nodeLeido->getLinkConnectionsPtr().at(i)));
+                } 
+                else {
+                    std::getline(iss, p0, ',');
+                }
+            }
+            stateMatrix* nuevoStateMatrix = new stateMatrix(nodeLeido, stateLeido, QsLeido);
+            dbStateMatrixs.push_back(nuevoStateMatrix);
+            nodeLeido->getStateMatrixExperimentadosPtr().push_back(nuevoStateMatrix);
+            // QsLeido.mostrarQs();
+            // std::cout << std::endl;
+
+            // !-----------------------------------------------------------------------
+            // Falta definir
+            // Elementos de o
+            std::getline(iss, o1_str, ',');
+            std::getline(iss, o2_str, ',');
+            std::getline(iss, o3_str, ',');
+            std::getline(iss, o4_str, ',');
+            std::getline(iss, o5_str, ',');
+            std::getline(iss, o6_str, ',');
+            std::getline(iss, o7_str, ',');
+            std::getline(iss, o8_str, ',');
+            std::getline(iss, o9_str, ',');
+            std::getline(iss, o10_str, '\n');
+            // Elementos de o
+            if (std::get<bool>(dictionary::get()->lookupDefault("readPedestrianMassState")) == true) {
+                o1 = std::stoi(o1_str);
+                o2 = std::stoi(o2_str);
+                o3 = std::stoi(o3_str);
+                o4 = std::stoi(o4_str);
+                o5 = std::stoi(o5_str);
+                o6 = std::stoi(o6_str);
+                o7 = std::stoi(o7_str);
+                o8 = std::stoi(o8_str);
+                o9 = std::stoi(o9_str);
+                o10 = std::stoi(o10_str);
+            }
+            // !-----------------------------------------------------------------------
+            // Grabar datos de la fila del stateMatrix en en Qtable del nodo numero id.
+            // falta
+            // nodes::get()->getDbNodeTotal().at(idNode)->getStateMatrixTable().push_back(stateMatrixLeido);
+
+            // std::cout << std::endl;
+            // nodes::get()->getDbNodeTotal().at(idNode)->getStateMatrixTableMap().emplace(stateMatrixLeido->getStateValue().getDensityLinks(),stateMatrixLeido);
+        }
+
+        file.close(); 
+        // // Termina el timing
+        // auto stop = std::chrono::high_resolution_clock::now();
+        // auto duration = stop - start;
+        // auto durationSeconds = std::chrono::duration_cast<std::chrono::seconds>(duration);
+        // auto durationMinutes = std::chrono::duration_cast<std::chrono::minutes>(duration);
+        // std::cout << "Duración Lectura: " << durationMinutes.count() << " min";
+        // std::cout << " / " << durationSeconds.count() << " s" << std::endl;
+    }
+
+}
 void stateMatrixs::mostrarDbStateMatrixs() const {
     // Mostrar todos los stateMatrix dentro de dbStateMatrixs.
     for (int i = 0; i < dbStateMatrixs.size(); i++) {
-        dbStateMatrixs[i].mostrarStateMatrix();
+        dbStateMatrixs[i]->mostrarStateMatrix();
     }
 }
-void stateMatrixs::imprimirDbStateMatrixs() {
+void stateMatrixs::imprimirDbStateMatrixs() const {
     // Crear el nombre del archivo de exportacion.
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // file    |-->| ARCHIVO DE SALIDA, EL NOMBRE SE CREA CON crearFilenameSalida()
@@ -277,6 +280,6 @@ void stateMatrixs::imprimirDbStateMatrixs() {
     // Recorre todos los nodos
     for (const auto& it : dbStateMatrixs) {
         // imprimir los statesMatrix de las tablas de cada nodo 
-        it.imprimirStateMatrix(file);
+        it->imprimirStateMatrix(file);
     }
 }

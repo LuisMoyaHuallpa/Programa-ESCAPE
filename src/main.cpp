@@ -19,7 +19,7 @@ int main() {
     links::get()->imprimirMeshLinks();
     // Lectura de simulaciones pasadas.
     // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
-    // stateMatrixs::get()->leerDbStateMatrixs();
+    stateMatrixs::get()->leerDbStateMatrixs();
     // segun el número de simulaciones
     while (tiempo::get()->getINumberSimulation() <= tiempo::get()->getEndNumberSimulation()) {
         // loop para una evacuacion
@@ -49,4 +49,5 @@ int main() {
         // aumentar el numero de simulacion y reiniciar valores
         tiempo::get()->aumentarINumberSimulation();
     }
+
 }

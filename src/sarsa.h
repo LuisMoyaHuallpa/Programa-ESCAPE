@@ -59,6 +59,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     static void sarsaActualizarQ(double* QPrevious, double* QCurrent, int& r);
     
+    
 };
 
 #endif 

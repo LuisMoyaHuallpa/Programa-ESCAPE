@@ -3,8 +3,11 @@
 #include "node.h"
 #include "link.h"
 #include "sarsa.h"
+#include "stateMatrix.h"
+#include "stateMatrixs.h"
 #include "vector2D.h"
 #include "velocidad.h"
+#include <iostream>
 #include <vector>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -161,31 +164,28 @@ void pedestrian::caminar() {
     const vector2D velocidad = direccionPedestrian * velocidadPedestrian.getMagnitud();
     position += velocidad * tiempo::get()->getDeltaT();
 }
-double pedestrian::calcularIDoubleSublink() {
+double pedestrian::calcularIdSublink() {
     /* Calcula la ubicacion de la persona en el array del subLink*/
     // distancia de la persona al nodeInicio de la persona
     double index_x = position.getX() - nodeInicioPtr->getCoordenada().getX();
     double index_y = position.getY() - nodeInicioPtr->getCoordenada().getY();
-    double index_hipo = std::sqrt(std::pow(index_x,2) + pow(index_y, 2)) / static_cast<double>(linkCurrentPtr->getAnchoSubdivisiones());
-    // if (direccionPedestrian.getX()<0) {
-    //     index_hipo = link::numberDivisiones-1-index_hipo;
-    // }
+    int index_hipo = std::sqrt(std::pow(index_x,2) + pow(index_y, 2)) / linkCurrentPtr->getAnchoSubdivisiones();
     return index_hipo;
 }
-void pedestrian::contarPedestrianInSublink() {
-    /* Cada persona tiene una posicion por lo tanto sabe donde agregar el conteo,
-        esto significa que no cuenta en todo las calles, solo en las calles que
-        hay personas.*/
-    double index_d = calcularIDoubleSublink();
-    int index = std::floor(index_d);
-    // verifica si la persona esta en intersecciones, al inicio o final
-    if (!(index == 0 or index == link::numberLinkDivision)) {
-        // convierto index_d a int debido a que quiero los index del vector sublink, y contar
-        // cuenta la cantidad de personas en la calle
-        // ubica las personas en las subdivisiones
-        linkCurrentPtr->getSublink().at(index).getPedestriansInSublink().push_back(this);
-    }
-}
+// void pedestrian::contarPedestrianInSublink() {
+//     /* Cada persona tiene una posicion por lo tanto sabe donde agregar el conteo,
+//         esto significa que no cuenta en todo las calles, solo en las calles que
+//         hay personas.*/
+//     double index_d = calcularIdSublink();
+//     int index = std::floor(index_d);
+//     // verifica si la persona esta en intersecciones, al inicio o final
+//     if (!(index == 0 or index == link::numberLinkDivision)) {
+//         // convierto index_d a int debido a que quiero los index del vector sublink, y contar
+//         // cuenta la cantidad de personas en la calle
+//         // ubica las personas en las subdivisiones
+//         linkCurrentPtr->getSublink().at(index).getPedestriansInSublink().push_back(this);
+//     }
+// }
 link* pedestrian::eleccionGeneralLink() const {
    // Configurar el generador de números aleatorios
     static std::random_device rd;
@@ -224,7 +224,6 @@ link* pedestrian::eleccionSarsaLink() const {
     // busca el elemento mayor de Q del stateMatrix experimentado
     const Q* Qmax = stateMatrixCurrentPtr->buscarQMax();
     return const_cast<link*>(Qmax->getCallePtr());
-
 }
 // void pedestrian::eleccionDosCallesContinuas() {
 //     // linkActual es la calle a punto de cambiar
@@ -299,8 +298,6 @@ int pedestrian::calcularReward() const {
 }
 int pedestrian::calcularTiempoDesplazamiento() const {
     /* calcula el proximo tiempo donde el pedestrian estará en una interseccion*/
-    nodeInicioPtr->mostrarNode();
-    nodeFinalPtr->mostrarNode();
     const double distancia = nodeFinalPtr->calcularDistanciaA(nodeInicioPtr);
     return distancia/velocidadPedestrian.getMagnitud();
 }
@@ -324,7 +321,6 @@ void pedestrian::algoritmoSarsa() {
 }
 void pedestrian::modelamientoPedestrian() {
     const int tiempoActual = tiempo::get()->getValorTiempo();
-    std::cout << tiempoActual << std::endl;
     // cuando la persona esta en pasivo, cambia el estado a evacuado cuando llegue su tiempo de salida
     if (estado == pasivo && tiempoInicial == tiempoActual) {
         estado = evacuando;
@@ -341,18 +337,19 @@ void pedestrian::modelamientoPedestrian() {
                 if(!(tiempoInicial == tiempoActual)){
                     // reinicia el valor del reward
                     reward = 0;
+                    // elimina esta persona en la calle pasada, porque esta a punto de estar en una calle nueva
+                    linkCurrentPtr->quitarPedestrian(this);
                     // guarda calle actual antes que sea cambiado
                     linkPreviousPtr =  linkCurrentPtr;
                     // guarda el Qcurents antes que sea cambiado
                     QPreviousPtr = QCurrentPtr;
-                    // busca y elimina esta persona en la calle pasada, porque esta a punto de estar en una calle nueva
-                    std::vector<pedestrian*>& pedestrianLink = linkCurrentPtr->getPedestriansLinkPtr();
-                    pedestrianLink.erase(std::remove(pedestrianLink.begin(), pedestrianLink.end(), this), pedestrianLink.end());
-                    // busca y elimina esta persona en la calle pasada, porque esta a punto de estar en una calle nueva
+                    // guarda el stateMatrixPrevious antes que sea cambiando
+                    stateMatrixPreviousPtr = stateMatrixCurrentPtr;
                     // ahora la interseccion final es la interseccion inicial.
                     nodeInicioPtr = nodeFinalPtr;
                     // correcion de la posicion cuando se llega cerca al nodo.
                     position = {nodeInicioPtr->getCoordenada().getX(), nodeInicioPtr->getCoordenada().getY()};
+
                 }
                 // observa el estado del nodo
                 const std::vector<int> stateObservado = nodeInicioPtr->stateObservado();
@@ -360,6 +357,8 @@ void pedestrian::modelamientoPedestrian() {
                 stateMatrixCurrentPtr = stateMatrix::creacionObtencionStateMatrix(nodeInicioPtr, stateObservado);
                 // eleccion de la calle
                 linkCurrentPtr = eleccionGeneralLink();
+                // agrego a la personas en la calle
+                linkCurrentPtr->agregarPedestrian(this);
                 // obtener nodo final
                 nodeFinalPtr = const_cast<node*>(nodeInicioPtr->buscarNodoFinal(linkCurrentPtr));
                 // calcula el proximo tiempo en que la persona estara en una interseccion
@@ -372,9 +371,7 @@ void pedestrian::modelamientoPedestrian() {
                     // calculo de reward
                     reward += calcularReward();
                     // algoritmo sarsa, actualiza en nodoAnterior
-                    std::cout << "Qprevious: " << *(QPreviousPtr->getValor()) << std::endl;
-                    std::cout << "Qcurrent: " << *(QCurrentPtr->getValor()) << std::endl;
-                    // sarsa::sarsaActualizarQ(QPrevious->getValor(), QCurrent->getValor(), reward);
+                    sarsa::sarsaActualizarQ(QPreviousPtr->getValor(), QCurrentPtr->getValor(), reward);
                 }
                 // direccion de la persona en la calle.
                 calcularDireccionPedestrian();
@@ -384,6 +381,7 @@ void pedestrian::modelamientoPedestrian() {
         }
         // modelamiento cuando la persona esta dentro de la calle
         else {
+            // camina la persona
             caminar();    
         }
     }
