@@ -3,6 +3,7 @@
 // extras
 #include "link.h"
 #include "pedestrian.h"
+#include "stateMatrix.h"
 #include <vector>
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -44,8 +45,8 @@ const vector2D node::getCoordenada() const{
 const std::vector<link*> node::getLinkConnectionsPtr() const {
     return linkConnectionsPtr;  
 }
-std::vector<stateMatrix*>& node::getStateMatrixExperimentadosPtr() {
-    return stateMatrixsExperimentosPtr;
+std::vector<stateMatrix*>* node::getStateMatrixExperimentadosPtr() {
+    return &stateMatrixsExperimentadosPtr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -105,17 +106,6 @@ const node* node::buscarNodoFinal(link *callePtr) const {
 //         qTable[i].getQ();
 //     }
 // }
-bool node::verificarCambioState(state stateAnterior, state stateActual) {
-    // Verificar si existe cambio de state entre diferentes stateActionQ.
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // stateActual       |-->| STATE DEL stateActionQ ACTUAL DE LA QTABLE
-    // stateAnterior     |-->| STATE DEL stateActionQ ANTERIOR DE LA QTABLE 
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    if (stateAnterior == stateActual) {
-        return true;
-    }
-    return false;  
-}
 estadoPedestrian node::verificarNodoEvacuation() const {
     return evacuando;    
 }
@@ -135,7 +125,12 @@ double node::calcularDistanciaA(const node* nodo2) const {
     return coordenada.distanciaA(nodo2->getCoordenada());
 }
 void node::addLink(link *calle) {
+    /* agrega una calle en el vector de linkConnections*/
     linkConnectionsPtr.push_back(calle);
+}
+void node::addStateMatrixExperimentadosPtr(stateMatrix *stateMatrixExperimentado){
+    /* agrega un stateMatrixExperimentado en el vector stateMatrixsExperimentado*/
+    stateMatrixsExperimentadosPtr.push_back(stateMatrixExperimentado);
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // mostrar
@@ -153,31 +148,10 @@ void node::mostrarNode() const {
     }
     std::cout << std::endl;
 }
-// void node::mostrarQTable() const {
-//     // Muestra en el terminal datos de la tabla de stateMatrix:
-//     // IdNode
-//     // x y
-//     // std::cout << "# q:" << stateMatrixTable.size() << std::endl;
-//     std::cout << "# q:" << stateMatrixTableMap.size() << std::endl;
-//     // for (int i = 0; i < stateMatrixTableMap.size(); i++) {
-//     for (auto& s : stateMatrixTableMap) {
-//         s.second->mostrarStateMatrix(); 
-//         std::cout << std::endl;
-//     }
-// }
-// void node::imprimirQTable(std::fstream& file) const {
-//    // Impresion de sim.csv
-//     // for (auto it = stateMatrixTable.begin(); it != stateMatrixTable.end(); ++it) {
-//     //     // Imprimir id del nodo o intersección
-//     //     file << idNode << ",";
-//     //     it->imprimirStateMatrix(file);
-//     // }
-//     //alternativa
-//     for (auto& s : stateMatrixTableMap) {
-//         // Imprimir id del nodo o intersección
-//         file << idNode << ",";
-//         s.second->imprimirStateMatrix(file);
-//     }
-// }
-
-
+void node::mostrarStateMatrixTable() const {
+    /* muestra la tabla de stateMatrix experimentado*/
+    std::cout << "Qtable: " << std::endl;
+    for (const stateMatrix* const elemento : stateMatrixsExperimentadosPtr) {
+        elemento->mostrarStateMatrix();
+    } 
+}

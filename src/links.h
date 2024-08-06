@@ -38,7 +38,6 @@ private:
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     links();
-
    
 public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -56,8 +55,7 @@ public:
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void leerLinks(std::string fileName);
-    void calcularDensityLevelLinks();
-    void contarPedestriansInSublink();
+    void contarPedestrians();
     void resetSublinks();
     void resetPedestriansLink();
     void mostrarDbLinksTotal();

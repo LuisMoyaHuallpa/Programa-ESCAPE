@@ -27,11 +27,9 @@ int main() {
         tiempo::get()->calcularRandomChoiceRate();
         while (tiempo::get()->running()) {
             tiempo::get()->aumentarTiempo();
-            // contador de personas un tiempo atras de la funcion modelamiento de caminar de personas
-            // pedestrians::get()->contarPedestriansInSublink();
-            // links::get()->contarPedestriansInSublink();
+            // contador de personas un tiempo atras de la funcion modelamiento
+            links::get()->contarPedestrians();
             // modelamiento de pedestrian.
-
             pedestrians::get()->modelamientoPedestrians();
 
             // pedestrians::get()->mostrarDbPedestrianMovimiento();

@@ -214,7 +214,7 @@ void stateMatrixs::leerDbStateMatrixs() {
             }
             stateMatrix* nuevoStateMatrix = new stateMatrix(nodeLeido, stateLeido, QsLeido);
             dbStateMatrixs.push_back(nuevoStateMatrix);
-            nodeLeido->getStateMatrixExperimentadosPtr().push_back(nuevoStateMatrix);
+            nodeLeido->getStateMatrixExperimentadosPtr()->push_back(nuevoStateMatrix);
             // QsLeido.mostrarQs();
             // std::cout << std::endl;
 

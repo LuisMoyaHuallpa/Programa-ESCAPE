@@ -37,7 +37,7 @@ private:
     const int idNode;
     const vector2D coordenada;
     mutable std::vector<link*> linkConnectionsPtr;
-    std::vector<stateMatrix*> stateMatrixsExperimentosPtr;
+    std::vector<stateMatrix*> stateMatrixsExperimentadosPtr;
 
 public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -49,30 +49,27 @@ public:
     // destrutor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // virtual ~node() {}
-
     virtual std::string getNodeType();
     
-
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     const int getIdNode() const;
     const vector2D getCoordenada() const;
     const std::vector<link*> getLinkConnectionsPtr() const;
-    std::vector<stateMatrix*>& getStateMatrixExperimentadosPtr();
+    // std::vector<stateMatrix*>& getStateMatrixExperimentadosPtr();
+    std::vector<stateMatrix*>* getStateMatrixExperimentadosPtr();
 
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     const node* buscarNodoFinal(link* callePtr) const;
-    bool verificarCambioState(state stateAnterior, state stateActual);
     virtual estadoPedestrian verificarNodoEvacuation() const;
     std::vector<int> stateObservado() const;
     double calcularDistanciaA(const node* nodo2) const;
     void addLink(link* calle);
+    void addStateMatrixExperimentadosPtr(stateMatrix* stateMatrixExperimentado);
     void mostrarNode() const;
-    // void mostrarQTable() const;
-    // void imprimirQTable(std::fstream& file) const;
-
+    void mostrarStateMatrixTable() const;
 };
 #endif

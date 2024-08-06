@@ -14,19 +14,9 @@ links* links::linksInstance = nullptr;
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 links::links() {
-    // (*this).fileName = dictionary::controlDict["linksFile"];
     (*this).fileName = std::get<std::string>(dictionary::get()->lookupDefault("linksFile"));
     leerLinks(fileName);
 }
-
-// nodes links::listaNode;
-// void links::setListaNode(const nodes& dbnode) {
-//     listaNode = dbnode;
-// }
-
-// links::links(std::string filename) : dbNode(){
-//     leerLinks(filename);
-// }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getters
@@ -103,13 +93,7 @@ void links::leerLinks(std::string fileName){
     }
     file.close(); 
 }
-void links::calcularDensityLevelLinks() {
-    for (auto it = dbLinkTotal.begin(); it != dbLinkTotal.end(); ++it) {
-        it->get()->calcularDensityGeneral();
-        it->get()->calcularDensityLevel();
-    }
-}
-void links::contarPedestriansInSublink() {
+void links::contarPedestrians() {
     /* calcula el nivel de densidad en las calles*/
     if(tiempo::get()->verificarPedestrianCountPeriod()){
         // recorre todas las calles
@@ -144,7 +128,6 @@ void links::resetPedestriansLink() {
 void links::mostrarDbLinksTotal(){
     for (int i = 0; i < dbLinkTotal.size(); i++) {
         dbLinkTotal.at(i)->mostrarLink();
-        // dbLinkTotal.at(i).mostrarSubLinks();
     }
 }
 void links::mostrarSublink() {

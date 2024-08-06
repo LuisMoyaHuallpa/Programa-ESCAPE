@@ -308,7 +308,7 @@ int pedestrian::calcularTiempoDesplazamiento() const {
 void pedestrian::modelamientoPedestrian() {
     if(!(estado == evacuado)){
         const int tiempoActual = tiempo::get()->getValorTiempo();
-        std::cout << tiempoActual << std::endl;
+        // std::cout << tiempoActual << std::endl;
         // cuando la persona esta en pasivo, cambia el estado a evacuado cuando llegue su tiempo de salida
         if (estado == pasivo && tiempoInicial == tiempoActual) {
             estado = evacuando;
@@ -346,6 +346,11 @@ void pedestrian::modelamientoPedestrian() {
                     const std::vector<int> stateObservado = nodeInicioPtr->stateObservado();
                     // obtener stateMatrix
                     stateMatrixCurrentPtr = stateMatrix::creacionObtencionStateMatrix(nodeInicioPtr, stateObservado);
+                    // std::cout << nodeInicioPtr << std::endl;
+                    // nodeInicioPtr->mostrarNode();
+                    // nodeInicioPtr->mostrarStateMatrixTable();
+                    // std::cout<< "db" << std::endl;
+                    // stateMatrixs::get()->mostrarDbStateMatrixs();
                     // eleccion de la calle
                     linkCurrentPtr = eleccionGeneralLink();
                     

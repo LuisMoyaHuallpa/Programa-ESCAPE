@@ -170,9 +170,9 @@ stateMatrix* stateMatrix::creacionObtencionStateMatrix(
     /* cuando una persona llega a un nodo, con lo observado busca en el nodo
         donde esta si el stateMatrixExperimentado se encuentra en caso contrario lo crea
         */
-    std::vector<stateMatrix*> stateMatrixExperimentados = nodo->getStateMatrixExperimentadosPtr();
+    std::vector<stateMatrix*>* stateMatrixExperimentados = nodo->getStateMatrixExperimentadosPtr();
     // loop para buscar cada lista de stateMatrix
-    for (stateMatrix* stateMatrixExperimentado : stateMatrixExperimentados) {
+    for (stateMatrix* stateMatrixExperimentado : *stateMatrixExperimentados) {
        // si stateMatrixExperiemntado es igual al stateObservado entonces si existe ese stateMatrix
         if (stateMatrixExperimentado->getState() == stateObservado) {
             return stateMatrixExperimentado; 
@@ -182,6 +182,8 @@ stateMatrix* stateMatrix::creacionObtencionStateMatrix(
     stateMatrix* nuevoStateMatrix = new stateMatrix(nodo, stateObservado);
     std::vector<stateMatrix*>& dbStateMatrix = stateMatrixs::get()->getDbStateMatrixs();
     dbStateMatrix.emplace_back(nuevoStateMatrix);
-    stateMatrixExperimentados.push_back(nuevoStateMatrix);
+    // stateMatrixExperimentados->;
+    nodo->addStateMatrixExperimentadosPtr(nuevoStateMatrix);
+    // stateMatrixExperimentados.push_back(nuevoStateMatrix);
     return nuevoStateMatrix;
 }

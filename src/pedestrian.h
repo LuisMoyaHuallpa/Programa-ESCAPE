@@ -85,8 +85,6 @@ private:
     link* linkCurrentPtr;
     link* linkPreviousPtr;
 
-    std::vector<double>* QsActual;
-
 public:
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
