@@ -66,7 +66,7 @@ public:
     bool operator==(stateMatrix stateMatrix2);
     stateMatrix* buscarStateMatrix(std::vector<int> state) const;
     Q* buscarQ(link* callePtr);
-    Q* buscarQMax() ;
+    const Q* buscarQMax() ;
     void mostrarStateMatrix() const;
     void imprimirState(std::fstream& file) const;
     void imprimirQs(std::fstream& file) const;

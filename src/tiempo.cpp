@@ -197,6 +197,7 @@ void tiempo::calcularRandomChoiceRate() {
         randomChoiceRate = 1.0 / (gleeFactor * double(k - 1) + 1.0);
     }
     else if(std::get<std::string>(dictionary::get()->lookup("sarsaProcesses")) == "trained") {
+        std::cout << "ale" << std::endl;
         randomChoiceRate = 0;
     }
 }

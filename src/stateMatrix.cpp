@@ -37,6 +37,10 @@ stateMatrix::stateMatrix(const node* const node, const std::vector<int> state)
 }
 stateMatrix::stateMatrix(const node *const nodePtr, const std::vector<int> state, std::vector<Q> Qs)
     : id(0), nodoPtr(nodePtr), state(state), Qs(Qs){
+    // const std::vector<link*> linkConnectionsPtr = nodoPtr->getLinkConnectionsPtr();
+    // for (link* linkConnection : linkConnectionsPtr) {
+    //     Qs.emplace_back(linkConnection);
+    // } 
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // setters
@@ -89,23 +93,38 @@ Q* stateMatrix::buscarQ(link *callePtr) {
     }
     return nullptr;
 }
-Q* stateMatrix::buscarQMax() {
-
-    /* calcular el maximo Q del vector de Qs*/
-    // double qmax = 0;
-    // for (auto q : Qs) {
-    //     if (*(q.getValor())>qmax) {
-    //         qmax = *(q.getValor());
-    //         Q* ref = &q;
-    //     }
-    // }
-    // return ref;
-   auto maxElementIt = std::max_element(Qs.begin(), Qs.end(),
-   [](const Q& a, const Q& b)
-       {
-           return a.getValor() < b.getValor();
-       });
-   // return nullptr;
+// Q* stateMatrix::buscarQMax() {
+//     /* seleciona el mayor valor Q del vector Qs,
+//         en caso sean todos iguales elegir aletoriamente*/
+//    auto maxElementIt = std::max_element(Qs.begin(), Qs.end(),
+//    [](const Q& a, const Q& b)
+//        {
+//            return a.getValor() < b.getValor();
+//        });
+//    return  maxElementIt.base();
+// }
+const Q* stateMatrix::buscarQMax() {
+    // Encontrar el valor máximo
+    auto maxElementIt = std::max_element(Qs.begin(), Qs.end(),
+                                         [](const Q& a, const Q& b) {
+                                             return a.getValor() < b.getValor();
+                                         });
+    double maxValue = *(maxElementIt->getValor());
+    // Recopilar todos los elementos que tienen el valor máximo
+    std::vector<const Q*> maxElements;
+    for (const auto& q : Qs) {
+        if (q.getValor() == maxValue) {
+            maxElements.push_back(&q);
+        }
+    }
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, maxElements.size() - 1);
+    // Generar un índice aleatorio
+    int randomIndex = dis(gen);
+    // Obtener el elemento aleatorio
+    const Q* randomElement = maxElements[randomIndex];
+    return randomElement; // Devolver uno de los máximos aleatorios
 }
 void stateMatrix::mostrarStateMatrix() const {
     /* muestra en la terminal cada linea del stateMatrix. */
@@ -146,6 +165,7 @@ void stateMatrix::imprimirQs(std::fstream &file) const {
 }
 void stateMatrix::imprimirStateMatrix(std::fstream& file) const {
    // Imprimir una fila del elemento stateMatrix.
+    file << nodoPtr->getIdNode() << ",";
     // !-----------------------------------------------------------------------
     // Imprimir todos los elementos de state y se completa con 0 para llegar a
     // 10 elementos.
@@ -182,8 +202,6 @@ stateMatrix* stateMatrix::creacionObtencionStateMatrix(
     stateMatrix* nuevoStateMatrix = new stateMatrix(nodo, stateObservado);
     std::vector<stateMatrix*>& dbStateMatrix = stateMatrixs::get()->getDbStateMatrixs();
     dbStateMatrix.emplace_back(nuevoStateMatrix);
-    // stateMatrixExperimentados->;
     nodo->addStateMatrixExperimentadosPtr(nuevoStateMatrix);
-    // stateMatrixExperimentados.push_back(nuevoStateMatrix);
     return nuevoStateMatrix;
 }

@@ -346,14 +346,12 @@ void pedestrian::modelamientoPedestrian() {
                     const std::vector<int> stateObservado = nodeInicioPtr->stateObservado();
                     // obtener stateMatrix
                     stateMatrixCurrentPtr = stateMatrix::creacionObtencionStateMatrix(nodeInicioPtr, stateObservado);
-                    // std::cout << nodeInicioPtr << std::endl;
                     // nodeInicioPtr->mostrarNode();
+                    // stateMatrixCurrentPtr->mostrarStateMatrix();
                     // nodeInicioPtr->mostrarStateMatrixTable();
-                    // std::cout<< "db" << std::endl;
-                    // stateMatrixs::get()->mostrarDbStateMatrixs();
                     // eleccion de la calle
                     linkCurrentPtr = eleccionGeneralLink();
-                    
+                    // linkCurrentPtr->mostrarLink();
                     // agrego a la personas en la calle
                     linkCurrentPtr->agregarPedestrian(this);
                     // obtener nodo final

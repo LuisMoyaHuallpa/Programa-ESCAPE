@@ -164,11 +164,8 @@ void stateMatrixs::leerDbStateMatrixs() {
         std::string s_str;
         std::string Q_str;
         std::string o1_str, o2_str, o3_str, o4_str, o5_str, o6_str, o7_str, o8_str, o9_str, o10_str; 
-        // stateMatrix stateMatrixLeido;
-        // state stateLeido;
         std::vector<int> stateLeido;
         std::vector<Q> QsLeido;
-        // Qs QsLeido;
         // Recorre todas las line del archivo.
         while (std::getline(file, line)) {
             // Si el archivo tiene comentarios con #, no leerlos.
@@ -184,7 +181,7 @@ void stateMatrixs::leerDbStateMatrixs() {
             node* nodeLeido = nodes::get()->getDbNodeTotal().at(idNode).get();
             // !-----------------------------------------------------------------------
             // Guarda los elementos de state
-            // const_cast<std::vector<int>&>(stateLeido.getDensityLinks()).clear();
+            stateLeido.clear();
             for (int i = 0; i < stateMatrix::tamanoVectorIO; ++i) {
                 if (i < nodeLeido->getLinkConnectionsPtr().size()) {
                     std::getline(iss, s_str, ',');
@@ -195,10 +192,6 @@ void stateMatrixs::leerDbStateMatrixs() {
                     std::getline(iss, p0, ',');
                 }
             }
-            // creacion de un stateMatrixLeido
-            // stateMatrix stateMatrixLeido = stateMatrix(nodeLeido, stateLeido);
-            // dbStateMatrixs.push_back(stateMatrix(nodeLeido, stateLeido));
-            // std::cout <<  std::endl;
             // !-----------------------------------------------------------------------
             // Elementos de Q
             QsLeido.clear();
@@ -213,11 +206,8 @@ void stateMatrixs::leerDbStateMatrixs() {
                 }
             }
             stateMatrix* nuevoStateMatrix = new stateMatrix(nodeLeido, stateLeido, QsLeido);
-            dbStateMatrixs.push_back(nuevoStateMatrix);
-            nodeLeido->getStateMatrixExperimentadosPtr()->push_back(nuevoStateMatrix);
-            // QsLeido.mostrarQs();
-            // std::cout << std::endl;
-
+            dbStateMatrixs.emplace_back(nuevoStateMatrix);
+            nodeLeido->addStateMatrixExperimentadosPtr(nuevoStateMatrix);
             // !-----------------------------------------------------------------------
             // Falta definir
             // Elementos de o

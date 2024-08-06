@@ -1,5 +1,6 @@
 #include "Q.h"
 #include "stateMatrix.h"
+#include "link.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
@@ -35,7 +36,8 @@ const link* Q::getCallePtr() const {
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void Q::mostrarQs() const{
-        std::cout << valor << ",";
+        std::cout << valor << " ";
+        std::cout << callePtr->getIdLink() << ",";
 }
 // void Q::imprimirQs(std::fstream &file) const {
 //     for (int i = 0; i < stateMatrix::tamanoVectorIO; i++) {
