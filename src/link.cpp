@@ -11,7 +11,7 @@ const int link::numberLinkDivision = std::get<int>(dictionary::get()->lookup("nu
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-link::link(int idLink, node *node1, node *node2, int length, int width)
+link::link(const int idLink, const node* const node1, const node* const node2, const int length, const int width)
     : idLink(idLink), node1Ptr(node1), node2Ptr(node2), length(length), width(width),
       orientacionLink(calcularOrientacionLink()),
       anchoSubdivision(calcularAnchoDivisiones()),
@@ -50,7 +50,6 @@ const vector2D link::getOrientacionLink() const {
 int link::getDensityLevel() {
     return densityLevel;
 }
-
 std::vector<pedestrian*>& link::getPedestriansLinkPtr() {
     return pedestriansLinkPtr;
 }

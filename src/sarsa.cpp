@@ -11,7 +11,7 @@ const double sarsa::gamma = 0.9;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void sarsa::sarsaActualizarQ(double* QPrevious, double* QCurrent, int& r) {
+void sarsa::sarsaActualizarQ(double* const QPrevious, const double* const QCurrent, const int& r) {
     *QPrevious += alpha * (static_cast<double>(r) + gamma * *QCurrent - *QPrevious); 
 }
 

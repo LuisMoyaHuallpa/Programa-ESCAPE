@@ -57,7 +57,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    static void sarsaActualizarQ(double* QPrevious, double* QCurrent, int& r);
+    static void sarsaActualizarQ(double* const QPrevious, const double* const QCurrent, const int& r);
     
     
 };

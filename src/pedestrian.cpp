@@ -22,7 +22,7 @@ const int pedestrian::stepReward = -1;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pedestrian::pedestrian(const int edad, const int gender, const int hhType, const int hhId, const node* nodeArranque)
+pedestrian::pedestrian(const int edad, const int gender, const int hhType, const int hhId, node* nodeArranque)
     : idPedestrian(contador++),
       edad(edad),
       gender(gender),
@@ -30,6 +30,8 @@ pedestrian::pedestrian(const int edad, const int gender, const int hhType, const
       hhId(hhId),
       nodeArranque(nodeArranque),
       tiempoInicial(0),
+      position(nodeArranque->getCoordenada()),
+      nodeInicioPtr(nodeArranque),
       nodeFinalPtr(nullptr),
       direccionPedestrian(),
       velocidadPedestrian(),
@@ -37,14 +39,10 @@ pedestrian::pedestrian(const int edad, const int gender, const int hhType, const
       reward(0),
       tiempoProximaInterseccion(tiempoInicial),
       stateMatrixCurrentPtr(nullptr),
-      stateMatrixPreviousPtr(nullptr),
       QCurrentPtr(nullptr),
       QPreviousPtr(nullptr),
-      linkCurrentPtr(nullptr),
-      linkPreviousPtr(nullptr)
+      linkCurrentPtr(nullptr)
 {
-    nodeInicioPtr = const_cast<node*>(nodeArranque);
-    position = nodeInicioPtr->getCoordenada();
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -149,9 +147,9 @@ int pedestrian::getReward() const {
 link* pedestrian::getLinkCurrent() const {
     return linkCurrentPtr;
 }
-link* pedestrian::getLinkPrevious() const {
-    return linkPreviousPtr;
-}
+// link* pedestrian::getLinkPrevious() const {
+//     return linkPreviousPtr;
+// }
 
 
 
@@ -317,31 +315,28 @@ void pedestrian::modelamientoPedestrian() {
         if (estado == evacuando) {
             // modelamiento cuando la persona esta en una interseccion
             if(tiempoProximaInterseccion ==  tiempoActual){
+                // si no ha evacuado realizar lo siguiente
+                // si fuera un tiempo diferente al inicial, guardar lo presente en lo pasado
+                if(!(tiempoInicial == tiempoActual)){
+                    // reinicia el valor del reward
+                    reward = 0;
+                    // elimina esta persona en la calle pasada, porque esta a punto de estar en una calle nueva
+                    linkCurrentPtr->quitarPedestrian(this);
+                    // guarda calle actual antes que sea cambiado
+                    // linkPreviousPtr =  linkCurrentPtr;
+                    // guarda el Qcurents antes que sea cambiado
+                    QPreviousPtr = QCurrentPtr;
+                    // ahora la interseccion final es la interseccion inicial.
+                    nodeInicioPtr = nodeFinalPtr;
+                    // correcion de la posicion cuando se llega cerca al nodo.
+                    position = {nodeInicioPtr->getCoordenada().getX(), nodeInicioPtr->getCoordenada().getY()};
+                }
                 // verifico si estoy en un punto de evacuacion
                 estado = nodeInicioPtr->verificarNodoEvacuation();
                 if (estado == evacuado) {
                     dynamic_cast<nodeEvacuation*>(nodeInicioPtr)->contabilizarPersona(this);
                 }
-                // si no ha evacuado realizar lo siguiente
                 if(estado == evacuando){
-                    // si fuera un tiempo diferente al inicial, guardar lo presente en lo pasado
-                    if(!(tiempoInicial == tiempoActual)){
-                        // reinicia el valor del reward
-                        reward = 0;
-                        // elimina esta persona en la calle pasada, porque esta a punto de estar en una calle nueva
-                        linkCurrentPtr->quitarPedestrian(this);
-                        // guarda calle actual antes que sea cambiado
-                        linkPreviousPtr =  linkCurrentPtr;
-                        // guarda el Qcurents antes que sea cambiado
-                        QPreviousPtr = QCurrentPtr;
-                        // guarda el stateMatrixPrevious antes que sea cambiando
-                        stateMatrixPreviousPtr = stateMatrixCurrentPtr;
-                        // ahora la interseccion final es la interseccion inicial.
-                        nodeInicioPtr = nodeFinalPtr;
-                        // correcion de la posicion cuando se llega cerca al nodo.
-                        position = {nodeInicioPtr->getCoordenada().getX(), nodeInicioPtr->getCoordenada().getY()};
-                        
-                    }
                     // observa el estado del nodo
                     const std::vector<int> stateObservado = nodeInicioPtr->stateObservado();
                     // obtener stateMatrix

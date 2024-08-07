@@ -79,11 +79,9 @@ private:
     int tiempoProximaInterseccion;
 
     stateMatrix* stateMatrixCurrentPtr;
-    stateMatrix* stateMatrixPreviousPtr;
     Q* QCurrentPtr;
     Q* QPreviousPtr;
     link* linkCurrentPtr;
-    link* linkPreviousPtr;
 
 public:
 
@@ -98,7 +96,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    pedestrian(const int edad, const int gender, const int hhType, const int hhId, const node* nodeArranque);
+    pedestrian(const int edad, const int gender, const int hhType, const int hhId, node* nodeArranque);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // setters
@@ -108,7 +106,6 @@ public:
     void setNodeFinal(node* nodeFinal);
     void setNodeInicioAnterior(node* nodeInicioAnterior);
     void setLinkActual(link* linkActual);
-    void setLinkPasado(link* linkPasado);
     void setDireccionPedestrian(vector2D direccionPedestrian);
     void setVelocidad(velocidad velocidadPedestrian);
     void setEstado(estadoPedestrian estado);
@@ -134,11 +131,9 @@ public:
     int getReward() const;
 
     stateMatrix* getStateMatrixCurrent() const;
-    stateMatrix* getStateMatrixPrevious() const;
     double* getQCurrent() const;
     double* getQPrevious() const;
     link* getLinkCurrent() const;
-    link* getLinkPrevious() const;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
