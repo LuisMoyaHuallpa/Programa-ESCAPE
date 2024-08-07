@@ -64,7 +64,7 @@ public:
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     const node* buscarNodoFinal(link* callePtr) const;
-    virtual estadoPedestrian verificarNodoEvacuation() const;
+    virtual estado verificarNodoEvacuation() const;
     std::vector<int> stateObservado() const;
     double calcularDistanciaA(const node* nodo2) const;
     void addLink(link* calle);

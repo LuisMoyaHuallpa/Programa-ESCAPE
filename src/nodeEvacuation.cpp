@@ -74,7 +74,7 @@ bool nodeEvacuation::verificarLLeno() const {
     return personasEvacuadasPtr.size() == maxPersonasEvacuadas;
 
 }
-estadoPedestrian nodeEvacuation::verificarNodoEvacuation() const {
+estado nodeEvacuation::verificarNodoEvacuation() const {
     /* verifica si el nodo es un node de evacuacion */
     return evacuado;
 }

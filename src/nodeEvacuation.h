@@ -64,7 +64,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void reiniciar();
     bool verificarLLeno() const;
-    estadoPedestrian verificarNodoEvacuation() const override;
+    estado verificarNodoEvacuation() const override;
     void contabilizarPersona(pedestrian* const persona);
     void imprimirPersonasEvacuadas(std::fstream* file);
 

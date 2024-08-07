@@ -106,7 +106,7 @@ const node* node::buscarNodoFinal(link *callePtr) const {
 //         qTable[i].getQ();
 //     }
 // }
-estadoPedestrian node::verificarNodoEvacuation() const {
+estado node::verificarNodoEvacuation() const {
     return evacuando;    
 }
 std::vector<int> node::stateObservado() const {

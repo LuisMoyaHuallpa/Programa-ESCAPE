@@ -35,7 +35,7 @@ pedestrian::pedestrian(const int edad, const int gender, const int hhType, const
       nodeFinalPtr(nullptr),
       direccionPedestrian(),
       velocidadPedestrian(),
-      estado(pasivo),
+      estadoPedestrian(pasivo),
       reward(0),
       tiempoProximaInterseccion(tiempoInicial),
       stateMatrixCurrentPtr(nullptr),
@@ -77,8 +77,8 @@ void pedestrian::setTiempoInicial(int tiempoInicial) {
     (*this).tiempoInicial = tiempoInicial;
     (*this).tiempoProximaInterseccion = tiempoInicial;
 }
-void pedestrian::setEstado(estadoPedestrian estado) {
-    (*this).estado = pasivo;
+void pedestrian::setEstadoPedestrian(estado estadoPedestrian) {
+    (*this).estadoPedestrian = estadoPedestrian;
 }
 // void pedestrian::setOrientacionLinkPasado(vector2D orientacionLinkPasado) {
 //     (*this).orientacionLinkPasado = orientacionLinkPasado;
@@ -135,11 +135,11 @@ node* pedestrian::getNodeFinal() const {
 vector2D pedestrian::getDireccionPedestrian() const {
     return direccionPedestrian;
 }
-velocidad pedestrian::getVelocidadPedestrian() const {
+velocidad& pedestrian::getVelocidadPedestrian() {
     return velocidadPedestrian;
 }
-estadoPedestrian& pedestrian::getEstado() {
-    return estado;
+estado& pedestrian::getEstadoPedestrian() {
+    return estadoPedestrian;
 }
 int pedestrian::getReward() const {
     return reward;  
@@ -281,7 +281,7 @@ vector2D pedestrian::calcularSignoDireccion() {
 }
 int pedestrian::calcularReward() const {
     /* calculo del reward por paso*/
-    switch (estado) {
+    switch (estadoPedestrian) {
         case evacuando:
         {
             const int tiempoDesplazamiento = calcularTiempoDesplazamiento();
@@ -304,15 +304,15 @@ int pedestrian::calcularTiempoDesplazamiento() const {
     return distancia/velocidadPedestrian.getMagnitud();
 }
 void pedestrian::modelamientoPedestrian() {
-    if(!(estado == evacuado)){
+    if(!(estadoPedestrian == evacuado)){
         const int tiempoActual = tiempo::get()->getValorTiempo();
         // std::cout << tiempoActual << std::endl;
         // cuando la persona esta en pasivo, cambia el estado a evacuado cuando llegue su tiempo de salida
-        if (estado == pasivo && tiempoInicial == tiempoActual) {
-            estado = evacuando;
+        if (estadoPedestrian == pasivo && tiempoInicial == tiempoActual) {
+            estadoPedestrian = evacuando;
         }
         // realiza el movimiento solo cuando esta evacuando
-        if (estado == evacuando) {
+        if (estadoPedestrian == evacuando) {
             // modelamiento cuando la persona esta en una interseccion
             if(tiempoProximaInterseccion ==  tiempoActual){
                 // si no ha evacuado realizar lo siguiente
@@ -332,11 +332,11 @@ void pedestrian::modelamientoPedestrian() {
                     position = {nodeInicioPtr->getCoordenada().getX(), nodeInicioPtr->getCoordenada().getY()};
                 }
                 // verifico si estoy en un punto de evacuacion
-                estado = nodeInicioPtr->verificarNodoEvacuation();
-                if (estado == evacuado) {
+                estadoPedestrian = nodeInicioPtr->verificarNodoEvacuation();
+                if (estadoPedestrian == evacuado) {
                     dynamic_cast<nodeEvacuation*>(nodeInicioPtr)->contabilizarPersona(this);
                 }
-                if(estado == evacuando){
+                if(estadoPedestrian == evacuando){
                     // observa el estado del nodo
                     const std::vector<int> stateObservado = nodeInicioPtr->stateObservado();
                     // obtener stateMatrix
@@ -372,7 +372,7 @@ void pedestrian::modelamientoPedestrian() {
             // modelamiento cuando la persona esta dentro de la calle
             else {
                 // camina la persona
-                if (estado == evacuando) {
+                if (estadoPedestrian == evacuando) {
                     caminar();    
                 }
             }
@@ -382,14 +382,14 @@ void pedestrian::modelamientoPedestrian() {
 void pedestrian::reiniciar() {
     /* reiniciar valores para proxima simulacion*/
     nodeInicioPtr = const_cast<node*>(nodeArranque);
-    estado = pasivo;
+    estadoPedestrian = pasivo;
     position = nodeInicioPtr->getCoordenada();
     tiempoProximaInterseccion = tiempoInicial;
 }
 void pedestrian::mostrarMovimientoPedestrian() const {
     /* muestra la interseccion de partida y final de una calle, cuando
         la persona.*/
-    if (estado == evacuando) {
+    if (estadoPedestrian == evacuando) {
         std::cout << idPedestrian << ' ';
         std::cout << std::setw(6) << nodeInicioPtr->getIdNode() << ' ';
         std::cout << "start: ";

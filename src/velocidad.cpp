@@ -1,11 +1,6 @@
 #include "velocidad.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// static member
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-double velocidad::velocidadConstante = 1.0;
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 velocidad::velocidad()
@@ -30,18 +25,17 @@ double velocidad::getMagnitud() const{
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void velocidad::calcularMagnitudVelocidad(double densidad) {
-    magnitud = 1.388 - 0.396 * densidad; 
+double velocidad::calcularVelocidadDensidad(const double &densidad) const {
+    return 1.388 - 0.396 * densidad; 
 }
-void velocidad::ajusteVelocidad() {
+void velocidad::calcularAjusteVelocidad() {
     const double vel_min = 0.2;
     const double vel_max = 1.19;
     magnitud = std::max(vel_min, std::min(magnitud, vel_max));
 }
-void velocidad::actualizarVelocidad(double densidad) {
-    calcularMagnitudVelocidad(densidad); 
-    ajusteVelocidad();
-    // calcularVectorVelocidad();
+void velocidad::actualizarVelocidad(const double &densidad) {
+    magnitud = calcularVelocidadDensidad(densidad); 
+    calcularAjusteVelocidad();
 }
 void velocidad::mostrarVelocidad() {
 }

@@ -23,11 +23,6 @@ private:
 
 public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // static member
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    static double velocidadConstante;
-
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     velocidad();
@@ -45,10 +40,9 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    void calcularMagnitudVelocidad(double densidad);
-    void ajusteVelocidad();
-    // void calcularVectorVelocidad();
-    void actualizarVelocidad(double densidad);
+    double calcularVelocidadDensidad(const double &densidad) const;
+    void calcularAjusteVelocidad();
+    void actualizarVelocidad(const double &densidad);
     void mostrarVelocidad();
 };
 #endif

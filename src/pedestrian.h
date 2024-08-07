@@ -29,7 +29,7 @@
 
 class node;
 class link;
-enum estadoPedestrian { pasivo, evacuando, evacuado, muerto };
+enum estado { pasivo, evacuando, evacuado, muerto };
 
 class pedestrian {
 public:
@@ -74,7 +74,7 @@ private:
     node* nodeFinalPtr;
     vector2D direccionPedestrian;
     velocidad velocidadPedestrian;
-    estadoPedestrian estado;
+    estado estadoPedestrian;
     int reward;
     int tiempoProximaInterseccion;
 
@@ -108,7 +108,7 @@ public:
     void setLinkActual(link* linkActual);
     void setDireccionPedestrian(vector2D direccionPedestrian);
     void setVelocidad(velocidad velocidadPedestrian);
-    void setEstado(estadoPedestrian estado);
+    void setEstadoPedestrian(estado estadoPedestrian);
     void setTiempoInicial(int tiempoInicial);
     void setReward(int reward);
 
@@ -126,10 +126,9 @@ public:
     node* getNodeInicio() const;
     node* getNodeFinal() const;
     vector2D getDireccionPedestrian() const;
-    velocidad getVelocidadPedestrian() const;
-    estadoPedestrian& getEstado();
+    velocidad &getVelocidadPedestrian();
+    estado& getEstadoPedestrian();
     int getReward() const;
-
     stateMatrix* getStateMatrixCurrent() const;
     double* getQCurrent() const;
     double* getQPrevious() const;
