@@ -382,11 +382,16 @@ void pedestrian::modelamientoPedestrian() {
                 // excepto al iniciar
                 if(!(tiempoInicial == tiempoActual)){
                     // calculo de reward
-                    reward += calcularReward();
+                    if (estadoPedestrian == evacuado) {
+                        estadoPedestrian = evacuando;
+                        reward = calcularReward();
+                        estadoPedestrian = evacuado;
+                    }
                     // algoritmo sarsa, actualiza en nodoAnterior
                     sarsa::sarsaActualizarQ(QPreviousPtr->getValor(), QCurrentPtr->getValor(), reward);
                 }
                 if (estadoPedestrian == evacuado) {
+                    reward = calcularReward();
                     sarsa::sarsaActualizarQ(QCurrentPtr->getValor(), nullptr, reward);
                 }
                 // guarda la anteror interseccion
