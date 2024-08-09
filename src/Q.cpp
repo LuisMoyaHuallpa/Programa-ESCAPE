@@ -5,7 +5,11 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Q::Q() {
+Q::Q()
+    :
+    valor(0),
+    callePtr(nullptr)
+{
 }
 Q::Q(const link* const callePtr) :
     valor(0),
@@ -36,8 +40,12 @@ const link* Q::getCallePtr() const {
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void Q::mostrarQs() const{
+    if (callePtr == nullptr) {
         std::cout << valor << " ";
-        std::cout << callePtr->getIdLink() << ",";
+    }
+    else {
+        std::cout << valor << " ";
+    }
 }
 // void Q::imprimirQs(std::fstream &file) const {
 //     for (int i = 0; i < stateMatrix::tamanoVectorIO; i++) {

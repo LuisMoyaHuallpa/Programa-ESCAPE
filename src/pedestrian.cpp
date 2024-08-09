@@ -213,20 +213,25 @@ bool pedestrian::verificarEndLink() const {
 //            (positionY * direccionY >= nodeFinalY * direccionY);
 // }
 link* pedestrian::eleccionGeneralLink() const {
-   // Configurar el generador de números aleatorios
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
-    static std::uniform_real_distribution<double> dis(0.0, 1.0);
-    // Generar un número aleatorio en el rango [0.0, 1.0)
-    const double randomNumber = dis(gen);
-    // compara el numero aletorio con optima choice rate
-    // este ultimo debe ir descendiendo cuando halla mas simulaciones
-    // a mayor simulaciones mas uso de la elecion sarsa
-    switch (randomNumber <= tiempo::get()->getRandomChoiceRate() ? 1 : 2) {
-        case 1:
-            return eleccionRandomLink();
-        case 2:
-            return eleccionSarsaLink();
+    if (estadoPedestrian == evacuado) {
+        return nullptr;
+    }
+    // Configurar el generador de números aleatorios
+    else {
+        static std::random_device rd;
+        static std::mt19937 gen(rd());
+        static std::uniform_real_distribution<double> dis(0.0, 1.0);
+        // Generar un número aleatorio en el rango [0.0, 1.0)
+        const double randomNumber = dis(gen);
+        // compara el numero aletorio con optima choice rate
+        // este ultimo debe ir descendiendo cuando halla mas simulaciones
+        // a mayor simulaciones mas uso de la elecion sarsa
+        switch (randomNumber <= tiempo::get()->getRandomChoiceRate() ? 1 : 2) {
+            case 1:
+                return eleccionRandomLink();
+            case 2:
+                return eleccionSarsaLink();
+        }
     }
     return nullptr;
 }
@@ -360,19 +365,18 @@ void pedestrian::modelamientoPedestrian() {
                 if (estadoPedestrian == evacuado) {
                     dynamic_cast<nodeEvacuation*>(nodeInicioPtr)->contabilizarPersona(this);
                 }
-                // observa el estado del nodo
+                // observa el estado del nodo o nodeEvacuation
                 const std::vector<int> stateObservado = nodeInicioPtr->stateObservado();
                 // obtener stateMatrix
                 stateMatrixCurrentPtr = stateMatrix::creacionObtencionStateMatrix(nodeInicioPtr, stateObservado);
                 // eleccion de la calle
                 linkCurrentPtr = eleccionGeneralLink();
-                // agrego a la personas en la calle
-                linkCurrentPtr->agregarPedestrian(this);
-                // obtener nodo final
-                nodeFinalPtr = const_cast<node*>(nodeInicioPtr->buscarNodoFinal(linkCurrentPtr));
-                // calcula el proximo tiempo en que la persona estara en una interseccion
-                // por ahora no actualiza la velocidad
-                // tiempoProximaInterseccion += calcularTiempoDesplazamiento();
+                if (estadoPedestrian == evacuando) {
+                    // agrego a la personas en la calle
+                    linkCurrentPtr->agregarPedestrian(this);
+                    // obtener nodo final
+                    nodeFinalPtr = const_cast<node*>(nodeInicioPtr->buscarNodoFinal(linkCurrentPtr));
+                }
                 // obtener Qcurrent
                 QCurrentPtr = stateMatrixCurrentPtr->buscarQ(linkCurrentPtr);
                 // excepto al iniciar
@@ -382,10 +386,15 @@ void pedestrian::modelamientoPedestrian() {
                     // algoritmo sarsa, actualiza en nodoAnterior
                     sarsa::sarsaActualizarQ(QPreviousPtr->getValor(), QCurrentPtr->getValor(), reward);
                 }
+                if (estadoPedestrian == evacuado) {
+                    sarsa::sarsaActualizarQ(QCurrentPtr->getValor(), nullptr, reward);
+                }
                 // guarda la anteror interseccion
                 tiempoAnteriorInterseccion = tiempoActual;
-                // direccion de la persona en la calle.
-                calcularDireccionPedestrian();
+                if (estadoPedestrian == evacuando) {
+                    // direccion de la persona en la calle.
+                    calcularDireccionPedestrian();
+                }
                 // paso a la calle
                 interseccion=false;
             }

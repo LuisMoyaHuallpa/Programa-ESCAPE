@@ -4,6 +4,8 @@
 // header propios
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "Q.h"
+#include "nodeEvacuation.h"
+#include "pedestrian.h"
 #include "state.h"
 #include "stateMatrixs.h"
 #include <vector>
@@ -24,6 +26,15 @@ stateMatrix::stateMatrix()
 {
   
 }
+stateMatrix::stateMatrix(const nodeEvacuation* const nodeEvacuationPtr, const std::vector<int> state)
+    :
+    id(0),
+    nodoPtr(nodeEvacuationPtr),
+    state(state),
+    Qs(1, Q())
+{
+}
+
 stateMatrix::stateMatrix(const node* const node, const std::vector<int> state)
     :
     id(0),
@@ -83,12 +94,20 @@ int stateMatrix::getTamanoVector() {
 //     //     std::cout << "0,";
 //     // }
 Q* stateMatrix::buscarQ(link *callePtr) {
+    // cuando es nodeEvacuacion la calle apunta a un nullptr
+    // solo trenda un Q
+    if(callePtr == nullptr)
+    {
+        return &(Qs.at(0));
+    }
+    else {
     /* Obtener Q segun la calle ejecutada*/
-    for (Q& q : Qs) {
-        // Comparar el puntero calle del objeto Q con callePtr
-        if (q.getCallePtr() == callePtr) {
-            // Retornar un puntero al objeto Q encontrado
-            return &q;
+        for (Q& q : Qs) {
+            // Comparar el puntero calle del objeto Q con callePtr
+            if (q.getCallePtr() == callePtr) {
+                // Retornar un puntero al objeto Q encontrado
+                return &q;
+            }
         }
     }
     return nullptr;
@@ -199,9 +218,19 @@ stateMatrix* stateMatrix::creacionObtencionStateMatrix(
         }
     }
     // creacion del stateMatrix experimentado
-    stateMatrix* nuevoStateMatrix = new stateMatrix(nodo, stateObservado);
-    std::vector<stateMatrix*>& dbStateMatrix = stateMatrixs::get()->getDbStateMatrixs();
-    dbStateMatrix.emplace_back(nuevoStateMatrix);
-    nodo->addStateMatrixExperimentadosPtr(nuevoStateMatrix);
-    return nuevoStateMatrix;
+    if (nodo->verificarNodoEvacuation() == evacuado) {
+        stateMatrix* nuevoStateMatrix = new stateMatrix((nodeEvacuation*)nodo, stateObservado);
+        std::vector<stateMatrix*>& dbStateMatrix = stateMatrixs::get()->getDbStateMatrixs();
+        dbStateMatrix.emplace_back(nuevoStateMatrix);
+        nodo->addStateMatrixExperimentadosPtr(nuevoStateMatrix);
+        return nuevoStateMatrix;
+        
+    }
+    else {
+        stateMatrix* nuevoStateMatrix = new stateMatrix(nodo, stateObservado);
+        std::vector<stateMatrix*>& dbStateMatrix = stateMatrixs::get()->getDbStateMatrixs();
+        dbStateMatrix.emplace_back(nuevoStateMatrix);
+        nodo->addStateMatrixExperimentadosPtr(nuevoStateMatrix);
+        return nuevoStateMatrix;
+    }
 }

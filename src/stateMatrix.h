@@ -8,6 +8,7 @@ Una fila de archivo de entrada o salida.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include <fstream>
 #include <vector>
+#include "variant"
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // header propios
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -16,6 +17,8 @@ Una fila de archivo de entrada o salida.
 
 // forward declaration
 class node;
+class nodeEvacuation;
+
 
 class stateMatrix {
 private:
@@ -41,6 +44,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     stateMatrix();
     stateMatrix(const node* const nodePtr, const std::vector<int> state);
+    stateMatrix(const nodeEvacuation* const nodeEvacuationPtr, const std::vector<int> state);
     stateMatrix(const node* const nodePtr, const std::vector<int> state, std::vector<Q> Qs);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

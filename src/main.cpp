@@ -37,6 +37,7 @@ int main() {
             links::get()->resetSublinks();
             // pedestrians::get()->reset();
         }
+        // stateMatrixs::get()->mostrarDbStateMatrixs();
         // nodes::get()->mostrardbNodeTotal();
         // links::get()->mostrarLinks();
         // Imprimir estados al terminar la simulación
