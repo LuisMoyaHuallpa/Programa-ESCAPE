@@ -1,6 +1,8 @@
 #include "link.h"
 #include "pedestrian.h"
+#include "tiempo.h"
 #include "vector2D.h"
+#include "velocidad.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -84,23 +86,23 @@ const double link::calcularAnchoDivisiones() const{
     return ancho;
 }
 void link::calcularDensityGeneral() {
-    // recorre todas las personas en la calle y la ubica en las subdivisiones
-    for (pedestrian* persona : pedestriansLinkPtr) {
-        const int idSublink = persona->calcularIdSublink();
-        //agregar persona en subdivision
-        subdivisiones.at(idSublink).agregarPedestrian(persona);
-    }
     /* calculo de la densidad en cada sublink de la calle*/
     for (auto it = subdivisiones.begin(); it != subdivisiones.end(); ++it) {
         // subdivion es it
         // calculo de densidad en subdivisiones
-        it->calcularDensidadSubdivision();
-        // recorre todas las personas en la subdivion
-        // j es una persona
-        // for (auto j : it->getPedestriansInSublink()) {
-        //     // actualizacion de velocidad
-        //     j->getVelocidadPedestrian().actualizarVelocidad(it->getDensidadSublink());
-        // }
+        // solo si hay persona realizar calculos
+        if (!(it->getPedestriansInSublink().empty())) {
+            double densidadSublink = it->calcularDensidadSubdivision();
+            // verifica si aun un cambio en la densidad de sublink
+            if (it->getDensidadSublink() != densidadSublink) {
+                it->setDensidadSublink(densidadSublink);
+                double velocidadPedestrianSublink = velocidad::actualizarVelocidad(densidadSublink);
+                // verifica si aun un cambio en la velocidad de las personas dentro del sublink
+                if (it->getPedestriansInSublink().at(0)->getVelocidadPedestrian().getMagnitud() != velocidadPedestrianSublink) {
+                    it->actualizarVelocidadPedestrianInSublink(velocidadPedestrianSublink);
+                }
+            }
+        }
     }
 }
 void link::calcularDensityLevel() {
@@ -122,6 +124,9 @@ void link::calcularDensityLevel() {
 }
 void link::agregarPedestrian(pedestrian* const persona) {
     pedestriansLinkPtr.push_back(persona);
+}
+void link::agregarPedestrianSublink(pedestrian* const persona, const int idSublink) {
+    subdivisiones.at(idSublink).agregarPedestrian(persona);
 }
 void link::quitarPedestrian(pedestrian *const persona) {
     pedestriansLinkPtr.erase(std::remove(pedestriansLinkPtr.begin(), pedestriansLinkPtr.end(), persona), pedestriansLinkPtr.end());

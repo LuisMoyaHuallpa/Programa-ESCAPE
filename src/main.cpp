@@ -13,8 +13,6 @@
 // #include "io.h"
 
 int main() {
-    // leer controlDict
-    // dictionary controDict("controlDict");
     // imprimi malla de calles.
     links::get()->imprimirMeshLinks();
     // Lectura de simulaciones pasadas.
@@ -27,12 +25,12 @@ int main() {
         tiempo::get()->calcularRandomChoiceRate();
         while (tiempo::get()->running()) {
             tiempo::get()->aumentarTiempo();
-            // std::cout << tiempo::get()->getValorTiempo();
+           // modelamiento de pedestrian.
+            pedestrians::get()->modelamientoPedestrians();
+            // pedestrians::get()->mostrarDbPedestrianMovimiento();
             // contador de personas un tiempo atras de la funcion modelamiento
             links::get()->contarPedestrians();
-            // modelamiento de pedestrian.
-            pedestrians::get()->modelamientoPedestrians();
-            pedestrians::get()->mostrarDbPedestrianMovimiento();
+            // pedestrians::get()->mostrarDbPedestrianMovimiento();
             // io 
             io::get()->imprimirOutput();
             // pone en 0 los elementos valores sublink            

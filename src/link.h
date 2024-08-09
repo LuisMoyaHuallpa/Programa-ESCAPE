@@ -89,6 +89,7 @@ public:
     void calcularDensityGeneral();
     void calcularDensityLevel();
     void agregarPedestrian(pedestrian* const persona);
+    void agregarPedestrianSublink(pedestrian* const persona, const int idSublink);
     void quitarPedestrian(pedestrian* const persona);
     void mostrarPedestriansLink() const;
     void mostrarSubdivisiones() const;

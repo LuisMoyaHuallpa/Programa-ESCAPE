@@ -4,6 +4,7 @@
 #include "link.h"
 #include "pedestrian.h"
 #include "stateMatrix.h"
+#include "vector2D.h"
 #include <vector>
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -123,6 +124,10 @@ std::vector<int> node::stateObservado() const {
 double node::calcularDistanciaA(const node* nodo2) const {
     /* calcula la distancia entre dos nodos*/
     return coordenada.distanciaA(nodo2->getCoordenada());
+}
+double node::calcularDistanciaA(const vector2D &position) const {
+    /* calcula la distancia entre dos nodos*/
+    return coordenada.distanciaA(position);
 }
 void node::addLink(link *calle) {
     /* agrega una calle en el vector de linkConnections*/

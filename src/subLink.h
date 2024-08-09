@@ -53,7 +53,8 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    void calcularDensidadSubdivision();
+    void actualizarVelocidadPedestrianInSublink(double& velocidad);
+    double calcularDensidadSubdivision() const;
     void agregarPedestrian(pedestrian* const persona);
     void quitarPedestrian(pedestrian* const persona);
     void mostrarPedestriansInSublink() const;

@@ -76,8 +76,8 @@ private:
     velocidad velocidadPedestrian;
     estado estadoPedestrian;
     int reward;
-    int tiempoProximaInterseccion;
-
+    int tiempoAnteriorInterseccion;
+    bool interseccion;
     stateMatrix* stateMatrixCurrentPtr;
     Q* QCurrentPtr;
     Q* QPreviousPtr;
@@ -107,10 +107,11 @@ public:
     void setNodeInicioAnterior(node* nodeInicioAnterior);
     void setLinkActual(link* linkActual);
     void setDireccionPedestrian(vector2D direccionPedestrian);
-    void setVelocidad(velocidad velocidadPedestrian);
+    void setVelocidadPedestrian(double velocidadPedestrian);
     void setEstadoPedestrian(estado estadoPedestrian);
     void setTiempoInicial(int tiempoInicial);
     void setReward(int reward);
+    void setInterseccion(bool interseccion);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getters
@@ -129,6 +130,8 @@ public:
     velocidad &getVelocidadPedestrian();
     estado& getEstadoPedestrian();
     int getReward() const;
+    int getTiempoAnteriorInterseccion() const;
+    bool getInterseccion() const;
     stateMatrix* getStateMatrixCurrent() const;
     double* getQCurrent() const;
     double* getQPrevious() const;
@@ -144,13 +147,13 @@ public:
     link* eleccionRandomLink() const;
     link* eleccionSarsaLink() const;
     bool verificarNodoLLeno() const;
+    bool verificarEndLink() const;
     double calcularIdSublink();
     int calcularReward() const;
     int calcularTiempoDesplazamiento() const;
     void contarPedestrianInSublink();
     void calcularDensityInSublink();
     void eleccionDosCallesContinuas();
-    bool verificarEndLink();
     void calcularDireccionPedestrian();
     vector2D calcularSignoDireccion();
     int calcularSignoNumero(double numero);

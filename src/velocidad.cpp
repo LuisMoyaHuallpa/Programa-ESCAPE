@@ -11,7 +11,7 @@ velocidad::velocidad()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // setters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void velocidad::setMagnitud(int magnitud){
+void velocidad::setMagnitud(double magnitud){
     (*this).magnitud = magnitud;
 }
 
@@ -25,17 +25,17 @@ double velocidad::getMagnitud() const{
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-double velocidad::calcularVelocidadDensidad(const double &densidad) const {
+double velocidad::calcularVelocidadDensidad(const double &densidad) {
     return 1.388 - 0.396 * densidad; 
 }
-void velocidad::calcularAjusteVelocidad() {
+double velocidad::calcularAjusteVelocidad(double& velocidad) {
     const double vel_min = 0.2;
     const double vel_max = 1.19;
-    magnitud = std::max(vel_min, std::min(magnitud, vel_max));
+    return std::max(vel_min, std::min(velocidad, vel_max));
 }
-void velocidad::actualizarVelocidad(const double &densidad) {
-    magnitud = calcularVelocidadDensidad(densidad); 
-    calcularAjusteVelocidad();
+double velocidad::actualizarVelocidad(const double &densidad) {
+    double vel = calcularVelocidadDensidad(densidad); 
+    return calcularAjusteVelocidad(vel);
 }
 void velocidad::mostrarVelocidad() {
 }

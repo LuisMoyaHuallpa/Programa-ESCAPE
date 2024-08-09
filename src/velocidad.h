@@ -30,7 +30,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // setters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    void setMagnitud(int magnitud);
+    void setMagnitud(double magnitud);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getters
@@ -40,9 +40,9 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    double calcularVelocidadDensidad(const double &densidad) const;
-    void calcularAjusteVelocidad();
-    void actualizarVelocidad(const double &densidad);
+    static double calcularVelocidadDensidad(const double &densidad);
+    static double calcularAjusteVelocidad(double& velocidad);
+    static double actualizarVelocidad(const double &densidad);
     void mostrarVelocidad();
 };
 #endif

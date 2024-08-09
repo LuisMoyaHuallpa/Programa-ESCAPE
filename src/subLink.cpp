@@ -1,6 +1,7 @@
 #include "subLink.h"
 #include "dictionary.h"
 #include "link.h"
+#include "pedestrian.h"
 // #include "pedestrian.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -40,9 +41,14 @@ double subLink::getDensidadSublink() const {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void subLink::calcularDensidadSubdivision() {
+void subLink::actualizarVelocidadPedestrianInSublink(double &velocidad) {
+    for (pedestrian* persona: pedestriansInSublink) {
+        persona->setVelocidadPedestrian(velocidad);
+    }
+}
+double subLink::calcularDensidadSubdivision() const{
     /* calcula la densidad de la subdivision*/
-    densidadSublink = pedestriansInSublink.size() / (calle->getAnchoSubdivisiones() * calle->getWidth()); 
+    return pedestriansInSublink.size() / (calle->getAnchoSubdivisiones() * calle->getWidth()); 
 }
 void subLink::agregarPedestrian(pedestrian* const persona) {
     /* agregar persona en el sublink*/
