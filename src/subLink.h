@@ -34,7 +34,6 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    subLink();
     subLink(const link* const calle);
     
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -57,7 +56,7 @@ public:
     double calcularDensidadSubdivision() const;
     void agregarPedestrian(pedestrian* const persona);
     void quitarPedestrian(pedestrian* const persona);
-    void mostrarPedestriansInSublink() const;
+    void mostrarsubdivision() const;
     
 };
 #endif

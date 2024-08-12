@@ -333,9 +333,8 @@ int pedestrian::calcularTiempoDesplazamiento() const {
     return  tiempoDesplazado;
 }
 void pedestrian::modelamientoPedestrian() {
-    if(!(estadoPedestrian == muerto)){
+    if(!(estadoPedestrian == evacuado)){
         const int tiempoActual = tiempo::get()->getValorTiempo();
-        // std::cout << tiempoActual << std::endl;
         // cuando la persona esta en pasivo, cambia el estado a evacuado cuando llegue su tiempo de salida
         if (estadoPedestrian == pasivo && tiempoInicial == tiempoActual) {
             estadoPedestrian = evacuando;
@@ -413,6 +412,10 @@ void pedestrian::modelamientoPedestrian() {
                 // agrega persona en sublink
                 linkCurrentPtr->agregarPedestrianSublink(this, idSublink);
                 // verifica cuando esta cerca a una interseccion
+                // mostrarMovimientoPedestrian();
+                // linkCurrentPtr->mostrarSubdivisiones();
+                // std::cout << "id: " << idSublink;
+                // std::cout << std::endl;
                 interseccion = verificarEndLink();
                 }
             }

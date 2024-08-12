@@ -87,39 +87,45 @@ const double link::calcularAnchoDivisiones() const{
 }
 void link::calcularDensityGeneral() {
     /* calculo de la densidad en cada sublink de la calle*/
+    // Inicializa la densidad máxima en 0
+    double densidadMaxima = 0.0;
+    // subdivion es it
     for (auto it = subdivisiones.begin(); it != subdivisiones.end(); ++it) {
-        // subdivion es it
-        // calculo de densidad en subdivisiones
         // solo si hay persona realizar calculos
-        if (!(it->getPedestriansInSublink().empty())) {
+        // if (!(it->getPedestriansInSublink().empty())) {
             double densidadSublink = it->calcularDensidadSubdivision();
+            // guardar densidadMaxima
+            if (densidadSublink > densidadMaxima) {
+                densidadMaxima = densidadSublink;
+            }
             // verifica si aun un cambio en la densidad de sublink
             if (it->getDensidadSublink() != densidadSublink) {
-                it->setDensidadSublink(densidadSublink);
+                // it->setDensidadSublink(densidadSublink);
                 double velocidadPedestrianSublink = velocidad::actualizarVelocidad(densidadSublink);
                 // verifica si aun un cambio en la velocidad de las personas dentro del sublink
+
+                if (!(it->getPedestriansInSublink().empty())) {
                 if (it->getPedestriansInSublink().at(0)->getVelocidadPedestrian().getMagnitud() != velocidadPedestrianSublink) {
                     it->actualizarVelocidadPedestrianInSublink(velocidadPedestrianSublink);
                 }
+                }
             }
-        }
+            // guarda las densidades para el proximo calculo
+            it->setDensidadSublink(densidadSublink);
     }
+    // calculo al densidad de la calle
+    densityLevel = calcularDensityLink(densidadMaxima);
 }
-void link::calcularDensityLevel() {
-    // Encontrar el sublink con mayor densidad de la calle
-    auto max_iter = std::max_element(subdivisiones.begin(), subdivisiones.end(),
-    [](const subLink& a, const subLink& b) {
-        return a.getDensidadSublink() < b.getDensidadSublink();
-    });
+int link::calcularDensityLink(double densidadMaxima) const {
     // elecion del nivel de densidad segun rangos preestablecidos
-    if(max_iter->getDensidadSublink() <= 0.5){
-        densityLevel = 0;
+    if(densidadMaxima <= 0.5){
+        return 0;
     }  
-    else if (max_iter->getDensidadSublink() <= 3.0) {
-        densityLevel = 1;
+    else if (densidadMaxima <= 3.0) {
+        return 1;
     }
     else {
-        densityLevel = 2;
+        return 2;
     }
 }
 void link::agregarPedestrian(pedestrian* const persona) {
@@ -131,6 +137,9 @@ void link::agregarPedestrianSublink(pedestrian* const persona, const int idSubli
 void link::quitarPedestrian(pedestrian *const persona) {
     pedestriansLinkPtr.erase(std::remove(pedestriansLinkPtr.begin(), pedestriansLinkPtr.end(), persona), pedestriansLinkPtr.end());
 }
+void link::resetLink() {
+    pedestriansLinkPtr.clear();
+}
 void link::mostrarPedestriansLink() const {
     std::cout << "pedestrianLink: ";
     for (int i = 0; i < pedestriansLinkPtr.size(); i++) {
@@ -140,8 +149,9 @@ void link::mostrarPedestriansLink() const {
 void link::mostrarSubdivisiones() const {
     std::cout << "subdivisiones: ";
     for (int i = 0; i < subdivisiones.size(); i++) {
-        subdivisiones.at(i).mostrarPedestriansInSublink();
+        subdivisiones.at(i).mostrarsubdivision();
     }
+    std::cout << "p: " << pedestriansLinkPtr.size() << std::endl;
 }
 void link::mostrarLink() const {
     std::cout << "link: ";

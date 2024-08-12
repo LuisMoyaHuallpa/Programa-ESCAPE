@@ -100,7 +100,7 @@ void links::contarPedestrians() {
         for (auto it = dbLinkTotal.begin(); it != dbLinkTotal.end(); ++it) {
             // calcula el nivel de densidad de todas las calles con los datos anterios
             it->get()->calcularDensityGeneral();
-            it->get()->calcularDensityLevel();
+            // it->get()->calcularDensityLink();
         }
     }
 }
@@ -119,10 +119,10 @@ void links::resetSublinks() {
         }
     }
 }
-void links::resetPedestriansLink() {
+void links::resetLinks() {
     /* reinicia los valores de los pedestriansLink*/  
     for (auto it = dbLinkTotal.begin(); it != dbLinkTotal.end(); ++it) {
-        it->get()->getPedestriansLinkPtr().clear();
+        it->get()->resetLink();
     }
 }
 void links::mostrarDbLinksTotal(){

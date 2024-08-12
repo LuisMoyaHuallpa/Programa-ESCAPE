@@ -115,19 +115,22 @@ tiempo& tiempo::operator++(int) {
     return *this;
 }
 void tiempo::aumentarTiempo() {
-    setValorTiempo(valorTiempo + deltaT); 
+    // aumenta el tiempo de evacuacion
+    valorTiempo += deltaT;
 }
 void tiempo::aumentarINumberSimulation() {
-    setINumberSimulation(getINumberSimulation()+1);
+    // aumentar el numero de simulacion
+    // setINumberSimulation(getINumberSimulation()+1);
+    iNumberSimulation += 1;
     // reiniciar el tiempo
-    tiempo::get()->setValorTiempo(0);
+    valorTiempo = 0;
     // reiniciar el conteo de personas Evacuadas
     nodeEvacuation::totalPersonasEvacuadas = 0;
     // regresar a las personas al nodo de arranque
     pedestrians::get()->reiniciarPedestrians();
     nodes::get()->reiniciarNodesEvacuations();
     // reinicia la lista de personas en calles
-    // links::get()->resetPedestriansLink();
+    links::get()->resetLinks();
     // reinicar el timer de una simulacion 
     startTimeSimulation = std::chrono::high_resolution_clock::now();
 }
@@ -197,7 +200,7 @@ void tiempo::calcularRandomChoiceRate() {
         randomChoiceRate = 1.0 / (gleeFactor * double(k - 1) + 1.0);
     }
     else if(std::get<std::string>(dictionary::get()->lookup("sarsaProcesses")) == "trained") {
-        std::cout << "ale" << std::endl;
+        // para que solo eliga sarsa nada de aletorio
         randomChoiceRate = 0;
     }
 }

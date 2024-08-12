@@ -32,6 +32,7 @@ int main() {
             links::get()->contarPedestrians();
             // pedestrians::get()->mostrarDbPedestrianMovimiento();
             // io 
+            // links::get()->mostrarSublink();
             io::get()->imprimirOutput();
             // pone en 0 los elementos valores sublink            
             links::get()->resetSublinks();

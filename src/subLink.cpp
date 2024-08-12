@@ -11,10 +11,10 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-subLink::subLink() : calle(nullptr){
-}
-subLink::subLink(const link*  calle)
-    : calle(calle) {
+subLink::subLink(const link *calle)
+    : calle(calle),
+      densidadSublink(0)
+{
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -51,13 +51,15 @@ double subLink::calcularDensidadSubdivision() const{
     return pedestriansInSublink.size() / (calle->getAnchoSubdivisiones() * calle->getWidth()); 
 }
 void subLink::agregarPedestrian(pedestrian* const persona) {
-    /* agregar persona en el sublink*/
+//     /* agregar persona en el sublink*/
     pedestriansInSublink.push_back(persona);
 }
 void subLink::quitarPedestrian(pedestrian *const persona) {
     /* quitar persona en el sublink porque se cambia a otro sublink*/
     pedestriansInSublink.erase(std::remove(pedestriansInSublink.begin(), pedestriansInSublink.end(), persona), pedestriansInSublink.end());
 }
-void subLink::mostrarPedestriansInSublink() const {
+void subLink::mostrarsubdivision() const {
     std::cout << pedestriansInSublink.size() << " ";
+    std::cout << densidadSublink;
+    std::cout << "|";
 }

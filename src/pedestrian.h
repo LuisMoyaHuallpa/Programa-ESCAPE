@@ -158,7 +158,6 @@ public:
     vector2D calcularSignoDireccion();
     int calcularSignoNumero(double numero);
     void reiniciar();
-    // std::vector<stateActionQ>::iterator agregarObtenerqLista(node* nodeDeBusqueda,stateActionQ qBuscando);
     void mostrarMovimientoPedestrian() const;
     void mostrarPedestrian() const;
     void imprimirPedestrianPosition(fileIO* file) const;

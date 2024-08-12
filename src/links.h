@@ -57,7 +57,7 @@ public:
     void leerLinks(std::string fileName);
     void contarPedestrians();
     void resetSublinks();
-    void resetPedestriansLink();
+    void resetLinks();
     void mostrarDbLinksTotal();
     void mostrarSublink();
     void imprimirMeshLinks();
