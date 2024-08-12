@@ -104,11 +104,11 @@ void link::calcularDensityGeneral() {
                 double velocidadPedestrianSublink = velocidad::actualizarVelocidad(densidadSublink);
                 // verifica si aun un cambio en la velocidad de las personas dentro del sublink
 
-                if (!(it->getPedestriansInSublink().empty())) {
-                if (it->getPedestriansInSublink().at(0)->getVelocidadPedestrian().getMagnitud() != velocidadPedestrianSublink) {
+                // if (!(it->getPedestriansInSublink().empty())) {
+                // if (it->getPedestriansInSublink().at(0)->getVelocidadPedestrian().getMagnitud() != velocidadPedestrianSublink) {
                     it->actualizarVelocidadPedestrianInSublink(velocidadPedestrianSublink);
-                }
-                }
+                // }
+                // }
             }
             // guarda las densidades para el proximo calculo
             it->setDensidadSublink(densidadSublink);
