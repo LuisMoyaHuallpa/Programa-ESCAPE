@@ -218,19 +218,11 @@ stateMatrix* stateMatrix::creacionObtencionStateMatrix(
         }
     }
     // creacion del stateMatrix experimentado
-    if (nodo->verificarNodoEvacuation() == evacuado) {
-        stateMatrix* nuevoStateMatrix = new stateMatrix((nodeEvacuation*)nodo, stateObservado);
-        std::vector<stateMatrix*>& dbStateMatrix = stateMatrixs::get()->getDbStateMatrixs();
-        dbStateMatrix.emplace_back(nuevoStateMatrix);
-        nodo->addStateMatrixExperimentadosPtr(nuevoStateMatrix);
-        return nuevoStateMatrix;
-        
-    }
-    else {
-        stateMatrix* nuevoStateMatrix = new stateMatrix(nodo, stateObservado);
-        std::vector<stateMatrix*>& dbStateMatrix = stateMatrixs::get()->getDbStateMatrixs();
-        dbStateMatrix.emplace_back(nuevoStateMatrix);
-        nodo->addStateMatrixExperimentadosPtr(nuevoStateMatrix);
-        return nuevoStateMatrix;
-    }
+    stateMatrix* nuevoStateMatrix = (dynamic_cast<nodeEvacuation*>(nodo)) 
+        ? new stateMatrix(static_cast<nodeEvacuation*>(nodo), stateObservado)
+        : new stateMatrix(nodo, stateObservado);
+    std::vector<stateMatrix*>& dbStateMatrix = stateMatrixs::get()->getDbStateMatrixs();
+    dbStateMatrix.emplace_back(nuevoStateMatrix);
+    nodo->addStateMatrixExperimentadosPtr(nuevoStateMatrix);
+    return nuevoStateMatrix;
 }
