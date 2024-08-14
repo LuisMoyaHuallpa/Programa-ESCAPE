@@ -360,14 +360,16 @@ void pedestrian::modelamientoPedestrian() {
                     position = {nodeInicioPtr->getCoordenada().getX(), nodeInicioPtr->getCoordenada().getY()};
                 }
                 // verifico si estoy en un punto de evacuacion
+                reward = calcularReward();
                 estadoPedestrian = nodeInicioPtr->verificarNodoEvacuation();
-                if (estadoPedestrian == evacuado) {
-                    dynamic_cast<nodeEvacuation*>(nodeInicioPtr)->contabilizarPersona(this);
-                }
+                // if (estadoPedestrian == evacuado) {
+                //     dynamic_cast<nodeEvacuation*>(nodeInicioPtr)->contabilizarPersona(this);
+                // }
                 // observa el estado del nodo o nodeEvacuation
                 const std::vector<int> stateObservado = nodeInicioPtr->stateObservado();
                 // obtener stateMatrix
                 stateMatrixCurrentPtr = stateMatrix::creacionObtencionStateMatrix(nodeInicioPtr, stateObservado);
+               // stateMatrixCurrentPtr->mostrarStateMatrix();
                 // eleccion de la calle
                 linkCurrentPtr = eleccionGeneralLink();
                 if (estadoPedestrian == evacuando) {
@@ -375,30 +377,22 @@ void pedestrian::modelamientoPedestrian() {
                     linkCurrentPtr->agregarPedestrian(this);
                     // obtener nodo final
                     nodeFinalPtr = const_cast<node*>(nodeInicioPtr->buscarNodoFinal(linkCurrentPtr));
+                    // direccion de la persona en la calle.
+                    calcularDireccionPedestrian();
                 }
                 // obtener Qcurrent
                 QCurrentPtr = stateMatrixCurrentPtr->buscarQ(linkCurrentPtr);
                 // excepto al iniciar
                 if(!(tiempoInicial == tiempoActual)){
-                    // calculo de reward
-                    if (estadoPedestrian == evacuado) {
-                        estadoPedestrian = evacuando;
-                        reward = calcularReward();
-                        estadoPedestrian = evacuado;
-                    }
-                    // algoritmo sarsa, actualiza en nodoAnterior
                     sarsa::sarsaActualizarQ(QPreviousPtr->getValor(), QCurrentPtr->getValor(), reward);
                 }
                 if (estadoPedestrian == evacuado) {
                     reward = calcularReward();
                     sarsa::sarsaActualizarQ(QCurrentPtr->getValor(), nullptr, reward);
+                    dynamic_cast<nodeEvacuation*>(nodeInicioPtr)->contabilizarPersona(this);
                 }
                 // guarda la anteror interseccion
                 tiempoAnteriorInterseccion = tiempoActual;
-                if (estadoPedestrian == evacuando) {
-                    // direccion de la persona en la calle.
-                    calcularDireccionPedestrian();
-                }
                 // paso a la calle
                 interseccion=false;
             }
