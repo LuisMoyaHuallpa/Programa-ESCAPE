@@ -148,7 +148,7 @@ const Q* stateMatrix::buscarQMax() {
 void stateMatrix::mostrarStateMatrix() const {
     /* muestra en la terminal cada linea del stateMatrix. */
     // id del nodo
-    std::cout << "id:" << nodoPtr->getIdNode() << " ";
+    std::cout << "idN:" << nodoPtr->getIdNode() << " ";
     // state 
     std::cout << "s:";
     for (const int &value : state) {

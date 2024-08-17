@@ -2,6 +2,7 @@
 #include "dictionary.h"
 #include "link.h"
 #include "pedestrian.h"
+#include <iomanip>
 // #include "pedestrian.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -37,7 +38,6 @@ double subLink::getDensidadSublink() const {
     return densidadSublink;
 }
 
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -58,8 +58,16 @@ void subLink::quitarPedestrian(pedestrian *const persona) {
     /* quitar persona en el sublink porque se cambia a otro sublink*/
     pedestriansInSublink.erase(std::remove(pedestriansInSublink.begin(), pedestriansInSublink.end(), persona), pedestriansInSublink.end());
 }
+double subLink::calcularCantidadPedestrians() const {
+    return pedestriansInSublink.size();
+}
+void subLink::reiniciar() {
+    pedestriansInSublink.clear();
+    densidadSublink = 0;
+}
 void subLink::mostrarsubdivision() const {
-    std::cout << pedestriansInSublink.size() << " ";
+    std::cout << std::setw(2) << pedestriansInSublink.size() << " ";
+    std::cout << std::fixed << std::setprecision(2);
     std::cout << densidadSublink;
     std::cout << "|";
 }

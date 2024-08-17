@@ -1,8 +1,10 @@
 #include "link.h"
 #include "pedestrian.h"
+#include "subLink.h"
 #include "tiempo.h"
 #include "vector2D.h"
 #include "velocidad.h"
+#include <iomanip>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -52,9 +54,9 @@ const vector2D link::getOrientacionLink() const {
 int link::getDensityLevel() {
     return densityLevel;
 }
-std::vector<pedestrian*>& link::getPedestriansLinkPtr() {
-    return pedestriansLinkPtr;
-}
+// std::vector<pedestrian*>& link::getPedestriansLinkPtr() {
+//     return pedestriansLinkPtr;
+// }
 std::vector<subLink>& link::getSublink() {
     return subdivisiones;  
 }
@@ -128,30 +130,61 @@ int link::calcularDensityLink(double densidadMaxima) const {
         return 2;
     }
 }
-void link::agregarPedestrian(pedestrian* const persona) {
-    pedestriansLinkPtr.push_back(persona);
-}
+// void link::agregarPedestrian(pedestrian* const persona) {
+//     pedestriansLinkPtr.push_back(persona);
+// }
+// void link::quitarPedestrian(pedestrian *const persona) {
+//     pedestriansLinkPtr.erase(std::remove(pedestriansLinkPtr.begin(), pedestriansLinkPtr.end(), persona), pedestriansLinkPtr.end());
+// }
 void link::agregarPedestrianSublink(pedestrian* const persona, const int idSublink) {
     subdivisiones.at(idSublink).agregarPedestrian(persona);
 }
-void link::quitarPedestrian(pedestrian *const persona) {
-    pedestriansLinkPtr.erase(std::remove(pedestriansLinkPtr.begin(), pedestriansLinkPtr.end(), persona), pedestriansLinkPtr.end());
+void link::quitarPedestrianSublink(pedestrian* const persona, const int idSublink) {
+    subdivisiones.at(idSublink).agregarPedestrian(persona);
 }
-void link::resetLink() {
-    pedestriansLinkPtr.clear();
+// subLink* link::calcularSublink(const vector2D &position) const {
+//      /* Calcula la ubicacion de la persona en el array del subLink*/
+//     // distancia de la persona al nodeInicio de la persona
+//     // double index_x = position.getX() - nodeInicioPtr->getCoordenada().getX();
+//     const double index_x = position.getX() - node1Ptr->getCoordenada().getX();
+//     // double index_y = position.getY() - nodeInicioPtr->getCoordenada().getY();
+//     const double index_y = position.getY() - node1Ptr->getCoordenada().getY();
+//     int index_hipo = std::sqrt(std::pow(index_x,2) + pow(index_y, 2)) / anchoSubdivision;
+//     if (index_hipo>= 10) {
+//         index_hipo=9;    
+//     }
+//     return &subdivisiones.at(index_hipo);
+   
+// }
+int link::calcularPedestriansLink() const {
+    int personasEnCalle = 0 ;
+    for (auto& subdivion : subdivisiones) {
+        personasEnCalle += subdivion.calcularCantidadPedestrians();
+    }
+  return personasEnCalle; 
 }
-void link::mostrarPedestriansLink() const {
-    std::cout << "pedestrianLink: ";
-    for (int i = 0; i < pedestriansLinkPtr.size(); i++) {
-        std::cout << pedestriansLinkPtr.at(i)->getIdPedestrian() << " ";
+void link::reiniciarSubdivisiones() {
+    // reiniciar el vector de subdiviones
+    for (auto& sublink : subdivisiones) {
+        // Llamamos al método reiniciar() de cada subLink
+        sublink.reiniciar();
     }
 }
+// void link::mostrarPedestriansLink() const {
+//     std::cout << "pedestrianLink: ";
+//     for (int i = 0; i < pedestriansLinkPtr.size(); i++) {
+//         std::cout << pedestriansLinkPtr.at(i)->getIdPedestrian() << " ";
+//     }
+// }
 void link::mostrarSubdivisiones() const {
-    std::cout << "subdivisiones: ";
+    std::cout << "l: ";
+    std::cout << std::setw(2) << idLink << " ";
     for (int i = 0; i < subdivisiones.size(); i++) {
         subdivisiones.at(i).mostrarsubdivision();
     }
-    std::cout << "p: " << pedestriansLinkPtr.size() << std::endl;
+    std::cout << "dl: " << densityLevel;
+    std::cout << "p: " << calcularPedestriansLink();
+    // std::cout << "p: " << pedestriansLinkPtr.size() << std::endl;
 }
 void link::mostrarLink() const {
     std::cout << "link: ";
@@ -159,7 +192,7 @@ void link::mostrarLink() const {
     std::cout << "nodes: ";
     std::cout << node1Ptr->getIdNode() << " ";
     std::cout << node2Ptr->getIdNode() << " ";
-    mostrarPedestriansLink();
+    // mostrarPedestriansLink();
     mostrarSubdivisiones();
     std::cout << std::endl;
 }

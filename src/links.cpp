@@ -122,7 +122,7 @@ void links::resetSublinks() {
 void links::resetLinks() {
     /* reinicia los valores de los pedestriansLink*/  
     for (auto it = dbLinkTotal.begin(); it != dbLinkTotal.end(); ++it) {
-        it->get()->resetLink();
+        it->get()->reiniciarSubdivisiones();
     }
 }
 void links::mostrarDbLinksTotal(){
@@ -133,6 +133,7 @@ void links::mostrarDbLinksTotal(){
 void links::mostrarSublink() {
     for (int i = 0; i < dbLinkTotal.size(); i++) {
         dbLinkTotal.at(i)->mostrarSubdivisiones();
+        std::cout << std::endl;
     }
 }
 void links::imprimirMeshLinks() {

@@ -46,7 +46,6 @@ private:
     const vector2D orientacionLink;
     const double anchoSubdivision;
     int densityLevel;
-    std::vector<pedestrian*> pedestriansLinkPtr;
     std::vector<subLink> subdivisiones;
     
 public:
@@ -77,8 +76,6 @@ public:
     const vector2D getOrientacionLink() const;
     const double getAnchoSubdivisiones() const;
     int getDensityLevel();
-    
-    std::vector<pedestrian*>& getPedestriansLinkPtr();
     std::vector<subLink>& getSublink();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -88,11 +85,11 @@ public:
     const double calcularAnchoDivisiones() const;
     void calcularDensityGeneral();
     int calcularDensityLink(double densidadMaxima) const;
-    void agregarPedestrian(pedestrian* const persona);
+    int calcularPedestriansLink() const;
     void agregarPedestrianSublink(pedestrian* const persona, const int idSublink);
-    void quitarPedestrian(pedestrian* const persona);
-    void resetLink();
-    void mostrarPedestriansLink() const;
+    void quitarPedestrianSublink(pedestrian* const persona, const int idSublink);
+    subLink* calcularSublink(const vector2D &position) const;
+    void reiniciarSubdivisiones();
     void mostrarSubdivisiones() const;
     void mostrarLink() const;
     void imprimirLink(std::fstream& file);

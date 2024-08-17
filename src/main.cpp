@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <variant>
 #include "pedestrian.h"
 #include "tiempo.h"
 #include "nodes.h"
@@ -30,16 +31,17 @@ int main() {
             // pedestrians::get()->mostrarDbPedestrianMovimiento();
             // contador de personas un tiempo atras de la funcion modelamiento
             links::get()->contarPedestrians();
-            // pedestrians::get()->mostrarDbPedestrianMovimiento();
+            pedestrians::get()->mostrarDbPedestrianMovimiento();
             // io 
             // links::get()->mostrarSublink();
+
             io::get()->imprimirOutput();
             // pone en 0 los elementos valores sublink            
             links::get()->resetSublinks();
             // pedestrians::get()->reset();
         }
+        // std::cout << "julio" << std::endl;
         // stateMatrixs::get()->mostrarDbStateMatrixs();
-        // nodes::get()->mostrardbNodeTotal();
         // links::get()->mostrarLinks();
         // Imprimir estados al terminar la simulación
         stateMatrixs::get()->imprimirDbStateMatrixs();

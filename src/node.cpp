@@ -150,6 +150,8 @@ void node::mostrarNode() const {
     std::cout << "linkConnections: ";
     for (int i = 0; i < linkConnectionsPtr.size(); i++) {
         std::cout << linkConnectionsPtr.at(i)->getIdLink() << " "; 
+        std::cout << "p: "<< linkConnectionsPtr.at(i)->calcularPedestriansLink() << " "; 
+        std::cout << "d: " <<linkConnectionsPtr.at(i)->getDensityLevel() << "|"; 
     }
     std::cout << std::endl;
 }

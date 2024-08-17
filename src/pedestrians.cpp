@@ -1,5 +1,6 @@
 #include "pedestrians.h"
 #include "pedestrian.h"
+#include "tiempo.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -148,9 +149,13 @@ void pedestrians::modelamientoPedestrians() {
     }
 }
 void pedestrians::mostrarDbPedestrianMovimiento() {
-    for (int i = 0; i < dbPedestrianTotal.size(); i++) {
-        dbPedestrianTotal.at(i).mostrarMovimientoPedestrian();
-    }
+    // for (int i = 0; i < dbPedestrianTotal.size(); i++) {
+        dbPedestrianTotal.at(0).mostrarMovimientoPedestrian();
+        if (dbPedestrianTotal.at(0).getTiempoInicial() < tiempo::get()->getValorTiempo() and getDbPedestrianTotal().at(0).getInterseccion()) {
+            dbPedestrianTotal.at(0).getStateMatrixCurrent()->mostrarStateMatrix();
+            dbPedestrianTotal.at(0).getNodeFinal()->mostrarNode();
+        }
+    // }
 }
 void pedestrians::mostrarDbPedestrianTotal() const {
     for (int i = 0; i < dbPedestrianTotal.size(); i++) {
