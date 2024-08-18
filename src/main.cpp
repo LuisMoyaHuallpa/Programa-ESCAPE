@@ -31,7 +31,7 @@ int main() {
             // pedestrians::get()->mostrarDbPedestrianMovimiento();
             // contador de personas un tiempo atras de la funcion modelamiento
             links::get()->contarPedestrians();
-            pedestrians::get()->mostrarDbPedestrianMovimiento();
+            // pedestrians::get()->mostrarDbPedestrianMovimiento();
             // io 
             // links::get()->mostrarSublink();
 

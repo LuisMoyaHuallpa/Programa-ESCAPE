@@ -89,17 +89,15 @@ const double link::calcularAnchoDivisiones() const{
 }
 void link::calcularDensityGeneral() {
     /* calculo de la densidad en cada sublink de la calle*/
-    // Inicializa la densidad máxima en 0
-    double densidadMaxima = 0.0;
     // subdivion es it
     for (auto it = subdivisiones.begin(); it != subdivisiones.end(); ++it) {
         // solo si hay persona realizar calculos
         // if (!(it->getPedestriansInSublink().empty())) {
             double densidadSublink = it->calcularDensidadSubdivision();
             // guardar densidadMaxima
-            if (densidadSublink > densidadMaxima) {
-                densidadMaxima = densidadSublink;
-            }
+            // if (densidadSublink > densidadMaxima) {
+            //     densidadMaxima = densidadSublink;
+            // }
             // verifica si aun un cambio en la densidad de sublink
             if (it->getDensidadSublink() != densidadSublink) {
                 // it->setDensidadSublink(densidadSublink);
@@ -116,26 +114,26 @@ void link::calcularDensityGeneral() {
             it->setDensidadSublink(densidadSublink);
     }
     // calculo al densidad de la calle
-    densityLevel = calcularDensityLink(densidadMaxima);
+    double densidadCalle = calcularDensityLink();
+    densityLevel = calcularDensityLevelLink(densidadCalle);
 }
-int link::calcularDensityLink(double densidadMaxima) const {
+int link::calcularDensityLink() const{
+    /* calcula la densidad de la calle segun la cantidad de personas dentra*/
+    return calcularPedestriansLink() / (anchoSubdivision * width);
+}
+int link::calcularDensityLevelLink(const double densidadLink) const {
+    /* calcula el nivel de densidad segun la densidad de la calle*/
     // elecion del nivel de densidad segun rangos preestablecidos
-    if(densidadMaxima <= 0.5){
+    if(densidadLink <= 0.5){
         return 0;
     }  
-    else if (densidadMaxima <= 3.0) {
+    else if (densidadLink <= 3.0) {
         return 1;
     }
     else {
         return 2;
     }
 }
-// void link::agregarPedestrian(pedestrian* const persona) {
-//     pedestriansLinkPtr.push_back(persona);
-// }
-// void link::quitarPedestrian(pedestrian *const persona) {
-//     pedestriansLinkPtr.erase(std::remove(pedestriansLinkPtr.begin(), pedestriansLinkPtr.end(), persona), pedestriansLinkPtr.end());
-// }
 void link::agregarPedestrianSublink(pedestrian* const persona, const int idSublink) {
     subdivisiones.at(idSublink).agregarPedestrian(persona);
 }

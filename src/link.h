@@ -84,8 +84,9 @@ public:
     const vector2D calcularOrientacionLink() const;
     const double calcularAnchoDivisiones() const;
     void calcularDensityGeneral();
-    int calcularDensityLink(double densidadMaxima) const;
     int calcularPedestriansLink() const;
+    int calcularDensityLink() const;
+    int calcularDensityLevelLink(const double densidadLink) const;
     void agregarPedestrianSublink(pedestrian* const persona, const int idSublink);
     void quitarPedestrianSublink(pedestrian* const persona, const int idSublink);
     subLink* calcularSublink(const vector2D &position) const;
