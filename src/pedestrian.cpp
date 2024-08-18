@@ -405,6 +405,7 @@ void pedestrian::modelamientoPedestrian() {
                 // modelamiento cuando la persona esta dentro de la calle
                 if (estadoPedestrian == evacuando) {
                     // camina la persona
+                    velocidadPedestrian.calcularAjusteRandom();
                     caminar();    
                    // calcula posicion en subdivion 
                     const int idSublink = calcularIdSublink();

@@ -57,6 +57,7 @@ private:
         {"startTime", "int"},
         {"endTime", "int"},
         {"deltaT", "int"},
+        {"meanRayleigh", "int"},
         {"addNumberSimulation", "int"},
         {"graphicPrintout", "bool"},
         {"graphicPrintoutPeriod", "int"},

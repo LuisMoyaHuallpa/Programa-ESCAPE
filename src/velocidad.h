@@ -40,8 +40,9 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    void calcularAjusteRandom();
     static double calcularVelocidadDensidad(const double &densidad);
-    static double calcularAjusteVelocidad(double& velocidad);
+    static double calcularAjusteLimites(double &velocidad);
     static double actualizarVelocidad(const double &densidad);
     void mostrarVelocidad();
 };
