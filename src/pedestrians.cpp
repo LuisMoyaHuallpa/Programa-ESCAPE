@@ -1,6 +1,7 @@
 #include "pedestrians.h"
 #include "pedestrian.h"
 #include "tiempo.h"
+#include <vector>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -102,8 +103,9 @@ void pedestrians::tiempoInicioDistribution() {
     std::mt19937 gen(rd());
     // Set the parameters for the Rayleigh distribution
     double meanRayleigh = 7 * 60;
-    double scaleRayleigh = meanRayleigh * std::pow((2/M_PI), 05);
+    double scaleRayleigh = meanRayleigh * std::pow((2/M_PI), 0.5);
 
+    std::vector<int> tiempoi;
     for (int i = 0; i < dbPedestrianTotal.size(); ++i) {
         double random_number = generate_rayleigh_random(scaleRayleigh, gen);
         // debe mejorar,
@@ -114,7 +116,33 @@ void pedestrians::tiempoInicioDistribution() {
         else {
             dbPedestrianTotal.at(i).setTiempoInicial(random_number);
         }
+            tiempoi.push_back(random_number);  // Almacenar el tiempo inicial
+
     }
+
+    FILE* gnuplotPipe = popen("gnuplot -persistent", "w");
+    fprintf(gnuplotPipe, "set terminal png size 800,600\n");
+    fprintf(gnuplotPipe, "set output 'tiempos_iniciales.png'\n");
+    fprintf(gnuplotPipe, "set xlabel 'Tiempo Inicial (s)'\n");
+    fprintf(gnuplotPipe, "set ylabel 'Número de Peatones'\n");
+    fprintf(gnuplotPipe, "set title 'Distribución de Tiempos Iniciales'\n");
+    fprintf(gnuplotPipe, "binwidth = 5\n");
+    fprintf(gnuplotPipe, "bin(x,width) = width*floor(x/width) + width/2.0\n");
+    
+    // Pasar los datos a Gnuplot
+    fprintf(gnuplotPipe, "$DATA << EOD\n");
+    for (double tiempo : tiempoi) {
+        fprintf(gnuplotPipe, "%f\n", tiempo);
+    }
+    fprintf(gnuplotPipe, "EOD\n");
+        
+    // Graficar el histograma
+    fprintf(gnuplotPipe, "plot $DATA using (bin($1,binwidth)):(1.0) smooth freq with boxes lc rgb 'blue' notitle\n");
+    
+    // Cerrar la tubería
+    pclose(gnuplotPipe);
+    // }
+
 }
 void pedestrians::reiniciarPedestrians() {
     // regresa a la persona a su posicion de salida inicial antes de empezar la evacuacion
