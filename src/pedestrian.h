@@ -90,7 +90,7 @@ public:
     // static member
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     static int contador;
-    static const double meanRayleigh;
+    static const int meanRayleigh;
     const static int surviveReward;
     const static int deadReward;
     const static int stepReward;

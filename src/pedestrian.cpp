@@ -16,7 +16,7 @@
 // static member
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 int pedestrian::contador = 1;
-const double pedestrian::meanRayleigh = 420;
+const int pedestrian::meanRayleigh = std::get<int>(dictionary::get()->lookup("meanRayleigh"));
 const int pedestrian::surviveReward = 100000;
 const int pedestrian::deadReward = -1000; 
 const int pedestrian::stepReward = -1;
@@ -463,7 +463,7 @@ void pedestrian::imprimirPedestrianVelocity(fileIO* file) const{
 // static metods
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const double pedestrian::calcularScaleRayleigh() {
-    return meanRayleigh * std::pow((2/M_PI), 0.5);
+    return static_cast<double>(meanRayleigh) * std::pow((2.0/M_PI), 0.5);
 }
 double generate_uniform_random(std::mt19937& gen) {
     // Generar un número aleatorio uniforme en el rango (0, 1)
