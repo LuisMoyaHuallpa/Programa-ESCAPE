@@ -1,0 +1,44 @@
+nodesFile        nodes.csv;
+
+linksFile        links.csv;
+
+populationsFile  populationAtPoint.csv;
+
+# sarsaProcesses calibration;
+
+sarsaProcesses trained;
+
+stopAt          endTime;
+
+endTime         800;
+
+deltaT          1;
+
+meanRayleigh   420;
+
+computationContinued  	no;
+
+previousComputationFile	calibrated.csv;
+
+# stopSimulationAt          endNumberSimulation;
+
+stopSimulationAt          addNumberSimulation;
+
+# endNumberSimulation 6003;
+
+addNumberSimulation 5000;
+
+readPedestrianMassState no;
+
+numberLinkDivision 10;
+
+graphicPrintoutPeriod 1;
+
+listingPrintoutPeriod 1;
+
+evacuatedCount yes;
+
+totalEvacuatedCount yes;
+
+
+

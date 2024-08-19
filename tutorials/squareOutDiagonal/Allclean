@@ -1,0 +1,5 @@
+#!/bin/sh
+rm -rf data
+find postprocessing/snapShot -maxdepth 1 -name "[0-9]*" -exec rm -r {} \;
+rm -rf mesh
+./stateMatrices/clean
