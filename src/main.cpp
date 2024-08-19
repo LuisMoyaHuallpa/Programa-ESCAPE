@@ -38,6 +38,7 @@ int main() {
             // io 
             // links::get()->mostrarSublink();
             io::get()->imprimirOutput();
+
             // pone en 0 los elementos valores sublink            
             links::get()->resetSublinks();
             // pedestrians::get()->reset();

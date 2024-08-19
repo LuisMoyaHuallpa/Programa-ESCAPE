@@ -15,7 +15,7 @@ pedestrians::pedestrians() {
     // creacion de data de personas
     leerPedestrians(std::get<std::string>(dictionary::get()->lookupDefault("populationsFile")));
     // tiempo de inicio segun la distribucion rayleigh
-    tiempoInicioDistribution();
+    // tiempoInicioDistribution();
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -39,6 +39,25 @@ pedestrians* pedestrians::get() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metods
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// double generate_uniform_random(std::mt19937& gen) {
+//     // Generar un número aleatorio uniforme en el rango (0, 1)
+//     return std::generate_canonical<double, std::numeric_limits<double>::digits>(gen);
+// }
+// double generate_rayleigh_random(double sigma) {
+//     std::random_device rd;
+//     std::mt19937 gen(rd());
+//     // Set the parameters for the Rayleigh distribution
+//     double meanRayleigh = 7 * 60;
+//     double scaleRayleigh = meanRayleigh * std::pow((2/M_PI), 0.5);
+
+//     // Generar un número aleatorio uniforme
+//     double u = generate_uniform_random(gen);
+
+//     // Calcular el número aleatorio según la distribución Rayleigh
+//     double random_number = sigma * sqrt(-2.0 * log(1.0 - u));
+
+//     return random_number;
+// }
 void pedestrians::leerPedestrians(std::string fileName){
     std::fstream file;
     file.open(fileName, std::ios::in);
@@ -82,68 +101,54 @@ void pedestrians::leerPedestrians(std::string fileName){
     }
     file.close(); 
 }
-double generate_uniform_random(std::mt19937& gen) {
-    // Generar un número aleatorio uniforme en el rango (0, 1)
-    return std::generate_canonical<double, std::numeric_limits<double>::digits>(gen);
-}
+// void pedestrians::tiempoInicioDistribution() {
+//     /* calcula el tiempo de inicio, mediante con la distribucion rayleigh*/
+//     std::random_device rd;
+//     std::mt19937 gen(rd());
+//     // Set the parameters for the Rayleigh distribution
+//     double meanRayleigh = 7 * 60;
+//     double scaleRayleigh = meanRayleigh * std::pow((2/M_PI), 0.5);
 
-double generate_rayleigh_random(double sigma, std::mt19937& gen) {
-    // Generar un número aleatorio uniforme
-    double u = generate_uniform_random(gen);
+//     std::vector<int> tiempoi;
+//     for (int i = 0; i < dbPedestrianTotal.size(); ++i) {
+//         // std::cout << "g: " << gen << std::endl;
+//         double random_number = generate_rayleigh_random(scaleRayleigh);
+//         // debe mejorar,
+//         // tengo problemas cuando la persona empiza a moverse en 0
+//         if(random_number < 2.0){
+//             dbPedestrianTotal.at(i).setTiempoInicial(2);
+//         }
+//         else {
+//             dbPedestrianTotal.at(i).setTiempoInicial(random_number);
+//         }
+//             tiempoi.push_back(random_number);  // Almacenar el tiempo inicial
 
-    // Calcular el número aleatorio según la distribución Rayleigh
-    double random_number = sigma * sqrt(-2.0 * log(1.0 - u));
+//     }
 
-    return random_number;
-}
-
-void pedestrians::tiempoInicioDistribution() {
-    /* calcula el tiempo de inicio, mediante con la distribucion rayleigh*/
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    // Set the parameters for the Rayleigh distribution
-    double meanRayleigh = 7 * 60;
-    double scaleRayleigh = meanRayleigh * std::pow((2/M_PI), 0.5);
-
-    std::vector<int> tiempoi;
-    for (int i = 0; i < dbPedestrianTotal.size(); ++i) {
-        double random_number = generate_rayleigh_random(scaleRayleigh, gen);
-        // debe mejorar,
-        // tengo problemas cuando la persona empiza a moverse en 0
-        if(random_number < 2.0){
-            dbPedestrianTotal.at(i).setTiempoInicial(2);
-        }
-        else {
-            dbPedestrianTotal.at(i).setTiempoInicial(random_number);
-        }
-            tiempoi.push_back(random_number);  // Almacenar el tiempo inicial
-
-    }
-
-    FILE* gnuplotPipe = popen("gnuplot -persistent", "w");
-    fprintf(gnuplotPipe, "set terminal png size 800,600\n");
-    fprintf(gnuplotPipe, "set output 'tiempos_iniciales.png'\n");
-    fprintf(gnuplotPipe, "set xlabel 'Tiempo Inicial (s)'\n");
-    fprintf(gnuplotPipe, "set ylabel 'Número de Peatones'\n");
-    fprintf(gnuplotPipe, "set title 'Distribución de Tiempos Iniciales'\n");
-    fprintf(gnuplotPipe, "binwidth = 5\n");
-    fprintf(gnuplotPipe, "bin(x,width) = width*floor(x/width) + width/2.0\n");
+//     FILE* gnuplotPipe = popen("gnuplot -persistent", "w");
+//     fprintf(gnuplotPipe, "set terminal png size 800,600\n");
+//     fprintf(gnuplotPipe, "set output 'tiempos_iniciales.png'\n");
+//     fprintf(gnuplotPipe, "set xlabel 'Tiempo Inicial (s)'\n");
+//     fprintf(gnuplotPipe, "set ylabel 'Número de Peatones'\n");
+//     fprintf(gnuplotPipe, "set title 'Distribución de Tiempos Iniciales'\n");
+//     fprintf(gnuplotPipe, "binwidth = 5\n");
+//     fprintf(gnuplotPipe, "bin(x,width) = width*floor(x/width) + width/2.0\n");
     
-    // Pasar los datos a Gnuplot
-    fprintf(gnuplotPipe, "$DATA << EOD\n");
-    for (double tiempo : tiempoi) {
-        fprintf(gnuplotPipe, "%f\n", tiempo);
-    }
-    fprintf(gnuplotPipe, "EOD\n");
+//     // Pasar los datos a Gnuplot
+//     fprintf(gnuplotPipe, "$DATA << EOD\n");
+//     for (double tiempo : tiempoi) {
+//         fprintf(gnuplotPipe, "%f\n", tiempo);
+//     }
+//     fprintf(gnuplotPipe, "EOD\n");
         
-    // Graficar el histograma
-    fprintf(gnuplotPipe, "plot $DATA using (bin($1,binwidth)):(1.0) smooth freq with boxes lc rgb 'blue' notitle\n");
+//     // Graficar el histograma
+//     fprintf(gnuplotPipe, "plot $DATA using (bin($1,binwidth)):(1.0) smooth freq with boxes lc rgb 'blue' notitle\n");
     
-    // Cerrar la tubería
-    pclose(gnuplotPipe);
-    // }
+//     // Cerrar la tubería
+//     pclose(gnuplotPipe);
+//     // }
 
-}
+// }
 void pedestrians::reiniciarPedestrians() {
     // regresa a la persona a su posicion de salida inicial antes de empezar la evacuacion
     for (int i = 0; i < dbPedestrianTotal.size(); i++) {

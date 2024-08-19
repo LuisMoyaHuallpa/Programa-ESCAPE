@@ -90,6 +90,7 @@ public:
     // static member
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     static int contador;
+    static const double meanRayleigh;
     const static int surviveReward;
     const static int deadReward;
     const static int stepReward;
@@ -166,6 +167,9 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static metods
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    static const double calcularScaleRayleigh();
+    static double calcularRayleighDistribution(const double sigma);
+    
     // static double calcularOptimalChoiceRate();
 };
 #endif

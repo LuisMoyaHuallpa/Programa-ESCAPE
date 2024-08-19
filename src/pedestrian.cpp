@@ -16,6 +16,7 @@
 // static member
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 int pedestrian::contador = 1;
+const double pedestrian::meanRayleigh = 420;
 const int pedestrian::surviveReward = 100000;
 const int pedestrian::deadReward = -1000; 
 const int pedestrian::stepReward = -1;
@@ -30,7 +31,7 @@ pedestrian::pedestrian(const int edad, const int gender, const int hhType, const
       hhType(hhType),
       hhId(hhId),
       nodeArranque(nodeArranque),
-      tiempoInicial(0),
+      tiempoInicial(calcularRayleighDistribution(calcularScaleRayleigh())),
       position(nodeArranque->getCoordenada()),
       nodeInicioPtr(nodeArranque),
       nodeFinalPtr(nullptr),
@@ -46,7 +47,6 @@ pedestrian::pedestrian(const int edad, const int gender, const int hhType, const
       linkCurrentPtr(nullptr)
 {
 }
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // setters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -204,17 +204,6 @@ bool pedestrian::verificarEndLink() const {
     // Verifica si la distancia es menor o igual al umbral
     return distancia <= umbral;
 }
-// bool pedestrian::verificarEndLink() const {
-//     // Da verdadero si la persona se encuentra ubicada en el término de calle.
-//     const double positionX = position.getX();
-//     const double positionY = position.getY();
-//     const double direccionX = direccionPedestrian.getX();
-//     const double direccionY = direccionPedestrian.getY();
-//     const double nodeFinalX = nodeFinalPtr->getCoordenada().getX();
-//     const double nodeFinalY = nodeFinalPtr->getCoordenada().getY();
-//     return (positionX * direccionX >= nodeFinalX * direccionX) &&
-//            (positionY * direccionY >= nodeFinalY * direccionY);
-// }
 link* pedestrian::eleccionGeneralLink() const {
     if (estadoPedestrian == evacuado) {
         return nullptr;
@@ -285,15 +274,6 @@ link* pedestrian::eleccionSarsaLink() const {
 //         // verificar si el nodo final es un nodo de evacucion.
 //         verificarPedestrianEvacuation();
 //     }
-// }
-// bool pedestrian::verificarEndLink() {
-//     // Da verdadero si la persona se encuentra ubicada en el termino de calle.
-//     bool terminoLink = false;
-//     if (position.getX()*std::copysign(1, direccionPedestrian.getX()) >= nodeFinalPtr->getCoordenada().getX()*std::copysign(1, direccionPedestrian.getX()) and
-//     position.getY()*std::copysign(1, direccionPedestrian.getY()) >= nodeFinalPtr->getCoordenada().getY()*std::copysign(1, direccionPedestrian.getY())){
-//         terminoLink = true;
-//     }
-//     return terminoLink;
 // }
 int pedestrian::calcularSignoNumero(double numero) {
     if (numero >= 0) {
@@ -478,4 +458,24 @@ void pedestrian::imprimirPedestrianPosition(fileIO* file) const {
 void pedestrian::imprimirPedestrianVelocity(fileIO* file) const{
     file->getFileFstream() << velocidadPedestrian.getMagnitud() << " ";
     file->getFileFstream() << std::endl;
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// static metods
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+const double pedestrian::calcularScaleRayleigh() {
+    return meanRayleigh * std::pow((2/M_PI), 0.5);
+}
+double generate_uniform_random(std::mt19937& gen) {
+    // Generar un número aleatorio uniforme en el rango (0, 1)
+    return std::generate_canonical<double, std::numeric_limits<double>::digits>(gen);
+}
+double pedestrian::calcularRayleighDistribution(const double sigma) {
+    /* calcula un numero segun la distribucion rayliegh, como parametro necesita
+        la variable sigma que es la scaleRayleigh */
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    // Generar un número aleatorio uniforme
+    double u = generate_uniform_random(gen);
+    // Calcular el número aleatorio según la distribución Rayleigh
+    return sigma * std::sqrt(-2.0 * std::log(1.0 - u));
 }
