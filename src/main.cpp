@@ -37,14 +37,11 @@ int main() {
             // pedestrians::get()->mostrarDbPedestrianMovimiento();
             // io 
             // links::get()->mostrarSublink();
-
             io::get()->imprimirOutput();
             // pone en 0 los elementos valores sublink            
             links::get()->resetSublinks();
             // pedestrians::get()->reset();
         }
-        // std::cout << "julio" << std::endl;
-
         // std::cout << "fin: " << std::endl;
         // stateMatrixs::get()->mostrarDbStateMatrixs();
         // links::get()->mostrarLinks();

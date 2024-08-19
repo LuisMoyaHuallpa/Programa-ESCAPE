@@ -19,7 +19,8 @@ link::link(const int idLink, const node* const node1, const node* const node2, c
     : idLink(idLink), node1Ptr(node1), node2Ptr(node2), length(length), width(width),
       orientacionLink(calcularOrientacionLink()),
       anchoSubdivision(calcularAnchoDivisiones()),
-      densityLevel(0) {
+      densityLevel(0)
+{
     subdivisiones.resize(link::numberLinkDivision, subLink(this));
 }
 
@@ -90,14 +91,15 @@ const double link::calcularAnchoDivisiones() const{
 void link::calcularDensityGeneral() {
     /* calculo de la densidad en cada sublink de la calle*/
     // subdivion es it
+    double densidadMaxima = 0;
     for (auto it = subdivisiones.begin(); it != subdivisiones.end(); ++it) {
         // solo si hay persona realizar calculos
         // if (!(it->getPedestriansInSublink().empty())) {
             double densidadSublink = it->calcularDensidadSubdivision();
             // guardar densidadMaxima
-            // if (densidadSublink > densidadMaxima) {
-            //     densidadMaxima = densidadSublink;
-            // }
+            if (densidadSublink > densidadMaxima) {
+                densidadMaxima = densidadSublink;
+            }
             // verifica si aun un cambio en la densidad de sublink
             // if (it->getDensidadSublink() != densidadSublink) {
                 // it->setDensidadSublink(densidadSublink);
@@ -106,16 +108,16 @@ void link::calcularDensityGeneral() {
 
                 // if (!(it->getPedestriansInSublink().empty())) {
                 // if (it->getPedestriansInSublink().at(0)->getVelocidadPedestrian().getMagnitud() != velocidadPedestrianSublink) {
-                // it->actualizarVelocidadPedestrianInSublink(velocidadEnSublink);
+                it->actualizarVelocidadPedestrianInSublink(velocidadEnSublink);
                 // }
                 // }
             // }
             // guarda las densidades para el proximo calculo
-            it->setDensidadSublink(densidadSublink);
+                it->setDensidadSublink(densidadSublink);
     }
     // calculo al densidad de la calle
-    double densidadCalle = calcularDensityLink();
-    densityLevel = calcularDensityLevelLink(densidadCalle);
+    // double densidadCalle = calcularDensityLink();
+    densityLevel = calcularDensityLevelLink(densidadMaxima);
 }
 int link::calcularDensityLink() const{
     /* calcula la densidad de la calle segun la cantidad de personas dentra*/
