@@ -313,22 +313,22 @@ vector2D pedestrian::calcularSignoDireccion() {
 }
 int pedestrian::calcularReward() const {
     /* calculo del reward por paso*/
-    switch (estadoPedestrian) {
-        case evacuando:
-        {
-            const int tiempoDesplazamiento = calcularTiempoDesplazamiento();
-            const int pasos = tiempoDesplazamiento / tiempo::get()->getDeltaT();
-            return pasos * stepReward;
-        }
-        case evacuado:
-            return surviveReward;
-        case muerto:
-            return deadReward;
-        default:
-            std::cout << "Estado: Desconocido" << std::endl;
-            break;
-    }
-    return 0;
+    // switch (estadoPedestrian) {
+        // case evacuando:
+        // {
+    const int tiempoDesplazamiento = calcularTiempoDesplazamiento();
+    const int pasos = tiempoDesplazamiento / tiempo::get()->getDeltaT();
+    return pasos * stepReward;
+    //     }
+    //     case evacuado:
+    //         return surviveReward;
+    //     case muerto:
+    //         return deadReward;
+    //     default:
+    //         std::cout << "Estado: Desconocido" << std::endl;
+    //         break;
+    // }
+    // return 0;
 }
 int pedestrian::calcularTiempoDesplazamiento() const {
    /* calcula el proximo tiempo donde el pedestrian estará en una interseccion*/
@@ -363,7 +363,6 @@ void pedestrian::modelamientoPedestrian() {
                     // correcion de la posicion cuando se llega cerca al nodo.
                     position = {nodeInicioPtr->getCoordenada().getX(), nodeInicioPtr->getCoordenada().getY()};
                     // verifico si estoy en un punto de evacuacion
-                    reward = calcularReward();
                 }
                 // nodeInicioPtr->mostrarNode();
                 estadoPedestrian = nodeInicioPtr->verificarNodoEvacuation();
@@ -386,19 +385,7 @@ void pedestrian::modelamientoPedestrian() {
                 QCurrentPtr = stateMatrixCurrentPtr->buscarQ(linkCurrentPtr);
                 // excepto al iniciar
                 if (estadoPedestrian == evacuado) {
-                    if (std::get<std::string>(dictionary::get()->lookupDefault("sarsaProcesses")) == "calibration"){
-                        reward = calcularReward();
-                        // std::cout << "neva: " << std::endl;
-                        // std::cout << "current: " << std::endl;
-                        // stateMatrixCurrentPtr->mostrarStateMatrix();
-                        sarsa::sarsaActualizarQ(QCurrentPtr->getValor(), nullptr, reward);
-                        // std::cout << "current: " << std::endl;
-                        // stateMatrixCurrentPtr->mostrarStateMatrix();
-                    }
                     dynamic_cast<nodeEvacuation*>(nodeInicioPtr)->contabilizarPersona(this);
-                    estadoPedestrian= evacuando;
-                    reward = calcularReward();
-                    estadoPedestrian= evacuado;
                 }
 
                 if (std::get<std::string>(dictionary::get()->lookupDefault("sarsaProcesses")) == "calibration"){
@@ -407,6 +394,8 @@ void pedestrian::modelamientoPedestrian() {
                         // stateMatrixCurrentPtr->mostrarStateMatrix();
                         // std::cout << "previous: " << std::endl;
                         // stateMatrixPreviousPtr->mostrarStateMatrix();
+
+                        reward = calcularReward();
                         sarsa::sarsaActualizarQ(QPreviousPtr->getValor(), QCurrentPtr->getValor(), reward);
                         // std::cout << "previous: " << std::endl;
                         // stateMatrixPreviousPtr->mostrarStateMatrix();

@@ -56,7 +56,6 @@ public:
     const int getIdNode() const;
     const vector2D getCoordenada() const;
     const std::vector<link*> getLinkConnectionsPtr() const;
-    // std::vector<stateMatrix*>& getStateMatrixExperimentadosPtr();
     std::vector<stateMatrix*>* getStateMatrixExperimentadosPtr();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

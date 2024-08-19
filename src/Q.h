@@ -23,6 +23,7 @@ public:
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     Q();
+    Q(const double valor);
     Q(const link* const callePtr);
     Q(const double valor, const link* const callePtr);
 

@@ -28,7 +28,7 @@ stateMatrix::stateMatrix(const nodeEvacuation* const nodeEvacuationPtr, const st
     :
     nodoPtr(nodeEvacuationPtr),
     state(state),
-    Qs(1, Q()),
+    Qs(1, Q(pedestrian::surviveReward)),
     observaciones(state.size(),0)
 {
 }

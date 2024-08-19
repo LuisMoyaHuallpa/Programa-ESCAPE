@@ -11,6 +11,12 @@ Q::Q()
     callePtr(nullptr)
 {
 }
+Q::Q(const double valor)
+    :
+    valor(valor),
+    callePtr(nullptr)
+{
+}
 Q::Q(const link* const callePtr) :
     valor(0),
     callePtr(callePtr)
