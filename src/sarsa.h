@@ -13,51 +13,22 @@ class sarsa{
 
 private:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // QCurrent     |-->| Q DE LA INTERSECCION DONDE SE ENCUENTRA LA PERSONA ACTUAL
-    // QPrevious    |-->| Q DE LA INTERSECCION DONDE PASO ANTERIORMENTE LA PERSONA
+    // alpha     |-->| Q DE LA INTERSECCION DONDE SE ENCUENTRA LA PERSONA ACTUAL
+    // gamma    |-->| Q DE LA INTERSECCION DONDE PASO ANTERIORMENTE LA PERSONA
     // r            |-->| REWARD DE LA PERSONA DURANTE EL PASO DE LA CALLE
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // double* QCurrent;
-    // double* QPrevious;
-    // int* r;
     
 public: 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static member
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     static const double alpha;
-    // gamma <- discount
     static const double gamma;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // constructor
+    // static method
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // sarsa();
-    // // sarsa(double QCurrent, double QPrevious, double r);
-
-    // //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // // setters
-    // //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // void setQCurrent(double* QCurrent);
-    // void setQPrevious(double* QPrevious);
-    // void setR(int* r);
-
-    // //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // // getters
-    // //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // double* getQCurrent();
-    // double* getQPrevious();
-    // int* getR();
-    
-    // //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // // metodos
-    // //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   // void sarsaActualizarQ();
-
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // static metodos
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    static void sarsaActualizarQ(double* const QPrevious, const double* const QCurrent, const int& r);
+    static void sarsaActualizarQ(double* const QPrevious, const double* const QCurrent, const int r);
     
     
 };

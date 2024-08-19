@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include <functional>
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -23,6 +24,8 @@ int main() {
     while (tiempo::get()->getINumberSimulation() <= tiempo::get()->getEndNumberSimulation()) {
         // loop para una evacuacion
         // calcula el valor el valor del randomChoiceRate
+        // std::cout << "inicio: " << std::endl;
+        // stateMatrixs::get()->mostrarDbStateMatrixs();
         tiempo::get()->calcularRandomChoiceRate();
         while (tiempo::get()->running()) {
             tiempo::get()->aumentarTiempo();
@@ -41,6 +44,8 @@ int main() {
             // pedestrians::get()->reset();
         }
         // std::cout << "julio" << std::endl;
+
+        // std::cout << "fin: " << std::endl;
         // stateMatrixs::get()->mostrarDbStateMatrixs();
         // links::get()->mostrarLinks();
         // Imprimir estados al terminar la simulación

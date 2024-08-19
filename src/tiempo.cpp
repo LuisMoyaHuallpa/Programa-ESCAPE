@@ -201,7 +201,7 @@ void tiempo::calcularRandomChoiceRate() {
     }
     else if(std::get<std::string>(dictionary::get()->lookup("sarsaProcesses")) == "trained") {
         // para que solo eliga sarsa nada de aletorio
-        randomChoiceRate = 0;
+        randomChoiceRate = 0.2;
     }
 }
 bool tiempo::running() const {

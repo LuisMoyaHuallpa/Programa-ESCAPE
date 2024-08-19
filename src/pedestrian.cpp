@@ -356,6 +356,7 @@ void pedestrian::modelamientoPedestrian() {
                     // guarda calle actual antes que sea cambiado
                     // linkPreviousPtr =  linkCurrentPtr;
                     // guarda el Qcurents antes que sea cambiado
+                    stateMatrixPreviousPtr = stateMatrixCurrentPtr;
                     QPreviousPtr = QCurrentPtr;
                     // ahora la interseccion final es la interseccion inicial.
                     nodeInicioPtr = nodeFinalPtr;
@@ -364,6 +365,7 @@ void pedestrian::modelamientoPedestrian() {
                     // verifico si estoy en un punto de evacuacion
                     reward = calcularReward();
                 }
+                // nodeInicioPtr->mostrarNode();
                 estadoPedestrian = nodeInicioPtr->verificarNodoEvacuation();
                 // observa el estado del nodo o nodeEvacuation
                 const std::vector<int> stateObservado = nodeInicioPtr->stateObservado();
@@ -386,14 +388,28 @@ void pedestrian::modelamientoPedestrian() {
                 if (estadoPedestrian == evacuado) {
                     if (std::get<std::string>(dictionary::get()->lookupDefault("sarsaProcesses")) == "calibration"){
                         reward = calcularReward();
+                        // std::cout << "neva: " << std::endl;
+                        // std::cout << "current: " << std::endl;
+                        // stateMatrixCurrentPtr->mostrarStateMatrix();
                         sarsa::sarsaActualizarQ(QCurrentPtr->getValor(), nullptr, reward);
+                        // std::cout << "current: " << std::endl;
+                        // stateMatrixCurrentPtr->mostrarStateMatrix();
                     }
                     dynamic_cast<nodeEvacuation*>(nodeInicioPtr)->contabilizarPersona(this);
+                    estadoPedestrian= evacuando;
+                    reward = calcularReward();
+                    estadoPedestrian= evacuado;
                 }
 
                 if (std::get<std::string>(dictionary::get()->lookupDefault("sarsaProcesses")) == "calibration"){
                     if(!(tiempoInicial == tiempoActual)){
+                        // std::cout << "current: " << std::endl;
+                        // stateMatrixCurrentPtr->mostrarStateMatrix();
+                        // std::cout << "previous: " << std::endl;
+                        // stateMatrixPreviousPtr->mostrarStateMatrix();
                         sarsa::sarsaActualizarQ(QPreviousPtr->getValor(), QCurrentPtr->getValor(), reward);
+                        // std::cout << "previous: " << std::endl;
+                        // stateMatrixPreviousPtr->mostrarStateMatrix();
                     }
                 }
                 // guarda la anteror interseccion

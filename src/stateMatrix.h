@@ -28,11 +28,11 @@ private:
     // state     |-->| ESTADO EXPERIMENTADO ESTA COMPUESTO DE LAS DENSIDADES DE LOS LINK CONECTADOS
     // Qs        |-->| Q DE LOS LINK EN UN STATE EXPERIMENTADO
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    const int id;
     const node* const nodoPtr;
     const std::vector<int> state;
     std::vector<Q> Qs;
-    
+    std::vector<int> observaciones;
+
 public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static member
@@ -54,10 +54,10 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getter
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    const int getId() const;
     const node* const getNodePtr() const;
     const std::vector<int> getState() const;
     std::vector<Q>& getQs();
+    std::vector<int> getObservaciones() const;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static getter

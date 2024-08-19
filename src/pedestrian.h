@@ -79,6 +79,7 @@ private:
     int tiempoAnteriorInterseccion;
     bool interseccion;
     stateMatrix* stateMatrixCurrentPtr;
+    stateMatrix* stateMatrixPreviousPtr;
     Q* QCurrentPtr;
     Q* QPreviousPtr;
     link* linkCurrentPtr;

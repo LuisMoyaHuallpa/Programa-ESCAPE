@@ -6,7 +6,6 @@
 #include "Q.h"
 #include "nodeEvacuation.h"
 #include "pedestrian.h"
-#include "state.h"
 #include "stateMatrixs.h"
 #include <vector>
 #include "link.h"
@@ -21,25 +20,24 @@ const int stateMatrix::tamanoVectorIO = 10;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 stateMatrix::stateMatrix()
     :
-    id(0),
     nodoPtr(nullptr)
 {
   
 }
 stateMatrix::stateMatrix(const nodeEvacuation* const nodeEvacuationPtr, const std::vector<int> state)
     :
-    id(0),
     nodoPtr(nodeEvacuationPtr),
     state(state),
-    Qs(1, Q())
+    Qs(1, Q()),
+    observaciones(state.size(),0)
 {
 }
 
 stateMatrix::stateMatrix(const node* const node, const std::vector<int> state)
     :
-    id(0),
     nodoPtr(node),
-    state(state)
+    state(state),
+    observaciones(state.size(), 0)
 {
     const std::vector<link*> linkConnectionsPtr = nodoPtr->getLinkConnectionsPtr();
     for (link* linkConnection : linkConnectionsPtr) {
@@ -47,11 +45,9 @@ stateMatrix::stateMatrix(const node* const node, const std::vector<int> state)
     } 
 }
 stateMatrix::stateMatrix(const node *const nodePtr, const std::vector<int> state, std::vector<Q> Qs)
-    : id(0), nodoPtr(nodePtr), state(state), Qs(Qs){
-    // const std::vector<link*> linkConnectionsPtr = nodoPtr->getLinkConnectionsPtr();
-    // for (link* linkConnection : linkConnectionsPtr) {
-    //     Qs.emplace_back(linkConnection);
-    // } 
+    : nodoPtr(nodePtr), state(state), Qs(Qs),
+      observaciones(state.size(), 0)
+{
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // setters
@@ -60,9 +56,6 @@ stateMatrix::stateMatrix(const node *const nodePtr, const std::vector<int> state
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getter
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-const int stateMatrix::getId() const {
-    return id;
-}
 const node* const stateMatrix::getNodePtr() const {
     return nodoPtr;
 }

@@ -100,7 +100,6 @@ void links::contarPedestrians() {
         for (auto it = dbLinkTotal.begin(); it != dbLinkTotal.end(); ++it) {
             // calcula el nivel de densidad de todas las calles con los datos anterios
             it->get()->calcularDensityGeneral();
-            // it->get()->calcularDensityLink();
         }
     }
 }

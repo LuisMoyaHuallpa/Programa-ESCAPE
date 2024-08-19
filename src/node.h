@@ -13,7 +13,6 @@ Punto de interseccion de calles.
 #include <ostream>
 #include <vector>
 #include "pedestrian.h"
-#include "state.h"
 #include "unordered_map"
 #include "map"
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -42,7 +42,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void calcularAjusteRandom();
     static double calcularVelocidadDensidad(const double &densidad);
-    static double calcularAjusteLimites(double &velocidad);
+    static void calcularAjusteLimites(double &velocidad);
     static double actualizarVelocidad(const double &densidad);
     void mostrarVelocidad();
 };
