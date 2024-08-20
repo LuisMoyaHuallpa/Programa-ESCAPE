@@ -59,7 +59,7 @@ private:
         {"deltaT", "int"},
         {"meanRayleigh", "int"},
         {"exploration", "double"},
-        {"addNumberSimulation", "int"},
+        {"endNumberSimulation", "int"},
         {"graphicPrintout", "bool"},
         {"graphicPrintoutPeriod", "int"},
         {"pedestrianCountPeriod", "int"},

@@ -117,32 +117,19 @@ void tiempo::inicializarNumberSimulation() {
     /* Inicializar las variables de NumberSimulation*/
     // Para proceso de calibracion
     if(std::get<std::string>(dictionary::get()->lookupDefault("sarsaProcesses")) == "calibration"){
-        // si lee archivos de estados pasados, si
+        // si lee statematrix
         if (std::get<bool>(dictionary::get()->lookupDefault("computationContinued")) == true) {
-            if (std::get<std::string>(dictionary::get()->lookup("stopSimulationAt")) == "endNumberSimulation") {
-                extractINumberSimulation();
-                endNumberSimulation = std::get<int>(dictionary::get()->lookup("endNumberSimulation"));
-                startNumberSimulation = startNumberSimulation + 1;
-                iNumberSimulation = startNumberSimulation;
-            }
-            else if (std::get<std::string>(dictionary::get()->lookup("stopSimulationAt")) == "addNumberSimulation") {
-                extractINumberSimulation();
-                endNumberSimulation = startNumberSimulation  + std::get<int>(dictionary::get()->lookup("addNumberSimulation"));
-                startNumberSimulation = startNumberSimulation + 1;
-                iNumberSimulation = startNumberSimulation;
-            }
+            startNumberSimulation = 0;
+            endNumberSimulation = std::get<int>(dictionary::get()->lookup("endNumberSimulation"));
+            startNumberSimulation = startNumberSimulation + 1;
+            iNumberSimulation = startNumberSimulation;
         }
-        // si no lee estados pasados
+        // si no lee statematrix
         else {
             // inicia el la simulacion 1
             startNumberSimulation = 1;
             iNumberSimulation = 1;
-            if (std::get<std::string>(dictionary::get()->lookupDefault("stopSimulationAt")) == "endNumberSimulation") {
-                endNumberSimulation = std::get<int>(dictionary::get()->lookup("endNumberSimulation"));
-            }
-            else{
-                endNumberSimulation = std::get<int>(dictionary::get()->lookup("addNumberSimulation"));
-            }
+            endNumberSimulation = std::get<int>(dictionary::get()->lookup("endNumberSimulation"));
         }
         // iniciar el timer tiempo real de simulacion
         startTimeSimulation = std::chrono::high_resolution_clock::now();
@@ -157,16 +144,13 @@ void tiempo::inicializarNumberSimulation() {
         endNumberSimulation = 1;
     }
 }
-void tiempo::extractINumberSimulation() {
+int tiempo::extractINumberSimulation() const {
     /* Extrar el numero de simulacion actual segun el archivo sim de estados
         anteriores del control de la variable previousComputation*/
-    if (dictionary::get()->getControlDict().find("previousComputationFile") != dictionary::get()->getControlDict().end()) {
-        std::string lastFile_str = std::get<std::string>(dictionary::get()->lookup("previousComputationFile"));
-        // busca el primer numero del 1-9 del nombre del archivo de estados
-        size_t posicion = lastFile_str.find_first_of("123456789");
-        int iLastFile = std::stoi(lastFile_str.substr(posicion));
-        startNumberSimulation = iLastFile ;
-    }
+    const std::string lastFile_str = std::get<std::string>(dictionary::get()->lookup("previousComputationFile"));
+    // busca el primer numero del 1-9 del nombre del archivo de estados
+    const size_t posicion = lastFile_str.find_first_of("123456789");
+    return std::stoi(lastFile_str.substr(posicion));
 }
 void tiempo::calcularRandomChoiceRate() {
     const int k = iNumberSimulation;

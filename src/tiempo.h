@@ -87,7 +87,7 @@ public:
     void aumentarTiempo();
     void aumentarINumberSimulation();
     void inicializarNumberSimulation();
-    void extractINumberSimulation();
+    int extractINumberSimulation() const;
     void calcularRandomChoiceRate();
     const double calcularTemp(const double r) const;
     bool running() const;
