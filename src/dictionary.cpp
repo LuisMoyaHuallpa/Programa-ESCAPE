@@ -29,7 +29,7 @@ dictionary::dictionary(std::string nameDictionary) {
 std::string dictionary::getNameDictionary() {
     return nameDictionary;
 }
-std::map<std::string, std::variant<std::string, int, bool>>& dictionary::getControlDict() {
+std::map<std::string, std::variant<std::string, int, double, bool>>& dictionary::getControlDict() {
     return controlDict;
 }
 
@@ -86,7 +86,7 @@ void dictionary::leerDictionary() {
     }
     file.close(); 
 }
-std::variant<std::string, int, bool> dictionary::lookup(std::string keyword) {
+std::variant<std::string, int, double, bool> dictionary::lookup(std::string keyword) {
     /* busca la keyword y devuelve su respuesta*/
     auto it = controlDict.find(keyword);
     // si no lo encuentra
@@ -100,7 +100,7 @@ std::variant<std::string, int, bool> dictionary::lookup(std::string keyword) {
     }
     return 0; 
 }
-std::variant<std::string, int, bool> dictionary::lookupDefault(std::string keyword) {
+std::variant<std::string, int, double, bool> dictionary::lookupDefault(std::string keyword) {
     /* busca la keyword y devuelve su respuesta*/
     auto it = controlDict.find(keyword);
     // si no lo encuentra

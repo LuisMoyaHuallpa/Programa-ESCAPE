@@ -30,8 +30,8 @@ private:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     const std::string nameDictionary = "controlDict";
     const std::string systemCarpet = "system/";
-    std::map<std::string, std::variant<std::string, int, bool>> controlDict;
-    const std::map<std::string, std::variant<std::string, int, bool>> controlDictDefault = {
+    std::map<std::string, std::variant<std::string, int, double, bool>> controlDict;
+    const std::map<std::string, std::variant<std::string, int,double, bool>> controlDictDefault = {
         {"nodesFile", "nodes.csv"},
         {"linksFile", "links.csv"},
         {"populationsFile", "population.csv"},
@@ -58,6 +58,7 @@ private:
         {"endTime", "int"},
         {"deltaT", "int"},
         {"meanRayleigh", "int"},
+        {"exploration", "double"},
         {"addNumberSimulation", "int"},
         {"graphicPrintout", "bool"},
         {"graphicPrintoutPeriod", "int"},
@@ -93,7 +94,7 @@ public:
     // getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     std::string getNameDictionary();
-    std::map<std::string, std::variant<std::string, int, bool>>& getControlDict();
+    std::map<std::string, std::variant<std::string, int, double, bool>>& getControlDict();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static getters
@@ -104,8 +105,8 @@ public:
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void leerDictionary();
-    std::variant<std::string, int, bool> lookup(std::string keyword);
-    std::variant<std::string, int, bool> lookupDefault(std::string keyword);
+    std::variant<std::string, int, double, bool> lookup(std::string keyword);
+    std::variant<std::string, int, double, bool> lookupDefault(std::string keyword);
     bool verificarOptions(std::string keyword, std::string value) const;
     bool verificarType(std::string keyword, std::string value);
 

@@ -1,4 +1,5 @@
 #include "tiempo.h"
+#include "dictionary.h"
 #include "nodes.h"
 #include "links.h"
 #include "pedestrians.h"
@@ -169,14 +170,20 @@ void tiempo::extractINumberSimulation() {
     }
 }
 void tiempo::calcularRandomChoiceRate() {
-    int k = iNumberSimulation;
-    int N = endNumberSimulation;
+    const int k = iNumberSimulation;
+    const int N = endNumberSimulation;
+    // valor por default, puede ser 4 o 9 
+    double temp = 4.0;
     // buscar nombre correcto
-    double temp;
     if (std::get<std::string>(dictionary::get()->lookup("sarsaProcesses")) == "calibration") {
+        // en busca el keyword exploration
+        auto it = dictionary::get()->getControlDict().find("exploration");
+        if (it != dictionary::get()->getControlDict().end()) {
+            // Clave encontrada, proceder con la operación
+            temp = calcularTemp(std::get<double>(it->second));
+        }
         // formula para random choice
-        // es numero 9 o 4?
-        double gleeFactor = 4.0 / double(N);
+        const double gleeFactor = temp / double(N);
         // el -1 es para empezar el numero de simulaciones en 0
         randomChoiceRate = 1.0 / (gleeFactor * double(k - 1) + 1.0);
     }
@@ -184,6 +191,11 @@ void tiempo::calcularRandomChoiceRate() {
         // para que solo eliga sarsa nada de aletorio
         randomChoiceRate = 0;
     }
+}
+const double tiempo::calcularTemp(const double r) const {
+    const int N = endNumberSimulation;
+    const double factor = N - 1;
+    return (N - r * factor) / (r * factor);
 }
 bool tiempo::running() const {
     /* contrala el tiempo de evacuacion*/
