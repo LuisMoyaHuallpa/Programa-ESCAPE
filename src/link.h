@@ -76,7 +76,7 @@ public:
     const vector2D getOrientacionLink() const;
     const double getAnchoSubdivisiones() const;
     int getDensityLevel();
-    std::vector<subLink>& getSublink();
+    std::vector<subLink>& getSubdiviones();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos

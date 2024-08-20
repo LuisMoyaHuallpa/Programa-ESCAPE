@@ -200,6 +200,18 @@ bool pedestrian::verificarEndLink() const {
     // Verifica si la distancia es menor o igual al umbral
     return distancia <= umbral;
 }
+int pedestrian::calcularIdEndSublink() const {
+    /* Permite saber cual es el ultimo sublink*/
+    // averguio si estoy al final o al inicio
+    if (nodeInicioPtr == linkCurrentPtr->getNode1Ptr()) {
+        // si estoy al inicio es el ultimo subdivione
+        return linkCurrentPtr->getSubdiviones().size() - 1; 
+    } 
+    // esta al inicio
+    else {
+        return 0;
+    }
+}
 link* pedestrian::eleccionGeneralLink() const {
     if (estadoPedestrian == evacuado) {
         return nullptr;
@@ -356,6 +368,8 @@ void pedestrian::modelamientoPedestrian() {
                     nodeFinalPtr = const_cast<node*>(nodeInicioPtr->buscarNodoFinal(linkCurrentPtr));
                     // direccion de la persona en la calle.
                     calcularDireccionPedestrian();
+                    // calcular idEndSublink
+                    idEndSublink = calcularIdEndSublink();
                 }
                 // obtener Qcurrent
                 QCurrentPtr = stateMatrixCurrentPtr->buscarQ(linkCurrentPtr);
@@ -392,16 +406,11 @@ void pedestrian::modelamientoPedestrian() {
                     const int idSublink = calcularIdSublink();
                     // agrega persona en sublink
                     linkCurrentPtr->agregarPedestrianSublink(this, idSublink);
-                    // verifica cuando esta cerca a una interseccion
-                    // mostrarMovimientoPedestrian();
-                    // linkCurrentPtr->mostrarSubdivisiones();
-                    // std::cout << "id: " << idSublink;
-                    // std::cout << std::endl;
-                    // cuando termina la calle borra a la persona del conteo
-                    interseccion = verificarEndLink();
-                    // if (interseccion) {
-                    //     linkCurrentPtr->quitarPedestrianSublink(this, idSublink);
-                    // }
+                    // cuando esta en un sublink cercano a nodoFinal
+                    if (idSublink == idEndSublink) {
+                        // verifica cuando esta cerca a una interseccion
+                        interseccion = verificarEndLink();
+                    }
                 }
             }
         }

@@ -83,6 +83,7 @@ private:
     Q* QCurrentPtr;
     Q* QPreviousPtr;
     link* linkCurrentPtr;
+    int idEndSublink;
 
 public:
 
@@ -149,6 +150,7 @@ public:
     link* eleccionSarsaLink() const;
     bool verificarNodoLLeno() const;
     bool verificarEndLink() const;
+    int calcularIdEndSublink() const;
     double calcularIdSublink();
     int calcularReward() const;
     int calcularTiempoDesplazamiento() const;

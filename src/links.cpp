@@ -111,7 +111,7 @@ void links::resetSublinks() {
         // reinicia 
         // it->get()->getPedestriansInSublink().assign(link::numberLinkDivision, 0);
         // recorre cada sublink y lo reincia
-        for (auto y = it->get()->getSublink().begin(); y != it->get()->getSublink().end(); ++y) {
+        for (auto y = it->get()->getSubdiviones().begin(); y != it->get()->getSubdiviones().end(); ++y) {
             if (!y->getPedestriansInSublink().empty()) {
                 y->getPedestriansInSublink().clear();
             }

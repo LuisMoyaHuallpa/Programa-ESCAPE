@@ -55,10 +55,7 @@ const vector2D link::getOrientacionLink() const {
 int link::getDensityLevel() {
     return densityLevel;
 }
-// std::vector<pedestrian*>& link::getPedestriansLinkPtr() {
-//     return pedestriansLinkPtr;
-// }
-std::vector<subLink>& link::getSublink() {
+std::vector<subLink>& link::getSubdiviones() {
     return subdivisiones;  
 }
 const double link::getAnchoSubdivisiones() const {
