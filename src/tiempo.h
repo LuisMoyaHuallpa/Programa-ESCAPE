@@ -28,10 +28,10 @@ private:
     int valorTiempo;
     const int deltaT;
     const int endTime;
-    const int graphicPrintoutPeriod;
     int startNumberSimulation;
     int iNumberSimulation;
     int endNumberSimulation;
+    const int graphicPrintoutPeriod;
     const int pedestrianCountPeriod;
     std::chrono::high_resolution_clock::time_point startTimeSimulation;
     std::chrono::high_resolution_clock::time_point endTimeSimulation;

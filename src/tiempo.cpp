@@ -3,6 +3,7 @@
 #include "nodes.h"
 #include "links.h"
 #include "pedestrians.h"
+#include <chrono>
 
 int tiempo::deltaTiempo = 1;
 std::string tiempo::filenameData = "data/";
@@ -21,9 +22,7 @@ tiempo::tiempo()
       graphicPrintoutPeriod(std::get<int>(dictionary::get()->lookupDefault("graphicPrintoutPeriod"))),
       pedestrianCountPeriod(std::get<int>(dictionary::get()->lookupDefault("pedestrianCountPeriod")))
 {
-    auto graphicPrintoutPeriodVariant = dictionary::get()->lookupDefault("graphicPrintoutPeriod");
     inicializarNumberSimulation();
-    std::cout << graphicPrintoutPeriod;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -213,15 +212,14 @@ void tiempo::mostrarIResultadosSimulacion() {
     std::cout << "survived pedestrian: " << nodeEvacuation::getTotalPersonasEvacuadas() << std::endl;
     // termino de la simulacion
     endTimeSimulation = std::chrono::high_resolution_clock::now();
-    auto duration = endTimeSimulation - startTimeSimulation;
-    // Calcula la duración en milisegundos
-    // auto durationMilliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(duration);
-    // std::cout << "Duración en milisegundos: " << durationMilliseconds.count() << " ms" << std::endl;
-    // Calcula la duración en segundos
-    auto durationSeconds = std::chrono::duration_cast<std::chrono::seconds>(duration);
-    auto durationMinutes = std::chrono::duration_cast<std::chrono::minutes>(duration);
+    // tiempo de simulacion
+    const auto duration = endTimeSimulation - startTimeSimulation;
+    const auto miliSeconds = std::chrono::duration_cast<std::chrono::milliseconds>(duration);
+    const auto durationSeconds = std::chrono::duration_cast<std::chrono::seconds>(duration);
+    const auto durationMinutes = std::chrono::duration_cast<std::chrono::minutes>(duration);
     std::cout << "Duración: " << durationMinutes.count() << " min";
-    std::cout << " / " << durationSeconds.count() << " s" << std::endl;
+    std::cout << " / " << durationSeconds.count() << " s";
+    std::cout << " / " << miliSeconds.count() << " ms" << std::endl;
     std::cout << std::endl;
 }
 void tiempo::mostrarTiempo() const {

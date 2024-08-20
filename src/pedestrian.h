@@ -68,7 +68,7 @@ private:
     const int hhType;
     const int hhId;
     const node* nodeArranque;
-    mutable int tiempoInicial;
+    const int tiempoInicial;
     vector2D position;
     node* nodeInicioPtr;
     node* nodeFinalPtr;
@@ -111,7 +111,6 @@ public:
     void setDireccionPedestrian(vector2D direccionPedestrian);
     void setVelocidadPedestrian(double velocidadPedestrian);
     void setEstadoPedestrian(estado estadoPedestrian);
-    void setTiempoInicial(int tiempoInicial);
     void setReward(int reward);
     void setInterseccion(bool interseccion);
 

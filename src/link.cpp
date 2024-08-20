@@ -93,30 +93,25 @@ void link::calcularDensityGeneral() {
     // subdivion es it
     double densidadMaxima = 0;
     for (auto it = subdivisiones.begin(); it != subdivisiones.end(); ++it) {
-        // solo si hay persona realizar calculos
-        // if (!(it->getPedestriansInSublink().empty())) {
-            double densidadSublink = it->calcularDensidadSubdivision();
-            // guardar densidadMaxima
-            if (densidadSublink > densidadMaxima) {
-                densidadMaxima = densidadSublink;
+        // calcula la densidad segun la cantidad de personas
+        double densidadSublink = it->calcularDensidadSubdivision();
+        // guardar densidadMaxima
+        if (densidadSublink > densidadMaxima) {
+            densidadMaxima = densidadSublink;
+        }
+        // verifica si aun un cambio en la densidad de sublink
+        if (it->getDensidadSublink() != densidadSublink) {
+            double velocidadEnSublink = velocidad::actualizarVelocidad(densidadSublink);
+            // verifica si aun un cambio en la velocidad de las personas dentro del sublink
+            if (!(it->getPedestriansInSublink().empty())) {
+                if (it->getPedestriansInSublink().at(0)->getVelocidadPedestrian().getMagnitud() != velocidadEnSublink) {
+                    it->actualizarVelocidadPedestrianInSublink(velocidadEnSublink);
+                }
             }
-            // verifica si aun un cambio en la densidad de sublink
-            // if (it->getDensidadSublink() != densidadSublink) {
-                // it->setDensidadSublink(densidadSublink);
-                double velocidadEnSublink = velocidad::actualizarVelocidad(densidadSublink);
-                // verifica si aun un cambio en la velocidad de las personas dentro del sublink
-
-                // if (!(it->getPedestriansInSublink().empty())) {
-                // if (it->getPedestriansInSublink().at(0)->getVelocidadPedestrian().getMagnitud() != velocidadPedestrianSublink) {
-                it->actualizarVelocidadPedestrianInSublink(velocidadEnSublink);
-                // }
-                // }
-            // }
-            // guarda las densidades para el proximo calculo
-                it->setDensidadSublink(densidadSublink);
+        }
+        // guarda las densidades para el proximo calculo
+        it->setDensidadSublink(densidadSublink);
     }
-    // calculo al densidad de la calle
-    // double densidadCalle = calcularDensityLink();
     densityLevel = calcularDensityLevelLink(densidadMaxima);
 }
 int link::calcularDensityLink() const{

@@ -74,10 +74,6 @@ void pedestrian::setDireccionPedestrian(vector2D direccionPedestrian) {
 void pedestrian::setVelocidadPedestrian(double velocidadPedestrian) {
     (*this).velocidadPedestrian.setMagnitud(velocidadPedestrian);
 }
-void pedestrian::setTiempoInicial(int tiempoInicial) {
-    // al iniciar el tiempo de proxima interseccion siempre es el tiempoInicial
-    (*this).tiempoInicial = tiempoInicial;
-}
 void pedestrian::setEstadoPedestrian(estado estadoPedestrian) {
     (*this).estadoPedestrian = estadoPedestrian;
 }
