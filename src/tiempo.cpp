@@ -14,33 +14,12 @@ tiempo* tiempo::tiempoInstance = nullptr;
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 tiempo::tiempo()
-    : deltaT(1), endTime(std::get<int>(dictionary::get()->lookup("endTime"))),
+    : deltaT(1),
+      valorTiempo(0),
+      endTime(std::get<int>(dictionary::get()->lookup("endTime"))),
       graphicPrintoutPeriod(std::get<int>(dictionary::get()->lookupDefault("graphicPrintoutPeriod"))),
-      // graphicPrintoutPeriod(
-      //     []() -> int {
-      //       auto variant =
-      //           dictionary::get()->lookupDefault("graphicPrintoutPeriod");
-      //       if (std::holds_alternative<int>(variant)) {
-      //           return std::get<int>(variant);
-      //       }
-      //       else {
-      //           return std::stoi(std::get<std::string>(variant));
-      //       }
-      //     }()),
-      // pedestrianCountPeriod(
-      //     []() -> int {
-      //       auto variant =
-      //           dictionary::get()->lookupDefault("pedestrianCountPeriod");
-      //       if (std::holds_alternative<int>(variant)) {
-      //         return std::get<int>(variant);
-      //       } else {
-      //         std::cerr << "Error: pedestrianCountPeriod no es del tipo esperado (int)." << std::endl;
-      //         return 0;  // Valor predeterminado en caso de error
-      //       }
-      //     }()) // Llama a la lambda para inicializar pedestrianCountPeriod
       pedestrianCountPeriod(std::get<int>(dictionary::get()->lookupDefault("pedestrianCountPeriod")))
-      {
-    (*this).valorTiempo = 0;
+{
     auto graphicPrintoutPeriodVariant = dictionary::get()->lookupDefault("graphicPrintoutPeriod");
     inicializarNumberSimulation();
     std::cout << graphicPrintoutPeriod;
@@ -192,6 +171,8 @@ void tiempo::extractINumberSimulation() {
 void tiempo::calcularRandomChoiceRate() {
     int k = iNumberSimulation;
     int N = endNumberSimulation;
+    // buscar nombre correcto
+    double temp;
     if (std::get<std::string>(dictionary::get()->lookup("sarsaProcesses")) == "calibration") {
         // formula para random choice
         // es numero 9 o 4?
