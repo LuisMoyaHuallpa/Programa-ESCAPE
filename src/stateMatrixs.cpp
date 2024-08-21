@@ -159,11 +159,13 @@ void stateMatrixs::leerDbStateMatrixs() {
         int idNode;
         int s;
         double Qa;
+        int O;
         int o1, o2, o3, o4, o5, o6, o7, o8, o9, o10;
         std::string p0;
         std::string idNode_str;
         std::string s_str;
         std::string Q_str;
+        std::string O_str;
         std::string o1_str, o2_str, o3_str, o4_str, o5_str, o6_str, o7_str, o8_str, o9_str, o10_str; 
         std::vector<int> stateLeido;
         std::vector<Q> QsLeido;
@@ -206,35 +208,52 @@ void stateMatrixs::leerDbStateMatrixs() {
                     std::getline(iss, p0, ',');
                 }
             }
+            // !-----------------------------------------------------------------------
+            // Elementos de observacion
+            for (int i = 0; i < stateMatrix::getTamanoVector(); ++i) {
+                if (i < nodeLeido->getLinkConnectionsPtr().size()) {
+                    // siempre paso las observacines
+                    std::getline(iss, O_str, ',');
+                    // si quiero leer observaciones pasadas
+                    if (std::get<bool>(dictionary::get()->lookupDefault("observationStatePedestrian")) == true) {
+                        O = std::stod(O_str);
+                        std::cout << "jul" << std::endl;
+                        QsLeido.at(i).setObservaciones(O);
+                    }
+                } 
+                else {
+                    std::getline(iss, p0, ',');
+                }
+            }
+            // creaciones del stateMatrix
             stateMatrix* nuevoStateMatrix = new stateMatrix(nodeLeido, stateLeido, QsLeido);
             dbStateMatrixs.emplace_back(nuevoStateMatrix);
             nodeLeido->addStateMatrixExperimentadosPtr(nuevoStateMatrix);
-            // !-----------------------------------------------------------------------
-            // Falta definir
-            // Elementos de o
-            std::getline(iss, o1_str, ',');
-            std::getline(iss, o2_str, ',');
-            std::getline(iss, o3_str, ',');
-            std::getline(iss, o4_str, ',');
-            std::getline(iss, o5_str, ',');
-            std::getline(iss, o6_str, ',');
-            std::getline(iss, o7_str, ',');
-            std::getline(iss, o8_str, ',');
-            std::getline(iss, o9_str, ',');
-            std::getline(iss, o10_str, '\n');
-            // Elementos de o
-            if (std::get<bool>(dictionary::get()->lookupDefault("observationStatePedestrian")) == true) {
-                o1 = std::stoi(o1_str);
-                o2 = std::stoi(o2_str);
-                o3 = std::stoi(o3_str);
-                o4 = std::stoi(o4_str);
-                o5 = std::stoi(o5_str);
-                o6 = std::stoi(o6_str);
-                o7 = std::stoi(o7_str);
-                o8 = std::stoi(o8_str);
-                o9 = std::stoi(o9_str);
-                o10 = std::stoi(o10_str);
-            }
+
+
+            // std::getline(iss, o1_str, ',');
+            // std::getline(iss, o2_str, ',');
+            // std::getline(iss, o3_str, ',');
+            // std::getline(iss, o4_str, ',');
+            // std::getline(iss, o5_str, ',');
+            // std::getline(iss, o6_str, ',');
+            // std::getline(iss, o7_str, ',');
+            // std::getline(iss, o8_str, ',');
+            // std::getline(iss, o9_str, ',');
+            // std::getline(iss, o10_str, '\n');
+            // // Elementos de o
+            // if (std::get<bool>(dictionary::get()->lookupDefault("observationStatePedestrian")) == true) {
+            //     o1 = std::stoi(o1_str);
+            //     o2 = std::stoi(o2_str);
+            //     o3 = std::stoi(o3_str);
+            //     o4 = std::stoi(o4_str);
+            //     o5 = std::stoi(o5_str);
+            //     o6 = std::stoi(o6_str);
+            //     o7 = std::stoi(o7_str);
+            //     o8 = std::stoi(o8_str);
+            //     o9 = std::stoi(o9_str);
+            //     o10 = std::stoi(o10_str);
+            // }
             // !-----------------------------------------------------------------------
             // Grabar datos de la fila del stateMatrix en en Qtable del nodo numero id.
             // falta
