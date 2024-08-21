@@ -1,5 +1,6 @@
 #include "nodes.h"
 #include "nodeEvacuation.h"
+#include <vector>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -42,7 +43,22 @@ nodes* nodes::get() {
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// methods 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void nodes::leerNodes(std::string fileName) {
+    // Guarda todo la informacion de una solo linea. 
+    std::string line;
+    std::string lineActions;
+    std::fstream fileActions;
+    int id, cantidadLinks;
+    std::string l_str;
+    int l;
+    char comma;
+    std::vector<int> conectionCalles;
+    // lectura del archivo actiondb
+    if (std::get<bool>(dictionary::get()->lookupDefault("pythonVersion")) == true) {
+        fileActions.open("actionsdb.csv", std::ios::in);
+    }
     // Lectura de archivo de nodos
     std::fstream file;
     file.open(fileName, std::ios::in);
@@ -63,8 +79,6 @@ void nodes::leerNodes(std::string fileName) {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     int n, x, y, e, r, m;
     std::string n_str, y_str, x_str, e_str, r_str, m_str;
-    // Guarda todo la informacion de una solo linea. 
-    std::string line;
     // Recorre todas las lineas del archivo.
     while (std::getline(file, line)) {
         // Si el archivo tiene comentarios con #, no leerlos.
@@ -83,6 +97,8 @@ void nodes::leerNodes(std::string fileName) {
         y = std::stoi(y_str);
         std::getline(iss, e_str, ',');
         e = std::stoi(e_str);
+        // si el stateMatrix viene de la version de python
+        // existe un orden diferente de los linksConnecton
         if (e==0) {
             std::unique_ptr<node> nodoNuevo = std::make_unique<node>(n, vector2D(x, y));
             // node nodoNuevo1 = node(n, x, y);

@@ -27,12 +27,9 @@ std::string node::getNodeType() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // setters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// void node::setIdLinkConnection(std::vector<int> idLinkConnection) {
-//     (*this).idLinkConnection = idLinkConnection;
-// }
-// void node::setStateMatrixTable(std::vector<stateMatrix> stateMatrixTable) {
-//     (*this).stateMatrixTable = stateMatrixTable;  
-// }
+void node::setLinkConnectionsPtr(std::vector<link *> linkConnectionsPtr) {
+    (*this).linkConnectionsPtr =  linkConnectionsPtr;
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getter
@@ -107,8 +104,11 @@ const node* node::buscarNodoFinal(link *callePtr) const {
 //         qTable[i].getQ();
 //     }
 // }
-estado node::verificarNodoEvacuation() const {
+estado node::estadoPedestrianEnNodo() const {
     return evacuando;    
+}
+bool node::verificarNodoEvacuation() const {
+    return false;    
 }
 std::vector<int> node::stateObservado() const {
     // vector de estado

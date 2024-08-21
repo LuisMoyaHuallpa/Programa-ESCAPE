@@ -64,7 +64,8 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void reiniciar();
     bool verificarLLeno() const;
-    estado verificarNodoEvacuation() const override;
+    estado estadoPedestrianEnNodo() const override;
+    bool verificarNodoEvacuation() const override;
     std::vector<int> stateObservado() const override;
     void contabilizarPersona(pedestrian* const persona);
     void imprimirPersonasEvacuadas(std::fstream* file);
@@ -75,6 +76,7 @@ public:
     void static sumarTotalPersonasEvacuadas();
     void static imprimirNodeEvacuation(fileIO* const file);
     void static imprimirTotalPersonasEvacuadas(fileIO* const file);
+    void static plotearTotalPersonasEvacuadasXSimulacion();
     void static imprimirVariableTotalPersonasEvacuadas(fileIO* const file);
 
 

@@ -340,7 +340,7 @@ void pedestrian::modelamientoPedestrian() {
                     // verifico si estoy en un punto de evacuacion
                 }
                 // nodeInicioPtr->mostrarNode();
-                estadoPedestrian = nodeInicioPtr->verificarNodoEvacuation();
+                estadoPedestrian = nodeInicioPtr->estadoPedestrianEnNodo();
                 // observa el estado del nodo o nodeEvacuation
                 const std::vector<int> stateObservado = nodeInicioPtr->stateObservado();
                 // obtener stateMatrix

@@ -35,18 +35,11 @@ int main() {
             // contador de personas un tiempo atras de la funcion modelamiento
             links::get()->contarPedestrians();
             // pedestrians::get()->mostrarDbPedestrianMovimiento();
-            // io 
-            // links::get()->mostrarSublink();
             io::get()->imprimirOutput();
             // pone en 0 los elementos valores sublink            
             links::get()->resetSublinks();
             // pedestrians::get()->reset();
         }
-        // std::cout << "fin: " << std::endl;
-        // stateMatrixs::get()->mostrarDbStateMatrixs();
-        // links::get()->mostrarLinks();
-        // Imprimir estados al terminar la simulación
-        // stateMatrixs::get()->imprimirDbStateMatrixs();
         // mostrar resultados simulation
         tiempo::get()->mostrarIResultadosSimulacion();
         // aumentar el numero de simulacion y reiniciar valores

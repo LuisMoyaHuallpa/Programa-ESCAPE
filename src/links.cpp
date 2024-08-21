@@ -1,5 +1,6 @@
 #include "links.h"
 #include "dictionary.h"
+#include "nodes.h"
 #include "pedestrians.h"
 #include "tiempo.h"
 #include <vector>
@@ -16,6 +17,10 @@ links* links::linksInstance = nullptr;
 links::links() {
     (*this).fileName = std::get<std::string>(dictionary::get()->lookupDefault("linksFile"));
     leerLinks(fileName);
+    // leer esta archivo si el stateMatrix se creo en la version de python
+    if (std::get<bool>(dictionary::get()->lookupDefault("pythonVersion")) == true) {
+        leerActionsDb("actionsdb.csv");
+    }
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -42,6 +47,63 @@ links* links::get() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void links::leerActionsDb(const std::string fileName) {
+    std::string line;
+    std::fstream file;
+    file.open(fileName, std::ios::in);
+    char comma;
+    int idNode, cantidadLinks;
+    std::vector<link*> conectionCalles;
+    int idLink;
+    // lectura por cada linea 
+    if (file.fail()) {
+        std::cout << "Error opening the file " << fileName << std::endl;
+        exit(1);
+    }
+
+    while (std::getline(file, line)) {
+        // Si el archivo tiene comentarios con #, no leerlos.
+        if (line[0] == '#') {
+            continue;
+        }
+        std::istringstream iss(line);
+        std::cout << line <<std::endl;
+        if (!(iss >> idNode >> comma >> cantidadLinks >> comma)) {
+            std::cerr << "Error al leer ID o count." << std::endl;
+        }
+        // verifica que no sea un nodo de evacuacion
+        // porque no tiene conecciones
+        if (nodes::get()->getDbNodeTotal().at(idNode).get()->verificarNodoEvacuation() == false) {
+            conectionCalles.resize(cantidadLinks);
+            // for (int i = 0; i < cantidadLinks; ++i) {
+            //     std::getline(iss,l_str , ',');
+            //     l = std::stoi(l_str);
+            //     // std::cout << l;
+            //     conectionCalles.at(i) = l;
+            // }
+            // lectura coneccion de links a un nodo
+            for (int i = 0; i < cantidadLinks; ++i) {
+                if (!(iss >> idLink)) {
+                    std::cerr << "Error al leer valor para conectionCalles en la posición " << i << std::endl;
+                    return; // Sale de la función si hay un error
+                }
+                // buscar link
+                conectionCalles.at(i) = dbLinkTotal.at(idLink).get();
+                // Ignora la coma entre valores, si no es el último valor
+                if (i < cantidadLinks - 1) {
+                    iss >> comma;  // Lee y descarta la coma
+                    if (iss.fail()) {
+                        std::cerr << "Error al leer la coma después del valor en la posición " << i << std::endl;
+                        return; // Sale de la función si hay un error
+                    }
+                }
+            }
+            nodes::get()->getDbNodeTotal().at(idNode).get()->setLinkConnectionsPtr(conectionCalles);
+            nodes::get()->getDbNodeTotal().at(idNode).get()->mostrarNode();
+        }
+    } 
+    // nodes::get()->mostrardbNodeTotal();
+}
 void links::leerLinks(std::string fileName){
     /* Lectura de archivo de links */
     std::fstream file;
@@ -87,9 +149,14 @@ void links::leerLinks(std::string fileName){
         node* node2 =nodes::get()->getDbNodeTotal().at(idNode2).get();
         std::unique_ptr<link> linkNuevo = std::make_unique<link>(idLink, node1, node2, lengthLink, widthLink);
         dbLinkTotal.push_back(std::move(linkNuevo));
-        // añadir link en cada nodo
-        node1->addLink(dbLinkTotal.back().get());
-        node2->addLink(dbLinkTotal.back().get());
+        // si el stateMatrices leeido es creado por la version de python no deberia asumir
+        // este orden las coneccion de los links
+        if (std::get<bool>(dictionary::get()->lookupDefault("pythonVersion")) == false) {
+            // añadir link en cada nodo
+            node1->addLink(dbLinkTotal.back().get());
+            node2->addLink(dbLinkTotal.back().get());
+        }
+
     }
     file.close(); 
 }

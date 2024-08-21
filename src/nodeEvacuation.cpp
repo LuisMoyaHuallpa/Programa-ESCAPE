@@ -74,9 +74,13 @@ bool nodeEvacuation::verificarLLeno() const {
     return personasEvacuadasPtr.size() == maxPersonasEvacuadas;
 
 }
-estado nodeEvacuation::verificarNodoEvacuation() const {
-    /* verifica si el nodo es un node de evacuacion */
+estado nodeEvacuation::estadoPedestrianEnNodo() const {
+    /* devuelve el estado de la persona segun el tipo de nodo donde se encuentra */
     return evacuado;
+}
+bool nodeEvacuation::verificarNodoEvacuation() const {
+    /* verifica si el nodo es un node de evacuacion */
+    return true;
 }
 std::vector<int> nodeEvacuation::stateObservado() const {
     return {0};
@@ -137,6 +141,24 @@ void nodeEvacuation::imprimirTotalPersonasEvacuadas(fileIO* const file) {
         file->getFileFstream() << totalPersonasEvacuadas;
         file->getFileFstream() << std::endl;
     }
+}
+void nodeEvacuation::plotearTotalPersonasEvacuadasXSimulacion() {
+    // FILE* gnuplotPipe = popen("gnuplot -persistent", "w");
+    // if (gnuplotPipe) {
+    //     // Configurar Gnuplot
+    //     fprintf(gnuplotPipe, "set terminal png size 800,600\n");
+    //     fprintf(gnuplotPipe, "set output 'personas_evacuadas.png'\n");
+    //     fprintf(gnuplotPipe, "set xlabel 'Tiempo (s)'\n");
+    //     fprintf(gnuplotPipe, "set ylabel 'Total Personas Evacuadas'\n");
+    //     fprintf(gnuplotPipe, "set title 'Personas Evacuadas en el Tiempo'\n");
+    //     fprintf(gnuplotPipe, "set grid\n");
+
+    //     // Leer y graficar los datos desde el archivo
+    //     fprintf(gnuplotPipe, "plot '%s' using 1:2 with linespoints pointtype 7 pointsize 1 lc rgb 'blue' title 'Evacuación'\n", nombreArchivo.c_str());
+
+    //     // Cerrar la tubería
+    //     pclose(gnuplotPipe);
+    // }
 }
 void nodeEvacuation::imprimirVariableTotalPersonasEvacuadas(fileIO* const file) {
     // impresion de tiempo y personas evacuadas

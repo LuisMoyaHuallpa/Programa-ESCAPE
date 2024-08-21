@@ -51,6 +51,11 @@ public:
     virtual std::string getNodeType();
     
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // setters
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    void setLinkConnectionsPtr(std::vector<link*> linkConnectionsPtr);
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     const int getIdNode() const;
@@ -62,7 +67,8 @@ public:
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     const node* buscarNodoFinal(link* callePtr) const;
-    virtual estado verificarNodoEvacuation() const;
+    virtual estado estadoPedestrianEnNodo() const;
+    virtual bool verificarNodoEvacuation() const;
     virtual std::vector<int> stateObservado() const;
     double calcularDistanciaA(const node* nodo2) const;
     double calcularDistanciaA(const vector2D &position) const;

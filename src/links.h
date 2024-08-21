@@ -55,6 +55,7 @@ public:
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void leerLinks(std::string fileName);
+    void leerActionsDb(const std::string fileName);
     void contarPedestrians();
     void resetSublinks();
     void resetLinks();

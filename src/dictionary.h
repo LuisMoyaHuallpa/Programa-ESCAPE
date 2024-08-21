@@ -40,12 +40,13 @@ private:
         {"graphicPrintoutPeriod", 1},
         {"pedestrianCountPeriod", 1},
         {"computationContinued", false},
-        {"observationStatePedestrian", false},
+        {"observationStatePedestrian", true},
         {"numberLinkDivision", 10},
         {"evacuatedCount", true},
         {"totalEvacuatedCount", true},
         {"sarsaProcesses", "calibration"},
-        {"stopSimulationAt", "endNumberSimulation"}
+        {"stopSimulationAt", "endNumberSimulation"},
+        {"pythonVersion", false}
     };
     const std::map<std::string, std::string> typeControlDict = {
         {"nodesFile", "string"},
@@ -69,10 +70,10 @@ private:
         {"numberLinkDivision", "int"},
         {"evacuatedCount", "bool"},
         {"totalEvacuatedCount", "bool"},
-        {"stoSimulationAt", "string"}
+        {"stoSimulationAt", "string"},
+        {"pythonVersion", "bool"}
     };
-    std::map<std::string, std::vector<std::string>> controlDictOptions = {
-        {"sarsaProcesses", {"calibration", "trained"}}
+    std::map<std::string, std::vector<std::string>> controlDictOptions = {{"sarsaProcesses", {"calibration", "trained"}}
     };
 
 
@@ -100,6 +101,7 @@ public:
     // static getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     static dictionary* get();
+
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos

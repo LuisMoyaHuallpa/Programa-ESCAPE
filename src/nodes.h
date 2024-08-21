@@ -44,7 +44,6 @@ private:
     nodes();
     nodes(std::string fileName);
 
-    
 public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getters
