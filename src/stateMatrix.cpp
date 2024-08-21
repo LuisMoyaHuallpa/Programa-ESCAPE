@@ -4,6 +4,7 @@
 // header propios
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "Q.h"
+#include "io.h"
 #include "nodeEvacuation.h"
 #include "pedestrian.h"
 #include "stateMatrixs.h"
@@ -28,16 +29,14 @@ stateMatrix::stateMatrix(const nodeEvacuation* const nodeEvacuationPtr, const st
     :
     nodoPtr(nodeEvacuationPtr),
     state(state),
-    Qs(1, Q(pedestrian::surviveReward)),
-    observaciones(state.size(),0)
+    Qs(1, Q(pedestrian::surviveReward))
 {
 }
 
 stateMatrix::stateMatrix(const node* const node, const std::vector<int> state)
     :
     nodoPtr(node),
-    state(state),
-    observaciones(state.size(), 0)
+    state(state)
 {
     const std::vector<link*> linkConnectionsPtr = nodoPtr->getLinkConnectionsPtr();
     for (link* linkConnection : linkConnectionsPtr) {
@@ -45,8 +44,7 @@ stateMatrix::stateMatrix(const node* const node, const std::vector<int> state)
     } 
 }
 stateMatrix::stateMatrix(const node *const nodePtr, const std::vector<int> state, std::vector<Q> Qs)
-    : nodoPtr(nodePtr), state(state), Qs(Qs),
-      observaciones(state.size(), 0)
+    : nodoPtr(nodePtr), state(state), Qs(Qs)
 {
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -86,7 +84,7 @@ int stateMatrix::getTamanoVector() {
 //     // for (int i = 0; i < tamanoVector - getStateValue().getDensityLinks().size(); i++) {
 //     //     std::cout << "0,";
 //     // }
-Q* stateMatrix::buscarQ(link *callePtr) {
+Q* stateMatrix::buscarQ(const link* const callePtr) {
     // cuando es nodeEvacuacion la calle apunta a un nullptr
     // solo trenda un Q
     if(callePtr == nullptr)
@@ -105,16 +103,6 @@ Q* stateMatrix::buscarQ(link *callePtr) {
     }
     return nullptr;
 }
-// Q* stateMatrix::buscarQMax() {
-//     /* seleciona el mayor valor Q del vector Qs,
-//         en caso sean todos iguales elegir aletoriamente*/
-//    auto maxElementIt = std::max_element(Qs.begin(), Qs.end(),
-//    [](const Q& a, const Q& b)
-//        {
-//            return a.getValor() < b.getValor();
-//        });
-//    return  maxElementIt.base();
-// }
 const Q* stateMatrix::buscarQMax() {
     // Encontrar el valor máximo
     auto maxElementIt = std::max_element(Qs.begin(), Qs.end(),
@@ -155,29 +143,37 @@ void stateMatrix::mostrarStateMatrix() const {
     // salto de linea
     std::cout << std::endl;
 }
-void stateMatrix::imprimirState(std::fstream &file) const {
+void stateMatrix::imprimirState(fileIO* const file) const {
     /* impresion de estados en un arreglo de 10 columnas*/
     for (int i = 0; i < stateMatrix::tamanoVectorIO; i++) {
         if (i < state.size()) {
-            file << state.at(i) << ',';
+            file->getFileFstream() << state.at(i) << ',';
         } else {
-            file << "0,";
+            file->getFileFstream() << "0,";
         }
     }
 }
-void stateMatrix::imprimirQs(std::fstream &file) const {
+void stateMatrix::imprimirQs(fileIO* const file) const {
     /* impresion de Q en un arreglo de 10 columnas*/
     for (int i = 0; i < stateMatrix::tamanoVectorIO; i++) {
         if (i < Qs.size()) {
-            file << Qs.at(i).getValor() << ',';
+            file->getFileFstream() << Qs.at(i).getValor() << ',';
         } else {
-            file << "0,";
+            file->getFileFstream() << "0,";
         }
     }  
+    for (int i = 0; i < stateMatrix::tamanoVectorIO; i++) {
+        if (i < Qs.size()) {
+            file->getFileFstream() << Qs.at(i).getObservaciones() << ',';
+        } else {
+            file->getFileFstream() << "0,";
+        }
+    }  
+
 }
-void stateMatrix::imprimirStateMatrix(std::fstream& file) const {
+void stateMatrix::imprimirStateMatrix(fileIO* const file) const {
    // Imprimir una fila del elemento stateMatrix.
-    file << nodoPtr->getIdNode() << ",";
+    file->getFileFstream() << nodoPtr->getIdNode() << ",";
     // !-----------------------------------------------------------------------
     // Imprimir todos los elementos de state y se completa con 0 para llegar a
     // 10 elementos.
@@ -189,7 +185,7 @@ void stateMatrix::imprimirStateMatrix(std::fstream& file) const {
     // Imprimir todos los elementos de pedestrianMassState y se completa con 0 para llegar a
     // 10 elementos.
     // pedestrianMassStateValue.imprimirPedestrianMassStateVector(file);
-    file << std::endl;
+    file->getFileFstream() << std::endl;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -301,22 +301,9 @@ vector2D pedestrian::calcularSignoDireccion() {
 }
 int pedestrian::calcularReward() const {
     /* calculo del reward por paso*/
-    // switch (estadoPedestrian) {
-        // case evacuando:
-        // {
     const int tiempoDesplazamiento = calcularTiempoDesplazamiento();
     const int pasos = tiempoDesplazamiento / tiempo::get()->getDeltaT();
     return pasos * stepReward;
-    //     }
-    //     case evacuado:
-    //         return surviveReward;
-    //     case muerto:
-    //         return deadReward;
-    //     default:
-    //         std::cout << "Estado: Desconocido" << std::endl;
-    //         break;
-    // }
-    // return 0;
 }
 int pedestrian::calcularTiempoDesplazamiento() const {
    /* calcula el proximo tiempo donde el pedestrian estará en una interseccion*/
@@ -373,6 +360,8 @@ void pedestrian::modelamientoPedestrian() {
                 }
                 // obtener Qcurrent
                 QCurrentPtr = stateMatrixCurrentPtr->buscarQ(linkCurrentPtr);
+                // aumentar observacion
+                QCurrentPtr->aumentar1Observacion();
                 // excepto al iniciar
                 if (estadoPedestrian == evacuado) {
                     dynamic_cast<nodeEvacuation*>(nodeInicioPtr)->contabilizarPersona(this);

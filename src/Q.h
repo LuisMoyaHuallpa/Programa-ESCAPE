@@ -17,6 +17,7 @@ class Q {
 private: 
     double valor;
     const link* callePtr;
+    int observaciones;
 
 public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -37,10 +38,12 @@ public:
     double* getValor();
     double getValor() const;
     const link* getCallePtr() const; 
+    int getObservaciones() const;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    void aumentar1Observacion();
     void mostrarQs() const;
     void imprimirQs(std::fstream& file) const;
 };

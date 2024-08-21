@@ -8,6 +8,7 @@ Una fila de archivo de entrada o salida.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include <fstream>
 #include <vector>
+#include "io.h"
 #include "variant"
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // header propios
@@ -31,7 +32,6 @@ private:
     const node* const nodoPtr;
     const std::vector<int> state;
     std::vector<Q> Qs;
-    std::vector<int> observaciones;
 
 public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -57,7 +57,6 @@ public:
     const node* const getNodePtr() const;
     const std::vector<int> getState() const;
     std::vector<Q>& getQs();
-    std::vector<int> getObservaciones() const;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static getter
@@ -69,12 +68,12 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     bool operator==(stateMatrix stateMatrix2);
     stateMatrix* buscarStateMatrix(std::vector<int> state) const;
-    Q* buscarQ(link* callePtr);
+    Q* buscarQ(const link* const callePtr);
     const Q* buscarQMax() ;
     void mostrarStateMatrix() const;
-    void imprimirState(std::fstream& file) const;
-    void imprimirQs(std::fstream& file) const;
-    void imprimirStateMatrix(std::fstream& file) const;
+    void imprimirState(fileIO* const file) const;
+    void imprimirQs(fileIO* const file) const;
+    void imprimirStateMatrix(fileIO* const file) const;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static metodos

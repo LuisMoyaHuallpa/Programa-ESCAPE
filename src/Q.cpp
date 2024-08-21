@@ -8,22 +8,26 @@
 Q::Q()
     :
     valor(0),
-    callePtr(nullptr)
+    callePtr(nullptr),
+    observaciones(0)
 {
 }
 Q::Q(const double valor)
     :
     valor(valor),
-    callePtr(nullptr)
+    callePtr(nullptr),
+    observaciones(0)
 {
 }
 Q::Q(const link* const callePtr) :
     valor(0),
-    callePtr(callePtr)
+    callePtr(callePtr),
+    observaciones(0)
 {
 }
 Q::Q(const double valor, const link *const callePtr)
-    : valor(valor), callePtr(callePtr) {
+    : valor(valor), callePtr(callePtr), observaciones(0)
+{
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // setters
@@ -41,10 +45,16 @@ double Q::getValor() const {
 const link* Q::getCallePtr() const {
     return callePtr;
 }
+int Q::getObservaciones() const {
+    return observaciones;
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void Q::aumentar1Observacion() {
+    observaciones += 1;
+}
 void Q::mostrarQs() const{
     if (callePtr == nullptr) {
         std::cout << valor << " ";

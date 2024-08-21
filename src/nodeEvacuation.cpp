@@ -97,7 +97,7 @@ int nodeEvacuation::getTotalPersonasEvacuadas() {
 void nodeEvacuation::sumarTotalPersonasEvacuadas() {
     totalPersonasEvacuadas++;
 }
-void nodeEvacuation::imprimirNodeEvacuation(fileIO* file) {
+void nodeEvacuation::imprimirNodeEvacuation(fileIO* const file) {
     // reviza el dictionario la opcion esta activada, por default esta activado
     if (std::get<bool>(dictionary::get()->lookupDefault(file->getFileName())) == true) {
         // impresion de id de nodos, solo en tiempo 1 al inicio
@@ -129,7 +129,7 @@ void nodeEvacuation::imprimirNodeEvacuation(fileIO* file) {
         file->getFileFstream() << std::endl;
     }
 }
-void nodeEvacuation::imprimirTotalPersonasEvacuadas(fileIO* file) {
+void nodeEvacuation::imprimirTotalPersonasEvacuadas(fileIO* const file) {
     // reviza el dictionario la opcion esta activada, por default esta activado
     if (std::get<bool>(dictionary::get()->lookupDefault(file->getFileName())) == true) {
         // impresion de tiempo y personas evacuadas
@@ -138,7 +138,7 @@ void nodeEvacuation::imprimirTotalPersonasEvacuadas(fileIO* file) {
         file->getFileFstream() << std::endl;
     }
 }
-void nodeEvacuation::imprimirVariableTotalPersonasEvacuadas(fileIO* file) {
+void nodeEvacuation::imprimirVariableTotalPersonasEvacuadas(fileIO* const file) {
     // impresion de tiempo y personas evacuadas
     file->getFileFstream() << totalPersonasEvacuadas;
 }

@@ -38,7 +38,6 @@ int main() {
             // io 
             // links::get()->mostrarSublink();
             io::get()->imprimirOutput();
-
             // pone en 0 los elementos valores sublink            
             links::get()->resetSublinks();
             // pedestrians::get()->reset();
@@ -47,7 +46,7 @@ int main() {
         // stateMatrixs::get()->mostrarDbStateMatrixs();
         // links::get()->mostrarLinks();
         // Imprimir estados al terminar la simulación
-        stateMatrixs::get()->imprimirDbStateMatrixs();
+        // stateMatrixs::get()->imprimirDbStateMatrixs();
         // mostrar resultados simulation
         tiempo::get()->mostrarIResultadosSimulacion();
         // aumentar el numero de simulacion y reiniciar valores

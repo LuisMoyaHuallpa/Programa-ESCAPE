@@ -1,5 +1,6 @@
 #include "stateMatrixs.h"
 #include "Q.h"
+#include "io.h"
 #include "stateMatrix.h"
 #include <vector>
 
@@ -58,7 +59,7 @@ stateMatrixs* stateMatrixs::get() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-std::string stateMatrixs::creacionArchivoSalida() const {
+std::string stateMatrixs::creacionFileStateMatrix() const {
     /* Crear el nombre del archivo de exportacion.*/
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // iFileInicio     |-->| ID DEL ARCHIVO DE inicio, 1
@@ -74,7 +75,7 @@ std::string stateMatrixs::creacionArchivoSalida() const {
     // Crea el archivo inicial con el siguiente formato sim_000000001.csv
     filenameStream << std::setw(9) << std::setfill('0') << tiempo::get()->getINumberSimulation() ;
     // Nombre final de exportacion 
-    return simulationFile +preName + filenameStream.str() + typeFile;
+    return preName + filenameStream.str() + typeFile;
 }
 std::string stateMatrixs::encontrarUltimoFile() {
     // Encontrar la ultima simulacion para leerla
@@ -222,7 +223,7 @@ void stateMatrixs::leerDbStateMatrixs() {
             std::getline(iss, o9_str, ',');
             std::getline(iss, o10_str, '\n');
             // Elementos de o
-            if (std::get<bool>(dictionary::get()->lookupDefault("readPedestrianMassState")) == true) {
+            if (std::get<bool>(dictionary::get()->lookupDefault("observationStatePedestrian")) == true) {
                 o1 = std::stoi(o1_str);
                 o2 = std::stoi(o2_str);
                 o3 = std::stoi(o3_str);
@@ -256,17 +257,17 @@ void stateMatrixs::leerDbStateMatrixs() {
 }
 void stateMatrixs::mostrarDbStateMatrixs() const {
     // Mostrar todos los stateMatrix dentro de dbStateMatrixs.
-    for (int i = 0; i < dbStateMatrixs.size(); i++) {
+   for (int i = 0; i < dbStateMatrixs.size(); i++) {
         dbStateMatrixs[i]->mostrarStateMatrix();
     }
 }
-void stateMatrixs::imprimirDbStateMatrixs() const {
+void stateMatrixs::imprimirDbStateMatrixs(fileIO* const file) const {
     // Crear el nombre del archivo de exportacion.
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // file    |-->| ARCHIVO DE SALIDA, EL NOMBRE SE CREA CON crearFilenameSalida()
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    std::fstream file;
-    file.open(creacionArchivoSalida(), std::ios::out);
+    // std::fstream file;
+    // file.open(creacionArchivoSalida(), std::ios::out);
     // Recorre todos los nodos
     for (const auto& it : dbStateMatrixs) {
         // imprimir los statesMatrix de las tablas de cada nodo 

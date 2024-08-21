@@ -2,6 +2,7 @@
 #include "nodeEvacuation.h"
 #include "pedestrians.h"
 #include "tiempo.h"
+#include "stateMatrixs.h"
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //                                  dirIO
@@ -130,6 +131,7 @@ io* io::ioInstance = nullptr;
 dirIO io::directoryData("data");
 dirIO io::directoryPostprocessing("postprocessing");
 dirIO io::directorySnapshot("snapshot", &directoryPostprocessing);
+dirIO io::directoryStateMatrices("stateMatrices");
 fileIO io::fileTotalEvacuatedCount("totalEvacuatedCount", &directoryData);
 fileIO io::fileEvacuatedCount("evacuatedCount", &directoryData);
 
@@ -168,6 +170,8 @@ dirIO* io::crearCarpetaTiempo() {
     return dirTime;
 }
 void io::imprimirOutput() {
+    /* manejo de las output*/
+    // exportacion cuando esta entrenado
     if (std::get<std::string>(dictionary::get()->lookup("sarsaProcesses")) == "trained") {
         if (tiempo::get()->verificarGraphicPrintoutPeriod()) {
             // crear carpetas de tiempo
@@ -186,6 +190,15 @@ void io::imprimirOutput() {
             nodeEvacuation::imprimirTotalPersonasEvacuadas(&fileTotalEvacuatedCount);
             // imprime personas evacuadas por node evacuacion
             nodeEvacuation::imprimirNodeEvacuation(&fileEvacuatedCount);
+        }
+    }
+    // exportacion durante la calibracion
+    else if (std::get<std::string>(dictionary::get()->lookup("sarsaProcesses")) == "calibration") {
+        // imprime data de statematrix cada termino de simulaciont
+        // solo lo imprime al final de la evacuacion
+        if (tiempo::get()->getValorTiempo() == tiempo::get()->getEndTime()) {
+            fileIO stateMatrice(stateMatrixs::get()->creacionFileStateMatrix(), &directoryStateMatrices);
+            stateMatrixs::get()->imprimirDbStateMatrixs(&stateMatrice);
         }
     }
 }

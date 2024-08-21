@@ -73,9 +73,9 @@ public:
     // static metods
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void static sumarTotalPersonasEvacuadas();
-    void static imprimirNodeEvacuation(fileIO* file);
-    void static imprimirTotalPersonasEvacuadas(fileIO* file);
-    void static imprimirVariableTotalPersonasEvacuadas(fileIO* file);
+    void static imprimirNodeEvacuation(fileIO* const file);
+    void static imprimirTotalPersonasEvacuadas(fileIO* const file);
+    void static imprimirVariableTotalPersonasEvacuadas(fileIO* const file);
 
 
 };

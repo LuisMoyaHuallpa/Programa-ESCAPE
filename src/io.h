@@ -102,6 +102,7 @@ public:
     static dirIO directoryData;
     static dirIO directoryPostprocessing;
     static dirIO directorySnapshot;
+    static dirIO directoryStateMatrices;
     static fileIO fileTotalEvacuatedCount;
     static fileIO fileEvacuatedCount;
 

@@ -10,6 +10,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // header propios
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#include "io.h"
 #include "nodes.h"
 #include "Q.h"
 #include "stateMatrix.h"
@@ -52,14 +53,14 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    std::string creacionArchivoSalida() const;
+    std::string creacionFileStateMatrix() const;
     std::string encontrarUltimoFile();
     std::string crearFilenameSalida(int numeroSimulacion);
     std::string fileNameSalida();
     void agregarStateMatrix(stateMatrix stateMatrixElement);
     void leerDbStateMatrixs();
     void mostrarDbStateMatrixs() const;
-    void imprimirDbStateMatrixs() const;
+    void imprimirDbStateMatrixs(fileIO* const file) const;
 
 };
 
