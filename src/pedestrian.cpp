@@ -213,6 +213,10 @@ int pedestrian::calcularIdEndSublink() const {
     }
 }
 link* pedestrian::eleccionGeneralLink() const {
+    // la primera eleccion debe ser random
+    if (tiempo::get()->getValorTiempo() == tiempoInicial and std::get<std::string>(dictionary::get()->lookupDefault("sarsaProcesses")) == "calibration") {
+        return eleccionRandomLink();
+    }
     if (estadoPedestrian == evacuado) {
         return nullptr;
     }

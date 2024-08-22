@@ -48,6 +48,8 @@ links* links::get() {
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void links::leerActionsDb(const std::string fileName) {
+    /* Permite leer archivos de python, con este archivo actiondb puedo saber
+        el orden las calles en cada nodo*/
     std::string line;
     std::fstream file;
     file.open(fileName, std::ios::in);
@@ -55,39 +57,32 @@ void links::leerActionsDb(const std::string fileName) {
     int idNode, cantidadLinks;
     std::vector<link*> conectionCalles;
     int idLink;
-    // lectura por cada linea 
+    // si no existe el arhivo
     if (file.fail()) {
         std::cout << "Error opening the file " << fileName << std::endl;
         exit(1);
     }
-
+    // lectura de cada line
     while (std::getline(file, line)) {
         // Si el archivo tiene comentarios con #, no leerlos.
         if (line[0] == '#') {
             continue;
         }
         std::istringstream iss(line);
-        std::cout << line <<std::endl;
         if (!(iss >> idNode >> comma >> cantidadLinks >> comma)) {
             std::cerr << "Error al leer ID o count." << std::endl;
         }
         // verifica que no sea un nodo de evacuacion
         // porque no tiene conecciones
         if (nodes::get()->getDbNodeTotal().at(idNode).get()->verificarNodoEvacuation() == false) {
+            // crea el tamaño del vector
             conectionCalles.resize(cantidadLinks);
-            // for (int i = 0; i < cantidadLinks; ++i) {
-            //     std::getline(iss,l_str , ',');
-            //     l = std::stoi(l_str);
-            //     // std::cout << l;
-            //     conectionCalles.at(i) = l;
-            // }
-            // lectura coneccion de links a un nodo
             for (int i = 0; i < cantidadLinks; ++i) {
                 if (!(iss >> idLink)) {
                     std::cerr << "Error al leer valor para conectionCalles en la posición " << i << std::endl;
                     return; // Sale de la función si hay un error
                 }
-                // buscar link
+                // buscar link y lo agrega al vector
                 conectionCalles.at(i) = dbLinkTotal.at(idLink).get();
                 // Ignora la coma entre valores, si no es el último valor
                 if (i < cantidadLinks - 1) {
@@ -98,11 +93,10 @@ void links::leerActionsDb(const std::string fileName) {
                     }
                 }
             }
+            // guardo los linkConnection en el nodo
             nodes::get()->getDbNodeTotal().at(idNode).get()->setLinkConnectionsPtr(conectionCalles);
-            nodes::get()->getDbNodeTotal().at(idNode).get()->mostrarNode();
         }
     } 
-    // nodes::get()->mostrardbNodeTotal();
 }
 void links::leerLinks(std::string fileName){
     /* Lectura de archivo de links */

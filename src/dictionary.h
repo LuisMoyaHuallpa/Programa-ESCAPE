@@ -70,7 +70,7 @@ private:
         {"numberLinkDivision", "int"},
         {"evacuatedCount", "bool"},
         {"totalEvacuatedCount", "bool"},
-        {"stoSimulationAt", "string"},
+        {"stopSimulationAt", "string"},
         {"pythonVersion", "bool"}
     };
     std::map<std::string, std::vector<std::string>> controlDictOptions = {{"sarsaProcesses", {"calibration", "trained"}}

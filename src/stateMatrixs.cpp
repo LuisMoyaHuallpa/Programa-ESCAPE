@@ -217,7 +217,6 @@ void stateMatrixs::leerDbStateMatrixs() {
                     // si quiero leer observaciones pasadas
                     if (std::get<bool>(dictionary::get()->lookupDefault("observationStatePedestrian")) == true) {
                         O = std::stod(O_str);
-                        std::cout << "jul" << std::endl;
                         QsLeido.at(i).setObservaciones(O);
                     }
                 } 
