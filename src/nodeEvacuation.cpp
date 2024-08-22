@@ -6,6 +6,9 @@
 #include "pedestrians.h"
 #include "subLink.h"
 #include "pedestrian.h"
+#include "tiempo.h"
+#include <iostream>
+#include <vector>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -143,22 +146,46 @@ void nodeEvacuation::imprimirTotalPersonasEvacuadas(fileIO* const file) {
     }
 }
 void nodeEvacuation::plotearTotalPersonasEvacuadasXSimulacion() {
-    // FILE* gnuplotPipe = popen("gnuplot -persistent", "w");
-    // if (gnuplotPipe) {
-    //     // Configurar Gnuplot
-    //     fprintf(gnuplotPipe, "set terminal png size 800,600\n");
-    //     fprintf(gnuplotPipe, "set output 'personas_evacuadas.png'\n");
-    //     fprintf(gnuplotPipe, "set xlabel 'Tiempo (s)'\n");
-    //     fprintf(gnuplotPipe, "set ylabel 'Total Personas Evacuadas'\n");
-    //     fprintf(gnuplotPipe, "set title 'Personas Evacuadas en el Tiempo'\n");
-    //     fprintf(gnuplotPipe, "set grid\n");
-
-    //     // Leer y graficar los datos desde el archivo
-    //     fprintf(gnuplotPipe, "plot '%s' using 1:2 with linespoints pointtype 7 pointsize 1 lc rgb 'blue' title 'Evacuación'\n", nombreArchivo.c_str());
-
-    //     // Cerrar la tubería
-    //     pclose(gnuplotPipe);
-    // }
+    class totalPersonasEvacuadasXSimulacion{
+    public:
+        std::vector<int> tiempo;
+        std::vector<int> totalEvacuados;
+    }; 
+    // elementos de simulaciones a imprimir
+    const std::vector<int> tiempoSimulacion = {1, 2};
+    static std::vector<totalPersonasEvacuadasXSimulacion> data(tiempoSimulacion.size());
+    auto it = std::find(tiempoSimulacion.begin(), tiempoSimulacion.end(), tiempo::get()->getINumberSimulation());
+    // solo entra en el numero de simulacion que pide tiempoSimulacion
+    if (it != tiempoSimulacion.end()) {
+        // Determinar el índice en el vector `data` basado en la posición en `tiempoSimulacion`
+        int index = std::distance(tiempoSimulacion.begin(), it);
+        // Agregar el valor del tiempo actual al vector `tiempo` correspondiente
+        data.at(index).tiempo.push_back(tiempo::get()->getValorTiempo());
+        data.at(index).totalEvacuados.push_back(totalPersonasEvacuadas);
+    }
+    if (tiempo::get()->getINumberSimulation() ==  tiempo::get()->getEndNumberSimulation() and tiempo::get()->getValorTiempo() == tiempo::get()->getEndTime()) {
+        FILE* gnuplotPipe = popen("gnuplot -persistent", "w");
+        if (gnuplotPipe) {
+            // Configurar Gnuplot
+            fprintf(gnuplotPipe, "set terminal png size 800,600\n");
+            fprintf(gnuplotPipe, "set output 'personas_evacuadas.png'\n");
+            fprintf(gnuplotPipe, "set xlabel 'Tiempo (s)'\n");
+            fprintf(gnuplotPipe, "set ylabel 'Total de personas evacuadas'\n");
+            fprintf(gnuplotPipe, "set title 'Personas Evacuadas en el Tiempo'\n");
+            fprintf(gnuplotPipe, "set grid\n");
+            // Iniciar la entrada de datos
+            fprintf(gnuplotPipe, "plot '-' using 1:2 with lines title 'Evacuados'\n");
+            // Leer y graficar los datos desde el archivo
+            for (size_t i = 0; i < data.size(); ++i) {
+                for (size_t j = 0; j < data.at(i).tiempo.size(); ++j) {
+                    fprintf(gnuplotPipe, "%d %d\n", data.at(i).tiempo.at(j), data.at(i).totalEvacuados.at(j));
+                }
+            }
+            fprintf(gnuplotPipe, "e\n");
+            fflush(gnuplotPipe);
+            pclose(gnuplotPipe);
+        }
+    }
 }
 void nodeEvacuation::imprimirVariableTotalPersonasEvacuadas(fileIO* const file) {
     // impresion de tiempo y personas evacuadas

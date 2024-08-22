@@ -200,5 +200,7 @@ void io::imprimirOutput() {
             fileIO stateMatrice(stateMatrixs::get()->creacionFileStateMatrix(), &directoryStateMatrices);
             stateMatrixs::get()->imprimirDbStateMatrixs(&stateMatrice);
         }
+        // ploteo total personas evacuadas por simulacion
+        nodeEvacuation::plotearTotalPersonasEvacuadasXSimulacion();
     }
 }

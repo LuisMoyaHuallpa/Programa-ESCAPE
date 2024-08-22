@@ -24,8 +24,6 @@ int main() {
     while (tiempo::get()->getINumberSimulation() <= tiempo::get()->getEndNumberSimulation()) {
         // loop para una evacuacion
         // calcula el valor el valor del randomChoiceRate
-        // std::cout << "inicio: " << std::endl;
-        // stateMatrixs::get()->mostrarDbStateMatrixs();
         tiempo::get()->calcularRandomChoiceRate();
         while (tiempo::get()->running()) {
             tiempo::get()->aumentarTiempo();
