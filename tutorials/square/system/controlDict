@@ -34,7 +34,7 @@ evacuatedCount yes;
 
 totalEvacuatedCount yes;
 
-pythonVersion yes;
+pythonVersion no;
 
 figureTotalEvacuadosXSimulacion yes;
 
