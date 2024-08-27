@@ -14,19 +14,15 @@ endTime         800;
 
 deltaT          1;
 
+meanRayleigh   420;
+
 computationContinued  	no;
 
 previousComputationFile	calibrated.csv;
 
-# stopSimulationAt          endNumberSimulation;
+stopSimulationAt          endNumberSimulation;
 
-stopSimulationAt          addNumberSimulation;
-
-# endNumberSimulation 6003;
-
-addNumberSimulation 5000;
-
-readPedestrianMassState no;
+endNumberSimulation 100;
 
 numberLinkDivision 10;
 
@@ -38,5 +34,9 @@ evacuatedCount yes;
 
 totalEvacuatedCount yes;
 
+pythonVersion yes;
 
+figureTotalEvacuadosXSimulacion yes;
+
+valoresNumeroSimulacion 10, 50, 100;
 
