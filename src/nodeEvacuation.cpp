@@ -152,7 +152,7 @@ void nodeEvacuation::plotearTotalPersonasEvacuadasXSimulacion() {
         std::vector<int> totalEvacuados;
     }; 
     // elementos de simulaciones a imprimir
-    const std::vector<int> tiempoSimulacion = {1, 2};
+    const std::vector<int> tiempoSimulacion = {1, 2, 3};
     static std::vector<totalPersonasEvacuadasXSimulacion> data(tiempoSimulacion.size());
     auto it = std::find(tiempoSimulacion.begin(), tiempoSimulacion.end(), tiempo::get()->getINumberSimulation());
     // solo entra en el numero de simulacion que pide tiempoSimulacion
@@ -173,15 +173,25 @@ void nodeEvacuation::plotearTotalPersonasEvacuadasXSimulacion() {
             fprintf(gnuplotPipe, "set ylabel 'Total de personas evacuadas'\n");
             fprintf(gnuplotPipe, "set title 'Personas Evacuadas en el Tiempo'\n");
             fprintf(gnuplotPipe, "set grid\n");
-            // Iniciar la entrada de datos
-            fprintf(gnuplotPipe, "plot '-' using 1:2 with lines title 'Evacuados'\n");
-            // Leer y graficar los datos desde el archivo
+            // Posicionar los títulos a la izquierda
+            fprintf(gnuplotPipe, "set key left\n");
+            // cracion de plot
+            fprintf(gnuplotPipe, "plot ");
+            // creando titulo de linea
             for (size_t i = 0; i < data.size(); ++i) {
-                for (size_t j = 0; j < data.at(i).tiempo.size(); ++j) {
-                    fprintf(gnuplotPipe, "%d %d\n", data.at(i).tiempo.at(j), data.at(i).totalEvacuados.at(j));
+                fprintf(gnuplotPipe, "'-' using 1:2 with lines title 'Simulacion %d'", tiempoSimulacion.at(i));
+                if (i < data.size() - 1) {
+                    fprintf(gnuplotPipe, ", ");
                 }
             }
-            fprintf(gnuplotPipe, "e\n");
+            fprintf(gnuplotPipe, "\n");
+            // ploteando lineas 
+            for (size_t i = 0; i < data.size(); ++i) {
+                 for (size_t j = 0; j < data.at(i).tiempo.size(); ++j) {
+                    fprintf(gnuplotPipe, "%d %d\n", data.at(i).tiempo.at(j), data.at(i).totalEvacuados.at(j));
+                 }
+                 fprintf(gnuplotPipe, "e\n");
+            }
             fflush(gnuplotPipe);
             pclose(gnuplotPipe);
         }
