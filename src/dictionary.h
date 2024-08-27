@@ -31,7 +31,7 @@ private:
     const std::string nameDictionary = "controlDict";
     const std::string systemCarpet = "system/";
     std::map<std::string, std::variant<std::string, int, double, bool>> controlDict;
-    const std::map<std::string, std::variant<std::string, int,double, bool>> controlDictDefault = {
+    const std::map<std::string, std::variant<std::string, int, double, bool>> controlDictDefault = {
         {"nodesFile", "nodes.csv"},
         {"linksFile", "links.csv"},
         {"populationsFile", "population.csv"},
@@ -46,7 +46,8 @@ private:
         {"totalEvacuatedCount", true},
         {"sarsaProcesses", "calibration"},
         {"stopSimulationAt", "endNumberSimulation"},
-        {"pythonVersion", false}
+        {"pythonVersion", false},
+        {"figureTotalEvacuadosXSimulacion", true}
     };
     const std::map<std::string, std::string> typeControlDict = {
         {"nodesFile", "string"},
@@ -71,7 +72,9 @@ private:
         {"evacuatedCount", "bool"},
         {"totalEvacuatedCount", "bool"},
         {"stopSimulationAt", "string"},
-        {"pythonVersion", "bool"}
+        {"pythonVersion", "bool"},
+        {"figureTotalEvacuadosXSimulacion", "bool"},
+        {"valoresNumeroSimulacion", "string"}
     };
     std::map<std::string, std::vector<std::string>> controlDictOptions = {{"sarsaProcesses", {"calibration", "trained"}}
     };

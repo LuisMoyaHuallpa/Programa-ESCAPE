@@ -134,6 +134,7 @@ dirIO io::directorySnapshot("snapshot", &directoryPostprocessing);
 dirIO io::directoryStateMatrices("stateMatrices");
 fileIO io::fileTotalEvacuatedCount("totalEvacuatedCount", &directoryData);
 fileIO io::fileEvacuatedCount("evacuatedCount", &directoryData);
+fileIO io::figureTotalEvacuadosXSimulacion("figureTotalEvacuadosXSimulacion", &directoryData);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
@@ -201,6 +202,6 @@ void io::imprimirOutput() {
             stateMatrixs::get()->imprimirDbStateMatrixs(&stateMatrice);
         }
         // ploteo total personas evacuadas por simulacion
-        nodeEvacuation::plotearTotalPersonasEvacuadasXSimulacion();
+        nodeEvacuation::plotearTotalEvacuadosXSimulacion(&figureTotalEvacuadosXSimulacion);
     }
 }

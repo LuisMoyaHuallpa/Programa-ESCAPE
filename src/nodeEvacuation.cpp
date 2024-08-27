@@ -2,12 +2,14 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // extra 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#include "io.h"
 #include "nodes.h"
 #include "pedestrians.h"
 #include "subLink.h"
 #include "pedestrian.h"
 #include "tiempo.h"
 #include <iostream>
+#include <string>
 #include <vector>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -145,55 +147,92 @@ void nodeEvacuation::imprimirTotalPersonasEvacuadas(fileIO* const file) {
         file->getFileFstream() << std::endl;
     }
 }
-void nodeEvacuation::plotearTotalPersonasEvacuadasXSimulacion() {
-    class totalPersonasEvacuadasXSimulacion{
-    public:
-        std::vector<int> tiempo;
-        std::vector<int> totalEvacuados;
-    }; 
-    // elementos de simulaciones a imprimir
-    const std::vector<int> tiempoSimulacion = {1, 2, 3};
-    static std::vector<totalPersonasEvacuadasXSimulacion> data(tiempoSimulacion.size());
-    auto it = std::find(tiempoSimulacion.begin(), tiempoSimulacion.end(), tiempo::get()->getINumberSimulation());
-    // solo entra en el numero de simulacion que pide tiempoSimulacion
-    if (it != tiempoSimulacion.end()) {
-        // Determinar el índice en el vector `data` basado en la posición en `tiempoSimulacion`
-        int index = std::distance(tiempoSimulacion.begin(), it);
-        // Agregar el valor del tiempo actual al vector `tiempo` correspondiente
-        data.at(index).tiempo.push_back(tiempo::get()->getValorTiempo());
-        data.at(index).totalEvacuados.push_back(totalPersonasEvacuadas);
+std::vector<int> stringToVector(const std::string& str) {
+    std::vector<int> result;
+    std::string item;
+    std::string cleanStr = str;
+
+    // Encontrar el delimitador ';' y eliminar todo lo que está después
+    size_t pos = cleanStr.find(';');
+    if (pos != std::string::npos) {
+        cleanStr = cleanStr.substr(0, pos);
     }
-    if (tiempo::get()->getINumberSimulation() ==  tiempo::get()->getEndNumberSimulation() and tiempo::get()->getValorTiempo() == tiempo::get()->getEndTime()) {
-        FILE* gnuplotPipe = popen("gnuplot -persistent", "w");
-        if (gnuplotPipe) {
-            // Configurar Gnuplot
-            fprintf(gnuplotPipe, "set terminal png size 800,600\n");
-            fprintf(gnuplotPipe, "set output 'personas_evacuadas.png'\n");
-            fprintf(gnuplotPipe, "set xlabel 'Tiempo (s)'\n");
-            fprintf(gnuplotPipe, "set ylabel 'Total de personas evacuadas'\n");
-            fprintf(gnuplotPipe, "set title 'Personas Evacuadas en el Tiempo'\n");
-            fprintf(gnuplotPipe, "set grid\n");
-            // Posicionar los títulos a la izquierda
-            fprintf(gnuplotPipe, "set key left\n");
-            // cracion de plot
-            fprintf(gnuplotPipe, "plot ");
-            // creando titulo de linea
-            for (size_t i = 0; i < data.size(); ++i) {
-                fprintf(gnuplotPipe, "'-' using 1:2 with lines title 'Simulacion %d'", tiempoSimulacion.at(i));
-                if (i < data.size() - 1) {
-                    fprintf(gnuplotPipe, ", ");
+
+    std::stringstream ss(cleanStr);
+
+    // Divide la cadena en partes usando la coma como delimitador
+    while (std::getline(ss, item, ',')) {
+        int number;
+        std::stringstream(item) >> number; // Convierte la parte a un entero
+        result.push_back(number); // Añade el entero al vector
+    }
+
+    return result;
+}
+void nodeEvacuation::plotearTotalEvacuadosXSimulacion(fileIO* const file) {
+    // reviza el dictionario la opcion esta activada, por default esta activado
+    if (std::get<bool>(dictionary::get()->lookupDefault(file->getFileName())) == true) {
+        class totalPersonasEvacuadasXSimulacion{
+        public:
+            std::vector<int> tiempo;
+            std::vector<int> totalEvacuados;
+        }; 
+        // elementos de simulaciones a imprimir
+        std::vector<int> tiempoSimulacion;
+        auto it1 = dictionary::get()->getControlDict().find("valoresNumeroSimulacion");
+        if (it1 != dictionary::get()->getControlDict().end()) {
+            // Clave encontrada, proceder con la operación
+            static std::string valoresNumeroSimulacion = std::get<std::string>(it1->second);
+            tiempoSimulacion = stringToVector(valoresNumeroSimulacion);
+        }
+        // valores por default
+        else {
+            tiempoSimulacion = {1,2,3};
+        }
+        // const std::vector<int> tiempoSimulacion = {1, 2, 3};
+        static std::vector<totalPersonasEvacuadasXSimulacion> data(tiempoSimulacion.size());
+        auto it = std::find(tiempoSimulacion.begin(), tiempoSimulacion.end(), tiempo::get()->getINumberSimulation());
+        // solo entra en el numero de simulacion que pide tiempoSimulacion
+        if (it != tiempoSimulacion.end()) {
+            // Determinar el índice en el vector `data` basado en la posición en `tiempoSimulacion`
+            int index = std::distance(tiempoSimulacion.begin(), it);
+            // Agregar el valor del tiempo actual al vector `tiempo` correspondiente
+            data.at(index).tiempo.push_back(tiempo::get()->getValorTiempo());
+            data.at(index).totalEvacuados.push_back(totalPersonasEvacuadas);
+        }
+        if (tiempo::get()->getINumberSimulation() ==  tiempo::get()->getEndNumberSimulation() and tiempo::get()->getValorTiempo() == tiempo::get()->getEndTime()) {
+            FILE* gnuplotPipe = popen("gnuplot -persistent", "w");
+            if (gnuplotPipe) {
+                // Configurar Gnuplot
+                fprintf(gnuplotPipe, "set terminal png size 800,600\n");
+                // Usa la ruta completa
+                fprintf(gnuplotPipe, "set output '%s'\n", file->getFileNamePwd().c_str());
+                fprintf(gnuplotPipe, "set xlabel 'Tiempo (s)'\n");
+                fprintf(gnuplotPipe, "set ylabel 'Total de personas evacuadas'\n");
+                fprintf(gnuplotPipe, "set title 'Personas Evacuadas en el Tiempo'\n");
+                fprintf(gnuplotPipe, "set grid\n");
+                // Posicionar los títulos a la izquierda
+                fprintf(gnuplotPipe, "set key left\n");
+                // cracion de plot
+                fprintf(gnuplotPipe, "plot ");
+                // creando titulo de linea
+                for (size_t i = 0; i < data.size(); ++i) {
+                    fprintf(gnuplotPipe, "'-' using 1:2 with lines title 'Simulacion %d'", tiempoSimulacion.at(i));
+                    if (i < data.size() - 1) {
+                        fprintf(gnuplotPipe, ", ");
+                    }
                 }
+                fprintf(gnuplotPipe, "\n");
+                // ploteando lineas 
+                for (size_t i = 0; i < data.size(); ++i) {
+                    for (size_t j = 0; j < data.at(i).tiempo.size(); ++j) {
+                        fprintf(gnuplotPipe, "%d %d\n", data.at(i).tiempo.at(j), data.at(i).totalEvacuados.at(j));
+                    }
+                    fprintf(gnuplotPipe, "e\n");
+                }
+                fflush(gnuplotPipe);
+                pclose(gnuplotPipe);
             }
-            fprintf(gnuplotPipe, "\n");
-            // ploteando lineas 
-            for (size_t i = 0; i < data.size(); ++i) {
-                 for (size_t j = 0; j < data.at(i).tiempo.size(); ++j) {
-                    fprintf(gnuplotPipe, "%d %d\n", data.at(i).tiempo.at(j), data.at(i).totalEvacuados.at(j));
-                 }
-                 fprintf(gnuplotPipe, "e\n");
-            }
-            fflush(gnuplotPipe);
-            pclose(gnuplotPipe);
         }
     }
 }

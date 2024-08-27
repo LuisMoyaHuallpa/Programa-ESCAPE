@@ -105,6 +105,7 @@ public:
     static dirIO directoryStateMatrices;
     static fileIO fileTotalEvacuatedCount;
     static fileIO fileEvacuatedCount;
+    static fileIO figureTotalEvacuadosXSimulacion;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static
