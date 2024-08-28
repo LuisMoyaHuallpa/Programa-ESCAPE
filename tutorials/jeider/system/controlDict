@@ -30,7 +30,7 @@ stopSimulationAt          endNumberSimulation;
 
 readPedestrianMassState no;
 
-endNumberSimulation 2000;
+endNumberSimulation 7000;
 
 numberLinkDivision 10;
 
