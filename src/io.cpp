@@ -135,6 +135,7 @@ dirIO io::directoryStateMatrices("stateMatrices");
 fileIO io::fileTotalEvacuatedCount("totalEvacuatedCount", &directoryData);
 fileIO io::fileEvacuatedCount("evacuatedCount", &directoryData);
 fileIO io::figureTotalEvacuadosXSimulacion("figureTotalEvacuadosXSimulacion", &directoryData);
+fileIO io::figureMortalidadXSimulacion("figureMortalidadXSimulacion", &directoryData);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor

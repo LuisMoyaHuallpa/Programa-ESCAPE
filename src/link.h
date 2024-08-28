@@ -45,6 +45,7 @@ private:
     const int width;
     const vector2D orientacionLink;
     const double anchoSubdivision;
+    const int cantidadSubdivisionesjulio;
     int densityLevel;
     std::vector<subLink> subdivisiones;
     
@@ -52,7 +53,6 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static member
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    static const int numberLinkDivision;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // constructor
@@ -82,7 +82,8 @@ public:
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     const vector2D calcularOrientacionLink() const;
-    const double calcularAnchoDivisiones() const;
+    const double calcularAnchoSubdivision() const;
+    const int calcularCantidadSubdivision();
     void calcularDensityGeneral();
     int calcularPedestriansLink() const;
     int calcularDensityLink() const;

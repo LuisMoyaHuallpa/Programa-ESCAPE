@@ -9,8 +9,6 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-const int link::numberLinkDivision = std::get<int>(dictionary::get()->lookup("numberLinkDivision"));
-
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
@@ -18,10 +16,13 @@ const int link::numberLinkDivision = std::get<int>(dictionary::get()->lookup("nu
 link::link(const int idLink, const node* const node1, const node* const node2, const int length, const int width)
     : idLink(idLink), node1Ptr(node1), node2Ptr(node2), length(length), width(width),
       orientacionLink(calcularOrientacionLink()),
-      anchoSubdivision(calcularAnchoDivisiones()),
+      cantidadSubdivisionesjulio(calcularCantidadSubdivision()),
+      anchoSubdivision(calcularAnchoSubdivision()),
+      subdivisiones(cantidadSubdivisionesjulio, subLink(this)),
       densityLevel(0)
 {
-    subdivisiones.resize(link::numberLinkDivision, subLink(this));
+    std::cout << cantidadSubdivisionesjulio << std::endl;
+    std::cout << anchoSubdivision << std::endl;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -76,14 +77,35 @@ const vector2D link::calcularOrientacionLink() const{
     // Normaliza el vector de dirección (divide cada e por la magnitud)
     return {std::abs(x / magnitud), std::abs(y / magnitud)};
 }
-const double link::calcularAnchoDivisiones() const{
-    /* Calcula el ancho de divisiones de la calle segun el numero de divisiones preestablecidas*/
-    const vector2D nodo1Coordenada = node1Ptr->getCoordenada();
-    const vector2D nodo2Coordenada = node2Ptr->getCoordenada();
-    const double ancho_x = nodo1Coordenada.getX() - nodo2Coordenada.getX();
-    const double ancho_y = nodo1Coordenada.getY() - nodo2Coordenada.getY();
-    const double ancho = std::sqrt(ancho_x * ancho_x + ancho_y * ancho_y) / static_cast<double>(link::numberLinkDivision);
-    return ancho;
+const int link::calcularCantidadSubdivision() {
+    // si la opcionSubdivision es cantidadSubvisiones, es decir le voy a dar la cantidad de subdiviones que debe haber
+    // en un link no es necesario hacer calculo porque ya se cantidad de subdivision
+    if (std::get<std::string>(dictionary::get()->lookupDefault("opcionSubdivision")) == "cantidadSubdivisiones") {
+        return std::get<int>(dictionary::get()->lookupDefault("cantidadSubdivisiones"));
+    }
+    // se el ancho de subdivision, debo calcular la cantidad de subdiviones.
+    else {
+        // la cantidad de secciones es un promedio de el largo entre ancho de subseccion
+        return std::round(length / std::get<double>(dictionary::get()->lookupDefault("anchoSubdivision")));
+    }
+}
+const double link::calcularAnchoSubdivision() const{
+    // si la opcionSubdivision es cantidadSubvisiones, es decir le voy a dar la cantidad de subdiviones que debe haber
+    // en un link por tanto calculo el ancho
+    if (std::get<std::string>(dictionary::get()->lookupDefault("opcionSubdivision")) == "cantidadSubdivisiones") {
+        /* Calcula el ancho de divisiones de la calle segun el numero de divisiones preestablecidas*/
+        const vector2D nodo1Coordenada = node1Ptr->getCoordenada();
+        const vector2D nodo2Coordenada = node2Ptr->getCoordenada();
+        const double ancho_x = nodo1Coordenada.getX() - nodo2Coordenada.getX();
+        const double ancho_y = nodo1Coordenada.getY() - nodo2Coordenada.getY();
+        const double ancho = std::sqrt(ancho_x * ancho_x + ancho_y * ancho_y) / static_cast<double>(std::get<int>(dictionary::get()->lookupDefault("cantidadSubdivisiones")));
+        return ancho;
+    }
+    // se el ancho, el default es 2 metros
+    else {
+        int cantSec = std::round(length / std::get<double>(dictionary::get()->lookup("anchoSubdivision")));
+        return length / static_cast<double>(cantSec);
+    }
 }
 void link::calcularDensityGeneral() {
     /* calculo de la densidad en cada sublink de la calle*/

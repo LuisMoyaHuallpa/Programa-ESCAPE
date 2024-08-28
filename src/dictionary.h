@@ -41,13 +41,15 @@ private:
         {"pedestrianCountPeriod", 1},
         {"computationContinued", false},
         {"observationStatePedestrian", true},
-        {"numberLinkDivision", 10},
         {"evacuatedCount", true},
         {"totalEvacuatedCount", true},
         {"sarsaProcesses", "calibration"},
         {"stopSimulationAt", "endNumberSimulation"},
         {"pythonVersion", false},
-        {"figureTotalEvacuadosXSimulacion", true}
+        {"figureTotalEvacuadosXSimulacion", true},
+        {"opcionSubdivision", "cantidadSubdivisiones"},
+        {"cantidadSubdivisiones", 10},
+        {"anchoSubdivision1", 2.0}
     };
     const std::map<std::string, std::string> typeControlDict = {
         {"nodesFile", "string"},
@@ -68,13 +70,16 @@ private:
         {"computationContinued", "bool"},
         {"previousComputationFile", "string"},
         {"observationStatePedestrian", "bool"},
-        {"numberLinkDivision", "int"},
         {"evacuatedCount", "bool"},
         {"totalEvacuatedCount", "bool"},
         {"stopSimulationAt", "string"},
         {"pythonVersion", "bool"},
         {"figureTotalEvacuadosXSimulacion", "bool"},
-        {"valoresNumeroSimulacion", "string"}
+        {"valoresNumeroSimulacion", "string"},
+        {"opcionSubdivision", "string"},
+        {"cantidadSubdivisiones", "int"},
+        {"anchoSubdivision", "double"}
+
     };
     std::map<std::string, std::vector<std::string>> controlDictOptions = {{"sarsaProcesses", {"calibration", "trained"}}
     };

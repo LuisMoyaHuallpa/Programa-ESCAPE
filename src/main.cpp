@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <variant>
+#include "dictionary.h"
 #include "pedestrian.h"
 #include "tiempo.h"
 #include "nodes.h"
@@ -21,6 +22,7 @@ int main() {
     // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
     stateMatrixs::get()->leerDbStateMatrixs();
     // segun el número de simulaciones
+    dictionary::get()->mostrarControlDict();
     while (tiempo::get()->getINumberSimulation() <= tiempo::get()->getEndNumberSimulation()) {
         // loop para una evacuacion
         // calcula el valor el valor del randomChoiceRate
@@ -30,6 +32,7 @@ int main() {
            // modelamiento de pedestrian.
             pedestrians::get()->modelamientoPedestrians();
             // pedestrians::get()->mostrarDbPedestrianMovimiento();
+
             // contador de personas un tiempo atras de la funcion modelamiento
             links::get()->contarPedestrians();
             // pedestrians::get()->mostrarDbPedestrianMovimiento();

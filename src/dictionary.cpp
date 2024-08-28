@@ -10,6 +10,7 @@ dictionary* dictionary::dictionaryInstance = nullptr;
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 dictionary::dictionary() {
+    std::cout << "dictionary" <<std::endl;
     leerDictionary();
 }
 dictionary::dictionary(std::string nameDictionary) {
@@ -108,6 +109,7 @@ std::variant<std::string, int, double, bool> dictionary::lookupDefault(std::stri
         return it->second;
     }
     else {
+        std::cout << "El keyword "<< keyword << " no está presente en el controDict.\n";
         return controlDictDefault.at(keyword);
     }
 }
@@ -131,7 +133,9 @@ bool dictionary::verificarOptions(std::string keyword, std::string value) const 
 bool dictionary::verificarType(std::string keyword, std::string value)  {
     // busca en el typeControlDict el keyword solicitado y lo guarda en it
     std::map<std::string, std::string>::const_iterator it = typeControlDict.find(keyword);
+    std::cout << keyword << std::endl;
     if (it != typeControlDict.end()) {
+        std::cout << it->first;
         std::string type = it->second;
         if (type == "string") {
             controlDict[keyword] = value;
@@ -139,6 +143,10 @@ bool dictionary::verificarType(std::string keyword, std::string value)  {
         }
         else if (type == "int") {
             controlDict[keyword] = std::stoi(value);
+            return true;
+        }
+        else if (type == "double") {
+            controlDict[keyword] = std::stod(value);
             return true;
         }
         else if (type == "bool") {

@@ -106,6 +106,7 @@ public:
     static fileIO fileTotalEvacuatedCount;
     static fileIO fileEvacuatedCount;
     static fileIO figureTotalEvacuadosXSimulacion;
+    static fileIO figureMortalidadXSimulacion;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static
