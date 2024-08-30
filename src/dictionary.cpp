@@ -109,7 +109,6 @@ std::variant<std::string, int, double, bool> dictionary::lookupDefault(std::stri
         return it->second;
     }
     else {
-        std::cout << "El keyword "<< keyword << " no está presente en el controDict.\n";
         return controlDictDefault.at(keyword);
     }
 }

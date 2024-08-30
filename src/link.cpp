@@ -21,8 +21,6 @@ link::link(const int idLink, const node* const node1, const node* const node2, c
       subdivisiones(cantidadSubdivisionesjulio, subLink(this)),
       densityLevel(0)
 {
-    std::cout << cantidadSubdivisionesjulio << std::endl;
-    std::cout << anchoSubdivision << std::endl;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -90,7 +88,8 @@ const int link::calcularCantidadSubdivision() {
     }
 }
 const double link::calcularAnchoSubdivision() const{
-    // si la opcionSubdivision es cantidadSubvisiones, es decir le voy a dar la cantidad de subdiviones que debe haber
+    // la opcionSubdivision es cantidadSubvisiones,
+    // es decir le voy a dar la cantidad de subdiviones que debo tener
     // en un link por tanto calculo el ancho
     if (std::get<std::string>(dictionary::get()->lookupDefault("opcionSubdivision")) == "cantidadSubdivisiones") {
         /* Calcula el ancho de divisiones de la calle segun el numero de divisiones preestablecidas*/
@@ -101,9 +100,11 @@ const double link::calcularAnchoSubdivision() const{
         const double ancho = std::sqrt(ancho_x * ancho_x + ancho_y * ancho_y) / static_cast<double>(std::get<int>(dictionary::get()->lookupDefault("cantidadSubdivisiones")));
         return ancho;
     }
+    // la opcionSubdivision es anchoSubdivision,
     // se el ancho, el default es 2 metros
     else {
-        int cantSec = std::round(length / std::get<double>(dictionary::get()->lookup("anchoSubdivision")));
+        // calcula la cantidad de subdivisiones segun el ancho dado, luego calcula el ancho de nuevo
+        const int cantSec = std::round(length / std::get<double>(dictionary::get()->lookupDefault("anchoSubdivision")));
         return length / static_cast<double>(cantSec);
     }
 }

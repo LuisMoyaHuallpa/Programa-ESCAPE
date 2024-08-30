@@ -49,7 +49,7 @@ private:
         {"figureTotalEvacuadosXSimulacion", true},
         {"opcionSubdivision", "cantidadSubdivisiones"},
         {"cantidadSubdivisiones", 10},
-        {"anchoSubdivision1", 2.0}
+        {"anchoSubdivision", 2.0}
     };
     const std::map<std::string, std::string> typeControlDict = {
         {"nodesFile", "string"},

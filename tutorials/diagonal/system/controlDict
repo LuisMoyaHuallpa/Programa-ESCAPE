@@ -4,9 +4,9 @@ linksFile        links.csv;
 
 populationsFile  populationAtPoint.csv;
 
-sarsaProcesses calibration;
+# sarsaProcesses calibration;
 
-# sarsaProcesses trained;
+sarsaProcesses trained;
 
 stopAt          endTime;
 
@@ -24,11 +24,17 @@ stopSimulationAt          endNumberSimulation;
 
 endNumberSimulation 100;
 
-numberLinkDivision 10;
-
 graphicPrintoutPeriod 1;
 
 listingPrintoutPeriod 1;
+
+pedestrianCountPeriod 1;
+
+# anchoSubdivision 2.1;
+
+opcionSubdivision cantidadSubdivisiones;
+
+cantidadSubdivisiones 10;
 
 evacuatedCount yes;
 

@@ -22,13 +22,17 @@ previousComputationFile	calibrated.csv;
 
 stopSimulationAt          endNumberSimulation;
 
-endNumberSimulation 500;
+endNumberSimulation 10;
 
 observationStatePedestrian yes;
 
+opcionSubdivision cantidadSubdivisiones;
+
+cantidadSubdivisiones 10;
+
 numberLinkDivision 10;
 
-raphicPrintoutPeriod 1;
+graphicPrintoutPeriod 1;
 
 listingPrintoutPeriod 1;
 
