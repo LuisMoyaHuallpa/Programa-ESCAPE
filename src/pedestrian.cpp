@@ -173,26 +173,18 @@ void pedestrian::caminar() {
 }
 double pedestrian::calcularIdSublink() {
     /* Calcula la ubicacion de la persona en el array del subLink*/
-    // distancia de la persona al nodeInicio de la persona
-    // double index_x = position.getX() - nodeInicioPtr->getCoordenada().getX();
+    // distancia de la persona al nodo 1 de la calle
+    const double anchoSubdivision = linkCurrentPtr->getAnchoSubdivisiones();
     const double index_x = position.getX() - linkCurrentPtr->getNode1Ptr()->getCoordenada().getX();
-    // double index_y = position.getY() - nodeInicioPtr->getCoordenada().getY();
     const double index_y = position.getY() - linkCurrentPtr->getNode1Ptr()->getCoordenada().getY();
-    int index_hipo = std::sqrt(std::pow(index_x,2) + pow(index_y, 2)) / linkCurrentPtr->getAnchoSubdivisiones();
-    if (index_hipo>= 10) {
-        index_hipo=9;    
+    int index_hipo = std::sqrt(std::pow(index_x,2) + pow(index_y, 2)) / anchoSubdivision;
+    // si encuentra en una subdivision mayor a lo que no tiene es porque ya a punto de entrar a una interseccion
+    if (index_hipo >= linkCurrentPtr->getCantidadSubdivisiones()) {
+        interseccion = true;
+        // index_hipo = linkCurrentPtr->getCantidadSubdivisiones() - 1;    
     }
     return index_hipo;
 }
-// bool pedestrian::verificarEndLink() const {
-//     // Da verdadero si la persona se encuentra ubicada en el termino de calle.
-//     bool terminoLink = false;
-//     if (position.getX()*std::copysign(1, direccionPedestrian.getX()) >= nodeFinalPtr->getCoordenada().getX()*std::copysign(1, direccionPedestrian.getX()) and
-//     position.getY()*std::copysign(1, direccionPedestrian.getY()) >= nodeFinalPtr->getCoordenada().getY()*std::copysign(1, direccionPedestrian.getY())){
-//         terminoLink = true;
-//     }
-//     return terminoLink;
-// }
 bool pedestrian::verificarEndLink() const {
     // Calcula la distancia euclidiana entre las coordenadas actuales y el punto objetivo
     const double umbral = velocidadPedestrian.getMagnitud();
@@ -330,10 +322,6 @@ void pedestrian::modelamientoPedestrian() {
                 if(!(tiempoInicial == tiempoActual)){
                     // reinicia el valor del reward
                     reward = 0;
-                    // elimina esta persona en la calle pasada, porque esta a punto de estar en una calle nueva
-                    // linkCurrentPtr->quitarPedestrian(this);
-                    // guarda calle actual antes que sea cambiado
-                    // linkPreviousPtr =  linkCurrentPtr;
                     // guarda el Qcurents antes que sea cambiado
                     stateMatrixPreviousPtr = stateMatrixCurrentPtr;
                     QPreviousPtr = QCurrentPtr;
@@ -370,18 +358,10 @@ void pedestrian::modelamientoPedestrian() {
                 if (estadoPedestrian == evacuado) {
                     dynamic_cast<nodeEvacuation*>(nodeInicioPtr)->contabilizarPersona(this);
                 }
-
                 if (std::get<std::string>(dictionary::get()->lookupDefault("sarsaProcesses")) == "calibration"){
                     if(!(tiempoInicial == tiempoActual)){
-                        // std::cout << "current: " << std::endl;
-                        // stateMatrixCurrentPtr->mostrarStateMatrix();
-                        // std::cout << "previous: " << std::endl;
-                        // stateMatrixPreviousPtr->mostrarStateMatrix();
-
                         reward = calcularReward();
                         sarsa::sarsaActualizarQ(QPreviousPtr->getValor(), QCurrentPtr->getValor(), reward);
-                        // std::cout << "previous: " << std::endl;
-                        // stateMatrixPreviousPtr->mostrarStateMatrix();
                     }
                 }
                 // guarda la anteror interseccion
@@ -392,17 +372,21 @@ void pedestrian::modelamientoPedestrian() {
             else {
                 // modelamiento cuando la persona esta dentro de la calle
                 if (estadoPedestrian == evacuando) {
-                    // camina la persona
+                    // velocidad con random
                     velocidadPedestrian.calcularAjusteRandom();
+                    // camina la persona
                     caminar();    
                    // calcula posicion en subdivion 
                     const int idSublink = calcularIdSublink();
-                    // agrega persona en sublink
-                    linkCurrentPtr->agregarPedestrianSublink(this, idSublink);
                     // cuando esta en un sublink cercano a nodoFinal
-                    if (idSublink == idEndSublink) {
+                    if (idSublink == idEndSublink and interseccion == false) {
                         // verifica cuando esta cerca a una interseccion
                         interseccion = verificarEndLink();
+                    }
+                    // solo agrega cuando no esta en la interseccion
+                    if (interseccion==false) {
+                        // agrega persona en sublink
+                        linkCurrentPtr->agregarPedestrianSublink(this, idSublink);
                     }
                 }
             }

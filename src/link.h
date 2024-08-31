@@ -45,7 +45,7 @@ private:
     const int width;
     const vector2D orientacionLink;
     const double anchoSubdivision;
-    const int cantidadSubdivisionesjulio;
+    const int cantidadSubdivisiones;
     int densityLevel;
     std::vector<subLink> subdivisiones;
     
@@ -75,6 +75,7 @@ public:
     const int getWidth() const;
     const vector2D getOrientacionLink() const;
     const double getAnchoSubdivisiones() const;
+    const int getCantidadSubdivisiones() const;
     int getDensityLevel();
     std::vector<subLink>& getSubdiviones();
 

@@ -20,7 +20,6 @@ int main() {
     links::get()->imprimirMeshLinks();
     // Lectura de simulaciones pasadas.
     // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
-    
     stateMatrixs::get()->leerDbStateMatrixs();
     // segun el número de simulaciones
     while (tiempo::get()->getINumberSimulation() <= tiempo::get()->getEndNumberSimulation()) {
@@ -31,7 +30,6 @@ int main() {
             tiempo::get()->aumentarTiempo();
            // modelamiento de pedestrian.
             pedestrians::get()->modelamientoPedestrians();
-            // pedestrians::get()->mostrarDbPedestrianMovimiento();
 
             // contador de personas un tiempo atras de la funcion modelamiento
             links::get()->contarPedestrians();

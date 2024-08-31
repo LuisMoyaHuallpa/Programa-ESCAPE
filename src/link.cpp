@@ -16,9 +16,9 @@
 link::link(const int idLink, const node* const node1, const node* const node2, const int length, const int width)
     : idLink(idLink), node1Ptr(node1), node2Ptr(node2), length(length), width(width),
       orientacionLink(calcularOrientacionLink()),
-      cantidadSubdivisionesjulio(calcularCantidadSubdivision()),
+      cantidadSubdivisiones(calcularCantidadSubdivision()),
       anchoSubdivision(calcularAnchoSubdivision()),
-      subdivisiones(cantidadSubdivisionesjulio, subLink(this)),
+      subdivisiones(cantidadSubdivisiones, subLink(this)),
       densityLevel(0)
 {
 }
@@ -59,6 +59,9 @@ std::vector<subLink>& link::getSubdiviones() {
 }
 const double link::getAnchoSubdivisiones() const {
     return anchoSubdivision;
+}
+const int link::getCantidadSubdivisiones() const {
+    return cantidadSubdivisiones;    
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
