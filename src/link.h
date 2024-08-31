@@ -83,8 +83,8 @@ public:
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     const vector2D calcularOrientacionLink() const;
-    const double calcularAnchoSubdivision() const;
-    const int calcularCantidadSubdivision();
+    const double calcularAnchoSubdivision(const std::string &opcionSubdivision) const;
+    const int calcularCantidadSubdivisiones(const std::string &opcionSubdivision);
     void calcularDensityGeneral();
     int calcularPedestriansLink() const;
     int calcularDensityLink() const;
