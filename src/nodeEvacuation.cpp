@@ -206,7 +206,7 @@ void nodeEvacuation::plotearTotalEvacuadosXSimulacion(fileIO* const file) {
                 // Configurar Gnuplot
                 fprintf(gnuplotPipe, "set terminal png size 800,600\n");
                 // Usa la ruta completa
-                fprintf(gnuplotPipe, "set output '%s'\n", file->getFileNamePwd().c_str());
+                fprintf(gnuplotPipe, "set output '%s'\n", file->getFullPath().c_str());
                 fprintf(gnuplotPipe, "set xlabel 'Tiempo (s)'\n");
                 fprintf(gnuplotPipe, "set ylabel 'Total de personas evacuadas'\n");
                 fprintf(gnuplotPipe, "set title 'Personas Evacuadas en el Tiempo'\n");

@@ -70,12 +70,12 @@ std::string stateMatrixs::creacionFileStateMatrix() const {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // aumento del numero de simulacion
     const std::string preName = "sim_";
-    const std::string typeFile = ".csv";
+    // const std::string typeFile = ".csv";
     std::ostringstream filenameStream;
     // Crea el archivo inicial con el siguiente formato sim_000000001.csv
     filenameStream << std::setw(9) << std::setfill('0') << tiempo::get()->getINumberSimulation() ;
     // Nombre final de exportacion 
-    return preName + filenameStream.str() + typeFile;
+    return preName + filenameStream.str();
 }
 std::string stateMatrixs::encontrarUltimoFile() {
     // Encontrar la ultima simulacion para leerla
@@ -185,7 +185,7 @@ void stateMatrixs::leerDbStateMatrixs() {
             // !-----------------------------------------------------------------------
             // Guarda los elementos de state
             stateLeido.clear();
-            for (int i = 0; i < stateMatrix::tamanoVectorIO; ++i) {
+            for (int i = 0; i < io::tamanoElementosIO; ++i) {
                 if (i < nodeLeido->getLinkConnectionsPtr().size()) {
                     std::getline(iss, s_str, ',');
                     s = std::stoi(s_str);
@@ -198,7 +198,7 @@ void stateMatrixs::leerDbStateMatrixs() {
             // !-----------------------------------------------------------------------
             // Elementos de Q
             QsLeido.clear();
-            for (int i = 0; i < stateMatrix::getTamanoVector(); ++i) {
+            for (int i = 0; i < io::tamanoElementosIO; ++i) {
                 if (i < nodeLeido->getLinkConnectionsPtr().size()) {
                     std::getline(iss, Q_str, ',');
                     Qa = std::stod(Q_str);
@@ -210,7 +210,7 @@ void stateMatrixs::leerDbStateMatrixs() {
             }
             // !-----------------------------------------------------------------------
             // Elementos de observacion
-            for (int i = 0; i < stateMatrix::getTamanoVector(); ++i) {
+            for (int i = 0; i < io::tamanoElementosIO; ++i) {
                 if (i < nodeLeido->getLinkConnectionsPtr().size()) {
                     // siempre paso las observacines
                     std::getline(iss, O_str, ',');

@@ -18,8 +18,8 @@
 class dirIO {
 private:
     const std::string dirName;
-    const std::string dirNamePwd;
-    const dirIO* directory;
+    const dirIO* const directory;
+    const std::string fullPath;
 
 public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -32,7 +32,7 @@ public:
     // getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     const std::string getDirName() const;
-    const std::string getDirNamePwd() const;
+    const std::string getFullPath() const;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metods
@@ -46,26 +46,26 @@ public:
 class fileIO {
 private:
     const std::string fileName;
-    const std::string fileNameFull;
-    const std::string fileNamePwd;
-    const dirIO* directory;
+    const dirIO* const directory;
+    const std::string fullPath;
     std::fstream fileFstream;
 
 public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    fileIO(const std::string& fname);
-    fileIO(const std::string& fname, const bool checkFile);
-    fileIO(const std::string& fname, const bool checkFile, const std::string extension);
-    fileIO(const std::string& fname, const dirIO* directory);
+    fileIO(const std::string& fileName);
+    fileIO(const std::string& fileName, const bool checkFile);
+    fileIO(const std::string& fileName, const bool checkFile, const std::string extension);
+    fileIO(const std::string& fileName, const dirIO* directory);
+    fileIO(const std::string& fileName, const dirIO* directory, const std::string extension);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getters
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     const std::string getFileName() const;
-    const std::string getFileNamePwd() const;
     std::fstream& getFileFstream();
+    const std::string getFullPath() const;
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metods
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

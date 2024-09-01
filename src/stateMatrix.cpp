@@ -14,7 +14,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-const int stateMatrix::tamanoVectorIO = 10;
+// const int stateMatrix::tamanoVectorIO = 10;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
@@ -67,9 +67,9 @@ std::vector<Q> &stateMatrix::getQs() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static getter
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-int stateMatrix::getTamanoVector() {
-    return tamanoVectorIO;
-}
+// int stateMatrix::getTamanoVector() {
+//     return tamanoVectorIO;
+// }
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -145,24 +145,34 @@ void stateMatrix::mostrarStateMatrix() const {
 }
 void stateMatrix::imprimirState(fileIO* const file) const {
     /* impresion de estados en un arreglo de 10 columnas*/
-    for (int i = 0; i < stateMatrix::tamanoVectorIO; i++) {
-        if (i < state.size()) {
-            file->getFileFstream() << state.at(i) << ',';
-        } else {
-            file->getFileFstream() << "0,";
-        }
+    // impresion de datos states hasta donde tenga, puede variar
+    for(auto it = state.begin(); it != state.end(); ++it){
+        file->getFileFstream() << (*it) << ',';
     }
+    // completar con 0 hasta 10 elemtos
+    size_t faltante = io::tamanoElementosIO - state.size();
+    for (size_t i = 0; i < faltante; i++) {
+        file->getFileFstream() << "0,";
+    }
+ 
+    // for (int i = 0; i < stateMatrix::tamanoVectorIO; i++) {
+    //     if (i < state.size()) {
+    //         file->getFileFstream() << state.at(i) << ',';
+    //     } else {
+    //         file->getFileFstream() << "0,";
+    //     }
+    // }
 }
 void stateMatrix::imprimirQs(fileIO* const file) const {
     /* impresion de Q en un arreglo de 10 columnas*/
-    for (int i = 0; i < stateMatrix::tamanoVectorIO; i++) {
+    for (int i = 0; i < io::tamanoElementosIO; i++) {
         if (i < Qs.size()) {
             file->getFileFstream() << Qs.at(i).getValor() << ',';
         } else {
             file->getFileFstream() << "0,";
         }
     }  
-    for (int i = 0; i < stateMatrix::tamanoVectorIO; i++) {
+    for (int i = 0; i < io::tamanoElementosIO; i++) {
         if (i < Qs.size()) {
             file->getFileFstream() << Qs.at(i).getObservaciones() << ',';
         } else {

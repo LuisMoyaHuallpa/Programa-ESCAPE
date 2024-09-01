@@ -15,8 +15,8 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 dirIO::dirIO(const std::string& dirName) :
     dirName(dirName),
-    dirNamePwd(dirName + '/'),
-    directory(nullptr)
+    directory(nullptr),
+    fullPath(dirName + '/')
 {
     if (!verificarDirExists()) {
         crearDir();
@@ -25,7 +25,7 @@ dirIO::dirIO(const std::string& dirName) :
 dirIO::dirIO(const std::string& dirName, const dirIO* directory) :
     dirName(dirName),
     directory(directory),
-    dirNamePwd(directory->getDirNamePwd() + dirName + '/')
+    fullPath(directory->getFullPath() + dirName + '/')
 {
     if (!verificarDirExists()) {
         crearDir();
@@ -39,8 +39,8 @@ dirIO::dirIO(const std::string& dirName, const dirIO* directory) :
 const std::string dirIO::getDirName() const {
     return dirName;
 }
-const std::string dirIO::getDirNamePwd() const {
-    return dirNamePwd;
+const std::string dirIO::getFullPath() const {
+    return fullPath;    
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // methods
@@ -51,7 +51,7 @@ void dirIO::crearDir() {
         mkdir(dirName.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
     }
     else {
-        std::string dir = directory->dirNamePwd + dirName.c_str();
+        std::string dir = directory->fullPath + dirName.c_str();
         mkdir(dir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
     }
 }
@@ -79,16 +79,14 @@ bool dirIO::verificarDirExists() const{
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 fileIO::fileIO(const std::string& fileName) :
     fileName(fileName),
-    fileNameFull(fileName + ".csv"),
-    fileNamePwd(fileName),
+    fullPath(fileName + ".csv"),
     directory(nullptr)
 {
     crearFile();
 }
 fileIO::fileIO(const std::string& fileName, const bool checkFile) :
     fileName(fileName),
-    fileNameFull(fileName + ".csv"),
-    fileNamePwd(fileName),
+    fullPath(fileName + ".csv"),
     directory(nullptr)
 {
     // solo crear si checkFile es true
@@ -98,8 +96,7 @@ fileIO::fileIO(const std::string& fileName, const bool checkFile) :
 }
 fileIO::fileIO(const std::string& fileName, const bool checkFile, const std::string extension) :
     fileName(fileName),
-    fileNameFull(fileName + "." +  extension),
-    fileNamePwd(fileName),
+    fullPath(fileName + "." +  extension),
     directory(nullptr)
 {
     // solo crear si checkFile es true
@@ -109,12 +106,19 @@ fileIO::fileIO(const std::string& fileName, const bool checkFile, const std::str
 }
 fileIO::fileIO(const std::string& fileName,const dirIO* directory) :
     fileName(fileName),
-    fileNameFull(directory->getDirNamePwd() + ".csv"),
     directory(directory),
-    fileNamePwd(directory->getDirNamePwd() + fileName)
+    fullPath(directory->getFullPath() + fileName + ".csv")
 {
     crearFile();
 }
+fileIO::fileIO(const std::string& fileName,const dirIO* directory, const std::string extension) :
+    fileName(fileName),
+    directory(directory),
+    fullPath(directory->getFullPath() + fileName + "." + extension)
+{
+    crearFile();
+}
+
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -123,19 +127,18 @@ fileIO::fileIO(const std::string& fileName,const dirIO* directory) :
 const std::string fileIO::getFileName() const {
     return fileName;
 }
-const std::string fileIO::getFileNamePwd() const {
-    return fileNamePwd;
-}
 std::fstream& fileIO::getFileFstream() {
     return fileFstream; 
+}
+const std::string fileIO::getFullPath() const {
+    return fullPath;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // methods
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void fileIO::crearFile() {
-    
-    fileFstream.open(fileNameFull, std::ios::out);
+    fileFstream.open(fullPath, std::ios::out);
 }
 
 
@@ -157,10 +160,10 @@ dirIO io::directorySnapshot("snapshot", &directoryPostprocessing);
 dirIO io::directoryStateMatrices("stateMatrices");
 fileIO io::fileTotalEvacuatedCount("totalEvacuatedCount", &directoryData);
 fileIO io::fileEvacuatedCount("evacuatedCount", &directoryData);
-fileIO io::fileActionsDb("actionsdb", std::get<std::string>(dictionary::get()->lookup("pythonOption")) == "out");
-fileIO io::fileTranstionsDb("transitionsdb", std::get<std::string>(dictionary::get()->lookup("pythonOption")) == "out");
-fileIO io::figureTotalEvacuadosXSimulacion("figureTotalEvacuadosXSimulacion", &directoryData);
-fileIO io::figureMortalidadXSimulacion("figureMortalidadXSimulacion", &directoryData);
+fileIO io::fileActionsDb("actionsdb", std::get<std::string>(dictionary::get()->lookup("pythonOption")) == "out", "csv");
+fileIO io::fileTranstionsDb("transitionsdb", std::get<std::string>(dictionary::get()->lookup("pythonOption")) == "out", "csv");
+fileIO io::figureTotalEvacuadosXSimulacion("figureTotalEvacuadosXSimulacion", &directoryData, "png");
+fileIO io::figureMortalidadXSimulacion("figureMortalidadXSimulacion", &directoryData, "png");
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
@@ -193,7 +196,7 @@ dirIO* io::crearCarpetaTiempo() {
     /* Crea carpetas de cada tiempo de evacuacion*/
     dirIO* dirTime = new dirIO(std::to_string(tiempo::get()->getValorTiempo()), &directoryData);
     // crear carpeta de los tiempos en segundos para almacenar informacion
-    mkdir(dirTime->getDirNamePwd().c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+    mkdir(dirTime->getFullPath().c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
     return dirTime;
 }
 void io::imprimirOutput() {
