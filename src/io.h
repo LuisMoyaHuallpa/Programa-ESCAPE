@@ -6,6 +6,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "string"
 #include "fstream"
+#include <cstddef>
 #include <fstream>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -45,7 +46,7 @@ public:
 class fileIO {
 private:
     const std::string fileName;
-    const std::string fileNameCsv;
+    const std::string fileNameFull;
     const std::string fileNamePwd;
     const dirIO* directory;
     std::fstream fileFstream;
@@ -55,6 +56,8 @@ public:
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     fileIO(const std::string& fname);
+    fileIO(const std::string& fname, const bool checkFile);
+    fileIO(const std::string& fname, const bool checkFile, const std::string extension);
     fileIO(const std::string& fname, const dirIO* directory);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -96,15 +99,15 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // static std::fstream fileTotalPersonasEvacuadas;
-    // static std::fstream filePersonasEvacuadasNodeEvacuation;
-
+    static size_t tamanoElementosIO;
     static dirIO directoryData;
     static dirIO directoryPostprocessing;
     static dirIO directorySnapshot;
     static dirIO directoryStateMatrices;
     static fileIO fileTotalEvacuatedCount;
     static fileIO fileEvacuatedCount;
+    static fileIO fileActionsDb;
+    static fileIO fileTranstionsDb;
     static fileIO figureTotalEvacuadosXSimulacion;
     static fileIO figureMortalidadXSimulacion;
 

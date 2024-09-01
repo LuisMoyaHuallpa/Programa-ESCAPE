@@ -1,4 +1,5 @@
 #include "io.h"
+#include "dictionary.h"
 #include "nodeEvacuation.h"
 #include "pedestrians.h"
 #include "tiempo.h"
@@ -78,16 +79,37 @@ bool dirIO::verificarDirExists() const{
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 fileIO::fileIO(const std::string& fileName) :
     fileName(fileName),
-    fileNameCsv(fileName + ".csv"),
+    fileNameFull(fileName + ".csv"),
     fileNamePwd(fileName),
     directory(nullptr)
 {
     crearFile();
 }
-
+fileIO::fileIO(const std::string& fileName, const bool checkFile) :
+    fileName(fileName),
+    fileNameFull(fileName + ".csv"),
+    fileNamePwd(fileName),
+    directory(nullptr)
+{
+    // solo crear si checkFile es true
+    if (checkFile) {
+        crearFile();
+    }
+}
+fileIO::fileIO(const std::string& fileName, const bool checkFile, const std::string extension) :
+    fileName(fileName),
+    fileNameFull(fileName + "." +  extension),
+    fileNamePwd(fileName),
+    directory(nullptr)
+{
+    // solo crear si checkFile es true
+    if (checkFile) {
+        crearFile();
+    }
+}
 fileIO::fileIO(const std::string& fileName,const dirIO* directory) :
     fileName(fileName),
-    fileNameCsv(fileName + ".csv"),
+    fileNameFull(directory->getDirNamePwd() + ".csv"),
     directory(directory),
     fileNamePwd(directory->getDirNamePwd() + fileName)
 {
@@ -113,7 +135,7 @@ std::fstream& fileIO::getFileFstream() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void fileIO::crearFile() {
     
-    fileFstream.open(fileNamePwd, std::ios::out);
+    fileFstream.open(fileNameFull, std::ios::out);
 }
 
 
@@ -128,12 +150,15 @@ void fileIO::crearFile() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 io* io::ioInstance = nullptr;
 
+size_t io::tamanoElementosIO = 10;
 dirIO io::directoryData("data");
 dirIO io::directoryPostprocessing("postprocessing");
 dirIO io::directorySnapshot("snapshot", &directoryPostprocessing);
 dirIO io::directoryStateMatrices("stateMatrices");
 fileIO io::fileTotalEvacuatedCount("totalEvacuatedCount", &directoryData);
 fileIO io::fileEvacuatedCount("evacuatedCount", &directoryData);
+fileIO io::fileActionsDb("actionsdb", std::get<std::string>(dictionary::get()->lookup("pythonOption")) == "out");
+fileIO io::fileTranstionsDb("transitionsdb", std::get<std::string>(dictionary::get()->lookup("pythonOption")) == "out");
 fileIO io::figureTotalEvacuadosXSimulacion("figureTotalEvacuadosXSimulacion", &directoryData);
 fileIO io::figureMortalidadXSimulacion("figureMortalidadXSimulacion", &directoryData);
 
@@ -204,5 +229,14 @@ void io::imprimirOutput() {
         }
         // ploteo total personas evacuadas por simulacion
         nodeEvacuation::plotearTotalEvacuadosXSimulacion(&figureTotalEvacuadosXSimulacion);
+        // imprimir actionDb
+        if (std::get<std::string>(dictionary::get()->lookup("pythonOption")) == "out") {
+            // cuando este numero de simulacion 1 y sea final de la evacuacion
+            if (tiempo::get()->getINumberSimulation() == tiempo::get()->getStartNumberSimulation()
+            and tiempo::get()->getValorTiempo() == tiempo::get()->getEndTime()) {
+                nodes::get()->imprimirActionsDb(fileActionsDb.getFileFstream());
+                nodes::get()->imprimirTransitionsDb(fileTranstionsDb.getFileFstream());
+            }
+        }
     }
 }

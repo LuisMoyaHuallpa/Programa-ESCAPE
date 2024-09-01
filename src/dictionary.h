@@ -46,8 +46,9 @@ private:
         {"sarsaProcesses", "calibration"},
         {"stopSimulationAt", "endNumberSimulation"},
         {"pythonVersion", false},
+        {"pythonOption", "in"},
         {"figureTotalEvacuadosXSimulacion", true},
-        {"opcionSubdivision", "cantidadSubdivisiones"},
+        {"opcionSubdivision", "anchoSubdivision"},
         {"cantidadSubdivisiones", 10},
         {"anchoSubdivision", 2.0}
     };
@@ -74,6 +75,7 @@ private:
         {"totalEvacuatedCount", "bool"},
         {"stopSimulationAt", "string"},
         {"pythonVersion", "bool"},
+        {"pythonOption", "string"},
         {"figureTotalEvacuadosXSimulacion", "bool"},
         {"valoresNumeroSimulacion", "string"},
         {"opcionSubdivision", "string"},

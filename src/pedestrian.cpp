@@ -383,10 +383,13 @@ void pedestrian::modelamientoPedestrian() {
                         // verifica cuando esta cerca a una interseccion
                         interseccion = verificarEndLink();
                     }
-                    // solo agrega cuando no esta en la interseccion
-                    if (interseccion==false) {
-                        // agrega persona en sublink
-                        linkCurrentPtr->agregarPedestrianSublink(this, idSublink);
+                    // verifica cada cuanto debe contar
+                    if (tiempo::get()->getPedestrianCountPeriod()) {
+                        // solo agrega cuando no esta en la interseccion
+                        if (interseccion==false) {
+                            // agrega persona en sublink
+                            linkCurrentPtr->agregarPedestrianSublink(this, idSublink);
+                        }
                     }
                 }
             }

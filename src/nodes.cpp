@@ -158,6 +158,20 @@ void nodes::mostrardbNodeTotal() const {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // imprimir
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void nodes::imprimirActionsDb(std::fstream& file) const {
+    /* imprimir actionDb, archivo de compatibilidad de la version de python*/
+    for (auto it = dbNodeTotal.begin(); it != dbNodeTotal.end(); ++it) {
+        (*it)->imprimirAction(file);
+    }
+    file.close();
+}
+void nodes::imprimirTransitionsDb(std::fstream& file) const {
+    /* imprimir transitionDb, archivo de compatibilidad de la version de python*/
+    for (auto it = dbNodeTotal.begin(); it != dbNodeTotal.end(); ++it) {
+        (*it)->imprimirTransition(file);
+    }
+    file.close();
+}
 
 
 // void nodes::imprimirCantPedestrianEvacuted(std::string folderName) {

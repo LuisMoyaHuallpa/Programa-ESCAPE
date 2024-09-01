@@ -5,6 +5,7 @@
 #include "pedestrian.h"
 #include "stateMatrix.h"
 #include "vector2D.h"
+#include <cstddef>
 #include <vector>
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -162,3 +163,63 @@ void node::mostrarStateMatrixTable() const {
         elemento->mostrarStateMatrix();
     } 
 }
+void node::imprimirAction(std::fstream& file) const {
+    /* impresion de una linea de actionDb*/ 
+    // id, cantidadCalles, idCalle....
+    file << idNode << ",";
+    file << linkConnectionsPtr.size() << ",";
+    // imprime el id de la calle
+    for (auto it = linkConnectionsPtr.begin(); it != linkConnectionsPtr.end(); ++it) {
+        file << (*it)->getIdLink();
+        file << ",";
+    }
+    // recorre los elementos de impresion de una fila
+    // por defecto esta 10
+    size_t faltante = io::tamanoElementosIO - linkConnectionsPtr.size();
+    for (size_t i = 0; i < faltante; i++) {
+        // solo la ultima pornerle sin coma
+        if (i == faltante - 1) {
+            file << "0";
+        }
+        else {
+            file << "0,";
+        }
+    }
+        
+    file << std::endl;
+}
+void node::imprimirTransition(std::fstream& file) const {
+    /* impresion de una linea de transition*/ 
+    // id, cantidadCalles, idNode...
+    file << idNode << ",";
+    file << linkConnectionsPtr.size() << ",";
+    // imprime el id de la calle
+    for (auto it = linkConnectionsPtr.begin(); it != linkConnectionsPtr.end(); ++it) {
+        // da el otro nodo de la calle diferente al de idNode
+        if ((*it)->getNode1Ptr() == this) {
+            file << (*it)->getNode2Ptr()->idNode;
+        }
+        else {
+            file << (*it)->getNode1Ptr()->idNode;
+        }
+        if (std::next(it) != linkConnectionsPtr.end()) {
+            file << ",";
+        }
+    }
+    // recorre los elementos de impresion de una fila
+    // por defecto esta 10
+    size_t faltante = io::tamanoElementosIO - linkConnectionsPtr.size();
+    for (size_t i = 0; i < faltante; i++) {
+        // solo la ultima pornerle sin coma
+        if (i == faltante - 1) {
+            file << "0";
+        }
+        else {
+            file << "0,";
+        }
+    }
+ 
+    file << std::endl;
+}
+
+

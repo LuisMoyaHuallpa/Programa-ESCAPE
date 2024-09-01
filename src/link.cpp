@@ -21,7 +21,6 @@ link::link(const int idLink, const node* const node1, const node* const node2, c
       subdivisiones(cantidadSubdivisiones, subLink(this)),
       densityLevel(0)
 {
-
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -92,7 +91,6 @@ const double link::calcularAnchoSubdivision(const std::string &opcionSubdivision
         const double ancho = std::sqrt(ancho_x * ancho_x + ancho_y * ancho_y) / static_cast<double>(std::get<int>(dictionary::get()->lookupDefault("cantidadSubdivisiones")));
         return ancho;
     }
-
     // se el ancho, el default es 2 metros
     else {
         // calcula la cantidad de subdivisiones segun el ancho dado, luego calcula el ancho de nuevo

@@ -134,7 +134,6 @@ bool dictionary::verificarType(std::string keyword, std::string value)  {
     std::map<std::string, std::string>::const_iterator it = typeControlDict.find(keyword);
     std::cout << keyword << std::endl;
     if (it != typeControlDict.end()) {
-        std::cout << it->first;
         std::string type = it->second;
         if (type == "string") {
             controlDict[keyword] = value;

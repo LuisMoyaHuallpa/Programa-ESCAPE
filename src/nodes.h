@@ -65,7 +65,8 @@ public:
     void reiniciarNodesEvacuations();
     // void mostrarNodes() const;
     void mostrardbNodeTotal() const;
-    // void imprimirNodes(std::fstream& file);
+    void imprimirActionsDb(std::fstream& file) const;
+    void imprimirTransitionsDb(std::fstream& file) const;
     // void imprimirCantPedestrianEvacuted(std::string folderName);
     
 };

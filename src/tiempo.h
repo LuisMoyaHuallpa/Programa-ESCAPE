@@ -94,7 +94,7 @@ public:
     void mostrarTiempo() const;
     void mostrarIResultadosSimulacion();
     bool verificarGraphicPrintoutPeriod() const; 
-    bool verificarPedestrianCountPeriod(); 
+    bool verificarPedestrianCountPeriod() const; 
     
 };
 

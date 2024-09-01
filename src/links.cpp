@@ -166,17 +166,18 @@ void links::contarPedestrians() {
 }
 void links::resetSublinks() {
     /* reinicia valores de conteo de sublink*/
-    // no hacerlo si estas en la ultima simulaciones, debido a que ya las personas se movieron y no
-    // necesitaran esta información
-    for (auto it = dbLinkTotal.begin(); it != dbLinkTotal.end(); ++it) {
-        // reinicia 
-        // it->get()->getPedestriansInSublink().assign(link::numberLinkDivision, 0);
-        // recorre cada sublink y lo reincia
-        for (auto y = it->get()->getSubdiviones().begin(); y != it->get()->getSubdiviones().end(); ++y) {
-            if (!y->getPedestriansInSublink().empty()) {
-                y->getPedestriansInSublink().clear();
+    // verifica cada cuando esta contando
+    if (tiempo::get()->getPedestrianCountPeriod()) {
+        // recorre todos las calles
+        for (auto it = dbLinkTotal.begin(); it != dbLinkTotal.end(); ++it) {
+            // recorre cada sublink y lo reincia
+            for (auto y = it->get()->getSubdiviones().begin(); y != it->get()->getSubdiviones().end(); ++y) {
+                // solo borra si no esta vacia
+                if (!y->getPedestriansInSublink().empty()) {
+                    y->getPedestriansInSublink().clear();
+                }
             }
-        }
+        }    
     }
 }
 void links::resetLinks() {

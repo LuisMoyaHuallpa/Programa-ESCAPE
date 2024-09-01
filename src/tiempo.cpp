@@ -211,13 +211,10 @@ void tiempo::mostrarTiempo() const {
     std::cout << "Time = " << valorTiempo << std::endl;
 }
 bool tiempo::verificarGraphicPrintoutPeriod() const {
-    return (getValorTiempo() % getGraphicPrintoutPeriod() == 0);
+    /* cada cuando imprimir variables*/
+    return (getValorTiempo() % graphicPrintoutPeriod == 0);
 }
-bool tiempo::verificarPedestrianCountPeriod() {
-    if (getValorTiempo() % getPedestrianCountPeriod() == 0) {
-        return true;
-    }
-    else {
-        return false;
-    }
+bool tiempo::verificarPedestrianCountPeriod() const {
+    /* cada cuando debe contar las personas*/
+    return getValorTiempo() % pedestrianCountPeriod == 0;
 }

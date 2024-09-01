@@ -76,5 +76,7 @@ public:
     void addStateMatrixExperimentadosPtr(stateMatrix* stateMatrixExperimentado);
     void mostrarNode() const;
     void mostrarStateMatrixTable() const;
+    void imprimirAction(std::fstream& file) const;
+    void imprimirTransition(std::fstream& file) const;
 };
 #endif
