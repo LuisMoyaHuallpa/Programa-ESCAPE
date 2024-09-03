@@ -8,6 +8,7 @@
 #include "fstream"
 #include <cstddef>
 #include <fstream>
+#include <ios>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // header propios
@@ -57,6 +58,7 @@ public:
     fileIO(const std::string& fileName);
     fileIO(const std::string& fileName, const bool checkFile);
     fileIO(const std::string& fileName, const bool checkFile, const std::string extension);
+    fileIO(const std::string& fileName, const std::string extension, const bool checkFile, const std::string& inoutStr);
     fileIO(const std::string& fileName, const dirIO* directory);
     fileIO(const std::string& fileName, const dirIO* directory, const std::string extension);
 
@@ -70,6 +72,8 @@ public:
     // metods
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void crearFile();
+    void openFile(const std::ios_base::openmode& inout);
+    std::ios_base::openmode inoutFile(const std::string& inout);
 
 };
 

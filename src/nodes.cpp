@@ -55,10 +55,6 @@ void nodes::leerNodes(std::string fileName) {
     int l;
     char comma;
     std::vector<int> conectionCalles;
-    // lectura del archivo actiondb
-    if (std::get<bool>(dictionary::get()->lookupDefault("pythonVersion")) == true) {
-        fileActions.open("actionsdb.csv", std::ios::in);
-    }
     // Lectura de archivo de nodos
     std::fstream file;
     file.open(fileName, std::ios::in);

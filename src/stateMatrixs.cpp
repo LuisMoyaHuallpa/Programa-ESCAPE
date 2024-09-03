@@ -3,6 +3,7 @@
 #include "io.h"
 #include "stateMatrix.h"
 #include <vector>
+#include "links.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -122,6 +123,56 @@ std::string stateMatrixs::fileNameSalida() {
 // void stateMatrixs::agregarStateMatrix(stateMatrix stateMatrixElement) {
 //     dbStateMatrixs.push_back(stateMatrixElement);
 // }
+void stateMatrixs::leerActionsDb(std::fstream& file) {
+    /* Permite leer archivos de python, con este archivo actiondb puedo saber
+        el orden las calles en cada nodo*/
+    std::string line;
+    char comma;
+    int idNode, cantidadLinks;
+    int idLink;
+    actiondb.resize(nodes::get()->getDbNodeTotal().size()); 
+    // si no existe el arhivo
+    if (file.fail()) {
+        std::cout << "Error opening the file " << std::endl;
+        exit(1);
+    }
+    // lectura de cada line
+    while (std::getline(file, line)) {
+        // Si el archivo tiene comentarios con #, no leerlos.
+        if (line[0] == '#') {
+            continue;
+        }
+        // lectura de linea
+        std::istringstream iss(line);
+        if (!(iss >> idNode >> comma >> cantidadLinks >> comma)) {
+            std::cerr << "Error al leer ID o count." << std::endl;
+        }
+        // verifica que no sea un nodo de evacuacion
+        // porque no tiene conecciones
+        if (nodes::get()->getDbNodeTotal().at(idNode).get()->verificarNodoEvacuation() == false) {
+            // crea el tamaño del vector
+            actiondb.at(idNode).resize(cantidadLinks);
+            for (int i = 0; i < cantidadLinks; ++i) {
+                if (!(iss >> idLink)) {
+                    std::cerr << "Error al leer valor para conectionCalles en la posición " << i << std::endl;
+                    return; // Sale de la función si hay un error
+                }
+                // agrega en action cada coneccion de calle segun el nodo 
+                actiondb.at(idNode).at(i) = links::get()->getDbLinkTotal().at(idLink).get();
+                std::cout << actiondb.at(idNode).at(i)->getIdLink() << " ";
+                // Ignora la coma entre valores, si no es el último valor
+                if (i < cantidadLinks - 1) {
+                    iss >> comma;  // Lee y descarta la coma
+                    if (iss.fail()) {
+                        std::cerr << "Error al leer la coma después del valor en la posición " << i << std::endl;
+                        return; // Sale de la función si hay un error
+                    }
+                }
+            }
+            std::cout << std::endl;
+        }
+    } 
+}
 void stateMatrixs::leerDbStateMatrixs() {
     // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
     // if (dictionary::controlDict["computationContinued"] == "yes") {
@@ -129,6 +180,13 @@ void stateMatrixs::leerDbStateMatrixs() {
         dictionary::get()->getControlDict()["computationContinued"] = "yes";
     }
     if (std::get<bool>(dictionary::get()->lookupDefault("computationContinued")) == true) {
+        // lectura de datos de stateMatrixs de la version en python,
+        // se debe leer de acuerdo a al orden a las conecciones de calles
+        if (std::get<std::string>(dictionary::get()->lookupDefault("pythonOption")) == "in") {
+            std::cout << "1" << std::endl;
+            leerActionsDb(io::fileActionsDb.getFileFstream());
+            std::cout << "2" << std::endl;
+        }
         // /* Empieza el timing*/
         // auto start = std::chrono::high_resolution_clock::now();
         /* Lectura de datos de una simulación pasada.*/
@@ -166,7 +224,6 @@ void stateMatrixs::leerDbStateMatrixs() {
         std::string s_str;
         std::string Q_str;
         std::string O_str;
-        std::string o1_str, o2_str, o3_str, o4_str, o5_str, o6_str, o7_str, o8_str, o9_str, o10_str; 
         std::vector<int> stateLeido;
         std::vector<Q> QsLeido;
         // Recorre todas las line del archivo.
@@ -197,15 +254,35 @@ void stateMatrixs::leerDbStateMatrixs() {
             }
             // !-----------------------------------------------------------------------
             // Elementos de Q
-            QsLeido.clear();
-            for (int i = 0; i < io::tamanoElementosIO; ++i) {
-                if (i < nodeLeido->getLinkConnectionsPtr().size()) {
-                    std::getline(iss, Q_str, ',');
-                    Qa = std::stod(Q_str);
-                    QsLeido.push_back(Q(Qa, nodeLeido->getLinkConnectionsPtr().at(i)));
-                } 
-                else {
-                    std::getline(iss, p0, ',');
+            // cuando se lee archivos stateMatrix de python
+            if (std::get<std::string>(dictionary::get()->lookupDefault("pythonOption")) == "in") {
+                std::cout << idNode << std::endl;
+                QsLeido.clear();
+                QsLeido.resize(nodeLeido->getLinkConnectionsPtr().size());
+                for (int i = 0; i < io::tamanoElementosIO; ++i) {
+                    if (i < nodeLeido->getLinkConnectionsPtr().size()) {
+                        std::getline(iss, Q_str, ',');
+                        Qa = std::stod(Q_str);
+                        QsLeido[i] = Q(Qa, actiondb.at(idNode).at(i));
+
+                    } 
+                    else {
+                        std::getline(iss, p0, ',');
+                    }
+                }
+                std::cout << idNode << std::endl;
+            }
+            else {
+                QsLeido.clear();
+                for (int i = 0; i < io::tamanoElementosIO; ++i) {
+                    if (i < nodeLeido->getLinkConnectionsPtr().size()) {
+                        std::getline(iss, Q_str, ',');
+                        Qa = std::stod(Q_str);
+                        QsLeido.push_back(Q(Qa, nodeLeido->getLinkConnectionsPtr().at(i)));
+                    } 
+                    else {
+                        std::getline(iss, p0, ',');
+                    }
                 }
             }
             // !-----------------------------------------------------------------------
@@ -228,40 +305,7 @@ void stateMatrixs::leerDbStateMatrixs() {
             stateMatrix* nuevoStateMatrix = new stateMatrix(nodeLeido, stateLeido, QsLeido);
             dbStateMatrixs.emplace_back(nuevoStateMatrix);
             nodeLeido->addStateMatrixExperimentadosPtr(nuevoStateMatrix);
-
-
-            // std::getline(iss, o1_str, ',');
-            // std::getline(iss, o2_str, ',');
-            // std::getline(iss, o3_str, ',');
-            // std::getline(iss, o4_str, ',');
-            // std::getline(iss, o5_str, ',');
-            // std::getline(iss, o6_str, ',');
-            // std::getline(iss, o7_str, ',');
-            // std::getline(iss, o8_str, ',');
-            // std::getline(iss, o9_str, ',');
-            // std::getline(iss, o10_str, '\n');
-            // // Elementos de o
-            // if (std::get<bool>(dictionary::get()->lookupDefault("observationStatePedestrian")) == true) {
-            //     o1 = std::stoi(o1_str);
-            //     o2 = std::stoi(o2_str);
-            //     o3 = std::stoi(o3_str);
-            //     o4 = std::stoi(o4_str);
-            //     o5 = std::stoi(o5_str);
-            //     o6 = std::stoi(o6_str);
-            //     o7 = std::stoi(o7_str);
-            //     o8 = std::stoi(o8_str);
-            //     o9 = std::stoi(o9_str);
-            //     o10 = std::stoi(o10_str);
-            // }
-            // !-----------------------------------------------------------------------
-            // Grabar datos de la fila del stateMatrix en en Qtable del nodo numero id.
-            // falta
-            // nodes::get()->getDbNodeTotal().at(idNode)->getStateMatrixTable().push_back(stateMatrixLeido);
-
-            // std::cout << std::endl;
-            // nodes::get()->getDbNodeTotal().at(idNode)->getStateMatrixTableMap().emplace(stateMatrixLeido->getStateValue().getDensityLinks(),stateMatrixLeido);
         }
-
         file.close(); 
         // // Termina el timing
         // auto stop = std::chrono::high_resolution_clock::now();

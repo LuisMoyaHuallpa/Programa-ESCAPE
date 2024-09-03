@@ -55,15 +55,12 @@ public:
     // metodos
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     void leerLinks(std::string fileName);
-    void leerActionsDb(const std::string fileName);
     void contarPedestrians();
     void resetSublinks();
     void resetLinks();
     void mostrarDbLinksTotal();
     void mostrarSublink();
     void imprimirMeshLinks();
-    // void creacionLinkConnections();
-    // void buscarNode(int id);
 
 };
 #endif

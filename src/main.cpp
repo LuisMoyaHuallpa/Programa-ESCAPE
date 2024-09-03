@@ -22,7 +22,7 @@ int main() {
     // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
     stateMatrixs::get()->leerDbStateMatrixs();
     // segun el número de simulaciones
-    dictionary::get()->mostrarControlDict();
+    
     while (tiempo::get()->getINumberSimulation() <= tiempo::get()->getEndNumberSimulation()) {
         // loop para una evacuacion
         // calcula el valor el valor del randomChoiceRate

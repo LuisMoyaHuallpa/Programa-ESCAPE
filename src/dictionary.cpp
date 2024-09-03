@@ -10,7 +10,6 @@ dictionary* dictionary::dictionaryInstance = nullptr;
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 dictionary::dictionary() {
-    std::cout << "dictionary" <<std::endl;
     leerDictionary();
 }
 dictionary::dictionary(std::string nameDictionary) {
@@ -132,7 +131,6 @@ bool dictionary::verificarOptions(std::string keyword, std::string value) const 
 bool dictionary::verificarType(std::string keyword, std::string value)  {
     // busca en el typeControlDict el keyword solicitado y lo guarda en it
     std::map<std::string, std::string>::const_iterator it = typeControlDict.find(keyword);
-    std::cout << keyword << std::endl;
     if (it != typeControlDict.end()) {
         std::string type = it->second;
         if (type == "string") {

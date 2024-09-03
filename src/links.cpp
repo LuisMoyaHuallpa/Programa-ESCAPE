@@ -17,10 +17,6 @@ links* links::linksInstance = nullptr;
 links::links() {
     (*this).fileName = std::get<std::string>(dictionary::get()->lookupDefault("linksFile"));
     leerLinks(fileName);
-    // leer esta archivo si el stateMatrix se creo en la version de python
-    if (std::get<bool>(dictionary::get()->lookupDefault("pythonVersion")) == true) {
-        leerActionsDb("actionsdb.csv");
-    }
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -47,57 +43,6 @@ links* links::get() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void links::leerActionsDb(const std::string fileName) {
-    /* Permite leer archivos de python, con este archivo actiondb puedo saber
-        el orden las calles en cada nodo*/
-    std::string line;
-    std::fstream file;
-    file.open(fileName, std::ios::in);
-    char comma;
-    int idNode, cantidadLinks;
-    std::vector<link*> conectionCalles;
-    int idLink;
-    // si no existe el arhivo
-    if (file.fail()) {
-        std::cout << "Error opening the file " << fileName << std::endl;
-        exit(1);
-    }
-    // lectura de cada line
-    while (std::getline(file, line)) {
-        // Si el archivo tiene comentarios con #, no leerlos.
-        if (line[0] == '#') {
-            continue;
-        }
-        std::istringstream iss(line);
-        if (!(iss >> idNode >> comma >> cantidadLinks >> comma)) {
-            std::cerr << "Error al leer ID o count." << std::endl;
-        }
-        // verifica que no sea un nodo de evacuacion
-        // porque no tiene conecciones
-        if (nodes::get()->getDbNodeTotal().at(idNode).get()->verificarNodoEvacuation() == false) {
-            // crea el tamaño del vector
-            conectionCalles.resize(cantidadLinks);
-            for (int i = 0; i < cantidadLinks; ++i) {
-                if (!(iss >> idLink)) {
-                    std::cerr << "Error al leer valor para conectionCalles en la posición " << i << std::endl;
-                    return; // Sale de la función si hay un error
-                }
-                // buscar link y lo agrega al vector
-                conectionCalles.at(i) = dbLinkTotal.at(idLink).get();
-                // Ignora la coma entre valores, si no es el último valor
-                if (i < cantidadLinks - 1) {
-                    iss >> comma;  // Lee y descarta la coma
-                    if (iss.fail()) {
-                        std::cerr << "Error al leer la coma después del valor en la posición " << i << std::endl;
-                        return; // Sale de la función si hay un error
-                    }
-                }
-            }
-            // guardo los linkConnection en el nodo
-            nodes::get()->getDbNodeTotal().at(idNode).get()->setLinkConnectionsPtr(conectionCalles);
-        }
-    } 
-}
 void links::leerLinks(std::string fileName){
     /* Lectura de archivo de links */
     std::fstream file;
@@ -143,14 +88,9 @@ void links::leerLinks(std::string fileName){
         node* node2 =nodes::get()->getDbNodeTotal().at(idNode2).get();
         std::unique_ptr<link> linkNuevo = std::make_unique<link>(idLink, node1, node2, lengthLink, widthLink);
         dbLinkTotal.push_back(std::move(linkNuevo));
-        // si el stateMatrices leeido es creado por la version de python no deberia asumir
-        // este orden las coneccion de los links
-        if (std::get<bool>(dictionary::get()->lookupDefault("pythonVersion")) == false) {
-            // añadir link en cada nodo
-            node1->addLink(dbLinkTotal.back().get());
-            node2->addLink(dbLinkTotal.back().get());
-        }
-
+        // añadir link en cada nodo
+        node1->addLink(dbLinkTotal.back().get());
+        node2->addLink(dbLinkTotal.back().get());
     }
     file.close(); 
 }

@@ -200,6 +200,7 @@ void nodeEvacuation::plotearTotalEvacuadosXSimulacion(fileIO* const file) {
             data.at(index).tiempo.push_back(tiempo::get()->getValorTiempo());
             data.at(index).totalEvacuados.push_back(totalPersonasEvacuadas);
         }
+        // imprimir ploteo cuando al final del numero de simulacion y al terminar el tiempo de evacuacion
         if (tiempo::get()->getINumberSimulation() ==  tiempo::get()->getEndNumberSimulation() and tiempo::get()->getValorTiempo() == tiempo::get()->getEndTime()) {
             FILE* gnuplotPipe = popen("gnuplot -persistent", "w");
             if (gnuplotPipe) {
@@ -231,6 +232,44 @@ void nodeEvacuation::plotearTotalEvacuadosXSimulacion(fileIO* const file) {
                     fprintf(gnuplotPipe, "e\n");
                 }
                 fflush(gnuplotPipe);
+                pclose(gnuplotPipe);
+            }
+        }
+    }
+}
+void nodeEvacuation::plotearMortalidadXSimulacion(fileIO* const file) {
+    // reviza el dictionario la opcion esta activada, por default esta activado
+    if (std::get<bool>(dictionary::get()->lookupDefault(file->getFileName())) == true) {
+        static std::vector<int> numeroSimulaciones;
+        static std::vector<double> mortalidad;
+        // numero de simulacion
+        const int numeroSimulacion = tiempo::get()->getINumberSimulation();
+        // guardo datos en data para luego plotearlos
+        numeroSimulaciones.push_back(numeroSimulacion);
+        // calculo porcentaje
+        const int totalMortalidad = pedestrians::get()->getDbPedestrianTotal().size() - totalPersonasEvacuadas;
+        const double porcentajeMortalidad = static_cast<double>(totalMortalidad) / 100.0;
+        mortalidad.push_back(porcentajeMortalidad);
+        // imprimir ploteo cuando al final del numero de simulacion y al terminar el tiempo de evacuacion
+        if (tiempo::get()->getINumberSimulation() ==  tiempo::get()->getEndNumberSimulation()) {
+            FILE* gnuplotPipe = popen("gnuplot -persistent", "w");
+            if (gnuplotPipe) {
+                // Configurar Gnuplot
+                fprintf(gnuplotPipe, "set terminal png size 800,600\n");
+                // Usa la ruta completa
+                fprintf(gnuplotPipe, "set output '%s'\n", file->getFullPath().c_str());
+                fprintf(gnuplotPipe, "set xlabel 'Numero de Simulaciones'\n");
+                fprintf(gnuplotPipe, "set ylabel 'Mortalidad (%%)'\n"); 
+                fprintf(gnuplotPipe, "set grid\n");
+                fprintf(gnuplotPipe, "set xtics 1\n");  // Cambia '1' al intervalo que desees
+                fprintf(gnuplotPipe, "set ytics 1\n");  // Cambia '1' al intervalo que desees
+                fprintf(gnuplotPipe, "set mytics 4\n");   // 4 sub-ticks entre cada tick principal
+                // cracion de plot
+                fprintf(gnuplotPipe, "plot '-' with linespoints notitle\n");
+                for (size_t j = 0; j < numeroSimulaciones.size(); ++j) {
+                    fprintf(gnuplotPipe, "%d %lf\n", numeroSimulaciones.at(j), mortalidad.at(j));
+                }
+                fprintf(gnuplotPipe, "e\n");
                 pclose(gnuplotPipe);
             }
         }

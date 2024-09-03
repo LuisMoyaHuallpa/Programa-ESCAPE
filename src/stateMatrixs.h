@@ -4,6 +4,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // header generales
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#include <fstream>
 #include <vector>
 #include <sstream>  
 #include <iomanip>
@@ -20,6 +21,7 @@
 class stateMatrixs {
 private:
     std::vector<stateMatrix*> dbStateMatrixs;
+    std::vector<std::vector<link*>> actiondb;
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static member
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -59,6 +61,7 @@ public:
     std::string fileNameSalida();
     void agregarStateMatrix(stateMatrix stateMatrixElement);
     void leerDbStateMatrixs();
+    void leerActionsDb(std::fstream& file);
     void mostrarDbStateMatrixs() const;
     void imprimirDbStateMatrixs(fileIO* const file) const;
 
