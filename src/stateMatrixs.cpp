@@ -173,7 +173,7 @@ void stateMatrixs::leerActionsDb(std::fstream& file) {
     } 
 }
 void stateMatrixs::leerDbStateMatrixs() {
-    if (std::get<std::string>(dictionary::get()->lookupDefault("sarsaProcesses")) == "trained") {
+    if (std::get<std::string>(dictionary::get()->lookupDefault("process")) == "trained") {
         dictionary::get()->getControlDict()["computationContinued"] = "yes";
     }
     // si la opcion de lectura de datos anteriores de stateMatrixs esta activa

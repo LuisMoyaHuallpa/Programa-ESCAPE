@@ -4,15 +4,11 @@ linksFile        links.csv;
 
 populationsFile  populationAtPoint.csv;
 
-sarsaProcesses calibration;
+# sarsaProcesses calibration;
 
-# sarsaProcesses trained;
-
-stopAt          endTime;
+process trained;
 
 endTime         800;
-
-deltaT          1;
 
 meanRayleigh   420;
 
@@ -20,19 +16,21 @@ computationContinued  	no;
 
 previousComputationFile	calibrated.csv;
 
-stopSimulationAt          endNumberSimulation;
-
 endNumberSimulation 10;
 
 observationStatePedestrian yes;
 
-opcionSubdivision cantidadSubdivisiones;
+opcionSubdivision anchoSubdivision;
 
-cantidadSubdivisiones 10;
+# cantidadSubdivisiones 12;
+
+anchoSubdivision 2;
 
 numberLinkDivision 10;
 
 graphicPrintoutPeriod 1;
+
+pedestrianCountPeriod 1;
 
 listingPrintoutPeriod 1;
 
@@ -40,5 +38,9 @@ evacuatedCount yes;
 
 totalEvacuatedCount yes;
 
+pythonVersion no;
 
+pythonOption in;
+
+figureMortalidadXSimulacionPeriod 5;
 

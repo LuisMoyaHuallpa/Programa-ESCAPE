@@ -206,7 +206,7 @@ int pedestrian::calcularIdEndSublink() const {
 }
 link* pedestrian::eleccionGeneralLink() const {
     // la primera eleccion debe ser random
-    if (tiempo::get()->getValorTiempo() == tiempoInicial and std::get<std::string>(dictionary::get()->lookupDefault("sarsaProcesses")) == "calibration") {
+    if (tiempo::get()->getValorTiempo() == tiempoInicial and std::get<std::string>(dictionary::get()->lookupDefault("process")) == "calibration") {
         return eleccionRandomLink();
     }
     if (estadoPedestrian == evacuado) {
@@ -358,7 +358,7 @@ void pedestrian::modelamientoPedestrian() {
                 if (estadoPedestrian == evacuado) {
                     dynamic_cast<nodeEvacuation*>(nodeInicioPtr)->contabilizarPersona(this);
                 }
-                if (std::get<std::string>(dictionary::get()->lookupDefault("sarsaProcesses")) == "calibration"){
+                if (std::get<std::string>(dictionary::get()->lookupDefault("process")) == "calibration"){
                     if(!(tiempoInicial == tiempoActual)){
                         reward = calcularReward();
                         sarsa::sarsaActualizarQ(QPreviousPtr->getValor(), QCurrentPtr->getValor(), reward);

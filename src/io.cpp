@@ -192,12 +192,12 @@ dirIO io::directoryData("data");
 dirIO io::directoryPostprocessing("postprocessing");
 dirIO io::directorySnapshot("snapshot", &directoryPostprocessing);
 dirIO io::directoryStateMatrices("stateMatrices");
-fileIO io::fileTotalEvacuatedCount("totalEvacuatedCount", "csv", "out", std::get<std::string>(dictionary::get()->lookup("sarsaProcesses"))=="trained", &directoryData);
-fileIO io::fileEvacuatedCount("evacuatedCount", "csv", "out", std::get<std::string>(dictionary::get()->lookup("sarsaProcesses"))=="trained", &directoryData);
-fileIO io::fileActionsDb("actionsdb", "csv", std::get<std::string>(dictionary::get()->lookup("pythonOption")), std::get<bool>(dictionary::get()->lookup("pythonVersion")));
+fileIO io::fileTotalEvacuatedCount("totalEvacuatedCount", "csv", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="trained", &directoryData);
+fileIO io::fileEvacuatedCount("evacuatedCount", "csv", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="trained", &directoryData);
+fileIO io::fileActionsDb("actionsdb", "csv", std::get<std::string>(dictionary::get()->lookupDefault("pythonOption")), std::get<bool>(dictionary::get()->lookupDefault("pythonVersion")));
 fileIO io::fileTranstionsDb("transitionsdb", "csv", std::get<std::string>(dictionary::get()->lookupDefault("pythonOption")) == "out");
-fileIO io::figureTotalEvacuadosXSimulacion("figureTotalEvacuadosXSimulacion", "png", "out", std::get<std::string>(dictionary::get()->lookup("sarsaProcesses"))=="calibration", &directoryData);
-fileIO io::figureMortalidadXSimulacion("figureMortalidadXSimulacion", "png", "out", std::get<std::string>(dictionary::get()->lookup("sarsaProcesses"))=="calibration", &directoryData);
+fileIO io::figureTotalEvacuadosXSimulacion("figureTotalEvacuadosXSimulacion", "png", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="calibration", &directoryData);
+fileIO io::figureMortalidadXSimulacion("figureMortalidadXSimulacion", "png", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="calibration", &directoryData);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
@@ -236,7 +236,7 @@ dirIO* io::crearCarpetaTiempo() {
 void io::imprimirOutput() {
     /* manejo de las output*/
     // exportacion cuando esta entrenado
-    if (std::get<std::string>(dictionary::get()->lookup("sarsaProcesses")) == "trained") {
+    if (std::get<std::string>(dictionary::get()->lookupDefault("process")) == "trained") {
         if (tiempo::get()->verificarGraphicPrintoutPeriod()) {
             // crear carpetas de tiempo
             dirIO* dirTiempo = crearCarpetaTiempo();
@@ -257,7 +257,7 @@ void io::imprimirOutput() {
         }
     }
     // exportacion durante la calibracion
-    else if (std::get<std::string>(dictionary::get()->lookup("sarsaProcesses")) == "calibration") {
+    else if (std::get<std::string>(dictionary::get()->lookupDefault("process")) == "calibration") {
         // imprime data de statematrix cada termino de simulaciont
         // solo lo imprime al final de la evacuacion
         if (tiempo::get()->getValorTiempo() == tiempo::get()->getEndTime()) {

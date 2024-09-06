@@ -116,7 +116,7 @@ void tiempo::aumentarINumberSimulation() {
 void tiempo::inicializarNumberSimulation() {
     /* Inicializar las variables de NumberSimulation*/
     // Para proceso de calibracion
-    if(std::get<std::string>(dictionary::get()->lookupDefault("sarsaProcesses")) == "calibration"){
+    if(std::get<std::string>(dictionary::get()->lookupDefault("process")) == "calibration"){
         // si lee statematrix
         if (std::get<bool>(dictionary::get()->lookupDefault("computationContinued")) == true) {
             startNumberSimulation = 0;
@@ -135,7 +135,7 @@ void tiempo::inicializarNumberSimulation() {
         startTimeSimulation = std::chrono::high_resolution_clock::now();
     }
     // Para proceso ya entrenado
-    else if (std::get<std::string>(dictionary::get()->lookupDefault("sarsaProcesses")) == "trained"){
+    else if (std::get<std::string>(dictionary::get()->lookupDefault("process")) == "trained"){
         // iniciar el timer tiempo real de simulacion
         startTimeSimulation = std::chrono::high_resolution_clock::now();
         startNumberSimulation = 1;
@@ -158,7 +158,8 @@ void tiempo::calcularRandomChoiceRate() {
     // valor por default, puede ser 4 o 9 
     double temp = 4.0;
     // buscar nombre correcto
-    if (std::get<std::string>(dictionary::get()->lookup("sarsaProcesses")) == "calibration") {
+    // en proceso de calibracion
+    if (std::get<std::string>(dictionary::get()->lookupDefault("process")) == "calibration") {
         // en busca el keyword exploration
         auto it = dictionary::get()->getControlDict().find("exploration");
         if (it != dictionary::get()->getControlDict().end()) {
@@ -170,7 +171,8 @@ void tiempo::calcularRandomChoiceRate() {
         // el -1 es para empezar el numero de simulaciones en 0
         randomChoiceRate = 1.0 / (gleeFactor * double(k - 1) + 1.0);
     }
-    else if(std::get<std::string>(dictionary::get()->lookup("sarsaProcesses")) == "trained") {
+    // en proceso de trained
+    else if(std::get<std::string>(dictionary::get()->lookupDefault("process")) == "trained") {
         // para que solo eliga sarsa nada de aletorio
         randomChoiceRate = 0;
     }

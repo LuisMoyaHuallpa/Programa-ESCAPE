@@ -4,7 +4,7 @@ linksFile        links.csv;
 
 populationsFile  population.csv;
 
-sarsaProcesses calibration;
+process calibration;
 
 startTime       0;
 
@@ -24,18 +24,28 @@ listingPrintoutPeriod 1;
 
 computationContinued  	no;
 
-previousComputationFile	sim_000007000.csv;
+previousComputationFile	sim_000000001.csv;
 
 stopSimulationAt          endNumberSimulation;
 
+opcionSubdivision cantidadSubdivisiones;
+
+cantidadSubdivisiones 10;
+
+pedestrianCountPeriod 10;
+
 readPedestrianMassState no;
 
-endNumberSimulation 7000;
+endNumberSimulation 20;
 
 numberLinkDivision 10;
 
 evacuatedCount yes;
 
 totalEvacuatedCount yes;
+
+pythonVersion no;
+
+pythonOption out;
 
 

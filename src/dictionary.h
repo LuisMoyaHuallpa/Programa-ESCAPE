@@ -32,10 +32,10 @@ private:
     const std::string systemCarpet = "system/";
     std::map<std::string, std::variant<std::string, int, double, bool>> controlDict;
     const std::map<std::string, std::variant<std::string, int, double, bool>> controlDictDefault = {
-        {"nodesFile", "nodes.csv"},
-        {"linksFile", "links.csv"},
-        {"populationsFile", "population.csv"},
-        {"stopAt", "endTime"},
+        {"nodesFile", std::string("nodes.csv")},
+        {"linksFile", std::string("links.csv")},
+        {"populationsFile", std::string("population.csv")},
+        {"stopAt", std::string("endTime")},
         {"graphicPrintout", true},
         {"graphicPrintoutPeriod", 1},
         {"pedestrianCountPeriod", 1},
@@ -43,14 +43,14 @@ private:
         {"observationStatePedestrian", true},
         {"evacuatedCount", true},
         {"totalEvacuatedCount", true},
-        {"sarsaProcesses", "calibration"},
-        {"stopSimulationAt", "endNumberSimulation"},
+        {"process", std::string("calibration")},
+        {"stopSimulationAt", std::string("endNumberSimulation")},
         {"pythonVersion", false},
         {"pythonOption", "in"},
         {"figureTotalEvacuadosXSimulacion", true},
         {"figureMortalidadXSimulacion", true},
         {"figureMortalidadXSimulacionPeriod", 1},
-        {"opcionSubdivision", "anchoSubdivision"},
+        {"opcionSubdivision", std::string("anchoSubdivision")},
         {"cantidadSubdivisiones", 10},
         {"anchoSubdivision", 2.0}
     };
@@ -58,7 +58,7 @@ private:
         {"nodesFile", "string"},
         {"linksFile", "string"},
         {"populationsFile", "string"},
-        {"sarsaProcesses", "string"},
+        {"process", "string"},
         {"stopAt", "string"},
         {"stopSimulationAt", "string"},
         {"startTime", "int"},

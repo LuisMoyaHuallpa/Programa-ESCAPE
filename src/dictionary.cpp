@@ -1,5 +1,6 @@
 #include "dictionary.h"
 #include <algorithm>
+#include <string>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -168,7 +169,7 @@ bool dictionary::verificarType(std::string keyword, std::string value)  {
 
 void dictionary::mostrarControlDict() {
     std::cout << "Contents of controlDict:" << std::endl;
-    for (const auto& entry : controlDict) {
+    for (const auto& entry : controlDictDefault) {
         std::cout << entry.first << ": ";
         std::visit([](auto&& value) { std::cout << value; }, entry.second);
         std::cout << std::endl;
