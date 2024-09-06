@@ -244,12 +244,15 @@ void nodeEvacuation::plotearMortalidadXSimulacion(fileIO* const file) {
         static std::vector<double> mortalidad;
         // numero de simulacion
         const int numeroSimulacion = tiempo::get()->getINumberSimulation();
-        // guardo datos en data para luego plotearlos
-        numeroSimulaciones.push_back(numeroSimulacion);
-        // calculo porcentaje
-        const int totalMortalidad = pedestrians::get()->getDbPedestrianTotal().size() - totalPersonasEvacuadas;
-        const double porcentajeMortalidad = static_cast<double>(totalMortalidad) / 100.0;
-        mortalidad.push_back(porcentajeMortalidad);
+        // solo guarda segun el perido en segundos que se le asigne
+        if (numeroSimulacion % std::get<int>(dictionary::get()->lookupDefault("figureMortalidadXSimulacionPeriod")) == 0 or numeroSimulacion == 1) {
+            // guardo datos en data para luego plotearlos
+            numeroSimulaciones.push_back(numeroSimulacion);
+            // calculo porcentaje
+            const int totalMortalidad = pedestrians::get()->getDbPedestrianTotal().size() - totalPersonasEvacuadas;
+            const double porcentajeMortalidad = static_cast<double>(totalMortalidad) / 100.0;
+            mortalidad.push_back(porcentajeMortalidad);
+        }
         // imprimir ploteo cuando al final del numero de simulacion y al terminar el tiempo de evacuacion
         if (tiempo::get()->getINumberSimulation() ==  tiempo::get()->getEndNumberSimulation()) {
             FILE* gnuplotPipe = popen("gnuplot -persistent", "w");
@@ -261,9 +264,10 @@ void nodeEvacuation::plotearMortalidadXSimulacion(fileIO* const file) {
                 fprintf(gnuplotPipe, "set xlabel 'Numero de Simulaciones'\n");
                 fprintf(gnuplotPipe, "set ylabel 'Mortalidad (%%)'\n"); 
                 fprintf(gnuplotPipe, "set grid\n");
-                fprintf(gnuplotPipe, "set xtics 1\n");  // Cambia '1' al intervalo que desees
+                // fprintf(gnuplotPipe, "set xtics 1\n");  // Cambia '1' al intervalo que desees
                 fprintf(gnuplotPipe, "set ytics 1\n");  // Cambia '1' al intervalo que desees
                 fprintf(gnuplotPipe, "set mytics 4\n");   // 4 sub-ticks entre cada tick principal
+                fprintf(gnuplotPipe, "set xrange [1:*]\n"); // Asegura que el eje x comience en 1
                 // cracion de plot
                 fprintf(gnuplotPipe, "plot '-' with linespoints notitle\n");
                 for (size_t j = 0; j < numeroSimulaciones.size(); ++j) {

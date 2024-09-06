@@ -49,6 +49,7 @@ private:
         {"pythonOption", "in"},
         {"figureTotalEvacuadosXSimulacion", true},
         {"figureMortalidadXSimulacion", true},
+        {"figureMortalidadXSimulacionPeriod", 1},
         {"opcionSubdivision", "anchoSubdivision"},
         {"cantidadSubdivisiones", 10},
         {"anchoSubdivision", 2.0}
@@ -79,6 +80,7 @@ private:
         {"pythonOption", "string"},
         {"figureTotalEvacuadosXSimulacion", "bool"},
         {"figureMortalidadXSimulacion", "bool"},
+        {"figureMortalidadXSimulacionPeriod", "int"},
         {"valoresNumeroSimulacion", "string"},
         {"opcionSubdivision", "string"},
         {"cantidadSubdivisiones", "int"},

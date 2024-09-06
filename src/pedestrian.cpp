@@ -323,7 +323,7 @@ void pedestrian::modelamientoPedestrian() {
                     // reinicia el valor del reward
                     reward = 0;
                     // guarda el Qcurents antes que sea cambiado
-                    stateMatrixPreviousPtr = stateMatrixCurrentPtr;
+                    // stateMatrixPreviousPtr = stateMatrixCurrentPtr;
                     QPreviousPtr = QCurrentPtr;
                     // ahora la interseccion final es la interseccion inicial.
                     nodeInicioPtr = nodeFinalPtr;
@@ -372,8 +372,11 @@ void pedestrian::modelamientoPedestrian() {
             else {
                 // modelamiento cuando la persona esta dentro de la calle
                 if (estadoPedestrian == evacuando) {
-                    // velocidad con random
-                    velocidadPedestrian.calcularAjusteRandom();
+                    // solo agrega cuando no esta en la interseccion
+                    if (tiempo::get()->getPedestrianCountPeriod()) {
+                        // velocidad con random
+                        velocidadPedestrian.calcularAjusteRandom();
+                    }
                     // camina la persona
                     caminar();    
                    // calcula posicion en subdivion 

@@ -71,12 +71,12 @@ std::string stateMatrixs::creacionFileStateMatrix() const {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // aumento del numero de simulacion
     const std::string preName = "sim_";
-    // const std::string typeFile = ".csv";
+    const std::string typeFile = ".csv";
     std::ostringstream filenameStream;
     // Crea el archivo inicial con el siguiente formato sim_000000001.csv
     filenameStream << std::setw(9) << std::setfill('0') << tiempo::get()->getINumberSimulation() ;
     // Nombre final de exportacion 
-    return preName + filenameStream.str();
+    return preName + filenameStream.str() + typeFile;
 }
 std::string stateMatrixs::encontrarUltimoFile() {
     // Encontrar la ultima simulacion para leerla
@@ -159,7 +159,7 @@ void stateMatrixs::leerActionsDb(std::fstream& file) {
                 }
                 // agrega en action cada coneccion de calle segun el nodo 
                 actiondb.at(idNode).at(i) = links::get()->getDbLinkTotal().at(idLink).get();
-                std::cout << actiondb.at(idNode).at(i)->getIdLink() << " ";
+                // std::cout << actiondb.at(idNode).at(i)->getIdLink() << " ";
                 // Ignora la coma entre valores, si no es el último valor
                 if (i < cantidadLinks - 1) {
                     iss >> comma;  // Lee y descarta la coma
@@ -169,26 +169,21 @@ void stateMatrixs::leerActionsDb(std::fstream& file) {
                     }
                 }
             }
-            std::cout << std::endl;
         }
     } 
 }
 void stateMatrixs::leerDbStateMatrixs() {
-    // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
-    // if (dictionary::controlDict["computationContinued"] == "yes") {
     if (std::get<std::string>(dictionary::get()->lookupDefault("sarsaProcesses")) == "trained") {
         dictionary::get()->getControlDict()["computationContinued"] = "yes";
     }
+    // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
     if (std::get<bool>(dictionary::get()->lookupDefault("computationContinued")) == true) {
         // lectura de datos de stateMatrixs de la version en python,
         // se debe leer de acuerdo a al orden a las conecciones de calles
-        if (std::get<std::string>(dictionary::get()->lookupDefault("pythonOption")) == "in") {
-            std::cout << "1" << std::endl;
+        if (std::get<bool>(dictionary::get()->lookupDefault("pythonVersion")) == true
+        and std::get<std::string>(dictionary::get()->lookupDefault("pythonOption")) == "in") {
             leerActionsDb(io::fileActionsDb.getFileFstream());
-            std::cout << "2" << std::endl;
         }
-        // /* Empieza el timing*/
-        // auto start = std::chrono::high_resolution_clock::now();
         /* Lectura de datos de una simulación pasada.*/
         std::fstream file;
         file.open(simulationFile + std::get<std::string>(dictionary::get()->lookup("previousComputationFile")), std::ios::in);
@@ -203,7 +198,6 @@ void stateMatrixs::leerDbStateMatrixs() {
         // Actualizar la calle o linkActual, que es la calle por donde ira la persona. 
 
         // Guardar cada linea del archivo filname en la variable line.
-        std::string line;
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         // id     |-->| ID DEL NODO O DE LA INTERSECCION
         // s      |-->| ESTADO DE UNA DE LAS CALLES EN linksConnection DE UN NODO
@@ -214,11 +208,11 @@ void stateMatrixs::leerDbStateMatrixs() {
         // AMBITO
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         // id podria pasar unsigned short int
+        std::string line;
         int idNode;
         int s;
         double Qa;
         int O;
-        int o1, o2, o3, o4, o5, o6, o7, o8, o9, o10;
         std::string p0;
         std::string idNode_str;
         std::string s_str;
@@ -238,7 +232,7 @@ void stateMatrixs::leerDbStateMatrixs() {
             // Guarda la variable idNode
             std::getline(iss, idNode_str, ',');
             idNode = std::stoi(idNode_str);
-            node* nodeLeido = nodes::get()->getDbNodeTotal().at(idNode).get();
+            node* const nodeLeido = nodes::get()->getDbNodeTotal().at(idNode).get();
             // !-----------------------------------------------------------------------
             // Guarda los elementos de state
             stateLeido.clear();
@@ -255,50 +249,98 @@ void stateMatrixs::leerDbStateMatrixs() {
             // !-----------------------------------------------------------------------
             // Elementos de Q
             // cuando se lee archivos stateMatrix de python
-            if (std::get<std::string>(dictionary::get()->lookupDefault("pythonOption")) == "in") {
-                std::cout << idNode << std::endl;
+            if (std::get<std::string>(dictionary::get()->lookupDefault("pythonOption")) == "in" and
+            std::get<bool>(dictionary::get()->lookupDefault("pythonVersion")) == true) {
                 QsLeido.clear();
                 QsLeido.resize(nodeLeido->getLinkConnectionsPtr().size());
                 for (int i = 0; i < io::tamanoElementosIO; ++i) {
-                    if (i < nodeLeido->getLinkConnectionsPtr().size()) {
-                        std::getline(iss, Q_str, ',');
-                        Qa = std::stod(Q_str);
-                        QsLeido[i] = Q(Qa, actiondb.at(idNode).at(i));
-
-                    } 
-                    else {
-                        std::getline(iss, p0, ',');
+                    // verificar si es nodo de evacuacion
+                    if(nodeLeido->verificarNodoEvacuation()){
+                        if (i == 0) {
+                            std::getline(iss, Q_str, ',');
+                            Qa = std::stod(Q_str);
+                            QsLeido[i] = Q(Qa);
+                        }
+                        else {
+                            std::getline(iss, p0, ',');
+                        }
                     }
+                    // cuando no es un nodo de evacuacion
+                    else {
+                        if (i < nodeLeido->getLinkConnectionsPtr().size()) {
+                            std::getline(iss, Q_str, ',');
+                            Qa = std::stod(Q_str);
+                            QsLeido[i] = Q(Qa, actiondb.at(idNode).at(i));
+                        } 
+                        else {
+                            std::getline(iss, p0, ',');
+                        }
+                    }
+
                 }
-                std::cout << idNode << std::endl;
             }
+            // cuando se lee un archivo stateMatrix del mismo programa
             else {
                 QsLeido.clear();
+                // recorre el tamaño de elementos, por general es 10
                 for (int i = 0; i < io::tamanoElementosIO; ++i) {
-                    if (i < nodeLeido->getLinkConnectionsPtr().size()) {
-                        std::getline(iss, Q_str, ',');
-                        Qa = std::stod(Q_str);
-                        QsLeido.push_back(Q(Qa, nodeLeido->getLinkConnectionsPtr().at(i)));
-                    } 
+                    // verificar si es nodo de evacuacion
+                    if(nodeLeido->verificarNodoEvacuation()){
+                        if (i == 0) {
+                            std::getline(iss, Q_str, ',');
+                            Qa = std::stod(Q_str);
+                            QsLeido.push_back(Q(Qa));
+                        }
+                        else {
+                            std::getline(iss, p0, ',');
+                        }
+                    }
+                    // cuando no es un nodo de evacuacion
                     else {
-                        std::getline(iss, p0, ',');
+                        if (i < nodeLeido->getLinkConnectionsPtr().size()) {
+                            std::getline(iss, Q_str, ',');
+                            Qa = std::stod(Q_str);
+                            QsLeido.push_back(Q(Qa, nodeLeido->getLinkConnectionsPtr().at(i)));
+                        } 
+                        else {
+                            std::getline(iss, p0, ',');
+                        }
                     }
                 }
             }
             // !-----------------------------------------------------------------------
             // Elementos de observacion
             for (int i = 0; i < io::tamanoElementosIO; ++i) {
-                if (i < nodeLeido->getLinkConnectionsPtr().size()) {
-                    // siempre paso las observacines
-                    std::getline(iss, O_str, ',');
-                    // si quiero leer observaciones pasadas
-                    if (std::get<bool>(dictionary::get()->lookupDefault("observationStatePedestrian")) == true) {
-                        O = std::stod(O_str);
-                        QsLeido.at(i).setObservaciones(O);
+                // verificar si es nodo de evacuacion
+                if(nodeLeido->verificarNodoEvacuation()){
+                    if (i == 0) {
+                        // siempre paso las observacines
+                        std::getline(iss, O_str, ',');
+                        // si quiero leer observaciones pasadas
+                        if (std::get<bool>(dictionary::get()->lookupDefault("observationStatePedestrian")) == true) {
+                            O = std::stod(O_str);
+                            QsLeido.at(i).setObservaciones(O);
+                        }
+                    } 
+                    else {
+                        std::getline(iss, p0, ',');
                     }
-                } 
+                }
+                // si no es nodo de evacuacion
                 else {
-                    std::getline(iss, p0, ',');
+                    if (i < nodeLeido->getLinkConnectionsPtr().size()) {
+                        // siempre paso las observacines
+                        std::getline(iss, O_str, ',');
+                        // si quiero leer observaciones pasadas
+                        if (std::get<bool>(dictionary::get()->lookupDefault("observationStatePedestrian")) == true) {
+                            O = std::stod(O_str);
+                            QsLeido.at(i).setObservaciones(O);
+                        }
+                    } 
+                    else {
+                        std::getline(iss, p0, ',');
+                    }
+                 
                 }
             }
             // creaciones del stateMatrix

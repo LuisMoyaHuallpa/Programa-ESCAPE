@@ -80,14 +80,14 @@ bool dirIO::verificarDirExists() const{
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 fileIO::fileIO(const std::string& fileName) :
     fileName(fileName),
-    fullPath(fileName + ".csv"),
+    fullPath(fileName),
     directory(nullptr)
 {
     crearFile();
 }
 fileIO::fileIO(const std::string& fileName, const bool checkFile) :
     fileName(fileName),
-    fullPath(fileName + ".csv"),
+    fullPath(fileName),
     directory(nullptr)
 {
     // solo crear si checkFile es true
@@ -95,7 +95,7 @@ fileIO::fileIO(const std::string& fileName, const bool checkFile) :
         crearFile();
     }
 }
-fileIO::fileIO(const std::string& fileName, const bool checkFile, const std::string extension) :
+fileIO::fileIO(const std::string& fileName, const std::string extension,const bool checkFile) :
     fileName(fileName),
     fullPath(fileName + "." +  extension),
     directory(nullptr)
@@ -105,7 +105,7 @@ fileIO::fileIO(const std::string& fileName, const bool checkFile, const std::str
         crearFile();
     }
 }
-fileIO::fileIO(const std::string& fileName,  const std::string extension, const bool checkFile, const std::string& inoutStr) :
+fileIO::fileIO(const std::string& fileName,  const std::string extension, const std::string& inoutStr, const bool checkFile) :
     fileName(fileName),
     fullPath(fileName + "." +  extension),
     directory(nullptr)
@@ -118,17 +118,28 @@ fileIO::fileIO(const std::string& fileName,  const std::string extension, const 
 fileIO::fileIO(const std::string& fileName,const dirIO* directory) :
     fileName(fileName),
     directory(directory),
-    fullPath(directory->getFullPath() + fileName + ".csv")
+    fullPath(directory->getFullPath() + fileName)
 {
     crearFile();
 }
-fileIO::fileIO(const std::string& fileName,const dirIO* directory, const std::string extension) :
+fileIO::fileIO(const std::string& fileName,const std::string extension, const dirIO* directory) :
     fileName(fileName),
     directory(directory),
     fullPath(directory->getFullPath() + fileName + "." + extension)
 {
     crearFile();
 }
+fileIO::fileIO(const std::string& fileName,  const std::string extension, const std::string& inoutStr, const bool checkFile, const dirIO* directory) :
+    fileName(fileName),
+    directory(directory),
+    fullPath(directory->getFullPath() + fileName + "." + extension)
+{
+    // solo crear si checkFile es true
+    if (checkFile) {
+        openFile(inoutFile(inoutStr));
+    }
+}
+
 
 
 
@@ -181,12 +192,12 @@ dirIO io::directoryData("data");
 dirIO io::directoryPostprocessing("postprocessing");
 dirIO io::directorySnapshot("snapshot", &directoryPostprocessing);
 dirIO io::directoryStateMatrices("stateMatrices");
-fileIO io::fileTotalEvacuatedCount("totalEvacuatedCount", &directoryData);
-fileIO io::fileEvacuatedCount("evacuatedCount", &directoryData);
-fileIO io::fileActionsDb("actionsdb", "csv", std::get<bool>(dictionary::get()->lookup("pythonVersion")), std::get<std::string>(dictionary::get()->lookup("pythonOption")));
-fileIO io::fileTranstionsDb("transitionsdb", std::get<std::string>(dictionary::get()->lookup("pythonOption")) == "out", "csv");
-fileIO io::figureTotalEvacuadosXSimulacion("figureTotalEvacuadosXSimulacion", &directoryData, "png");
-fileIO io::figureMortalidadXSimulacion("figureMortalidadXSimulacion", &directoryData, "png");
+fileIO io::fileTotalEvacuatedCount("totalEvacuatedCount", "csv", "out", std::get<std::string>(dictionary::get()->lookup("sarsaProcesses"))=="trained", &directoryData);
+fileIO io::fileEvacuatedCount("evacuatedCount", "csv", "out", std::get<std::string>(dictionary::get()->lookup("sarsaProcesses"))=="trained", &directoryData);
+fileIO io::fileActionsDb("actionsdb", "csv", std::get<std::string>(dictionary::get()->lookup("pythonOption")), std::get<bool>(dictionary::get()->lookup("pythonVersion")));
+fileIO io::fileTranstionsDb("transitionsdb", "csv", std::get<std::string>(dictionary::get()->lookupDefault("pythonOption")) == "out");
+fileIO io::figureTotalEvacuadosXSimulacion("figureTotalEvacuadosXSimulacion", "png", "out", std::get<std::string>(dictionary::get()->lookup("sarsaProcesses"))=="calibration", &directoryData);
+fileIO io::figureMortalidadXSimulacion("figureMortalidadXSimulacion", "png", "out", std::get<std::string>(dictionary::get()->lookup("sarsaProcesses"))=="calibration", &directoryData);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
@@ -258,7 +269,7 @@ void io::imprimirOutput() {
         // ploteo total personas evacuadas por simulacion
         nodeEvacuation::plotearTotalEvacuadosXSimulacion(&figureTotalEvacuadosXSimulacion);
         // imprimir actionDb
-        if (std::get<std::string>(dictionary::get()->lookup("pythonOption")) == "out") {
+        if (std::get<bool>(dictionary::get()->lookupDefault("pythonVersion")) == true and std::get<std::string>(dictionary::get()->lookupDefault("pythonOption")) == "out") {
             // cuando este numero de simulacion 1 y sea final de la evacuacion
             if (tiempo::get()->getINumberSimulation() == tiempo::get()->getStartNumberSimulation()
             and tiempo::get()->getValorTiempo() == tiempo::get()->getEndTime()) {

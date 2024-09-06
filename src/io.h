@@ -57,10 +57,11 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     fileIO(const std::string& fileName);
     fileIO(const std::string& fileName, const bool checkFile);
-    fileIO(const std::string& fileName, const bool checkFile, const std::string extension);
-    fileIO(const std::string& fileName, const std::string extension, const bool checkFile, const std::string& inoutStr);
+    fileIO(const std::string& fileName, const std::string extension, const bool checkFile);
+    fileIO(const std::string& fileName, const std::string extension, const std::string& inoutStr, const bool checkFile);
     fileIO(const std::string& fileName, const dirIO* directory);
-    fileIO(const std::string& fileName, const dirIO* directory, const std::string extension);
+    fileIO(const std::string& fileName, const std::string extension, const dirIO* directory);
+    fileIO(const std::string& fileName, const std::string extension, const std::string& inoutStr, const bool checkFile, const dirIO* directory);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getters
