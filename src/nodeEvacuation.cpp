@@ -237,6 +237,32 @@ void nodeEvacuation::plotearTotalEvacuadosXSimulacion(fileIO* const file) {
         }
     }
 }
+void nodeEvacuation::imprimirTotalEvacuadosXSimulacion(fileIO* const file) {
+    // reviza el dictionario la opcion esta activada, por default esta activado
+    if (std::get<bool>(dictionary::get()->lookupDefault(file->getFileName())) == true) {
+        // elementos de simulaciones a imprimir
+        std::vector<int> tiempoSimulacion;
+        auto it1 = dictionary::get()->getControlDict().find("valoresNumeroSimulacion");
+        if (it1 != dictionary::get()->getControlDict().end()) {
+            // Clave encontrada, proceder con la operación
+            static std::string valoresNumeroSimulacion = std::get<std::string>(it1->second);
+            tiempoSimulacion = stringToVector(valoresNumeroSimulacion);
+        }
+        // valores por default
+        else {
+            tiempoSimulacion = {1,2,3};
+        }
+        // const std::vector<int> tiempoSimulacion = {1, 2, 3};
+        auto it = std::find(tiempoSimulacion.begin(), tiempoSimulacion.end(), tiempo::get()->getINumberSimulation());
+        // solo entra en el numero de simulacion que pide tiempoSimulacion
+        if (it != tiempoSimulacion.end()) {
+            // enviar datos a un archivo tabla
+            file->getFileFstream() << tiempo::get()->getValorTiempo() << ",";
+            file->getFileFstream() << totalPersonasEvacuadas;
+            file->getFileFstream() << std::endl;
+        }
+    }
+}
 void nodeEvacuation::plotearMortalidadXSimulacion(fileIO* const file) {
     // reviza el dictionario la opcion esta activada, por default esta activado
     if (std::get<bool>(dictionary::get()->lookupDefault(file->getFileName())) == true) {
@@ -276,6 +302,25 @@ void nodeEvacuation::plotearMortalidadXSimulacion(fileIO* const file) {
                 fprintf(gnuplotPipe, "e\n");
                 pclose(gnuplotPipe);
             }
+        }
+    }
+}
+void nodeEvacuation::imprimirMortalidadXSimulacion(fileIO* const file) {
+    // reviza el dictionario la opcion esta activada, por default esta activado
+    if (std::get<bool>(dictionary::get()->lookupDefault(file->getFileName())) == true) {
+        static std::vector<int> numeroSimulaciones;
+        static std::vector<double> mortalidad;
+        // numero de simulacion
+        const int numeroSimulacion = tiempo::get()->getINumberSimulation();
+        // solo guarda segun el perido en segundos que se le asigne
+        if (numeroSimulacion % std::get<int>(dictionary::get()->lookupDefault("figureMortalidadXSimulacionPeriod")) == 0 or numeroSimulacion == 1) {
+            // calculo porcentaje
+            const int totalMortalidad = pedestrians::get()->getDbPedestrianTotal().size() - totalPersonasEvacuadas;
+            const double porcentajeMortalidad = static_cast<double>(totalMortalidad) / 100.0;
+            // enviarlo a archivo tablas
+            file->getFileFstream() << numeroSimulacion << ","; 
+            file->getFileFstream() << porcentajeMortalidad; 
+            file->getFileFstream() << std::endl; 
         }
     }
 }

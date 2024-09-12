@@ -197,7 +197,9 @@ fileIO io::fileEvacuatedCount("evacuatedCount", "csv", "out", std::get<std::stri
 fileIO io::fileActionsDb("actionsdb", "csv", std::get<std::string>(dictionary::get()->lookupDefault("pythonOption")), std::get<bool>(dictionary::get()->lookupDefault("pythonVersion")));
 fileIO io::fileTranstionsDb("transitionsdb", "csv", std::get<std::string>(dictionary::get()->lookupDefault("pythonOption")) == "out");
 fileIO io::figureTotalEvacuadosXSimulacion("figureTotalEvacuadosXSimulacion", "png", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="calibration", &directoryData);
+fileIO io::fileTotalEvacuadosXSimulacion("totalEvacuadosXSimulacion", "csv", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="calibration", &directoryData);
 fileIO io::figureMortalidadXSimulacion("figureMortalidadXSimulacion", "png", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="calibration", &directoryData);
+fileIO io::fileMortalidadXSimulacion("mortalidadXSimulacion", "csv", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="calibration", &directoryData);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
@@ -265,9 +267,11 @@ void io::imprimirOutput() {
             stateMatrixs::get()->imprimirDbStateMatrixs(&stateMatrice);
             // ploteo mortalidad por simulacion
             nodeEvacuation::plotearMortalidadXSimulacion(&figureMortalidadXSimulacion);
+            nodeEvacuation::imprimirMortalidadXSimulacion(&fileMortalidadXSimulacion);
         }
         // ploteo total personas evacuadas por simulacion
         nodeEvacuation::plotearTotalEvacuadosXSimulacion(&figureTotalEvacuadosXSimulacion);
+        nodeEvacuation::imprimirTotalEvacuadosXSimulacion(&fileTotalEvacuadosXSimulacion);
         // imprimir actionDb
         if (std::get<bool>(dictionary::get()->lookupDefault("pythonVersion")) == true and std::get<std::string>(dictionary::get()->lookupDefault("pythonOption")) == "out") {
             // cuando este numero de simulacion 1 y sea final de la evacuacion

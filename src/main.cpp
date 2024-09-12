@@ -35,7 +35,6 @@ int main() {
             io::get()->imprimirOutput();
             // pone en 0 los elementos valores sublink            
             links::get()->resetSublinks();
-            // pedestrians::get()->reset();
         }
         // mostrar resultados simulation
         tiempo::get()->mostrarIResultadosSimulacion();

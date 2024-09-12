@@ -77,7 +77,9 @@ public:
     void static imprimirNodeEvacuation(fileIO* const file);
     void static imprimirTotalPersonasEvacuadas(fileIO* const file);
     void static plotearTotalEvacuadosXSimulacion(fileIO* const file);
+    void static imprimirTotalEvacuadosXSimulacion(fileIO* const file);
     void static plotearMortalidadXSimulacion(fileIO* const file);
+    void static imprimirMortalidadXSimulacion(fileIO* const file);
     void static imprimirVariableTotalPersonasEvacuadas(fileIO* const file);
 
 

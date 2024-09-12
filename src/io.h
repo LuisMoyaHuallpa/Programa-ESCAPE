@@ -114,7 +114,9 @@ public:
     static fileIO fileActionsDb;
     static fileIO fileTranstionsDb;
     static fileIO figureTotalEvacuadosXSimulacion;
+    static fileIO fileTotalEvacuadosXSimulacion;
     static fileIO figureMortalidadXSimulacion;
+    static fileIO fileMortalidadXSimulacion;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static
