@@ -211,7 +211,7 @@ void nodeDestino::plotearTotalEvacuadosXSimulacion(fileIO* const file) {
                 fprintf(gnuplotPipe, "set output '%s'\n", file->getFullPath().c_str());
                 fprintf(gnuplotPipe, "set xlabel 'Tiempo (s)'\n");
                 fprintf(gnuplotPipe, "set ylabel 'Total de personas evacuadas'\n");
-                fprintf(gnuplotPipe, "set title 'Personas Evacuadas en el Tiempo'\n");
+                fprintf(gnuplotPipe, "set title 'Personas evacuadas en el tiempo'\n");
                 fprintf(gnuplotPipe, "set grid\n");
                 // Posicionar los títulos a la izquierda
                 fprintf(gnuplotPipe, "set key left\n");
@@ -268,17 +268,14 @@ void nodeDestino::plotearMortalidadXSimulacion(fileIO* const file) {
     // reviza el dictionario la opcion esta activada, por default esta activado
     if (std::get<bool>(dictionary::get()->lookupDefault(file->getFileName())) == true) {
         static std::vector<int> numeroSimulaciones;
-        static std::vector<double> mortalidad;
+        static std::vector<double> survivors;
         // numero de simulacion
         const int numeroSimulacion = tiempo::get()->getINumberSimulation();
         // solo guarda segun el perido en segundos que se le asigne
         if (numeroSimulacion % std::get<int>(dictionary::get()->lookupDefault("mortalidadXSimulacionPeriod")) == 0 or numeroSimulacion == 1) {
             // guardo datos en data para luego plotearlos
             numeroSimulaciones.push_back(numeroSimulacion);
-            // calculo porcentaje
-            const int totalMortalidad = pedestrians::get()->getDbPedestrianTotal().size() - totalPersonasEvacuadas;
-            const double porcentajeMortalidad = static_cast<double>(totalMortalidad) / 100.0;
-            mortalidad.push_back(porcentajeMortalidad);
+            survivors.push_back(totalPersonasEvacuadas);
         }
         // imprimir ploteo cuando al final del numero de simulacion y al terminar el tiempo de evacuacion
         if (tiempo::get()->getINumberSimulation() ==  tiempo::get()->getEndNumberSimulation()) {
@@ -288,17 +285,17 @@ void nodeDestino::plotearMortalidadXSimulacion(fileIO* const file) {
                 fprintf(gnuplotPipe, "set terminal png size 800,600\n");
                 // Usa la ruta completa
                 fprintf(gnuplotPipe, "set output '%s'\n", file->getFullPath().c_str());
-                fprintf(gnuplotPipe, "set xlabel 'Numero de Simulaciones'\n");
-                fprintf(gnuplotPipe, "set ylabel 'Mortalidad (%%)'\n"); 
+                fprintf(gnuplotPipe, "set xlabel 'Numero de simulaciones'\n");
+                fprintf(gnuplotPipe, "set ylabel 'Numero de sobrevivientes'\n"); 
                 fprintf(gnuplotPipe, "set grid\n");
                 // fprintf(gnuplotPipe, "set xtics 1\n");  // Cambia '1' al intervalo que desees
-                fprintf(gnuplotPipe, "set ytics 1\n");  // Cambia '1' al intervalo que desees
-                fprintf(gnuplotPipe, "set mytics 4\n");   // 4 sub-ticks entre cada tick principal
+                // fprintf(gnuplotPipe, "set ytics 1\n");  // Cambia '1' al intervalo que desees
+                // fprintf(gnuplotPipe, "set mytics 4\n");   // 4 sub-ticks entre cada tick principal
                 fprintf(gnuplotPipe, "set xrange [1:*]\n"); // Asegura que el eje x comience en 1
                 // cracion de plot
                 fprintf(gnuplotPipe, "plot '-' with linespoints notitle\n");
                 for (size_t j = 0; j < numeroSimulaciones.size(); ++j) {
-                    fprintf(gnuplotPipe, "%d %lf\n", numeroSimulaciones.at(j), mortalidad.at(j));
+                    fprintf(gnuplotPipe, "%d %lf\n", numeroSimulaciones.at(j), survivors.at(j));
                 }
                 fprintf(gnuplotPipe, "e\n");
                 pclose(gnuplotPipe);
@@ -315,12 +312,9 @@ void nodeDestino::imprimirMortalidadXSimulacion(fileIO* const file) {
         const int numeroSimulacion = tiempo::get()->getINumberSimulation();
         // solo guarda segun el perido en segundos que se le asigne
         if (numeroSimulacion % std::get<int>(dictionary::get()->lookupDefault("mortalidadXSimulacionPeriod")) == 0 or numeroSimulacion == 1) {
-            // calculo porcentaje
-            const int totalMortalidad = pedestrians::get()->getDbPedestrianTotal().size() - totalPersonasEvacuadas;
-            const double porcentajeMortalidad = static_cast<double>(totalMortalidad) / 100.0;
             // enviarlo a archivo tablas
             file->getFileFstream() << numeroSimulacion << ","; 
-            file->getFileFstream() << porcentajeMortalidad; 
+            file->getFileFstream() << totalPersonasEvacuadas; 
             file->getFileFstream() << std::endl; 
         }
     }
