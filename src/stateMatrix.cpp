@@ -5,7 +5,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "Q.h"
 #include "io.h"
-#include "nodeEvacuation.h"
+#include "nodeDestino.h"
 #include "pedestrian.h"
 #include "stateMatrixs.h"
 #include <vector>
@@ -25,9 +25,9 @@ stateMatrix::stateMatrix()
 {
   
 }
-stateMatrix::stateMatrix(const nodeEvacuation* const nodeEvacuationPtr, const std::vector<int> state)
+stateMatrix::stateMatrix(const nodeDestino* const nodeDestinoPtr, const std::vector<int> state)
     :
-    nodoPtr(nodeEvacuationPtr),
+    nodoPtr(nodeDestinoPtr),
     state(state),
     Qs(1, Q(pedestrian::surviveReward))
 {
@@ -217,8 +217,8 @@ stateMatrix* stateMatrix::creacionObtencionStateMatrix(
         }
     }
     // creacion del stateMatrix experimentado
-    stateMatrix* nuevoStateMatrix = (dynamic_cast<nodeEvacuation*>(nodo)) 
-        ? new stateMatrix(static_cast<nodeEvacuation*>(nodo), stateObservado)
+    stateMatrix* nuevoStateMatrix = (dynamic_cast<nodeDestino*>(nodo)) 
+        ? new stateMatrix(static_cast<nodeDestino*>(nodo), stateObservado)
         : new stateMatrix(nodo, stateObservado);
     std::vector<stateMatrix*>& dbStateMatrix = stateMatrixs::get()->getDbStateMatrixs();
     dbStateMatrix.emplace_back(nuevoStateMatrix);

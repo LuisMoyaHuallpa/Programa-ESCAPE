@@ -104,7 +104,7 @@ void tiempo::aumentarINumberSimulation() {
     // reiniciar el tiempo
     valorTiempo = 0;
     // reiniciar el conteo de personas Evacuadas
-    nodeEvacuation::totalPersonasEvacuadas = 0;
+    nodeDestino::totalPersonasEvacuadas = 0;
     // regresar a las personas al nodo de arranque
     pedestrians::get()->reiniciarPedestrians();
     nodes::get()->reiniciarNodesEvacuations();
@@ -189,13 +189,13 @@ bool tiempo::running() const {
         return false;
     }
     // Verificar si todas las personas han sido evacuadas
-    return !nodeEvacuation::verificarEvacuacionTotal();
+    return !nodeDestino::verificarEvacuacionTotal();
 }
 void tiempo::mostrarIResultadosSimulacion() {
     // mostrar 
     std::cout << "***** Simu: " << iNumberSimulation << " *****" << std::endl;
     std::cout << "epsilon greedy - exploration: " << randomChoiceRate << std::endl;
-    std::cout << "survived pedestrian: " << nodeEvacuation::getTotalPersonasEvacuadas() << std::endl;
+    std::cout << "survived pedestrian: " << nodeDestino::getTotalPersonasEvacuadas() << std::endl;
     // termino de la simulacion
     endTimeSimulation = std::chrono::high_resolution_clock::now();
     // tiempo de simulacion

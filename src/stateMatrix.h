@@ -18,7 +18,7 @@ Una fila de archivo de entrada o salida.
 
 // forward declaration
 class node;
-class nodeEvacuation;
+class nodeDestino;
 
 
 class stateMatrix {
@@ -44,7 +44,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     stateMatrix();
     stateMatrix(const node* const nodePtr, const std::vector<int> state);
-    stateMatrix(const nodeEvacuation* const nodeEvacuationPtr, const std::vector<int> state);
+    stateMatrix(const nodeDestino* const nodeDestinoPtr, const std::vector<int> state);
     stateMatrix(const node* const nodePtr, const std::vector<int> state, std::vector<Q> Qs);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

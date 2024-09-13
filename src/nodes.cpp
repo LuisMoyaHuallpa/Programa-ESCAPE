@@ -1,5 +1,5 @@
 #include "nodes.h"
-#include "nodeEvacuation.h"
+#include "nodeDestino.h"
 #include <vector>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -27,7 +27,7 @@ std::string nodes::getFileName() {
 std::vector<std::shared_ptr<node>> nodes::getDbNodeTotal() {
     return dbNodeTotal;
 }
-std::vector<nodeEvacuation *> nodes::getDbNodeEvacuation() {
+std::vector<nodeDestino *> nodes::getDbNodeEvacuation() {
     return dbNodeEvacuation;
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -101,21 +101,21 @@ void nodes::leerNodes(std::string fileName) {
             nodes::dbNodeTotal.push_back(std::move(nodoNuevo));
         }
         else if (e==1) {
-            std::unique_ptr<nodeEvacuation> nodoEvacuationNuevo = std::make_unique<nodeEvacuation>(n, vector2D(x, y));
+            std::unique_ptr<nodeDestino> nodoEvacuationNuevo = std::make_unique<nodeDestino>(n, vector2D(x, y));
             // nodeEvacuation nodoEvacuationNuevo= nodeEvacuation(n, x, y);
             dbNodeTotal.push_back(std::move(nodoEvacuationNuevo));
             // crear un array de nodos de evacuacion
-            dbNodeEvacuation.push_back(dynamic_cast<nodeEvacuation*>(dbNodeTotal.back().get()));
+            dbNodeEvacuation.push_back(dynamic_cast<nodeDestino*>(dbNodeTotal.back().get()));
         }
         // nodo evacuacion limitado
         else if (e==2) {
             // lectura de maxima cantidad de personas evacuadas en ese nodo
             std::getline(iss, m_str, ',');
             m = std::stoi(m_str);
-            std::unique_ptr<nodeEvacuation> nodoEvacuationNuevo = std::make_unique<nodeEvacuation>(n, vector2D(x, y), m);
+            std::unique_ptr<nodeDestino> nodoEvacuationNuevo = std::make_unique<nodeDestino>(n, vector2D(x, y), m);
             dbNodeTotal.push_back(std::move(nodoEvacuationNuevo));
             // crear un array de nodos de evacuacion
-            dbNodeEvacuation.push_back(dynamic_cast<nodeEvacuation*>(dbNodeTotal.back().get()));
+            dbNodeEvacuation.push_back(dynamic_cast<nodeDestino*>(dbNodeTotal.back().get()));
         }
         std::getline(iss, r_str, '\n');
         r = std::stoi(r_str);

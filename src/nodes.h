@@ -19,7 +19,7 @@ Punto de interseccion de calles.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "node.h"
 #include "vector2D.h"
-#include "nodeEvacuation.h"
+#include "nodeDestino.h"
 #include "dictionary.h"
 
 class nodes{
@@ -34,7 +34,7 @@ private:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     std::string fileName;
     std::vector<std::shared_ptr<node>> dbNodeTotal;
-    std::vector<nodeEvacuation*> dbNodeEvacuation;
+    std::vector<nodeDestino*> dbNodeEvacuation;
 
 
 
@@ -50,7 +50,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     std::string getFileName();
     std::vector<std::shared_ptr<node>> getDbNodeTotal();
-    std::vector<nodeEvacuation*> getDbNodeEvacuation();
+    std::vector<nodeDestino*> getDbNodeEvacuation();
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static getters

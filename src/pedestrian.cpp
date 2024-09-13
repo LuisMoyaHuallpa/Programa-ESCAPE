@@ -2,7 +2,7 @@
 
 #include "node.h"
 #include "link.h"
-#include "nodeEvacuation.h"
+#include "nodeDestino.h"
 #include "sarsa.h"
 #include "stateMatrix.h"
 #include "stateMatrixs.h"
@@ -356,7 +356,7 @@ void pedestrian::modelamientoPedestrian() {
                 QCurrentPtr->aumentar1Observacion();
                 // excepto al iniciar
                 if (estadoPedestrian == evacuado) {
-                    dynamic_cast<nodeEvacuation*>(nodeInicioPtr)->contabilizarPersona(this);
+                    dynamic_cast<nodeDestino*>(nodeInicioPtr)->contabilizarPersona(this);
                 }
                 if (std::get<std::string>(dictionary::get()->lookupDefault("process")) == "calibration"){
                     if(!(tiempoInicial == tiempoActual)){

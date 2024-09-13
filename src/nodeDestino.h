@@ -1,5 +1,5 @@
-#ifndef nodeEvacuation_h
-#define nodeEvacuation_h
+#ifndef nodeDestino_h
+#define nodeDestino_h
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // header propios
@@ -13,7 +13,7 @@
 // forward declaration
 class pedestrian;
 
-class nodeEvacuation: public node {
+class nodeDestino: public node {
     
 private:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -38,9 +38,9 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // constructor
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    nodeEvacuation();
-    nodeEvacuation(const int id, const vector2D coordenada);
-    nodeEvacuation(const int id, const vector2D coordenada, const int maxPersonasEvacuadas);
+    nodeDestino();
+    nodeDestino(const int id, const vector2D coordenada);
+    nodeDestino(const int id, const vector2D coordenada, const int maxPersonasEvacuadas);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // setters

@@ -1,6 +1,6 @@
-#include "nodeEvacuation.h"
+#include "nodeDestino.h"
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// extra 
+// Extra 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "io.h"
 #include "nodes.h"
@@ -15,24 +15,24 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-int nodeEvacuation::totalPersonasEvacuadas=0;
-int nodeEvacuation::maxPersonasEvacuadasGlobal=1000;
-bool nodeEvacuation::evacuacionTotal=false;
+int nodeDestino::totalPersonasEvacuadas=0;
+int nodeDestino::maxPersonasEvacuadasGlobal=1000;
+bool nodeDestino::evacuacionTotal=false;
 
-std::string nodeEvacuation::getNodeType() {
-    return "nodeEvacuation";
+std::string nodeDestino::getNodeType() {
+    return "nodeDestino";
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-nodeEvacuation::nodeEvacuation(const int id, const vector2D coordenada)
+nodeDestino::nodeDestino(const int id, const vector2D coordenada)
     : node(id, coordenada),
       maxPersonasEvacuadas(-1),
       lleno(false)
 {
 }
-nodeEvacuation::nodeEvacuation(const int id, const vector2D coordenada, const int maxPersonasEvacuadas)
+nodeDestino::nodeDestino(const int id, const vector2D coordenada, const int maxPersonasEvacuadas)
     : node(id, coordenada),
       maxPersonasEvacuadas(maxPersonasEvacuadas),
       lleno(false)
@@ -46,20 +46,20 @@ nodeEvacuation::nodeEvacuation(const int id, const vector2D coordenada, const in
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // getters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-const int nodeEvacuation::getMaxPersonasEvacuadas() const{
+const int nodeDestino::getMaxPersonasEvacuadas() const{
     return maxPersonasEvacuadas;    
 }
-std::vector<pedestrian*> nodeEvacuation::getPersonasEvacuadasPtr() const{
+std::vector<pedestrian*> nodeDestino::getPersonasEvacuadasPtr() const{
     return personasEvacuadasPtr;    
 }
-bool nodeEvacuation::getLleno() const{
+bool nodeDestino::getLleno() const{
     return lleno;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static getters
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-bool nodeEvacuation::verificarEvacuacionTotal() {
+bool nodeDestino::verificarEvacuacionTotal() {
     /* verifica si todas las personas fueron evacuadas */
     const int totalPersonas = pedestrians::get()->getDbPedestrianTotal().size();
     return totalPersonasEvacuadas == totalPersonas;
@@ -68,45 +68,45 @@ bool nodeEvacuation::verificarEvacuacionTotal() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // metodos
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void nodeEvacuation::reiniciar() {
+void nodeDestino::reiniciar() {
     personasEvacuadasPtr.clear();
     lleno = false;
 }
-bool nodeEvacuation::verificarLLeno() const {
+bool nodeDestino::verificarLLeno() const {
     /* verifica si el nodo de evacuacion esta lleno*/
     // compara el tamaño de la lista de personas evacuadas con la cantidad
     // maxima de personas evacuadas en el nodo de evacuacion
     return personasEvacuadasPtr.size() == maxPersonasEvacuadas;
 
 }
-estado nodeEvacuation::estadoPedestrianEnNodo() const {
+estado nodeDestino::estadoPedestrianEnNodo() const {
     /* devuelve el estado de la persona segun el tipo de nodo donde se encuentra */
     return evacuado;
 }
-bool nodeEvacuation::verificarNodoEvacuation() const {
+bool nodeDestino::verificarNodoEvacuation() const {
     /* verifica si el nodo es un node de evacuacion */
     return true;
 }
-std::vector<int> nodeEvacuation::stateObservado() const {
+std::vector<int> nodeDestino::stateObservado() const {
     return {0};
 }
-void nodeEvacuation::contabilizarPersona(pedestrian* const persona) {
+void nodeDestino::contabilizarPersona(pedestrian* const persona) {
     personasEvacuadasPtr.push_back(persona);
     totalPersonasEvacuadas++;
 }
-void nodeEvacuation::imprimirPersonasEvacuadas(std::fstream* file) {
+void nodeDestino::imprimirPersonasEvacuadas(std::fstream* file) {
     *file << personasEvacuadasPtr.size();
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static metods
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-int nodeEvacuation::getTotalPersonasEvacuadas() {
+int nodeDestino::getTotalPersonasEvacuadas() {
     return totalPersonasEvacuadas;
 }    
-void nodeEvacuation::sumarTotalPersonasEvacuadas() {
+void nodeDestino::sumarTotalPersonasEvacuadas() {
     totalPersonasEvacuadas++;
 }
-void nodeEvacuation::imprimirNodeEvacuation(fileIO* const file) {
+void nodeDestino::imprimirNodeEvacuation(fileIO* const file) {
     // reviza el dictionario la opcion esta activada, por default esta activado
     if (std::get<bool>(dictionary::get()->lookupDefault(file->getFileName())) == true) {
         // impresion de id de nodos, solo en tiempo 1 al inicio
@@ -138,7 +138,7 @@ void nodeEvacuation::imprimirNodeEvacuation(fileIO* const file) {
         file->getFileFstream() << std::endl;
     }
 }
-void nodeEvacuation::imprimirTotalPersonasEvacuadas(fileIO* const file) {
+void nodeDestino::imprimirTotalPersonasEvacuadas(fileIO* const file) {
     // reviza el dictionario la opcion esta activada, por default esta activado
     if (std::get<bool>(dictionary::get()->lookupDefault(file->getFileName())) == true) {
         // impresion de tiempo y personas evacuadas
@@ -169,7 +169,7 @@ std::vector<int> stringToVector(const std::string& str) {
 
     return result;
 }
-void nodeEvacuation::plotearTotalEvacuadosXSimulacion(fileIO* const file) {
+void nodeDestino::plotearTotalEvacuadosXSimulacion(fileIO* const file) {
     // reviza el dictionario la opcion esta activada, por default esta activado
     if (std::get<bool>(dictionary::get()->lookupDefault(file->getFileName())) == true) {
         class totalPersonasEvacuadasXSimulacion{
@@ -238,7 +238,7 @@ void nodeEvacuation::plotearTotalEvacuadosXSimulacion(fileIO* const file) {
         }
     }
 }
-void nodeEvacuation::imprimirTotalEvacuadosXSimulacion(fileIO* const file) {
+void nodeDestino::imprimirTotalEvacuadosXSimulacion(fileIO* const file) {
     // reviza el dictionario la opcion esta activada, por default esta activado
     if (std::get<bool>(dictionary::get()->lookupDefault(file->getFileName())) == true) {
         // elementos de simulaciones a imprimir
@@ -264,7 +264,7 @@ void nodeEvacuation::imprimirTotalEvacuadosXSimulacion(fileIO* const file) {
         }
     }
 }
-void nodeEvacuation::plotearMortalidadXSimulacion(fileIO* const file) {
+void nodeDestino::plotearMortalidadXSimulacion(fileIO* const file) {
     // reviza el dictionario la opcion esta activada, por default esta activado
     if (std::get<bool>(dictionary::get()->lookupDefault(file->getFileName())) == true) {
         static std::vector<int> numeroSimulaciones;
@@ -306,7 +306,7 @@ void nodeEvacuation::plotearMortalidadXSimulacion(fileIO* const file) {
         }
     }
 }
-void nodeEvacuation::imprimirMortalidadXSimulacion(fileIO* const file) {
+void nodeDestino::imprimirMortalidadXSimulacion(fileIO* const file) {
     // reviza el dictionario la opcion esta activada, por default esta activado
     if (std::get<bool>(dictionary::get()->lookupDefault(file->getFileName())) == true) {
         static std::vector<int> numeroSimulaciones;
@@ -325,7 +325,7 @@ void nodeEvacuation::imprimirMortalidadXSimulacion(fileIO* const file) {
         }
     }
 }
-void nodeEvacuation::imprimirVariableTotalPersonasEvacuadas(fileIO* const file) {
+void nodeDestino::imprimirVariableTotalPersonasEvacuadas(fileIO* const file) {
     // impresion de tiempo y personas evacuadas
     file->getFileFstream() << totalPersonasEvacuadas;
 }

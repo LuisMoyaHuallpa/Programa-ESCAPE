@@ -1,6 +1,6 @@
 #include "io.h"
 #include "dictionary.h"
-#include "nodeEvacuation.h"
+#include "nodeDestino.h"
 #include "pedestrians.h"
 #include "tiempo.h"
 #include "stateMatrixs.h"
@@ -110,7 +110,6 @@ fileIO::fileIO(const std::string& fileName,  const std::string extension, const 
     fullPath(fileName + "." +  extension),
     directory(nullptr)
 {
-    std::cout << fileName << std::endl;
     // solo crear si checkFile es true
     if (checkFile) {
         openFile(inoutFile(inoutStr));
@@ -249,14 +248,14 @@ void io::imprimirOutput() {
             pedestrians::get()->imprimirPedestrians(&xy, &U);
             // imprimir datos de personas: cantidad de personas evacuadas
             fileIO cantPedestrianEvacuated("cantPedestrianEvacuated", dirTiempo);
-            nodeEvacuation::imprimirVariableTotalPersonasEvacuadas(&cantPedestrianEvacuated);
+            nodeDestino::imprimirVariableTotalPersonasEvacuadas(&cantPedestrianEvacuated);
             delete dirTiempo;
             dirTiempo = nullptr; 
             // archivos de tablas de exportacion
             // imprime personas totales evacuadas
-            nodeEvacuation::imprimirTotalPersonasEvacuadas(&fileTotalEvacuatedCount);
+            nodeDestino::imprimirTotalPersonasEvacuadas(&fileTotalEvacuatedCount);
             // imprime personas evacuadas por node evacuacion
-            nodeEvacuation::imprimirNodeEvacuation(&fileEvacuatedCount);
+            nodeDestino::imprimirNodeEvacuation(&fileEvacuatedCount);
         }
     }
     // exportacion durante la calibracion
@@ -267,12 +266,12 @@ void io::imprimirOutput() {
             fileIO stateMatrice(stateMatrixs::get()->creacionFileStateMatrix(), &directoryStateMatrices);
             stateMatrixs::get()->imprimirDbStateMatrixs(&stateMatrice);
             // ploteo mortalidad por simulacion
-            nodeEvacuation::plotearMortalidadXSimulacion(&figureMortalidadXSimulacion);
-            nodeEvacuation::imprimirMortalidadXSimulacion(&fileMortalidadXSimulacion);
+            nodeDestino::plotearMortalidadXSimulacion(&figureMortalidadXSimulacion);
+            nodeDestino::imprimirMortalidadXSimulacion(&fileMortalidadXSimulacion);
         }
         // ploteo total personas evacuadas por simulacion
-        nodeEvacuation::plotearTotalEvacuadosXSimulacion(&figureTotalEvacuadosXSimulacion);
-        nodeEvacuation::imprimirTotalEvacuadosXSimulacion(&fileTotalEvacuadosXSimulacion);
+        nodeDestino::plotearTotalEvacuadosXSimulacion(&figureTotalEvacuadosXSimulacion);
+        nodeDestino::imprimirTotalEvacuadosXSimulacion(&fileTotalEvacuadosXSimulacion);
         // imprimir actionDb
         if (std::get<bool>(dictionary::get()->lookupDefault("pythonVersion")) == true and std::get<std::string>(dictionary::get()->lookupDefault("pythonOption")) == "out") {
             // cuando este numero de simulacion 1 y sea final de la evacuacion
