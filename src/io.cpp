@@ -110,6 +110,7 @@ fileIO::fileIO(const std::string& fileName,  const std::string extension, const 
     fullPath(fileName + "." +  extension),
     directory(nullptr)
 {
+    std::cout << fileName << std::endl;
     // solo crear si checkFile es true
     if (checkFile) {
         openFile(inoutFile(inoutStr));

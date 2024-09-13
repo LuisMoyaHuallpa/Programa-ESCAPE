@@ -179,7 +179,8 @@ void nodeEvacuation::plotearTotalEvacuadosXSimulacion(fileIO* const file) {
         }; 
         // elementos de simulaciones a imprimir
         std::vector<int> tiempoSimulacion;
-        auto it1 = dictionary::get()->getControlDict().find("valoresNumeroSimulacion");
+        auto it1 = dictionary::get()->getControlDict().find("totalEvacuadosXSimulacionAt");
+        //atsimulation
         if (it1 != dictionary::get()->getControlDict().end()) {
             // Clave encontrada, proceder con la operación
             static std::string valoresNumeroSimulacion = std::get<std::string>(it1->second);
@@ -242,7 +243,7 @@ void nodeEvacuation::imprimirTotalEvacuadosXSimulacion(fileIO* const file) {
     if (std::get<bool>(dictionary::get()->lookupDefault(file->getFileName())) == true) {
         // elementos de simulaciones a imprimir
         std::vector<int> tiempoSimulacion;
-        auto it1 = dictionary::get()->getControlDict().find("valoresNumeroSimulacion");
+        auto it1 = dictionary::get()->getControlDict().find("totalEvacuadosXSimulacionAt");
         if (it1 != dictionary::get()->getControlDict().end()) {
             // Clave encontrada, proceder con la operación
             static std::string valoresNumeroSimulacion = std::get<std::string>(it1->second);
@@ -271,7 +272,7 @@ void nodeEvacuation::plotearMortalidadXSimulacion(fileIO* const file) {
         // numero de simulacion
         const int numeroSimulacion = tiempo::get()->getINumberSimulation();
         // solo guarda segun el perido en segundos que se le asigne
-        if (numeroSimulacion % std::get<int>(dictionary::get()->lookupDefault("figureMortalidadXSimulacionPeriod")) == 0 or numeroSimulacion == 1) {
+        if (numeroSimulacion % std::get<int>(dictionary::get()->lookupDefault("mortalidadXSimulacionPeriod")) == 0 or numeroSimulacion == 1) {
             // guardo datos en data para luego plotearlos
             numeroSimulaciones.push_back(numeroSimulacion);
             // calculo porcentaje
@@ -313,7 +314,7 @@ void nodeEvacuation::imprimirMortalidadXSimulacion(fileIO* const file) {
         // numero de simulacion
         const int numeroSimulacion = tiempo::get()->getINumberSimulation();
         // solo guarda segun el perido en segundos que se le asigne
-        if (numeroSimulacion % std::get<int>(dictionary::get()->lookupDefault("figureMortalidadXSimulacionPeriod")) == 0 or numeroSimulacion == 1) {
+        if (numeroSimulacion % std::get<int>(dictionary::get()->lookupDefault("mortalidadXSimulacionPeriod")) == 0 or numeroSimulacion == 1) {
             // calculo porcentaje
             const int totalMortalidad = pedestrians::get()->getDbPedestrianTotal().size() - totalPersonasEvacuadas;
             const double porcentajeMortalidad = static_cast<double>(totalMortalidad) / 100.0;
