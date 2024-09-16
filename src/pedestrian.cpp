@@ -1,5 +1,6 @@
 #include "pedestrian.h"
 
+#include "io.h"
 #include "node.h"
 #include "link.h"
 #include "nodeDestino.h"
@@ -9,8 +10,10 @@
 #include "tiempo.h"
 #include "vector2D.h"
 #include "velocidad.h"
+#include <bits/types/FILE.h>
 #include <iostream>
 #include <vector>
+#include "pedestrians.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -466,4 +469,28 @@ double pedestrian::calcularRayleighDistribution(const double sigma) {
     double u = generate_uniform_random(gen);
     // Calcular el número aleatorio según la distribución Rayleigh
     return sigma * std::sqrt(-2.0 * std::log(1.0 - u));
+}
+void pedestrian::plotearPedestrians(fileIO* const file) {
+    if (tiempo::get()->getValorTiempo() ==  tiempo::get()->getEndTime()) {
+        FILE* gnuplotPipe = popen("gnuplot -persistent", "w");
+        if (gnuplotPipe) {
+            // Configurar Gnuplot
+            fprintf(gnuplotPipe, "set output '%s'\n", file->getFullPath().c_str());
+            fprintf(gnuplotPipe, "set terminal png size 800,600\n");
+            // Configuración de la colorbar (escala de colores)
+            fprintf(gnuplotPipe, "set palette rgbformulae 22,13,10\n");
+            // Usa la ruta completa
+            fprintf(gnuplotPipe, "set grid\n");
+            // cracion de plot
+            fprintf(gnuplotPipe, "plot '-' with points pt 7 palette notitle\n");
+            const auto& dbPedestrianTotal = pedestrians::get()->getDbPedestrianTotal();
+            // Itera sobre el vector de peatones utilizando iteradores
+            for (const pedestrian& ped : dbPedestrianTotal) {
+                fprintf(gnuplotPipe, "%lf %lf %lf\n", ped.position.getX(), ped.position.getY(), ped.velocidadPedestrian.getMagnitud());
+            }
+            fprintf(gnuplotPipe, "e\n");
+            pclose(gnuplotPipe);
+        }
+    }
+
 }

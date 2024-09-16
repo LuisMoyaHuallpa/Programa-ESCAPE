@@ -4,6 +4,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // header generales
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#include <bits/types/FILE.h>
 #include <fstream>
 #include <iostream>
 #include <algorithm>
@@ -169,6 +170,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     static const double calcularScaleRayleigh();
     static double calcularRayleighDistribution(const double sigma);
+    static void plotearPedestrians(fileIO* const file);
     
     // static double calcularOptimalChoiceRate();
 };

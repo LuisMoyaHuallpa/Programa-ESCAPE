@@ -73,14 +73,14 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static metods
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    void static sumarTotalPersonasEvacuadas();
-    void static imprimirNodeEvacuation(fileIO* const file);
-    void static imprimirTotalPersonasEvacuadas(fileIO* const file);
-    void static plotearTotalEvacuadosXSimulacion(fileIO* const file);
-    void static imprimirTotalEvacuadosXSimulacion(fileIO* const file);
-    void static plotearMortalidadXSimulacion(fileIO* const file);
-    void static imprimirMortalidadXSimulacion(fileIO* const file);
-    void static imprimirVariableTotalPersonasEvacuadas(fileIO* const file);
+    static void sumarTotalPersonasEvacuadas();
+    static void imprimirNodeEvacuation(fileIO* const file);
+    static void imprimirTotalPersonasEvacuadas(fileIO* const file);
+    static void plotearTotalEvacuadosXSimulacion(fileIO* const file);
+    static void imprimirTotalEvacuadosXSimulacion(fileIO* const file);
+    static void plotearMortalidadXSimulacion(fileIO* const file);
+    static void imprimirMortalidadXSimulacion(fileIO* const file);
+    static void imprimirVariableTotalPersonasEvacuadas(fileIO* const file);
 
 
 };

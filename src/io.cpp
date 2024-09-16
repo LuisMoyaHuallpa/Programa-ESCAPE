@@ -2,6 +2,7 @@
 #include "dictionary.h"
 #include "nodeDestino.h"
 #include "pedestrians.h"
+#include "subLink.h"
 #include "tiempo.h"
 #include "stateMatrixs.h"
 #include <ios>
@@ -30,6 +31,17 @@ dirIO::dirIO(const std::string& dirName, const dirIO* directory) :
 {
     if (!verificarDirExists()) {
         crearDir();
+    }
+}
+dirIO::dirIO(const std::string& dirName, const dirIO* directory, const bool checkCreation) :
+    dirName(dirName),
+    directory(directory),
+    fullPath(directory->getFullPath() + dirName + '/')
+{
+    if (checkCreation) {
+        if (!verificarDirExists()) {
+            crearDir();
+        }
     }
 }
 
@@ -189,7 +201,7 @@ io* io::ioInstance = nullptr;
 
 size_t io::tamanoElementosIO = 10;
 dirIO io::directoryData("data");
-dirIO io::directoryTime("time", &directoryData);
+dirIO io::directoryTime("time", &directoryData, std::get<std::string>(dictionary::get()->lookupDefault("process"))=="trained");
 dirIO io::directoryPostprocessing("postprocessing");
 dirIO io::directorySnapshot("snapshot", &directoryPostprocessing);
 dirIO io::directoryStateMatrices("stateMatrices");
@@ -201,6 +213,7 @@ fileIO io::figureTotalEvacuadosXSimulacion("figureTotalEvacuadosXSimulacion", "p
 fileIO io::fileTotalEvacuadosXSimulacion("totalEvacuadosXSimulacion", "csv", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="calibration", &directoryData);
 fileIO io::figureMortalidadXSimulacion("figureMortalidadXSimulacion", "png", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="calibration", &directoryData);
 fileIO io::fileMortalidadXSimulacion("mortalidadXSimulacion", "csv", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="calibration", &directoryData);
+fileIO io::figurePedestrians("figurePedestrians", "png", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="trained", &directoryData);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // constructor
@@ -257,6 +270,8 @@ void io::imprimirOutput() {
             nodeDestino::imprimirTotalPersonasEvacuadas(&fileTotalEvacuatedCount);
             // imprime personas evacuadas por node evacuacion
             nodeDestino::imprimirNodeEvacuation(&fileEvacuatedCount);
+            // imprimir personas en las calles
+            pedestrian::plotearPedestrians(&figurePedestrians);
         }
     }
     // exportacion durante la calibracion

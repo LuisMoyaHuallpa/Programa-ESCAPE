@@ -28,6 +28,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     dirIO(const std::string& dirName);
     dirIO(const std::string& dirName, const dirIO* directory);
+    dirIO(const std::string& dirName, const dirIO* directory, const bool checkCreation);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // getters
@@ -118,6 +119,7 @@ public:
     static fileIO fileTotalEvacuadosXSimulacion;
     static fileIO figureMortalidadXSimulacion;
     static fileIO fileMortalidadXSimulacion;
+    static fileIO figurePedestrians;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // static
