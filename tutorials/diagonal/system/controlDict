@@ -6,8 +6,6 @@ populationsFile  populationAtPoint.csv;
 
 process calibration;
 
-# sarsaProcesses trained;
-
 stopAt          endTime;
 
 endTime         800;

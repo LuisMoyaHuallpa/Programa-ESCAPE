@@ -106,6 +106,7 @@ public:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     static size_t tamanoElementosIO;
     static dirIO directoryData;
+    static dirIO directoryTime;
     static dirIO directoryPostprocessing;
     static dirIO directorySnapshot;
     static dirIO directoryStateMatrices;

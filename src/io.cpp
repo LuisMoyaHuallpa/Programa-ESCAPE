@@ -189,6 +189,7 @@ io* io::ioInstance = nullptr;
 
 size_t io::tamanoElementosIO = 10;
 dirIO io::directoryData("data");
+dirIO io::directoryTime("time", &directoryData);
 dirIO io::directoryPostprocessing("postprocessing");
 dirIO io::directorySnapshot("snapshot", &directoryPostprocessing);
 dirIO io::directoryStateMatrices("stateMatrices");
@@ -230,7 +231,7 @@ io* io::get() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 dirIO* io::crearCarpetaTiempo() {
     /* Crea carpetas de cada tiempo de evacuacion*/
-    dirIO* dirTime = new dirIO(std::to_string(tiempo::get()->getValorTiempo()), &directoryData);
+    dirIO* dirTime = new dirIO(std::to_string(tiempo::get()->getValorTiempo()), &directoryTime);
     // crear carpeta de los tiempos en segundos para almacenar informacion
     mkdir(dirTime->getFullPath().c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
     return dirTime;
