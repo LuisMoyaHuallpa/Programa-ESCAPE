@@ -12,8 +12,6 @@
 #include "links.h"
 #include "stateMatrixs.h"
 #include "pedestrians.h"
-// #include "dictionary.h"
-// #include "io.h"
 
 int main() {
     // imprimi malla de calles.
