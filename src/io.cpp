@@ -167,6 +167,9 @@ std::fstream& fileIO::getFileFstream() {
 const std::string fileIO::getFullPath() const {
     return fullPath;
 }
+const dirIO* const fileIO::getDirectory() const {
+    return directory;
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // methods
@@ -204,6 +207,7 @@ dirIO io::directoryData("data");
 dirIO io::directoryTime("time", &directoryData, std::get<std::string>(dictionary::get()->lookupDefault("process"))=="trained");
 dirIO io::directoryPostprocessing("postprocessing");
 dirIO io::directorySnapshot("snapshot", &directoryPostprocessing);
+dirIO io::directoryFigure("figure", &directoryData, std::get<std::string>(dictionary::get()->lookupDefault("process"))=="trained");
 dirIO io::directoryStateMatrices("stateMatrices");
 fileIO io::fileTotalEvacuatedCount("totalEvacuatedCount", "csv", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="trained", &directoryData);
 fileIO io::fileEvacuatedCount("evacuatedCount", "csv", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="trained", &directoryData);
@@ -272,7 +276,7 @@ void io::imprimirOutput() {
             nodeDestino::imprimirNodeEvacuation(&fileEvacuatedCount);
             // imprimir personas en las calles
             std::string nombreArchivo = "Figure-" + std::to_string(tiempo::get()->getValorTiempo()); // O el formato que desees
-            fileIO figure(nombreArchivo,"png",&directorySnapshot);
+            fileIO figure(nombreArchivo, "png", &directoryFigure);
             pedestrian::plotearPedestrians(&figure);
         }
     }

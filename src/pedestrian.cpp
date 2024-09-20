@@ -14,6 +14,7 @@
 #include <iostream>
 #include <vector>
 #include "pedestrians.h"
+#include <limits> // Para std::numeric_limits
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // static member
@@ -471,7 +472,6 @@ double pedestrian::calcularRayleighDistribution(const double sigma) {
     return sigma * std::sqrt(-2.0 * std::log(1.0 - u));
 }
 void pedestrian::plotearPedestrians(fileIO* const file) {
-        #include <limits> // Para std::numeric_limits
     
     // Inicializa valores máximos y mínimos
     double minX = std::numeric_limits<double>::max();
@@ -502,11 +502,11 @@ void pedestrian::plotearPedestrians(fileIO* const file) {
         // Configurar Gnuplot
         fprintf(gnuplotPipe, "set output '%s'\n", file->getFullPath().c_str());
         fprintf(gnuplotPipe, "set terminal png size 1920,1080\n");
-        // Configuración de la colorbar (escala de colores)
         fprintf(gnuplotPipe, "set yrange [%lf:%lf]\n", minY, maxY);
         fprintf(gnuplotPipe, "set xrange [%lf:%lf]\n", minX, maxX);
         fprintf(gnuplotPipe, "unset border\n");
-        fprintf(gnuplotPipe, "set palette rgbformulae 22,13,10\n");
+        // Configuración de la colorbar (escala de colores)
+        fprintf(gnuplotPipe, "set palette rgbformulae 10,13,22\n");
         fprintf(gnuplotPipe, "set colorbox\n");
         fprintf(gnuplotPipe, "set cbrange [0.2:1.2]\n"); // Reemplaza min y max con tus valores fijos
 
@@ -541,6 +541,11 @@ void pedestrian::plotearPedestrians(fileIO* const file) {
         }
         fprintf(gnuplotPipe, "e\n");
         pclose(gnuplotPipe);
+    }
+    if ( tiempo::get()->getValorTiempo() == tiempo::get()->getEndTime()) {
+        const std::string directorio = file->getDirectory()->getFullPath();
+        const std::string comando = "ffmpeg -y -framerate 10 -i "+ directorio + "Figure-%d.png -c:v libx264 -pix_fmt yuv420p " + directorio + "animation.mp4";
+        int resultado = system(comando.c_str());
     }
 }
 

@@ -70,6 +70,7 @@ public:
     const std::string getFileName() const;
     std::fstream& getFileFstream();
     const std::string getFullPath() const;
+    const dirIO* const getDirectory() const;
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // metods
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -110,6 +111,7 @@ public:
     static dirIO directoryTime;
     static dirIO directoryPostprocessing;
     static dirIO directorySnapshot;
+    static dirIO directoryFigure;
     static dirIO directoryStateMatrices;
     static fileIO fileTotalEvacuatedCount;
     static fileIO fileEvacuatedCount;
