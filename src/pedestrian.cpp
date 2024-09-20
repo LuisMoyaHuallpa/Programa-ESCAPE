@@ -471,48 +471,76 @@ double pedestrian::calcularRayleighDistribution(const double sigma) {
     return sigma * std::sqrt(-2.0 * std::log(1.0 - u));
 }
 void pedestrian::plotearPedestrians(fileIO* const file) {
-    if (tiempo::get()->getValorTiempo() ==  tiempo::get()->getEndTime()) {
-        FILE* gnuplotPipe = popen("gnuplot -persistent", "w");
-        if (gnuplotPipe) {
-            // Configurar Gnuplot
-            fprintf(gnuplotPipe, "set output '%s'\n", file->getFullPath().c_str());
-            fprintf(gnuplotPipe, "set terminal png size 1920,1080\n");
-            // Configuración de la colorbar (escala de colores)
-            fprintf(gnuplotPipe, "set palette rgbformulae 22,13,10\n");
-            // Usa la ruta completa
-            fprintf(gnuplotPipe, "set grid\n");
-            // fprintf(gnuplotPipe, "set label 't= %d, evacuados: ()%d' at screen 0.1, 0.1 center font ',12'\n", tiempo::get()->getValorTiempo(), nodeDestino::getTotalPersonasEvacuadas());
-            fprintf(gnuplotPipe, "set label 't= %d, evacuados: %d' at graph 0, -0.1 left\n", tiempo::get()->getValorTiempo(), nodeDestino::getTotalPersonasEvacuadas());
-            // cracion de plot
-            // fprintf(gnuplotPipe, "plot '-' with points pt 7 palette notitle, '-' with points pt 12 ps 3.0 lc 'red' notitle\n");
-            fprintf(gnuplotPipe, "plot '-' with lines lc 'blue' notitle, '-' with points pt 7 palette notitle, '-' with points pt 12 ps 3.0 lc 'red' notitle\n");
-
-            const auto& dbPedestrianTotal = pedestrians::get()->getDbPedestrianTotal();
-            const auto& puntosEvacuacion = nodes::get()->getDbNodeEvacuation();
-            const auto& lineasCalles = links::get()->getDbLinkTotal();
-            // ploteo de lineas de calle
-            for (const auto lc : lineasCalles) {
-                // Obtener puntos de inicio y fin para la línea
-                const auto puntoInicial = lc->getNode1Ptr();
-                const auto puntoFinal = lc->getNode2Ptr();
-                fprintf(gnuplotPipe, "%lf %lf\n", puntoInicial->getCoordenada().getX(), puntoInicial->getCoordenada().getY());
-                fprintf(gnuplotPipe, "%lf %lf\n", puntoFinal->getCoordenada().getX(), puntoFinal->getCoordenada().getY());
-                fprintf(gnuplotPipe, "\n");  // Espacio entre las líneas
-            }
-            fprintf(gnuplotPipe, "e\n");
-            // fprintf(gnuplotPipe, "e\n");
-            // Itera sobre el vector de peatones utilizando iteradores
-            for (const pedestrian& ped : dbPedestrianTotal) {
-                fprintf(gnuplotPipe, "%lf %lf %lf\n", ped.position.getX(), ped.position.getY(), ped.velocidadPedestrian.getMagnitud());
-            }
-            fprintf(gnuplotPipe, "e\n");
-            // Segunda serie de puntos (ejemplo: posición inicial)
-            for (const nodeDestino* const pe : puntosEvacuacion) {
-                fprintf(gnuplotPipe, "%lf %lf\n", pe->getCoordenada().getX() , pe->getCoordenada().getY());
-            }
-            fprintf(gnuplotPipe, "e\n");
-            pclose(gnuplotPipe);
-        }
+        #include <limits> // Para std::numeric_limits
+    
+    // Inicializa valores máximos y mínimos
+    double minX = std::numeric_limits<double>::max();
+    double maxX = std::numeric_limits<double>::lowest();
+    double minY = std::numeric_limits<double>::max();
+    double maxY = std::numeric_limits<double>::lowest();
+    
+    const auto& lineasCalles = links::get()->getDbLinkTotal();
+    for (const auto lc : lineasCalles) {
+        // Obtener puntos de inicio y fin para la línea
+        const auto puntoInicial = lc->getNode1Ptr();
+        const auto puntoFinal = lc->getNode2Ptr();
+        
+        // Obtener las coordenadas
+        double x1 = puntoInicial->getCoordenada().getX();
+        double y1 = puntoInicial->getCoordenada().getY();
+        double x2 = puntoFinal->getCoordenada().getX();
+        double y2 = puntoFinal->getCoordenada().getY();
+        
+        // Actualiza los valores máximos y mínimos
+        minX = std::min(minX, std::min(x1, x2));
+        maxX = std::max(maxX, std::max(x1, x2));
+        minY = std::min(minY, std::min(y1, y2));
+        maxY = std::max(maxY, std::max(y1, y2));
     }
+    FILE* gnuplotPipe = popen("gnuplot -persistent", "w");
+    if (gnuplotPipe) {
+        // Configurar Gnuplot
+        fprintf(gnuplotPipe, "set output '%s'\n", file->getFullPath().c_str());
+        fprintf(gnuplotPipe, "set terminal png size 1920,1080\n");
+        // Configuración de la colorbar (escala de colores)
+        fprintf(gnuplotPipe, "set yrange [%lf:%lf]\n", minY, maxY);
+        fprintf(gnuplotPipe, "set xrange [%lf:%lf]\n", minX, maxX);
+        fprintf(gnuplotPipe, "unset border\n");
+        fprintf(gnuplotPipe, "set palette rgbformulae 22,13,10\n");
+        fprintf(gnuplotPipe, "set colorbox\n");
+        fprintf(gnuplotPipe, "set cbrange [0.2:1.2]\n"); // Reemplaza min y max con tus valores fijos
 
+        // Usa la ruta completa
+        fprintf(gnuplotPipe, "set grid\n");
+        // fprintf(gnuplotPipe, "set label 't= %d, evacuados: ()%d' at screen 0.1, 0.1 center font ',12'\n", tiempo::get()->getValorTiempo(), nodeDestino::getTotalPersonasEvacuadas());
+        // fprintf(gnuplotPipe, "set label 't= %d, evacuados: %d' at graph 0, -0.1 left\n", tiempo::get()->getValorTiempo(), nodeDestino::getTotalPersonasEvacuadas());
+        // creacion de plot
+        fprintf(gnuplotPipe, "plot '-' with lines lc 'blue' notitle, '-' with points pt 7 palette notitle, '-' with points pt 12 ps 3.0 lc 'red' notitle\n");
+        const auto& dbPedestrianTotal = pedestrians::get()->getDbPedestrianTotal();
+        const auto& puntosEvacuacion = nodes::get()->getDbNodeEvacuation();
+        const auto& lineasCalles = links::get()->getDbLinkTotal();
+        // ploteo de lineas de calle
+        for (const auto lc : lineasCalles) {
+            // Obtener puntos de inicio y fin para la línea
+            const auto puntoInicial = lc->getNode1Ptr();
+            const auto puntoFinal = lc->getNode2Ptr();
+            fprintf(gnuplotPipe, "%lf %lf\n", puntoInicial->getCoordenada().getX(), puntoInicial->getCoordenada().getY());
+            fprintf(gnuplotPipe, "%lf %lf\n", puntoFinal->getCoordenada().getX(), puntoFinal->getCoordenada().getY());
+            fprintf(gnuplotPipe, "\n");  // Espacio entre las líneas
+        }
+        fprintf(gnuplotPipe, "e\n");
+        // fprintf(gnuplotPipe, "e\n");
+        // Itera sobre el vector de peatones utilizando iteradores
+        for (const pedestrian& ped : dbPedestrianTotal) {
+            fprintf(gnuplotPipe, "%lf %lf %lf\n", ped.position.getX(), ped.position.getY(), ped.velocidadPedestrian.getMagnitud());
+        }
+        fprintf(gnuplotPipe, "e\n");
+        // Segunda serie de puntos (ejemplo: posición inicial)
+        for (const nodeDestino* const pe : puntosEvacuacion) {
+            fprintf(gnuplotPipe, "%lf %lf\n", pe->getCoordenada().getX() , pe->getCoordenada().getY());
+        }
+        fprintf(gnuplotPipe, "e\n");
+        pclose(gnuplotPipe);
+    }
 }
+

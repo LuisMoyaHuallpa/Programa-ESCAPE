@@ -271,7 +271,9 @@ void io::imprimirOutput() {
             // imprime personas evacuadas por node evacuacion
             nodeDestino::imprimirNodeEvacuation(&fileEvacuatedCount);
             // imprimir personas en las calles
-            pedestrian::plotearPedestrians(&figurePedestrians);
+            std::string nombreArchivo = "Figure-" + std::to_string(tiempo::get()->getValorTiempo()); // O el formato que desees
+            fileIO figure(nombreArchivo,"png",&directorySnapshot);
+            pedestrian::plotearPedestrians(&figure);
         }
     }
     // exportacion durante la calibracion
