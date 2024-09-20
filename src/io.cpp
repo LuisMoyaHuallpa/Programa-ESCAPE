@@ -201,7 +201,6 @@ std::ios_base::openmode fileIO::inoutFile(const std::string& inout) {
 // static member
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 io* io::ioInstance = nullptr;
-
 size_t io::tamanoElementosIO = 10;
 dirIO io::directoryData("data");
 dirIO io::directoryTime("time", &directoryData, std::get<std::string>(dictionary::get()->lookupDefault("process"))=="trained");
@@ -213,10 +212,10 @@ fileIO io::fileTotalEvacuatedCount("totalEvacuatedCount", "csv", "out", std::get
 fileIO io::fileEvacuatedCount("evacuatedCount", "csv", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="trained", &directoryData);
 fileIO io::fileActionsDb("actionsdb", "csv", std::get<std::string>(dictionary::get()->lookupDefault("pythonOption")), std::get<bool>(dictionary::get()->lookupDefault("pythonVersion")));
 fileIO io::fileTranstionsDb("transitionsdb", "csv", std::get<std::string>(dictionary::get()->lookupDefault("pythonOption")) == "out");
-fileIO io::figureTotalEvacuadosXSimulacion("figureTotalEvacuadosXSimulacion", "png", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="calibration", &directoryData);
-fileIO io::fileTotalEvacuadosXSimulacion("totalEvacuadosXSimulacion", "csv", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="calibration", &directoryData);
-fileIO io::figureMortalidadXSimulacion("figureMortalidadXSimulacion", "png", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="calibration", &directoryData);
-fileIO io::fileMortalidadXSimulacion("mortalidadXSimulacion", "csv", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="calibration", &directoryData);
+fileIO io::figureTotalEvacuadosVsSimulacion("figureTotalEvacuadosVsSimulacion", "png", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="calibration", &directoryData);
+fileIO io::figureEvacuadosVsTiempo("figureEvacuadosVsTiempo", "png", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="calibration", &directoryData);
+fileIO io::tableTotalEvacuadosVsSimulacion("tableTotalEvacuadosVsSimulacion", "csv", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="calibration", &directoryData);
+fileIO io::tableEvacuadosVsTiempo("tableEvacuadosVsTiempo", "csv", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="calibration", &directoryData);
 fileIO io::figurePedestrians("figurePedestrians", "png", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="trained", &directoryData);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -288,12 +287,12 @@ void io::imprimirOutput() {
             fileIO stateMatrice(stateMatrixs::get()->creacionFileStateMatrix(), &directoryStateMatrices);
             stateMatrixs::get()->imprimirDbStateMatrixs(&stateMatrice);
             // ploteo mortalidad por simulacion
-            nodeDestino::plotearMortalidadXSimulacion(&figureMortalidadXSimulacion);
-            nodeDestino::imprimirMortalidadXSimulacion(&fileMortalidadXSimulacion);
+            nodeDestino::plotearEvacuadosVsTiempo(&figureEvacuadosVsTiempo);
+            nodeDestino::imprimirEvacuadosVsTiempo(&tableEvacuadosVsTiempo);
         }
         // ploteo total personas evacuadas por simulacion
-        nodeDestino::plotearTotalEvacuadosXSimulacion(&figureTotalEvacuadosXSimulacion);
-        nodeDestino::imprimirTotalEvacuadosXSimulacion(&fileTotalEvacuadosXSimulacion);
+        nodeDestino::plotearTotalEvacuadosXSimulacion(&figureTotalEvacuadosVsSimulacion);
+        nodeDestino::imprimirTotalEvacuadosXSimulacion(&tableTotalEvacuadosVsSimulacion);
         // imprimir actionDb
         if (std::get<bool>(dictionary::get()->lookupDefault("pythonVersion")) == true and std::get<std::string>(dictionary::get()->lookupDefault("pythonOption")) == "out") {
             // cuando este numero de simulacion 1 y sea final de la evacuacion

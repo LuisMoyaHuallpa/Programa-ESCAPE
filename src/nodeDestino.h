@@ -78,8 +78,8 @@ public:
     static void imprimirTotalPersonasEvacuadas(fileIO* const file);
     static void plotearTotalEvacuadosXSimulacion(fileIO* const file);
     static void imprimirTotalEvacuadosXSimulacion(fileIO* const file);
-    static void plotearMortalidadXSimulacion(fileIO* const file);
-    static void imprimirMortalidadXSimulacion(fileIO* const file);
+    static void plotearEvacuadosVsTiempo(fileIO* const file);
+    static void imprimirEvacuadosVsTiempo(fileIO* const file);
     static void imprimirVariableTotalPersonasEvacuadas(fileIO* const file);
 
 

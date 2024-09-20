@@ -117,10 +117,10 @@ public:
     static fileIO fileEvacuatedCount;
     static fileIO fileActionsDb;
     static fileIO fileTranstionsDb;
-    static fileIO figureTotalEvacuadosXSimulacion;
-    static fileIO fileTotalEvacuadosXSimulacion;
-    static fileIO figureMortalidadXSimulacion;
-    static fileIO fileMortalidadXSimulacion;
+    static fileIO figureTotalEvacuadosVsSimulacion;
+    static fileIO figureEvacuadosVsTiempo;
+    static fileIO tableTotalEvacuadosVsSimulacion;
+    static fileIO tableEvacuadosVsTiempo;
     static fileIO figurePedestrians;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -144,5 +144,4 @@ public:
     dirIO* crearCarpetaTiempo();
     void imprimirOutput();
 };
-
 #endif
