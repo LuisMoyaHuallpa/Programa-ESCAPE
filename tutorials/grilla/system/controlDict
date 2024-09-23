@@ -1,46 +1,10 @@
-nodesFile        nodes.csv;
-
-linksFile        links.csv;
-
 populationsFile  populationAtPoint.csv;
 
-# sarsaProcesses calibration;
-
-process trained;
+process calibration;
 
 endTime         800;
 
 meanRayleigh   420;
 
-computationContinued  	no;
-
-previousComputationFile	calibrated.csv;
-
 endNumberSimulation 10;
-
-observationStatePedestrian yes;
-
-opcionSubdivision anchoSubdivision;
-
-# cantidadSubdivisiones 12;
-
-anchoSubdivision 2;
-
-numberLinkDivision 10;
-
-graphicPrintoutPeriod 1;
-
-pedestrianCountPeriod 1;
-
-listingPrintoutPeriod 1;
-
-evacuatedCount yes;
-
-totalEvacuatedCount yes;
-
-pythonVersion no;
-
-pythonOption in;
-
-figureMortalidadXSimulacionPeriod 5;
 

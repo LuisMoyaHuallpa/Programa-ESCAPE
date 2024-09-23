@@ -515,7 +515,7 @@ void pedestrian::plotearPedestrians(fileIO* const file) {
         // fprintf(gnuplotPipe, "set label 't= %d, evacuados: ()%d' at screen 0.1, 0.1 center font ',12'\n", tiempo::get()->getValorTiempo(), nodeDestino::getTotalPersonasEvacuadas());
         // fprintf(gnuplotPipe, "set label 't= %d, evacuados: %d' at graph 0, -0.1 left\n", tiempo::get()->getValorTiempo(), nodeDestino::getTotalPersonasEvacuadas());
         // creacion de plot
-        fprintf(gnuplotPipe, "plot '-' with lines lc 'blue' notitle, '-' with points pt 7 palette notitle, '-' with points pt 12 ps 3.0 lc 'red' notitle\n");
+        fprintf(gnuplotPipe, "plot '-' with lines lc 'black' notitle, '-' with points pt 7 palette notitle, '-' with points pt 12 ps 3.0 lc 'red' notitle\n");
         const auto& dbPedestrianTotal = pedestrians::get()->getDbPedestrianTotal();
         const auto& puntosEvacuacion = nodes::get()->getDbNodeEvacuation();
         const auto& lineasCalles = links::get()->getDbLinkTotal();
@@ -532,7 +532,9 @@ void pedestrian::plotearPedestrians(fileIO* const file) {
         // fprintf(gnuplotPipe, "e\n");
         // Itera sobre el vector de peatones utilizando iteradores
         for (const pedestrian& ped : dbPedestrianTotal) {
-            fprintf(gnuplotPipe, "%lf %lf %lf\n", ped.position.getX(), ped.position.getY(), ped.velocidadPedestrian.getMagnitud());
+            if(ped.estadoPedestrian == evacuando){
+                fprintf(gnuplotPipe, "%lf %lf %lf\n", ped.position.getX(), ped.position.getY(), ped.velocidadPedestrian.getMagnitud());
+            }
         }
         fprintf(gnuplotPipe, "e\n");
         // Segunda serie de puntos (ejemplo: posición inicial)
