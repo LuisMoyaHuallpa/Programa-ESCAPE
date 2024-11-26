@@ -474,28 +474,30 @@ double pedestrian::calcularRayleighDistribution(const double sigma) {
 void pedestrian::plotearPedestrians(fileIO* const file) {
     
     // Inicializa valores máximos y mínimos
-    double minX = std::numeric_limits<double>::max();
-    double maxX = std::numeric_limits<double>::lowest();
-    double minY = std::numeric_limits<double>::max();
-    double maxY = std::numeric_limits<double>::lowest();
-    
-    const auto& lineasCalles = links::get()->getDbLinkTotal();
-    for (const auto lc : lineasCalles) {
-        // Obtener puntos de inicio y fin para la línea
-        const auto puntoInicial = lc->getNode1Ptr();
-        const auto puntoFinal = lc->getNode2Ptr();
-        
-        // Obtener las coordenadas
-        double x1 = puntoInicial->getCoordenada().getX();
-        double y1 = puntoInicial->getCoordenada().getY();
-        double x2 = puntoFinal->getCoordenada().getX();
-        double y2 = puntoFinal->getCoordenada().getY();
-        
-        // Actualiza los valores máximos y mínimos
-        minX = std::min(minX, std::min(x1, x2));
-        maxX = std::max(maxX, std::max(x1, x2));
-        minY = std::min(minY, std::min(y1, y2));
-        maxY = std::max(maxY, std::max(y1, y2));
+    static double minX = std::numeric_limits<double>::max();
+    static double maxX = std::numeric_limits<double>::lowest();
+    static double minY = std::numeric_limits<double>::max();
+    static double maxY = std::numeric_limits<double>::lowest();
+    // lo leo solo al incio 
+    if ( tiempo::get()->getValorTiempo() == 1) {
+        const auto& lineasCalles = links::get()->getDbLinkTotal();
+        for (const auto lc : lineasCalles) {
+            // Obtener puntos de inicio y fin para la línea
+            const auto puntoInicial = lc->getNode1Ptr();
+            const auto puntoFinal = lc->getNode2Ptr();
+            
+            // Obtener las coordenadas
+            double x1 = puntoInicial->getCoordenada().getX();
+            double y1 = puntoInicial->getCoordenada().getY();
+            double x2 = puntoFinal->getCoordenada().getX();
+            double y2 = puntoFinal->getCoordenada().getY();
+            
+            // Actualiza los valores máximos y mínimos
+            minX = std::min(minX, std::min(x1, x2));
+            maxX = std::max(maxX, std::max(x1, x2));
+            minY = std::min(minY, std::min(y1, y2));
+            maxY = std::max(maxY, std::max(y1, y2));
+        }
     }
     FILE* gnuplotPipe = popen("gnuplot -persistent", "w");
     if (gnuplotPipe) {
@@ -509,13 +511,25 @@ void pedestrian::plotearPedestrians(fileIO* const file) {
         fprintf(gnuplotPipe, "set palette rgbformulae 10,13,22\n");
         fprintf(gnuplotPipe, "set colorbox\n");
         fprintf(gnuplotPipe, "set cbrange [0.2:1.2]\n"); // Reemplaza min y max con tus valores fijos
-
-        // Usa la ruta completa
         fprintf(gnuplotPipe, "set grid\n");
-        // fprintf(gnuplotPipe, "set label 't= %d, evacuados: ()%d' at screen 0.1, 0.1 center font ',12'\n", tiempo::get()->getValorTiempo(), nodeDestino::getTotalPersonasEvacuadas());
-        // fprintf(gnuplotPipe, "set label 't= %d, evacuados: %d' at graph 0, -0.1 left\n", tiempo::get()->getValorTiempo(), nodeDestino::getTotalPersonasEvacuadas());
+
         // creacion de plot
-        fprintf(gnuplotPipe, "plot '-' with lines lc 'black' notitle, '-' with points pt 7 palette notitle, '-' with points pt 12 ps 3.0 lc 'red' notitle\n");
+        std::string plotCommand = "plot";
+        plotCommand += " '-' with lines lc 'black' notitle,";
+        // verificar si hay peatones evacuando
+        bool peatonesEvacuado = false;
+        for (const pedestrian& ped : pedestrians::get()->getDbPedestrianTotal()) {
+            if (ped.estadoPedestrian == evacuando) {
+                peatonesEvacuado = true;
+                break;
+            }
+        } 
+        if (peatonesEvacuado) {
+            plotCommand += " '-' with points pt 7 palette notitle,";
+        }
+        // agregar siempre los puntos de evacuacion
+        plotCommand += " '-' with points pt 12 ps 3.0 lc 'red' notitle";
+        fprintf(gnuplotPipe, "%s\n", plotCommand.c_str());
         const auto& dbPedestrianTotal = pedestrians::get()->getDbPedestrianTotal();
         const auto& puntosEvacuacion = nodes::get()->getDbNodeEvacuation();
         const auto& lineasCalles = links::get()->getDbLinkTotal();
@@ -527,16 +541,21 @@ void pedestrian::plotearPedestrians(fileIO* const file) {
             fprintf(gnuplotPipe, "%lf %lf\n", puntoInicial->getCoordenada().getX(), puntoInicial->getCoordenada().getY());
             fprintf(gnuplotPipe, "%lf %lf\n", puntoFinal->getCoordenada().getX(), puntoFinal->getCoordenada().getY());
             fprintf(gnuplotPipe, "\n");  // Espacio entre las líneas
+            // std::cout << puntoInicial->getCoordenada().getX() << " " << puntoInicial->getCoordenada().getY() << " ";
+            // std::cout << puntoFinal->getCoordenada().getX() << " " << puntoFinal->getCoordenada().getY() << std::endl;
         }
         fprintf(gnuplotPipe, "e\n");
         // fprintf(gnuplotPipe, "e\n");
         // Itera sobre el vector de peatones utilizando iteradores
-        for (const pedestrian& ped : dbPedestrianTotal) {
-            if(ped.estadoPedestrian == evacuando){
-                fprintf(gnuplotPipe, "%lf %lf %lf\n", ped.position.getX(), ped.position.getY(), ped.velocidadPedestrian.getMagnitud());
+        if (peatonesEvacuado) {
+            for (const pedestrian& ped : dbPedestrianTotal) {
+                if(ped.estadoPedestrian == evacuando){
+                    fprintf(gnuplotPipe, "%lf %lf %lf\n", ped.position.getX(), ped.position.getY(), ped.velocidadPedestrian.getMagnitud());
+                    // std::cout <<  ped.position.getX() << " " <<  ped.position.getY()<< " "<<ped.velocidadPedestrian.getMagnitud() << std::endl;
+                }
             }
+            fprintf(gnuplotPipe, "e\n");
         }
-        fprintf(gnuplotPipe, "e\n");
         // Segunda serie de puntos (ejemplo: posición inicial)
         for (const nodeDestino* const pe : puntosEvacuacion) {
             fprintf(gnuplotPipe, "%lf %lf\n", pe->getCoordenada().getX() , pe->getCoordenada().getY());
@@ -548,6 +567,9 @@ void pedestrian::plotearPedestrians(fileIO* const file) {
         const std::string directorio = file->getDirectory()->getFullPath();
         const std::string comando = "ffmpeg -y -framerate 10 -i "+ directorio + "Figure-%d.png -c:v libx264 -pix_fmt yuv420p " + directorio + "animation.mp4";
         int resultado = system(comando.c_str());
+        const std::string deleteCommand = "rm -f " + directorio + "Figure-*.png";
+        int deleteResult = system(deleteCommand.c_str());
     }
+
 }
 
