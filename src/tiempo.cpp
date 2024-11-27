@@ -185,7 +185,7 @@ const double tiempo::calcularTemp(const double r) const {
 bool tiempo::running() {
     /* contrala el tiempo de evacuacion*/
     // Verificar si todas las personas han sido evacuadas
-    if (!nodeDestino::verificarEvacuacionTotal()) {
+    if (nodeDestino::verificarEvacuacionTotal() == true) {
         endTime = valorTiempo;
         return false;    
     }
