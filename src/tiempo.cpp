@@ -182,14 +182,18 @@ const double tiempo::calcularTemp(const double r) const {
     const double factor = N - 1;
     return (N - r * factor) / (r * factor);
 }
-bool tiempo::running() const {
+bool tiempo::running() {
     /* contrala el tiempo de evacuacion*/
+    // Verificar si todas las personas han sido evacuadas
+    if (!nodeDestino::verificarEvacuacionTotal()) {
+        endTime = valorTiempo;
+        return false;    
+    }
     // Verificar si el tiempo actual es menor al tiempo total de la evacuación ajustado
-    if (valorTiempo >= (endTime - 0.5 * deltaT)) {
+    else if (valorTiempo >= (endTime - 0.5 * deltaT)) {
         return false;
     }
-    // Verificar si todas las personas han sido evacuadas
-    return !nodeDestino::verificarEvacuacionTotal();
+    return true;
 }
 void tiempo::mostrarIResultadosSimulacion() {
     // mostrar 

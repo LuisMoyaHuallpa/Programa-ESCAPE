@@ -27,7 +27,7 @@ private:
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     int valorTiempo;
     const int deltaT;
-    const int endTime;
+    int endTime;
     int startNumberSimulation;
     int iNumberSimulation;
     int endNumberSimulation;
@@ -90,7 +90,7 @@ public:
     int extractINumberSimulation() const;
     void calcularRandomChoiceRate();
     const double calcularTemp(const double r) const;
-    bool running() const;
+    bool running();
     void mostrarTiempo() const;
     void mostrarIResultadosSimulacion();
     bool verificarGraphicPrintoutPeriod() const; 
