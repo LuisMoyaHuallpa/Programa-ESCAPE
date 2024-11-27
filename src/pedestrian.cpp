@@ -566,7 +566,7 @@ void pedestrian::plotearPedestrians(fileIO* const file) {
         fprintf(gnuplotPipe, "e\n");
         pclose(gnuplotPipe);
     }
-    if ( tiempo::get()->getValorTiempo() == tiempo::get()->getEndTime()) {
+    if (tiempo::get()->getValorTiempo() == tiempo::get()->getEndTime() or nodeDestino::verificarEvacuacionTotal()) {
         const std::string directorio = file->getDirectory()->getFullPath();
         const std::string comando = "ffmpeg -y -framerate 10 -i "+ directorio + "Figure-%d.png -c:v libx264 -pix_fmt yuv420p " + directorio + "animation.mp4";
         int resultado = system(comando.c_str());
