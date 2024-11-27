@@ -479,7 +479,7 @@ void pedestrian::plotearPedestrians(fileIO* const file) {
     static double minY = std::numeric_limits<double>::max();
     static double maxY = std::numeric_limits<double>::lowest();
     // lo leo solo al incio 
-    if ( tiempo::get()->getValorTiempo() == 1) {
+    if (tiempo::get()->getValorTiempo() == 1) {
         const auto& lineasCalles = links::get()->getDbLinkTotal();
         for (const auto lc : lineasCalles) {
             // Obtener puntos de inicio y fin para la línea
@@ -507,11 +507,14 @@ void pedestrian::plotearPedestrians(fileIO* const file) {
         fprintf(gnuplotPipe, "set yrange [%lf:%lf]\n", minY, maxY);
         fprintf(gnuplotPipe, "set xrange [%lf:%lf]\n", minX, maxX);
         fprintf(gnuplotPipe, "unset border\n");
-        // Configuración de la colorbar (escala de colores)
         fprintf(gnuplotPipe, "set palette rgbformulae 10,13,22\n");
         fprintf(gnuplotPipe, "set colorbox\n");
         fprintf(gnuplotPipe, "set cbrange [0.2:1.2]\n"); // Reemplaza min y max con tus valores fijos
         fprintf(gnuplotPipe, "set grid\n");
+        fprintf(gnuplotPipe, "set bmargin 3\n"); // Margen inferior aumentado
+        int minutos =  tiempo::get()->getValorTiempo() / 60; // Dividir para obtener minutos completos
+        int segundos =  tiempo::get()->getValorTiempo() % 60; // Resto para los segundos que sobran
+        fprintf(gnuplotPipe, "set label 't = %d.%d min, evacuated: %d' at screen 0.5, 0.02 center\n", minutos, segundos, nodeDestino::totalPersonasEvacuadas);
 
         // creacion de plot
         std::string plotCommand = "plot";
@@ -565,7 +568,7 @@ void pedestrian::plotearPedestrians(fileIO* const file) {
     }
     if ( tiempo::get()->getValorTiempo() == tiempo::get()->getEndTime()) {
         const std::string directorio = file->getDirectory()->getFullPath();
-        const std::string comando = "ffmpeg -y -framerate 10 -i "+ directorio + "Figure-%d.png -c:v libx264 -pix_fmt yuv420p " + directorio + "animation.mp4";
+        const std::string comando = "ffmpeg -y -framerate 10 -i " + directorio + "Figure-%d.png -c:v libx264 -pix_fmt yuv420p " + directorio + "animation.mp4 > /dev/null 2>&1";
         int resultado = system(comando.c_str());
         const std::string deleteCommand = "rm -f " + directorio + "Figure-*.png";
         int deleteResult = system(deleteCommand.c_str());
