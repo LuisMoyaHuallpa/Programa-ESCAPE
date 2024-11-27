@@ -568,7 +568,7 @@ void pedestrian::plotearPedestrians(fileIO* const file) {
     }
     if ( tiempo::get()->getValorTiempo() == tiempo::get()->getEndTime()) {
         const std::string directorio = file->getDirectory()->getFullPath();
-        const std::string comando = "ffmpeg -y -framerate 10 -i " + directorio + "Figure-%d.png -c:v libx264 -pix_fmt yuv420p " + directorio + "animation.mp4 > /dev/null 2>&1";
+        const std::string comando = "ffmpeg -y -framerate 10 -i "+ directorio + "Figure-%d.png -c:v libx264 -pix_fmt yuv420p " + directorio + "animation.mp4";
         int resultado = system(comando.c_str());
         const std::string deleteCommand = "rm -f " + directorio + "Figure-*.png";
         int deleteResult = system(deleteCommand.c_str());
