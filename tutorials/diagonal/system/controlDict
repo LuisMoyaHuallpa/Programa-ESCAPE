@@ -4,33 +4,15 @@ linksFile        links.csv;
 
 populationsFile  populationAtPoint.csv;
 
-process calibration;
-
-stopAt          endTime;
+process trained;
 
 endTime         800;
 
-deltaT          1;
-
 meanRayleigh   420;
 
-computationContinued  	no;
+computationContinued  	yes;
 
 previousComputationFile	calibrated.csv;
-
-endNumberSimulation 20;
-
-graphicPrintoutPeriod 1;
-
-listingPrintoutPeriod 1;
-
-pedestrianCountPeriod 1;
-
-opcionSubdivision anchoSubdivision;
-
-anchoSubdivision 2;
-
-# cantidadSubdivisiones 10;
 
 
 
