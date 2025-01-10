@@ -1,18 +1,12 @@
-nodesFile        nodes.csv;
-
-linksFile        links.csv;
-
 populationsFile  populationAtPoint.csv;
 
-process trained;
+process calibration;
 
-endTime         800;
+endTime         1800;
+
+endNumberSimulation 1000;
 
 meanRayleigh   420;
-
-computationContinued  	yes;
-
-previousComputationFile	calibrated.csv;
 
 
 
