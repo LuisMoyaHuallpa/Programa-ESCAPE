@@ -1,0 +1,3 @@
+[submodule "optionals/escape-plugin-qgis"]
+	path = optionals/escape-plugin-qgis
+	url = https://github.com/juliocesar-ramirez/escape-plugin-qgis.git
