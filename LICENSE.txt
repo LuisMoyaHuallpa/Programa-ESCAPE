@@ -1,7 +1,7 @@
 MIT License
 
 Copyright (c) 2025 
-Luis Angel Moya Huallpa, Julio Ramirez, Erick Mas, Shunichi Koshimura
+Luis Angel Moya Huallpa, Julio Cesar Ramirez Paredes, Erick Mas, Shunichi Koshimura
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
