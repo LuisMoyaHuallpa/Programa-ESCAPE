@@ -1,0 +1,48 @@
+* ESCAPE
+
+Puedes observar la simulación completa del caso Square [[https://youtu.be/0RpVIt6iqHw][aquí]].
+
+* Installation
+
+You can install Escape with the following command in the terminal:
+
+#+BEGIN_SRC bash
+git clone https://github.com/juliocesar-ramirez/cplus-version.git
+cd cplus-version
+make
+source bashrc
+#+END_SRC
+
+* Requisitos
+
+- Lenguaje: C++ (se requiere soporte para C++17)
+- Compilador: GCC 9.4 o superior / Clang 10.0 o superior
+- Herramientas de Construcción: 
+  - GNU Make 4.2.1 (Makefile)
+
+* Licencia
+
+Este proyecto se distribuye bajo los términos de la licencia MIT. Consulta el archivo [[LICENCIA][LICENSE.txt]] para más detalles.
+
+* Documentación Adicional
+
+Si necesitas más información sobre cómo configurar o utilizar el proyecto, revisa los siguientes recursos:
+- [[/documentation/escape.pdf][Guia de usuario]]
+
+* Historial de Cambios
+
+A continuación se muestra el historial de cambios:
+
+| Versión  | Fecha       | Descripción                                   |
+|----------+-------------+-----------------------------------------------|
+| 1.0.0    | 2025-04-07  | Versión inicial, lanzamiento del proyecto.    |
+
+
+
+
+
+
+
+
+
+
