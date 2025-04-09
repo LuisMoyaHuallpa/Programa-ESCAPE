@@ -19,7 +19,7 @@ source bashrc
 - Compilador: GCC 9.4 o superior / Clang 10.0 o superior
 - Herramientas de Construcción: 
   - GNU Make 4.2.1 (Makefile)
-  - Plataforma: Ubuntu 20.04.6 LTS
+  - Sistema operativo: Ubuntu 20.04.6 LTS
 
 * Licencia
 
