@@ -305,7 +305,7 @@ void io::imprimirOutput() {
     else if (std::get<std::string>(dictionary::get()->lookupDefault("process")) == "calibration") {
         // imprime data de statematrix cada termino de simulaciont
         // solo lo imprime al final de la evacuacion
-        if (tiempo::get()->getValorTiempo() == tiempo::get()->getEndTime()) {
+        if (tiempo::get()->getValorTiempo() == tiempo::get()->getEndTime() or nodeDestino::verificarEvacuacionTotal()) {
             fileIO stateMatrice(stateMatrixs::get()->creacionFileStateMatrix(), &directoryStateMatrices);
             stateMatrixs::get()->imprimirDbStateMatrixs(&stateMatrice);
             // ploteo mortalidad por simulacion
