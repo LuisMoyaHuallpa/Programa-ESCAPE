@@ -4,13 +4,15 @@ Puedes observar la simulación completa del caso Square [[https://youtu.be/0RpVI
 
 * Installation
 
+** Linux
+
 You can install Escape with the following command in the terminal:
 
 #+BEGIN_SRC bash
-git clone https://github.com/juliocesar-ramirez/cplus-version.git
-cd cplus-version
-make
-source bashrc
+  git clone https://github.com/LuisMoyaHuallpa/Programa-ESCAPE.git
+  cd Programa-ESCAPE
+  make
+  source bashrc
 #+END_SRC
 
 * Requisitos
