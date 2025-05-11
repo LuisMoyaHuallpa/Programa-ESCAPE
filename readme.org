@@ -42,6 +42,10 @@ A continuación se muestra el historial de cambios:
 
 
 
+* Artículo
+Los conceptos fundamentales aplicados al programa ESCAPE se publicaron en la revista [[https://www.sciencedirect.com/science/article/pii/S2212420924007854][International Journal of Disaster Risk Reduction]] y puede citarse como:
+
+Mas, E., Moya, L., Gonzales, E., & Koshimura, S. (2024). Reinforcement learning-based tsunami evacuation guidance system. International Journal of Disaster Risk Reduction, 115, 105023.
 
 
 
