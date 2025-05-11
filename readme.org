@@ -47,6 +47,8 @@ Los conceptos fundamentales aplicados al programa ESCAPE se publicaron en la rev
 
 Mas, E., Moya, L., Gonzales, E., & Koshimura, S. (2024). Reinforcement learning-based tsunami evacuation guidance system. International Journal of Disaster Risk Reduction, 115, 105023.
 
+* Financiamiento
+El programa ESCAPE se desarrolló bajo el financiamiento del Consejo Nacional de Ciencia, Tecnología e Innovación Tecnológica (CONCYTEC) de Perú (Contrato No. PE501078853-2022) 
 
 
 
