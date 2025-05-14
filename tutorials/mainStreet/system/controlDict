@@ -1,0 +1,10 @@
+populationsFile  populationAtPoint.csv;
+
+process calibration;
+
+endTime         1800;
+
+meanRayleigh   420;
+
+endNumberSimulation 500;
+
