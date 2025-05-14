@@ -15,7 +15,7 @@ You can install Escape with the following command in the terminal:
   source bashrc
 #+END_SRC
 
-** Linux
+** Mac
 
 You can install Escape with the following command in the terminal:
 
