@@ -15,6 +15,17 @@ You can install Escape with the following command in the terminal:
   source bashrc
 #+END_SRC
 
+** Linux
+
+You can install Escape with the following command in the terminal:
+
+#+BEGIN_SRC bash
+  git clone https://github.com/LuisMoyaHuallpa/Programa-ESCAPE.git
+  cd Programa-ESCAPE
+  make
+  source bashrc
+#+END_SRC
+
 * Requisitos
 
 - Lenguaje: C++ (se requiere soporte para C++17)
