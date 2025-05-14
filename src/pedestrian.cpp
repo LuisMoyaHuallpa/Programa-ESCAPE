@@ -32,7 +32,6 @@
 #include "tiempo.h"
 #include "vector2D.h"
 #include "velocidad.h"
-#include <bits/types/FILE.h>
 #include <iostream>
 #include <vector>
 #include "pedestrians.h"
