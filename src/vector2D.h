@@ -25,6 +25,7 @@
 
 #include "iostream"
 #include "math.h"
+#include <cmath>    // <— aquí
 
 class vector2D{
 
