@@ -3,7 +3,11 @@
 * ESCAPE
 
 Puedes observar la simulación completa del caso Square [[https://youtu.be/0RpVIt6iqHw][aquí]].
-https://github.com/user-attachments/assets/4ea4783e-389b-413a-b687-b450a87abbd6
+
+#+BEGIN_HTML
+<video src="https://github.com/user-attachments/assets/4ea4783e-389b-413a-b687-b450a87abbd6"></video>
+#+END_HTML
+
 
 * Installation
 
