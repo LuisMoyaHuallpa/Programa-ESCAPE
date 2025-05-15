@@ -1,6 +1,14 @@
 * ESCAPE
 
 Puedes observar la simulación completa del caso Square [[https://youtu.be/0RpVIt6iqHw][aquí]].
+#+BEGIN_HTML
+<video 
+  width="640" height="360" controls 
+  src="images/instalacion-linux.mp4" 
+  type="video/mp4">
+  Tu navegador no soporta <code>video</code>.
+</video>
+#+END_HTML
 
 #+BEGIN_HTML
   <video width="640" height="360" controls>
