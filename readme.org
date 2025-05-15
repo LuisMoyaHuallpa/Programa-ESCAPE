@@ -4,10 +4,6 @@
 
 Puedes observar la simulación completa del caso Square [[https://youtu.be/0RpVIt6iqHw][aquí]].
 
-#+BEGIN_HTML
-<video src="https://github.com/user-attachments/assets/4ea4783e-389b-413a-b687-b450a87abbd6"></video>
-#+END_HTML
-
 
 * Installation
 
@@ -21,6 +17,12 @@ You can install Escape with the following command in the terminal:
   make
   source bashrc
 #+END_SRC
+
+#+BEGIN_HTML
+<video src="https://github.com/user-attachments/assets/f538fc55-15ec-41d0-955f-261b3de92488"></video>
+#+END_HTML
+
+Link del video completo [[https://youtu.be/bwnpiqN-B4w][aquí]].
 
 ** Mac
 
