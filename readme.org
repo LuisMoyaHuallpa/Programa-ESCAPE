@@ -2,16 +2,16 @@
 
 Puedes observar la simulación completa del caso Square [[https://youtu.be/0RpVIt6iqHw][aquí]].
 
-#+BEGIN_src html
+#+BEGIN_html
   <video width="640" height="360" controls>
     <source src="images/instalacion-linux.mp4" type="video/mp4">
     Tu navegador no soporta el elemento <code>video</code>.
   </video>
-#+END_src
+#+END_html
 
-#+BEGIN_src html
+#+BEGIN_html
 <iframe width="560" height="315" src="https://www.youtube.com/embed/bwnpiqN-B4w?si=FsjEjDghIxN6NDRJ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-#+END_src
+#+END_html
 
 * Installation
 
