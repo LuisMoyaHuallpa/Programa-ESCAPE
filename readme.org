@@ -35,6 +35,33 @@ You can install Escape with the following command in the terminal:
   source bashrc
 #+END_SRC
 
+** Windows
+
+- Open the Microsoft Store.
+- Search for Ubuntu 22.04.5 LTS.
+- Click the Get (or Install) button.
+- Launch the Ubuntu app—this will open a terminal window.
+- When prompted, choose a username and set a password. 
+
+To install the required dependencies on Ubuntu, run:
+
+#+BEGIN_SRC bash
+  sudo apt-get update
+  sudo apt install make
+  sudo apt install g++
+#+END_SRC
+
+
+You can install Escape with the following command in the terminal:
+
+#+BEGIN_SRC bash
+  git clone https://github.com/LuisMoyaHuallpa/Programa-ESCAPE.git
+  cd Programa-ESCAPE
+  make
+  source bashrc
+#+END_SRC
+
+
 * Requisitos
 
 - Lenguaje: C++ (se requiere soporte para C++17)
