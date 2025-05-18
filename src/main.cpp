@@ -59,7 +59,8 @@ int main(int argc, char* argv[]) {
     case 'h':
       /* mostrar ayuda */ return 0;
     case 'p':
-      dictionary::get()->getControlDict()["pythonVersion"] = "yes";
+      dictionary::get()->getControlDict()["computationContinued"] = true;
+      dictionary::get()->getControlDict()["pythonVersion"] = true;
       dictionary::get()->getControlDict()["pythonOption"] = optarg;
       std::cout << "python mode = " << optarg << "\n";
       break;

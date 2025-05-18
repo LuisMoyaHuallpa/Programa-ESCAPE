@@ -195,6 +195,7 @@ void stateMatrixs::leerActionsDb(std::fstream& file) {
     } 
 }
 void stateMatrixs::leerDbStateMatrixs() {
+  std::cout << "aqui1 = "<< "\n";
     if (std::get<std::string>(dictionary::get()->lookupDefault("process")) == "trained") {
         dictionary::get()->getControlDict()["computationContinued"] = "yes";
     }
