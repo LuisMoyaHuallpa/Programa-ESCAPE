@@ -59,8 +59,12 @@ int main(int argc, char* argv[]) {
     case 'h':
       /* mostrar ayuda */ return 0;
     case 'p':
+      dictionary::get()->getControlDict()["pythonVersion"] = "yes";
+      dictionary::get()->getControlDict()["pythonOption"] = optarg;
+      std::cout << "python mode = " << optarg << "\n";
       break;
     case 's':
+      dictionary::get()->getControlDict()["previousComputationFile"] = optarg;
       std::cout << "state mode = " << optarg << "\n";
       break;
     case '?':
