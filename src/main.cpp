@@ -34,8 +34,39 @@
 #include "links.h"
 #include "stateMatrixs.h"
 #include "pedestrians.h"
+#include <getopt.h>
 
-int main() {
+int main(int argc, char* argv[]) {
+  // comandos
+  static struct option long_opts[] = {
+    {"input",  required_argument, nullptr, 'i'},
+    {"pythonOption",  required_argument, nullptr, 'p'},
+    {"stateMatrixFile",  required_argument, nullptr, 's'},
+    {"output", required_argument, nullptr, 'o'},
+    {"help",   no_argument,       nullptr, 'h'},
+    {nullptr, 0,                 nullptr,  0}
+  };
+  
+  int opt, idx;
+  while ((opt = getopt_long(argc, argv, "i:o:h:p", long_opts, &idx)) != -1) {
+    switch (opt) {
+    case 'i':
+      std::cout << "Input = " << optarg << "\n";
+      break;
+    case 'o':
+      std::cout << "Output = " << optarg << "\n";
+      break;
+    case 'h':
+      /* mostrar ayuda */ return 0;
+    case 'p':
+      break;
+    case 's':
+      std::cout << "state mode = " << optarg << "\n";
+      break;
+    case '?':
+      /* opción desconocida */ return 1;
+    }
+  }
     // imprimi malla de calles.
     links::get()->imprimirMeshLinks();
     // Lectura de simulaciones pasadas.
