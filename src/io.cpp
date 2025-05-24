@@ -234,6 +234,7 @@ fileIO io::fileTotalEvacuatedCount("totalEvacuatedCount", "csv", "out", std::get
 fileIO io::fileEvacuatedCount("evacuatedCount", "csv", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="trained", &directoryData);
 fileIO io::fileActionsDb("actionsdb", "csv", std::get<std::string>(dictionary::get()->lookupDefault("pythonOption")), std::get<bool>(dictionary::get()->lookupDefault("pythonVersion")));
 fileIO io::fileTranstionsDb("transitionsdb", "csv", std::get<std::string>(dictionary::get()->lookupDefault("pythonOption")) == "out");
+fileIO io::fileStateMatrixPython("stateMatrixPython", "csv", std::get<std::string>(dictionary::get()->lookupDefault("pythonOption")) == "in");
 fileIO io::figureTotalEvacuadosVsSimulacion("figureTotalEvacuadosVsSimulacion", "png", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="calibration", &directoryData);
 fileIO io::figureEvacuadosVsTiempo("figureEvacuadosVsTiempo", "png", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="calibration", &directoryData);
 fileIO io::tableTotalEvacuadosVsSimulacion("tableTotalEvacuadosVsSimulacion", "csv", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="calibration", &directoryData);

@@ -196,25 +196,29 @@ void stateMatrixs::leerActionsDb(std::fstream& file) {
     } 
 }
 void stateMatrixs::leerDbStateMatrixs() {
-    if (std::get<std::string>(dictionary::get()->lookupDefault("process")) == "trained") {
-        dictionary::get()->getControlDict()["computationContinued"] = true;
+  if (std::get<std::string>(dictionary::get()->lookupDefault("process")) == "trained") {
+    dictionary::get()->getControlDict()["computationContinued"] = true;
+  }
+  // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
+  if (std::get<bool>(dictionary::get()->lookupDefault("computationContinued")) == true) {
+    // lectura de datos de stateMatrixs de la version en python,
+    // se debe leer de acuerdo a al orden a las conecciones de calles
+    
+    /* Lectura de datos de una simulación pasada.*/
+    std::fstream file;
+    if (std::get<bool>(dictionary::get()->lookupDefault("pythonVersion")) == true
+	and std::get<std::string>(dictionary::get()->lookupDefault("pythonOption")) == "in") {
+      leerActionsDb(io::fileActionsDb.getFileFstream());
+      file.open(std::get<std::string>(dictionary::get()->lookup("previousComputationFile")), std::ios::in);
     }
-    // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
-    if (std::get<bool>(dictionary::get()->lookupDefault("computationContinued")) == true) {
-        // lectura de datos de stateMatrixs de la version en python,
-        // se debe leer de acuerdo a al orden a las conecciones de calles
-        if (std::get<bool>(dictionary::get()->lookupDefault("pythonVersion")) == true
-        and std::get<std::string>(dictionary::get()->lookupDefault("pythonOption")) == "in") {
-            leerActionsDb(io::fileActionsDb.getFileFstream());
-        }
-        /* Lectura de datos de una simulación pasada.*/
-        std::fstream file;
-        file.open(simulationFile + std::get<std::string>(dictionary::get()->lookup("previousComputationFile")), std::ios::in);
+    else {
+      file.open(simulationFile + std::get<std::string>(dictionary::get()->lookup("previousComputationFile")), std::ios::in);
+    }
         // Si no existe el archivo
-        if (file.fail()) {
-            std::cout << "Error al abrir el archivo: "<< std::get<std::string>(dictionary::get()->lookup("previousComputationFile")) << std::endl;
-            exit(1);
-        }
+    if (file.fail()) {
+      std::cout << "Error al abrir el archivo: "<< std::get<std::string>(dictionary::get()->lookup("previousComputationFile")) << std::endl;
+      exit(1);
+    }
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         // iLinkConnection          |-->| POSICION EN EL ARREGLO linkConection
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

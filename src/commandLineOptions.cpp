@@ -47,22 +47,24 @@ void commandLineOptions::commandLineOptions::parse(int argc, char* argv[]) {
     int opt;
     int idx = 0;
     const char* optStr = "i:p:s:o:h";
-
+    bool pythonOption_, stateMatrixFile_;
+    std::string pythonOptionValue, stateMatrixFileValue;
+    
     while ((opt = getopt_long(argc, argv, optStr, longOpts, &idx)) != -1) {
       switch (opt) {
       case 'i':
 	input_           = optarg;
 	break;
       case 'p':
-	dictionary::get()->getControlDict()["computationContinued"] = "yes";
-	dictionary::get()->getControlDict()["pythonVersion"] = "yes";
-	dictionary::get()->getControlDict()["pythonOption"] = optarg;
-	std::cout << "python mode = " << optarg << "\n";
+	pythonOption_ = true;
+	pythonOptionValue = optarg;
 	break;
       case 's':
-	stateMatrixFile_ = optarg;
+	stateMatrixFile_ = true;
+	stateMatrixFileValue = optarg;
 	break;
-      case 'o': output_          = optarg;
+      case 'o':
+	output_          = optarg;
 	break;
       case 'h':
 	printUsage();
@@ -72,5 +74,16 @@ void commandLineOptions::commandLineOptions::parse(int argc, char* argv[]) {
 	printUsage();
 	return;
       }
+    }
+    if (pythonOption_ and stateMatrixFile_) {
+      dictionary::get()->getControlDict()["computationContinued"] = true;
+      dictionary::get()->getControlDict()["pythonVersion"] = true;
+      dictionary::get()->getControlDict()["pythonOption"] = pythonOptionValue;
+      dictionary::get()->getControlDict()["previousComputationFile"] = stateMatrixFileValue;
+    }
+    else if (pythonOption_ and !stateMatrixFile_) {
+      std::cerr << "Error: la opción -p/--python necesita la opcion -s/ --stateMatrixFile\n";
+        printUsage();
+	return;
     }
 }

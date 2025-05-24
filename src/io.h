@@ -139,6 +139,7 @@ public:
     static fileIO fileEvacuatedCount;
     static fileIO fileActionsDb;
     static fileIO fileTranstionsDb;
+    static fileIO fileStateMatrixPython;
     static fileIO figureTotalEvacuadosVsSimulacion;
     static fileIO figureEvacuadosVsTiempo;
     static fileIO tableTotalEvacuadosVsSimulacion;
