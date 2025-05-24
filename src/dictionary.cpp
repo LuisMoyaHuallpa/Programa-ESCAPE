@@ -191,7 +191,7 @@ bool dictionary::verificarType(std::string keyword, std::string value)  {
 
 void dictionary::mostrarControlDict() {
     std::cout << "Contents of controlDict:" << std::endl;
-    for (const auto& entry : controlDictDefault) {
+    for (const auto& entry : controlDict) {
         std::cout << entry.first << ": ";
         std::visit([](auto&& value) { std::cout << value; }, entry.second);
         std::cout << std::endl;

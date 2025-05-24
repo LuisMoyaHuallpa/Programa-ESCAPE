@@ -22,6 +22,7 @@
 
 #include "stateMatrixs.h"
 #include "Q.h"
+#include "dictionary.h"
 #include "io.h"
 #include "stateMatrix.h"
 #include <vector>
@@ -195,9 +196,8 @@ void stateMatrixs::leerActionsDb(std::fstream& file) {
     } 
 }
 void stateMatrixs::leerDbStateMatrixs() {
-  std::cout << "aqui1 = "<< "\n";
     if (std::get<std::string>(dictionary::get()->lookupDefault("process")) == "trained") {
-        dictionary::get()->getControlDict()["computationContinued"] = "yes";
+        dictionary::get()->getControlDict()["computationContinued"] = true;
     }
     // si la opcion de lectura de datos anteriores de stateMatrixs esta activa
     if (std::get<bool>(dictionary::get()->lookupDefault("computationContinued")) == true) {

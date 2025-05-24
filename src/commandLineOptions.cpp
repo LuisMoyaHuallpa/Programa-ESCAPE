@@ -50,16 +50,17 @@ void commandLineOptions::commandLineOptions::parse(int argc, char* argv[]) {
 
     while ((opt = getopt_long(argc, argv, optStr, longOpts, &idx)) != -1) {
       switch (opt) {
-      case 'i': input_           = optarg;
+      case 'i':
+	input_           = optarg;
 	break;
       case 'p':
-	pythonOption_    = optarg;
-	dictionary::get()->getControlDict()["computationContinued"] = true;
-	dictionary::get()->getControlDict()["pythonVersion"] = true;
+	dictionary::get()->getControlDict()["computationContinued"] = "yes";
+	dictionary::get()->getControlDict()["pythonVersion"] = "yes";
 	dictionary::get()->getControlDict()["pythonOption"] = optarg;
 	std::cout << "python mode = " << optarg << "\n";
 	break;
-      case 's': stateMatrixFile_ = optarg;
+      case 's':
+	stateMatrixFile_ = optarg;
 	break;
       case 'o': output_          = optarg;
 	break;
