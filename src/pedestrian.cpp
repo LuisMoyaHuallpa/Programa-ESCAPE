@@ -591,8 +591,18 @@ void pedestrian::plotearPedestrians(fileIO* const file) {
         pclose(gnuplotPipe);
     }
     if (tiempo::get()->getValorTiempo() == tiempo::get()->getEndTime() or nodeDestino::verificarEvacuacionTotal()) {
-        const std::string comando = "ffmpeg -y -framerate 10 -i "+ io::get()->directoryImages.getFullPath() + "Figure-%d.png -c:v libx264 -pix_fmt yuv420p " + io::get()->directoryVideos.getFullPath() + "animation.mp4 > /dev/null 2>&1";
-        int resultado = system(comando.c_str());
+      const std::string inDir  = io::get()->directoryImages.getFullPath();
+      const std::string outDir = io::get()->directoryVideos.getFullPath();
+      const std::string comando =
+	"ffmpeg -y "
+	"-framerate 5 "
+	"-pattern_type glob "
+	"-i \"" + inDir + "*.png\" "
+	"-c:v libx264 "
+	"-pix_fmt yuv420p "
+	"\"" + outDir + "animation.mp4\" "
+	"> /dev/null 2>&1";
+      int resultado = system(comando.c_str());
     }
 
 }

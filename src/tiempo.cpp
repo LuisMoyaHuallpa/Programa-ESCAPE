@@ -236,7 +236,10 @@ void tiempo::mostrarTiempo() const {
 }
 bool tiempo::verificarGraphicPrintoutPeriod() const {
     /* cada cuando imprimir variables*/
-    return (getValorTiempo() % graphicPrintoutPeriod == 0);
+  return getValorTiempo() == 0
+    or valorTiempo % graphicPrintoutPeriod == 1
+    or valorTiempo == endTime
+    or nodeDestino::verificarEvacuacionTotal();
 }
 bool tiempo::verificarPedestrianCountPeriod() const {
     /* cada cuando debe contar las personas*/
