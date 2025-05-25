@@ -493,7 +493,6 @@ double pedestrian::calcularRayleighDistribution(const double sigma) {
     return sigma * std::sqrt(-2.0 * std::log(1.0 - u));
 }
 void pedestrian::plotearPedestrians(fileIO* const file) {
-    
     // Inicializa valores máximos y mínimos
     static double minX = std::numeric_limits<double>::max();
     static double maxX = std::numeric_limits<double>::lowest();
@@ -501,6 +500,10 @@ void pedestrian::plotearPedestrians(fileIO* const file) {
     static double maxY = std::numeric_limits<double>::lowest();
     // lo leo solo al incio 
     if (tiempo::get()->getValorTiempo() == 1) {
+      // elimina las imagenes al iniciar el programa
+        const std::string deleteCommand = "rm -f " + io::get()->directoryImages.getFullPath() + "Figure-*.png";
+        int deleteResult = system(deleteCommand.c_str());
+
         const auto& lineasCalles = links::get()->getDbLinkTotal();
         for (const auto lc : lineasCalles) {
             // Obtener puntos de inicio y fin para la línea
@@ -588,11 +591,8 @@ void pedestrian::plotearPedestrians(fileIO* const file) {
         pclose(gnuplotPipe);
     }
     if (tiempo::get()->getValorTiempo() == tiempo::get()->getEndTime() or nodeDestino::verificarEvacuacionTotal()) {
-        const std::string directorio = file->getDirectory()->getFullPath();
-        const std::string deleteCommand = "rm -f " + directorio + "Figure-*.png";
-        const std::string comando = "ffmpeg -y -framerate 10 -i "+ directorio + "Figure-%d.png -c:v libx264 -pix_fmt yuv420p " + directorio + "animation.mp4 > /dev/null 2>&1";
+        const std::string comando = "ffmpeg -y -framerate 10 -i "+ io::get()->directoryImages.getFullPath() + "Figure-%d.png -c:v libx264 -pix_fmt yuv420p " + io::get()->directoryVideos.getFullPath() + "animation.mp4 > /dev/null 2>&1";
         int resultado = system(comando.c_str());
-        int deleteResult = system(deleteCommand.c_str());
     }
 
 }

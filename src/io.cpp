@@ -228,7 +228,9 @@ dirIO io::directoryData("data");
 dirIO io::directoryTime("time", &directoryData, std::get<std::string>(dictionary::get()->lookupDefault("process"))=="trained");
 dirIO io::directoryPostprocessing("postprocessing");
 dirIO io::directorySnapshot("snapshot", &directoryPostprocessing);
-dirIO io::directoryFigure("figure", &directoryData, std::get<std::string>(dictionary::get()->lookupDefault("process"))=="trained");
+dirIO io::directoryMedia("media", &directoryData, std::get<std::string>(dictionary::get()->lookupDefault("process"))=="trained");
+dirIO io::directoryImages("images", &directoryMedia, std::get<std::string>(dictionary::get()->lookupDefault("process"))=="trained");
+dirIO io::directoryVideos("videos", &directoryMedia, std::get<std::string>(dictionary::get()->lookupDefault("process"))=="trained");
 dirIO io::directoryStateMatrices("stateMatrices");
 fileIO io::fileTotalEvacuatedCount("totalEvacuatedCount", "csv", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="trained", &directoryData);
 fileIO io::fileEvacuatedCount("evacuatedCount", "csv", "out", std::get<std::string>(dictionary::get()->lookupDefault("process"))=="trained", &directoryData);
@@ -298,8 +300,8 @@ void io::imprimirOutput() {
             nodeDestino::imprimirNodeEvacuation(&fileEvacuatedCount);
             // imprimir personas en las calles
             std::string nombreArchivo = "Figure-" + std::to_string(tiempo::get()->getValorTiempo()); // O el formato que desees
-            fileIO figure(nombreArchivo, "png", &directoryFigure);
-            pedestrian::plotearPedestrians(&figure);
+            fileIO images(nombreArchivo, "png", &directoryImages);
+            pedestrian::plotearPedestrians(&images);
         }
     }
     // exportacion durante la calibracion

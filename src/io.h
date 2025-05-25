@@ -133,7 +133,9 @@ public:
     static dirIO directoryTime;
     static dirIO directoryPostprocessing;
     static dirIO directorySnapshot;
-    static dirIO directoryFigure;
+    static dirIO directoryMedia;
+    static dirIO directoryImages;
+    static dirIO directoryVideos;
     static dirIO directoryStateMatrices;
     static fileIO fileTotalEvacuatedCount;
     static fileIO fileEvacuatedCount;
