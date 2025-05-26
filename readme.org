@@ -62,6 +62,27 @@ You can install Escape with the following command in the terminal:
 #+END_SRC
 
 
+** Google Colab
+
+To install the required dependencies on Google Colab, run:
+
+#+BEGIN_SRC bash
+  !apt-get update -qq
+  !apt-get install -y nano
+  !apt-get install -y xdg-utils
+  !pip install colab-xterm
+  %load_ext colabxterm
+  %xterm
+#+END_SRC
+
+This will open a new terminal window where Escape installation will begin with the following command in the terminal:
+#+BEGIN_SRC bash
+  git clone https://github.com/LuisMoyaHuallpa/Programa-ESCAPE.git
+  cd Programa-ESCAPE
+  make
+  source bashrc
+#+END_SRC
+
 * Requisitos
 
 - Lenguaje: C++ (se requiere soporte para C++17)
