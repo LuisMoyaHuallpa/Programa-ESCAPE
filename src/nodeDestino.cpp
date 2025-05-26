@@ -200,18 +200,9 @@ void nodeDestino::plotearTotalEvacuadosXSimulacion(fileIO* const file) {
         }; 
         // elementos de simulaciones a imprimir
         std::vector<int> tiempoSimulacion;
-        auto it1 = dictionary::get()->getControlDict().find("totalEvacuadosVsSimulacionAt");
-        //atsimulation
-        if (it1 != dictionary::get()->getControlDict().end()) {
-            // Clave encontrada, proceder con la operación
-            static std::string valoresNumeroSimulacion = std::get<std::string>(it1->second);
-            tiempoSimulacion = stringToVector(valoresNumeroSimulacion);
-        }
-        // valores por default
-        else {
-            tiempoSimulacion = {1,2,3};
-        }
-        // const std::vector<int> tiempoSimulacion = {1, 2, 3};
+	std::string valoresNumeroSimulacion = std::get<std::string>(dictionary::get()->lookupDefault("totalEvacuadosVsSimulacionAt"));
+	tiempoSimulacion = stringToVector(valoresNumeroSimulacion);
+
         static std::vector<totalPersonasEvacuadasXSimulacion> data(tiempoSimulacion.size());
         auto it = std::find(tiempoSimulacion.begin(), tiempoSimulacion.end(), tiempo::get()->getINumberSimulation());
         // solo entra en el numero de simulacion que pide tiempoSimulacion

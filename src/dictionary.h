@@ -75,6 +75,7 @@ private:
         {"tableEvacuadosVsTiempo", true},
         {"totalEvacuadosVsSimulacionPeriod", 1},
         {"evacuadosVsTiempoAt", std::string("1,2,3")},
+        {"totalEvacuadosVsSimulacionAt", std::string("1,2,3")},
         {"opcionSubdivision", std::string("anchoSubdivision")},
         {"cantidadSubdivisiones", 10},
         {"anchoSubdivision", 2.0}
@@ -108,6 +109,7 @@ private:
         {"tableTotalEvacuadosVsSimulacion", "bool"},
         {"tableEvacuadosVsTiempo", "bool"},
         {"evacuadosVsTiempoAt", "string"},
+        {"totalEvacuadosVsSimulacionAt", "string"},
         {"totalEvacuadosVsSimulacionPeriod", "int"},
         {"opcionSubdivision", "string"},
         {"cantidadSubdivisiones", "int"},
