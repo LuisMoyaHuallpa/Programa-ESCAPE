@@ -11,10 +11,6 @@ node:
 debug:
 	g++ -std=c++17 -g $(SOURCES) -o bin/sarsa
 
-profile:
-	g++ -std=c++17 -pg -g $(SOURCES) -o bin/sarsa
-
-
 # Regla para crear la carpeta bin si no existe
 $(BIN_DIR):
 	mkdir -p $@
