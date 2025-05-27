@@ -2,9 +2,9 @@ populationsFile  populationAtPoint.csv;
 
 process calibration;
 
-endTime         1000;
+endTime         600;
 
-totalEvacuadosVsSimulacionAt 1,4,20,30;
+totalEvacuadosVsSimulacionAt 1,10,20,50;
 
 meanRayleigh   420;
 
