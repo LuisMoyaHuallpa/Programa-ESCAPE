@@ -49,6 +49,8 @@ To install the required dependencies on Ubuntu, run:
   sudo apt-get update
   sudo apt install make
   sudo apt install g++
+  sudo apt install gnuplot
+  sudo apt install ffmpeg
 #+END_SRC
 
 
