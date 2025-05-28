@@ -70,6 +70,7 @@ To install the required dependencies on Google Colab, run:
   !apt-get update -qq
   !apt-get install -y nano
   !apt-get install -y xdg-utils
+  !apt-get install -y gnuplot
   !pip install colab-xterm
   %load_ext colabxterm
   %xterm
