@@ -300,7 +300,9 @@ void io::imprimirOutput() {
             nodeDestino::imprimirNodeEvacuation(&fileEvacuatedCount);
             // imprimir personas en las calles
             std::string nombreArchivo = "Figure-" + std::to_string(tiempo::get()->getValorTiempo()); // O el formato que desees
-            fileIO images(nombreArchivo, "png", &directoryImages);
+	    char buf[16];
+	    std::snprintf(buf, sizeof(buf), "Figure-%04d", tiempo::get()->getValorTiempo());
+            fileIO images(buf, "png", &directoryImages);
             pedestrian::plotearPedestrians(&images);
         }
     }
