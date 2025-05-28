@@ -252,29 +252,43 @@ void nodeDestino::plotearTotalEvacuadosXSimulacion(fileIO* const file) {
 }
 void nodeDestino::imprimirTotalEvacuadosXSimulacion(fileIO* const file) {
     // reviza el dictionario la opcion esta activada, por default esta activado
-    if (std::get<bool>(dictionary::get()->lookupDefault(file->getFileName())) == true) {
-        // elementos de simulaciones a imprimir
-        std::vector<int> tiempoSimulacion;
-        auto it1 = dictionary::get()->getControlDict().find("totalEvacuadosVsSimulacionAt");
-        if (it1 != dictionary::get()->getControlDict().end()) {
-            // Clave encontrada, proceder con la operación
-            static std::string valoresNumeroSimulacion = std::get<std::string>(it1->second);
-            tiempoSimulacion = stringToVector(valoresNumeroSimulacion);
-        }
-        // valores por default
-        else {
-            tiempoSimulacion = {1,2,3};
-        }
-        // const std::vector<int> tiempoSimulacion = {1, 2, 3};
-        auto it = std::find(tiempoSimulacion.begin(), tiempoSimulacion.end(), tiempo::get()->getINumberSimulation());
-        // solo entra en el numero de simulacion que pide tiempoSimulacion
-        if (it != tiempoSimulacion.end()) {
-            // enviar datos a un archivo tabla
-            file->getFileFstream() << tiempo::get()->getValorTiempo() << ",";
-            file->getFileFstream() << totalPersonasEvacuadas;
-            file->getFileFstream() << std::endl;
-        }
+  if (std::get<bool>(dictionary::get()->lookupDefault(file->getFileName())) == true) {
+    class totalPersonasEvacuadasXSimulacion{
+    public:
+      std::vector<int> tiempo;
+      std::vector<int> totalEvacuados;
+    }; 
+    // elementos de simulaciones a imprimir
+    std::vector<int> tiempoSimulacion;
+    std::string valoresNumeroSimulacion = std::get<std::string>(dictionary::get()->lookupDefault("totalEvacuadosVsSimulacionAt"));
+    tiempoSimulacion = stringToVector(valoresNumeroSimulacion);
+    
+    static std::vector<totalPersonasEvacuadasXSimulacion> data(tiempoSimulacion.size());
+    auto it = std::find(tiempoSimulacion.begin(), tiempoSimulacion.end(), tiempo::get()->getINumberSimulation());
+    // solo entra en el numero de simulacion que pide tiempoSimulacion
+    if (it != tiempoSimulacion.end()) {
+      // Determinar el índice en el vector `data` basado en la posición en `tiempoSimulacion`
+      int index = std::distance(tiempoSimulacion.begin(), it);
+      // Agregar el valor del tiempo actual al vector `tiempo` correspondiente
+      data.at(index).tiempo.push_back(tiempo::get()->getValorTiempo());
+      data.at(index).totalEvacuados.push_back(totalPersonasEvacuadas);
     }
+    if (tiempo::get()->getINumberSimulation() ==  tiempo::get()->getEndNumberSimulation() and tiempo::get()->getValorTiempo() == tiempo::get()->getEndTime()) {
+      std::size_t nSim = data.size();                                // número de simulaciones
+      std::size_t nRows = data[0].tiempo.size();                     // número de filas por simulación
+      // 2. Imprime fila a fila
+      for (std::size_t row = 0; row < nRows; ++row) {
+	// 2.1 Primero, el tiempo (supongamos que es igual en todas las simulaciones)
+	file->getFileFstream() << data[0].tiempo[row];
+	
+	// 2.2 Luego, para cada simulación, su totalEvacuados[row]
+	for (std::size_t sim = 0; sim < nSim; ++sim) {
+	  file->getFileFstream() << "," << data[sim].totalEvacuados[row];
+	}
+	file->getFileFstream() << "\n";
+      }
+    }
+  }
 }
 void nodeDestino::plotearEvacuadosVsTiempo(fileIO* const file) {
     // reviza el dictionario la opcion esta activada, por default esta activado
