@@ -98,9 +98,9 @@ public:
     static void sumarTotalPersonasEvacuadas();
     static void imprimirNodeEvacuation(fileIO* const file);
     static void imprimirTotalPersonasEvacuadas(fileIO* const file);
-    static void plotearTotalEvacuadosXSimulacion(fileIO* const file);
+    static void plotearEvacuadosXTiempo(fileIO* const file);
     static void imprimirTotalEvacuadosXSimulacion(fileIO* const file);
-    static void plotearEvacuadosVsTiempo(fileIO* const file);
+    static void plotearTotalEvacuadosVsSimulacion(fileIO* const file);
     static void imprimirEvacuadosVsTiempo(fileIO* const file);
     static void imprimirVariableTotalPersonasEvacuadas(fileIO* const file);
 

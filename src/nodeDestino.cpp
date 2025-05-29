@@ -190,7 +190,7 @@ std::vector<int> stringToVector(const std::string& str) {
 
     return result;
 }
-void nodeDestino::plotearTotalEvacuadosXSimulacion(fileIO* const file) {
+void nodeDestino::plotearEvacuadosXTiempo(fileIO* const file) {
     // reviza el dictionario la opcion esta activada, por default esta activado
     if (std::get<bool>(dictionary::get()->lookupDefault(file->getFileName())) == true) {
         class totalPersonasEvacuadasXSimulacion{
@@ -290,7 +290,7 @@ void nodeDestino::imprimirTotalEvacuadosXSimulacion(fileIO* const file) {
     }
   }
 }
-void nodeDestino::plotearEvacuadosVsTiempo(fileIO* const file) {
+void nodeDestino::plotearTotalEvacuadosVsSimulacion(fileIO* const file) {
     // reviza el dictionario la opcion esta activada, por default esta activado
     if (std::get<bool>(dictionary::get()->lookupDefault(file->getFileName())) == true) {
         static std::vector<int> numeroSimulaciones;

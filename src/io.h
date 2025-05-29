@@ -142,8 +142,8 @@ public:
     static fileIO fileActionsDb;
     static fileIO fileTranstionsDb;
     static fileIO fileStateMatrixPython;
-    static fileIO figureTotalEvacuadosVsSimulacion;
     static fileIO figureEvacuadosVsTiempo;
+    static fileIO figureTotalEvacuadosVsSimulacion;
     static fileIO tableTotalEvacuadosVsSimulacion;
     static fileIO tableEvacuadosVsTiempo;
     static fileIO figurePedestrians;
