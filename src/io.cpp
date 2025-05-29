@@ -281,7 +281,7 @@ void io::imprimirOutput() {
     /* manejo de las output*/
     // exportacion cuando esta entrenado
     if (std::get<std::string>(dictionary::get()->lookupDefault("process")) == "trained") {
-        if (tiempo::get()->verificarGraphicPrintoutPeriod()) {
+      if (tiempo::get()->getValorTiempo()==0 or tiempo::get()->verificarGraphicPrintoutPeriod()) {
             // crear carpetas de tiempo
             dirIO* dirTiempo = crearCarpetaTiempo();
             // imprimir datos de personas: posicion y velocidad

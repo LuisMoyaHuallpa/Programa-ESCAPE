@@ -1,7 +1,8 @@
 /*
 !.gitignore
-!/camana/
-!/callao/
-!/grilla/
-!/diagonal/
-!/mainStreet/
+!nodes.csv
+!links.csv
+!population.csv
+!Allclean
+!/system/
+!/stateMatrices/

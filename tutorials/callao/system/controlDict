@@ -1,12 +1,14 @@
-populationsFile  populationAtPoint.csv;
+populationsFile  population.csv;
 
 process calibration;
 
-endTime         600;
+endTime         800;
 
-totalEvacuadosVsSimulacionAt 1,10,20,50;
+graphicPrintoutPeriod 4;
 
-meanRayleigh   420;
+totalEvacuadosVsSimulacionAt 1,10,50,100,250,500;
 
-endNumberSimulation 50;
+meanRayleigh   120;
+
+endNumberSimulation 500;
 
