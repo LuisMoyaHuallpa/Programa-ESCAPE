@@ -127,13 +127,26 @@ El programa ESCAPE se desarrolló bajo el financiamiento del Consejo Nacional de
 | [[file:/images/pucp.png]] | [[file:/images/concytec.png]] | [[file:/images/tohoku.png]] | [[file:/images/prociencia.png]] |
 
 
-#+BEGIN_EXPORT html
-<table>
-  <tr>
-    <td><img src="/images/pucp.png" width="200"/></td>
-    <td><img src="/images/concytec.png" width="200"/></td>
-    <td><img src="/images/tohoku.png" width="200"/></td>
-    <td><img src="/images/prociencia.png" width="200"/></td>
-  </tr>
-</table>
+#+BEGIN_EXPORT latex
+begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[b]{0.24\textwidth}
+    \includegraphics[width=\linewidth]{/images/pucp.png}
+    %\caption{PUCP}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.24\textwidth}
+    \includegraphics[width=\linewidth]{/images/concytec.png}
+    %\caption{Concytec}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.24\textwidth}
+    \includegraphics[width=\linewidth]{/images/tohoku.png}
+    %\caption{Tohoku}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.24\textwidth}
+    \includegraphics[width=\linewidth]{/images/prociencia.png}
+    %\caption{Prociencia}
+  \end{subfigure}
+  \caption{Logos de las instituciones}
+  \label{fig:logos}
+\end{figure}
 #+END_EXPORT
