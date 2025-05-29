@@ -123,7 +123,7 @@ Mas, E., Moya, L., Gonzales, E., & Koshimura, S. (2024). Reinforcement learning-
 * Financiamiento
 El programa ESCAPE se desarrolló bajo el financiamiento del Consejo Nacional de Ciencia, Tecnología e Innovación Tecnológica (CONCYTEC) de Perú (Contrato No. PE501078853-2022) 
 
-#+ATTR_ORG: :width 100
+#+ATTR_ORG: :width 50
 | [[file:/images/pucp.png]] | [[file:/images/concytec.png]] | [[file:/images/tohoku.png]] | [[file:/images/prociencia.png]] |
 
 
