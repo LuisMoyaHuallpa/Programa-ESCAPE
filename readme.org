@@ -128,7 +128,7 @@ El programa ESCAPE se desarrolló bajo el financiamiento del Consejo Nacional de
 
 
 #+BEGIN_src latex
-begin{figure}[htbp]
+\begin{figure}[htbp]
   \centering
   \begin{subfigure}[b]{0.24\textwidth}
     \includegraphics[width=\linewidth]{/images/pucp.png}
