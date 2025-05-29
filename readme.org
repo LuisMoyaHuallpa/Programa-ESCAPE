@@ -127,7 +127,7 @@ El programa ESCAPE se desarrolló bajo el financiamiento del Consejo Nacional de
 | [[file:/images/pucp.png]] | [[file:/images/concytec.png]] | [[file:/images/tohoku.png]] | [[file:/images/prociencia.png]] |
 
 
-#+BEGIN_src latex
+#+BEGIN_export latex
 \begin{figure}[htbp]
   \centering
   \begin{subfigure}[b]{0.24\textwidth}
@@ -149,4 +149,4 @@ El programa ESCAPE se desarrolló bajo el financiamiento del Consejo Nacional de
   \caption{Logos de las instituciones}
   \label{fig:logos}
 \end{figure}
-#+END_src
+#+END_export
