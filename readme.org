@@ -126,6 +126,14 @@ El programa ESCAPE se desarrolló bajo el financiamiento del Consejo Nacional de
 #+ATTR_ORG: :width 10
 | [[file:/images/pucp.png]] | [[file:/images/concytec.png]] | [[file:/images/tohoku.png]] | [[file:/images/prociencia.png]] |
 
+#+BEGIN_EXPORT html
+<div style="display:flex; gap:0.5em;">
+  <img src="img1.png" width="50"/>
+  <img src="img2.png" width="50"/>
+  <img src="img3.png" width="50"/>
+  <img src="img4.png" width="50"/>
+</div>
+#+END_EXPORT
 
 
 
