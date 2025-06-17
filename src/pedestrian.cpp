@@ -528,6 +528,7 @@ void pedestrian::plotearPedestrians(fileIO* const file) {
         // Configurar Gnuplot
         fprintf(gnuplotPipe, "set output '%s'\n", file->getFullPath().c_str());
         fprintf(gnuplotPipe, "set terminal png size 1920,1080\n");
+	fprintf(gnuplotPipe, "set size ratio -1\n");
         fprintf(gnuplotPipe, "set yrange [%lf:%lf]\n", minY, maxY);
         fprintf(gnuplotPipe, "set xrange [%lf:%lf]\n", minX, maxX);
         fprintf(gnuplotPipe, "unset border\n");
@@ -535,10 +536,18 @@ void pedestrian::plotearPedestrians(fileIO* const file) {
         fprintf(gnuplotPipe, "set colorbox\n");
         fprintf(gnuplotPipe, "set cbrange [0.2:1.2]\n"); // Reemplaza min y max con tus valores fijos
         fprintf(gnuplotPipe, "set grid\n");
-        fprintf(gnuplotPipe, "set bmargin 3\n"); // Margen inferior aumentado
+        fprintf(gnuplotPipe, "set tmargin 3\n"); // Margen inferior aumentado
         int minutos =  tiempo::get()->getValorTiempo() / 60; // Dividir para obtener minutos completos
         int segundos =  tiempo::get()->getValorTiempo() % 60; // Resto para los segundos que sobran
-        fprintf(gnuplotPipe, "set label 't = %d.%d min, evacuated: %d' at screen 0.5, 0.02 center\n", minutos, segundos, nodeDestino::totalPersonasEvacuadas);
+	fprintf(gnuplotPipe,
+		"set label 't = %d.%d min, evacuated: %d of %d' "
+		"font 'Arial,24' "
+		"at screen 0.5, 0.98 center\n",
+		minutos,
+		segundos,
+		nodeDestino::totalPersonasEvacuadas,
+		static_cast<int>(pedestrians::get()->getDbPedestrianTotal().size()));
+
 
         // creacion de plot
         std::string plotCommand = "plot";
